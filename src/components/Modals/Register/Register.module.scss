@@ -1,0 +1,82 @@
+.f-right {
+    float: right;
+}
+.alignCenter {
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper {
+    display: inline-block;
+}
+
+.registerBtn {
+    background-color: transparent;
+    border: 1px solid var(--white-color);
+}
+
+.imgWrapper {
+    width: 40%;
+    background-image: linear-gradient(var(--primary-color), rgba(143, 101, 154, 0.753));
+    display: inline-block;
+    border-radius: 20px 0 0 20px;
+    // padding-bottom: 50px;
+    h1,
+    img {
+        color: rgba(#fff, 0.3);
+        display: flex;
+        justify-content: center;
+        margin: 24px auto 0;
+    }
+    h1 {
+        margin-bottom: 15%;
+    }
+}
+
+#registerForm {
+    float: right;
+    width: 50%;
+    display: inline-block;
+    h1 {
+        display: flex;
+        justify-content: center;
+        margin: 20px auto;
+    }
+    label {
+        font-size: 18px;
+    }
+    input {
+        width: 100%;
+        padding: 16px 20px;
+        margin: 8px 0 20px;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+        text-align: start;
+        font-size: 16px;
+        background-color: rgba(173, 173, 173, 0.1);
+    }
+    .col2 {
+        display: inline-block;
+        width: 45%;
+    }
+    .checkbox {
+        width: 16px;
+        height: 16px;
+        margin: 4px 4px 2px 0;
+    }
+    #submitBtn {
+        font-size: 18px;
+        width: 35%;
+        padding: 16px;
+        background-color: var(--primary-color);
+        margin: 18px auto 2px;
+        border-radius: 16px;
+    }
+    #switchBtn {
+        background: none;
+        padding: 0;
+        width: fit-content;
+        color: var(--primary-color);
+        font-size: 18px;
+    }
+}

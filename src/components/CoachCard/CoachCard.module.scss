@@ -1,0 +1,77 @@
+.coach-item {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white-color);
+    border-radius: 16px;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.3);
+
+    .status {
+        display: flex;
+        align-items: center;
+        padding: 2px 8px;
+        background-color: #ededed;
+        border-radius: 20px;
+        align-self: flex-start;
+
+        .icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: green;
+            margin-right: 12px;
+        }
+
+        .status-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+    }
+
+    .avatar,
+    .name,
+    .experience,
+    #view-btn {
+        margin: 8px 0;
+    }
+
+    .avatar {
+        width: 260px;
+        height: 280px;
+        background-color: var(--primary-color);
+        border-radius: 16px;
+        display: flex;
+
+        .icon {
+            margin: auto;
+            font-size: 16rem;
+            color: var(--white-color);
+        }
+    }
+
+    .experience {
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--text-color);
+    }
+
+    #view-btn {
+        padding: 16px;
+        width: 100%;
+        background-color: var(--white-color);
+        color: var(--primary-color);
+        font-size: 1.6rem;
+        font-weight: 500;
+        border: 1px solid var(--primary-color);
+        border-radius: 16px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+    }
+}

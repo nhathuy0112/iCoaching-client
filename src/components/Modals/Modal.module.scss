@@ -1,0 +1,32 @@
+.backdrop {
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color: #000, $alpha: 0.7);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.modal {
+    width: 80%;
+    position: fixed;
+    top: 20rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 0px;
+    border-radius: 20px;
+}
+
+#closeBtn {
+    position: relative;
+    float: right;
+    background: none;
+    color: #000;
+    width: fit-content;
+    font-size: 26px;
+}

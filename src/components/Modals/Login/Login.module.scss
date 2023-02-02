@@ -1,0 +1,82 @@
+.alignCenter {
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper {
+    display: inline-block;
+}
+
+.loginBtn {
+    background-color: var(--primary-color);
+}
+
+.imgWrapper {
+    width: 40%;
+    background-image: linear-gradient(var(--primary-color), rgba(143, 101, 154, 0.753));
+    display: inline-block;
+    border-radius: 20px 0 0 20px;
+    h1,
+    img {
+        color: rgba(#fff, 0.3);
+        display: flex;
+        justify-content: center;
+        margin: 24px auto 0;
+    }
+    h1 {
+        margin-bottom: 15%;
+    }
+}
+
+#loginForm {
+    float: right;
+    width: 50%;
+    display: inline-block;
+    h1 {
+        display: flex;
+        justify-content: center;
+        margin: 10% auto;
+    }
+    label {
+        font-size: 18px;
+    }
+    input {
+        width: 100%;
+        padding: 16px 20px;
+        margin: 10px 0 24px;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+        font-size: 16px;
+        background-color: rgba(173, 173, 173, 0.1);
+    }
+    .checkbox {
+        width: 16px;
+        height: 16px;
+        margin: 4px 4px 4px 0;
+    }
+
+    #forgotBtn {
+        float: right;
+        background: none;
+        padding: 0;
+        width: fit-content;
+        font-size: 18px;
+        color: rgb(166, 12, 12);
+    }
+
+    #submitBtn {
+        font-size: 18px;
+        width: 35%;
+        padding: 12px;
+        background-color: var(--primary-color);
+        margin: 10% auto 6px;
+        border-radius: 16px;
+    }
+    #switchBtn {
+        background: none;
+        padding: 0;
+        width: fit-content;
+        color: var(--primary-color);
+        font-size: 18px;
+    }
+}
