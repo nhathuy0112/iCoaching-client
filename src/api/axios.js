@@ -14,7 +14,7 @@ const instance = axios.create({
 instance.interceptors.request.use((config) => {
     //handle token
     if (getLocalStorage('auth')) {
-        let token = getLocalStorage('auth').jwt.token;
+        let token = getLocalStorage('auth').accessToken;
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -25,6 +25,7 @@ instance.interceptors.response.use(
         return response.data;
     },
     (error) => {
+        console.log(error);
         switch (error.response.status) {
             case 401:
                 const message401 = error.response.data.error;

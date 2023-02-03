@@ -4,35 +4,55 @@ import { parseJwt } from '~/utils/jwt';
 import { setLocalStorage, getLocalStorage, removeLocalStorage } from '~/utils/localStorage';
 
 export const registerAsync = createAsyncThunk('user/register', async (payload) => {
-    const response = await register({
-        email: payload.email,
-        password: payload.password,
-        confirmPassword: payload.confirmPassword,
-        phone: payload.phone,
-        isCoach: payload.isCoach,
-    });
-    return response;
+    try {
+        const response = await register({
+            email: payload.email,
+            password: payload.password,
+            confirmPassword: payload.confirmPassword,
+            phone: payload.phone,
+            isCoach: payload.isCoach,
+        });
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 export const loginAsync = createAsyncThunk('user/login', async (payload) => {
-    const response = await login({ username: payload.username, password: payload.password });
-    setLocalStorage('auth', response);
-    return response;
+    try {
+        const response = await login({ username: payload.username, password: payload.password });
+        setLocalStorage('auth', response);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 export const refreshAsync = createAsyncThunk('user/refresh', async (payload) => {
-    const response = await refresh({ accessToken: payload.accessToken, refreshToken: payload.refreshToken });
-    setLocalStorage('auth', response);
-    return response;
+    try {
+        const response = await refresh({ accessToken: payload.accessToken, refreshToken: payload.refreshToken });
+        setLocalStorage('auth', response);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 export const logoutAsync = createAsyncThunk('user/logout', async (payload) => {
-    await logout({ currentRefreshToken: payload.currentRefreshToken });
+    try {
+        await logout({ currentRefreshToken: payload.currentRefreshToken });
+    } catch (error) {
+        console.log(error);
+    }
     removeLocalStorage('auth');
 });
 
 export const forgotAsync = createAsyncThunk('user/forgot', async (payload) => {
-    await forgot(payload);
+    try {
+        await forgot(payload);
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 const initialState = {
