@@ -1,10 +1,16 @@
+import { useEffect } from 'react';
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
 
-import Modal from '../Modal';
-const cx = classNames.bind(styles);
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
+import Modal from '~/components/Modals';
+import { loginAsync } from '~/features/userSlice';
+
+const cx = classNames.bind(styles);
 const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
     const switchForgot = (e) => {
         setLoginOpen(false);
@@ -15,6 +21,34 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         setLoginOpen(false);
         setRegisterOpen(true);
     };
+
+    const dispatch = useDispatch();
+    const { register, handleSubmit } = useForm();
+    const navigate = useNavigate();
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+    useEffect(() => {
+        if (isLoggedIn && currentUser) {
+            switch (currentUser.role) {
+                case 'CLIENT':
+                    navigate(`/client/${currentUser.Id}`);
+                    break;
+                case 'COACH':
+                    navigate(`/coach/${currentUser.Id}`);
+                    break;
+                case 'SUPER_ADMIN':
+                    break;
+                default:
+                    return;
+            }
+        }
+    }, [currentUser, isLoggedIn, navigate]);
+
+    const handleLogin = (data) => {
+        dispatch(loginAsync({ username: data.username, password: data.password }));
+    };
+
     return (
         <div className={cx('wrapper')}>
             {open && (
@@ -24,7 +58,7 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
                         <img src={require('~/assets/images/modal-bg.png')} alt="" />
                     </div>
 
-                    <form id={cx('loginForm')}>
+                    <form id={cx('loginForm')} onSubmit={handleSubmit(handleLogin)}>
                         <motion.div
                             initial={{ x: -100, opacity: 0 }}
                             animate={{
@@ -37,10 +71,10 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
                             }}
                         >
                             <h1 className={cx('alignCenter')}>Đăng nhập</h1>
-                            <label>Địa chỉ email</label>
-                            <input type="email" placeholder="Nhập địa chỉ email" />
+                            <label>Tài khoản</label>
+                            <input type="text" placeholder="Nhập địa chỉ email" {...register('username')} />
                             <label>Mật khẩu</label>
-                            <input type="password" placeholder="Nhập mật khẩu" />
+                            <input type="password" placeholder="Nhập mật khẩu" {...register('password')} />
                             <div>
                                 <input className={cx('checkbox')} type="checkbox" /> Ghi nhớ mật khẩu
                                 <button id={cx('forgotBtn')} onClick={switchForgot}>

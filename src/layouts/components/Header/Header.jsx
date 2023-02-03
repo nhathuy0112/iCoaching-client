@@ -5,9 +5,9 @@ import classNames from 'classnames/bind';
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { CgGym } from 'react-icons/cg';
 
-import Login from '~/components/Modals/Login/Login';
-import Register from '~/components/Modals/Register/Register';
-import ForgotPassword from '~/components/Modals/ForgotPassword/ForgotPassword';
+import Login from '~/auth/Login';
+import Register from '~/auth/Register';
+import ForgotPassword from '~/auth/ForgotPassword';
 const cx = classNames.bind(styles);
 
 const Header = () => {

@@ -2,15 +2,34 @@ import styles from './ForgotPassword.module.scss';
 import classNames from 'classnames/bind';
 import { BsArrowLeft } from 'react-icons/bs';
 import { motion } from 'framer-motion';
+import { useForm } from 'react-hook-form';
 
-import Modal from '../Modal';
+import Modal from '~/components/Modals';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { forgotAsync } from './../../features/userSlice';
 
 const cx = classNames.bind(styles);
 
 const Login = ({ open, setForgotOpen, setLoginOpen }) => {
+    const [isResetPassword, setIsResetPassword] = useState(false);
+
     const switchLogin = (e) => {
         setForgotOpen(false);
         setLoginOpen(true);
+    };
+
+    const dispatch = useDispatch();
+
+    const { register, getValues, handleSubmit, resetField } = useForm();
+
+    const handleForgot = (data) => {
+        setIsResetPassword(true);
+        dispatch(forgotAsync(data.email));
+        setTimeout(() => {
+            setIsResetPassword(false);
+            resetField('email');
+        }, 20000);
     };
 
     return (
@@ -22,7 +41,7 @@ const Login = ({ open, setForgotOpen, setLoginOpen }) => {
                         <img src={require('~/assets/images/modal-bg.png')} alt="" />
                     </div>
 
-                    <form id={cx('forgotForm')}>
+                    <form id={cx('forgotForm')} onSubmit={handleSubmit(handleForgot)}>
                         <motion.div
                             initial={{ x: 100, opacity: 0 }}
                             animate={{
@@ -39,7 +58,13 @@ const Login = ({ open, setForgotOpen, setLoginOpen }) => {
                             </button>
                             <h1 className={cx('alignCenter')}>Quên mật khẩu</h1>
                             <label>Địa chỉ email</label>
-                            <input type="email" placeholder="Nhập địa chỉ email" />
+                            <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />
+                            {isResetPassword && (
+                                <span style={{ color: 'var(--primary-color)' }}>
+                                    Truy cập email <span style={{ color: 'red' }}>{getValues('email')}</span> để khôi
+                                    phục mật khẩu
+                                </span>
+                            )}
                             <div>
                                 <button type="submit" id={cx('submitBtn')} className={cx('alignCenter')}>
                                     Gửi

@@ -1,8 +1,13 @@
-import axios from '~/api/axios';
-import { getLocalStorage } from '~/utils';
+import axios from 'axios';
+import { getLocalStorage } from '~/utils/localStorage';
+
+let accessToken = getLocalStorage('auth') ? getLocalStorage('auth').accessToken : null;
 
 const instance = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
+    baseURL: process.env.REACT_APP_API_URL,
+    headers: {
+        Authorization: `Bearer ${accessToken}`,
+    },
     timeout: 300000,
 });
 
