@@ -24,6 +24,7 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
             dispatch(
                 registerAsync({
                     email: data.email,
+                    fullname: data.fullname,
                     password: data.password,
                     confirmPassword: data.confirmPassword,
                     phone: data.phone,
