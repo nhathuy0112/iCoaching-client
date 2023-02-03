@@ -6,6 +6,7 @@ import { setLocalStorage, getLocalStorage, removeLocalStorage } from '~/utils/lo
 export const registerAsync = createAsyncThunk('user/register', async (payload) => {
     try {
         const response = await register({
+            fullname: payload.fullname,
             email: payload.email,
             password: payload.password,
             confirmPassword: payload.confirmPassword,
