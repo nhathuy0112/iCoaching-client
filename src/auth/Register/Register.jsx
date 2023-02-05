@@ -50,8 +50,7 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                 x: 0,
                                 opacity: 1,
                                 transition: {
-                                    delay: 0.3,
-                                    duration: 0.3,
+                                    duration: 0.2,
                                 },
                             }}
                         >

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './Modal.module.scss';
 import classNames from 'classnames/bind';
@@ -7,25 +7,15 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 const cx = classNames.bind(styles);
 
 const Modal = ({ show, onClose, children }) => {
-    const modalRef = useRef();
-
     useEffect(() => {
-        document.addEventListener('mousedown', handleClick);
-        return () => {
-            document.removeEventListener('mousedown', handleClick);
-        };
-    });
+        document.body.style.overflow = 'hidden';
+        return () => (document.body.style.overflow = 'unset');
+    }, [show]);
 
-    const handleClick = (e) => {
-        if (modalRef.current.contains(e.target)) {
-            return;
-        }
-        onClose();
-    };
     return (
         <div className={cx('backdrop')}>
-            <div className={cx('modal')} ref={modalRef}>
-                <div className={cx('modalContent')}>
+            <div className={cx('modal')}>
+                <div className={cx('content')}>
                     <button onClick={() => onClose()} id={cx('closeBtn')}>
                         <AiOutlineCloseCircle />
                     </button>

@@ -20,7 +20,6 @@
     background-image: linear-gradient(var(--primary-color), rgba(143, 101, 154, 0.753));
     display: inline-block;
     border-radius: 20px 0 0 20px;
-    // padding-bottom: 50px;
     h1,
     img {
         color: rgba(#fff, 0.3);
@@ -29,7 +28,7 @@
         margin: 24px auto 0;
     }
     h1 {
-        margin-bottom: 15%;
+        margin-bottom: 20%;
     }
 }
 
@@ -78,5 +77,17 @@
         width: fit-content;
         color: var(--primary-color);
         font-size: 18px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .imgWrapper {
+        display: none;
+    }
+    #registerForm {
+        width: 80%;
+        float: left;
+        margin-left: 10%;
+        padding-bottom: 5%;
     }
 }
