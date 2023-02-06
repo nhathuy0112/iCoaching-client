@@ -37,7 +37,7 @@ const Footer = () => {
                 <div className={cx('copy-right')}>
                     <h3>iCoaching</h3>
                     <p>Phát triển bởi iCoaching Team</p>
-                    <p>Bản quyển @2023</p>
+                    <p>Bản quyền @2023</p>
                 </div>
             </div>
         </div>
