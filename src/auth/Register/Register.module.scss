@@ -1,7 +1,7 @@
 .f-right {
     float: right;
 }
-.alignCenter {
+.align-center {
     display: flex;
     justify-content: center;
 }
@@ -10,12 +10,12 @@
     display: inline-block;
 }
 
-.registerBtn {
+.register-btn {
     background-color: transparent;
     border: 1px solid var(--white-color);
 }
 
-.imgWrapper {
+.img-wrapper {
     width: 40%;
     background-image: linear-gradient(var(--primary-color), rgba(143, 101, 154, 0.753));
     display: inline-block;
@@ -32,7 +32,7 @@
     }
 }
 
-#registerForm {
+#register-form {
     float: right;
     width: 50%;
     display: inline-block;
@@ -63,7 +63,7 @@
         height: 16px;
         margin: 4px 4px 2px 0;
     }
-    #submitBtn {
+    #submit-btn {
         font-size: 18px;
         width: 35%;
         padding: 16px;
@@ -71,7 +71,7 @@
         margin: 18px auto 2px;
         border-radius: 16px;
     }
-    #switchBtn {
+    #switch-btn {
         background: none;
         padding: 0;
         width: fit-content;
@@ -81,10 +81,10 @@
 }
 
 @media (max-width: 1000px) {
-    .imgWrapper {
+    .img-wrapper {
         display: none;
     }
-    #registerForm {
+    #register-form {
         width: 80%;
         float: left;
         margin-left: 10%;

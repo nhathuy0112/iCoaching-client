@@ -38,12 +38,12 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
         <div className={cx('wrapper')}>
             {open && (
                 <Modal show={open} onClose={() => setRegisterOpen(false)}>
-                    <div className={cx('imgWrapper')}>
+                    <div className={cx('img-wrapper')}>
                         <h1>iCoaching</h1>
                         <img src={require('~/assets/images/modal-bg.png')} alt="" />
                     </div>
 
-                    <form id={cx('registerForm')} onSubmit={handleSubmit(handleRegister)}>
+                    <form id={cx('register-form')} onSubmit={handleSubmit(handleRegister)}>
                         <motion.div
                             initial={{ x: 100, opacity: 0 }}
                             animate={{
@@ -54,7 +54,7 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                 },
                             }}
                         >
-                            <h1 className={cx('alignCenter')}>Đăng ký tài khoản</h1>
+                            <h1 className={cx('align-center')}>Đăng ký tài khoản</h1>
                             <label>Họ và Tên</label>
                             <input type="text" placeholder="Nhập Họ và Tên" {...register('fullname')} />
                             <label>Địa chỉ email</label>
@@ -80,12 +80,12 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                 ý với các điều khoản
                             </div>
                             <div>
-                                <button type="submit" id={cx('submitBtn')} className={cx('alignCenter')}>
+                                <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
                                     Đăng ký
                                 </button>
-                                <p className={cx('alignCenter')}>
+                                <p className={cx('align-center')}>
                                     Đã có tài khoản?
-                                    <button onClick={switchLogin} id={cx('switchBtn')}>
+                                    <button onClick={switchLogin} id={cx('switch-btn')}>
                                         Đăng nhập
                                     </button>
                                 </p>

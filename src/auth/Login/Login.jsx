@@ -53,12 +53,12 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         <div className={cx('wrapper')}>
             {open && (
                 <Modal show={open} onClose={() => setLoginOpen(false)}>
-                    <div className={cx('imgWrapper')}>
+                    <div className={cx('img-wrapper')}>
                         <h1>iCoaching</h1>
                         <img src={require('~/assets/images/modal-bg.png')} alt="" />
                     </div>
 
-                    <form id={cx('loginForm')} onSubmit={handleSubmit(handleLogin)}>
+                    <form id={cx('login-form')} onSubmit={handleSubmit(handleLogin)}>
                         <motion.div
                             initial={{ x: -100, opacity: 0 }}
                             animate={{
@@ -69,24 +69,24 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
                                 },
                             }}
                         >
-                            <h1 className={cx('alignCenter')}>Đăng nhập</h1>
+                            <h1 className={cx('align-center')}>Đăng nhập</h1>
                             <label>Tài khoản</label>
                             <input type="text" placeholder="Nhập địa chỉ email" {...register('username')} />
                             <label>Mật khẩu</label>
                             <input type="password" placeholder="Nhập mật khẩu" {...register('password')} />
                             <div>
                                 <input className={cx('checkbox')} type="checkbox" /> Ghi nhớ mật khẩu
-                                <button id={cx('forgotBtn')} onClick={switchForgot}>
+                                <button id={cx('forgot-btn')} onClick={switchForgot}>
                                     Quên mật khẩu?
                                 </button>
                             </div>
                             <div>
-                                <button type="submit" id={cx('submitBtn')} className={cx('alignCenter')}>
+                                <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
                                     Đăng nhập
                                 </button>
-                                <p className={cx('alignCenter')}>
+                                <p className={cx('align-center')}>
                                     Chưa có tài khoản?
-                                    <button onClick={switchRegister} id={cx('switchBtn')}>
+                                    <button onClick={switchRegister} id={cx('switch-btn')}>
                                         Đăng ký
                                     </button>
                                 </p>

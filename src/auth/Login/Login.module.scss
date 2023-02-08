@@ -1,4 +1,4 @@
-.alignCenter {
+.align-center {
     display: flex;
     justify-content: center;
 }
@@ -7,11 +7,11 @@
     display: inline-block;
 }
 
-.loginBtn {
+.login-btn {
     background-color: var(--primary-color);
 }
 
-.imgWrapper {
+.img-wrapper {
     width: 40%;
     background-image: linear-gradient(var(--primary-color), rgba(143, 101, 154, 0.753));
     display: inline-block;
@@ -28,7 +28,7 @@
     }
 }
 
-#loginForm {
+#login-form {
     float: right;
     width: 50%;
     display: inline-block;
@@ -55,7 +55,7 @@
         margin: 4px 4px 4px 0;
     }
 
-    #forgotBtn {
+    #forgot-btn {
         float: right;
         background: none;
         padding: 0;
@@ -64,7 +64,7 @@
         color: rgb(166, 12, 12);
     }
 
-    #submitBtn {
+    #submit-btn {
         font-size: 18px;
         width: 35%;
         padding: 12px;
@@ -72,7 +72,7 @@
         margin: 12% auto 6px;
         border-radius: 16px;
     }
-    #switchBtn {
+    #switch-btn {
         background: none;
         padding: 0;
         width: fit-content;
@@ -82,10 +82,10 @@
 }
 
 @media (max-width: 1000px) {
-    .imgWrapper {
+    .img-wrapper {
         display: none;
     }
-    #loginForm {
+    #login-form {
         width: 80%;
         float: left;
         margin-left: 10%;

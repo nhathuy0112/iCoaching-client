@@ -1,11 +1,12 @@
 import styles from './Home.module.scss';
 import classNames from 'classnames/bind';
 
+import { AiOutlineSchedule } from 'react-icons/ai';
+import { CgGym } from 'react-icons/cg';
 import { BiTimeFive } from 'react-icons/bi';
-import { FaUserCircle } from 'react-icons/fa';
+// import { FaUserCircle } from 'react-icons/fa';
 import ServiceCard from '~/components/ServiceCard';
 import CoachCard from '~/components/CoachCard';
-import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -34,28 +35,46 @@ const Home = () => {
         },
     ];
 
-    const [isOnline, setIsOnline] = useState(false);
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <div className={cx('service')}>
-                    <div className={cx('search-bar')}>
-                        <h3 className={cx('search-title')}>Tìm kiếm huấn luyện viên</h3>
-                        <form id={cx('search-form')}>
-                            <input type="text" name="name" id="name" placeholder="Tên Huấn luyện viên" />
-                            <input type="text" name="experience" id="experience" placeholder="Số năm kinh nghiệm" />
-                            <div className={cx('status')} onClick={() => setIsOnline(!isOnline)}>
-                                <label>Trực tuyến</label>
-                                <div className={cx('toggle-btn')}>
-                                    <span className={isOnline ? cx('toggle-ball', 'online') : cx('toggle-ball')}></span>
+                <div className={cx('banner-content')}>
+                    <div className={cx('slogan-and-train')}>
+                        <h1 className={cx('main-slogan')}>
+                            <span style={{ color: 'var(--primary-color)' }}>Sức khỏe</span> <br /> là lựa chọn, không
+                            phải điều bí ẩn của sự ngẫu nhiên
+                        </h1>
+                        <h5 className={cx('sub-slogan')}>
+                            Sức khỏe không phải là thứ chúng ta có thể mua. Tuy nhiên, nó có thể là một tài khoản tiết
+                            kiệm cực kỳ giá trị.
+                        </h5>
+                        <button className={cx('train-btn')}>tập luyện ngay</button>
+                    </div>
+                    <div className={cx('services')}>
+                        <div className={cx('service-list')}>
+                            <div className={cx('service-item')}>
+                                <div className={cx('service-icon')}>
+                                    <AiOutlineSchedule />
+                                </div>
+                                <div className={cx('service-content')}>
+                                    <span className={cx('description')}>Thời gian biểu khoa học</span>
+                                    <span className={cx('sub-description')}>Dinh dưỡng & luyện tập </span>
                                 </div>
                             </div>
-                            <button type="submit" id={cx('search-btn')}>
-                                Tìm kiếm
-                            </button>
-                        </form>
+                            <li className={cx('service-item')}>
+                                <div className={cx('service-icon')}>
+                                    <CgGym />
+                                </div>
+                                <div className={cx('service-content')}>
+                                    <span className={cx('description')}>Huấn luyện</span>
+                                    <span className={cx('sub-description')}>Đăng ký trực tuyến</span>
+                                </div>
+                            </li>
+                        </div>
                     </div>
+                </div>
+
+                <div className={cx('service')}>
                     <div className={cx('title')}>
                         <h1>dịch vụ</h1>
                         <span>Chúng tôi sẵn lòng mang đến những dịch vụ tốt nhất</span>
@@ -68,7 +87,7 @@ const Home = () => {
                 </div>
                 <div className={cx('coaches')}>
                     <div className={cx('title')}>
-                        <h1>huấn luyện viên</h1>
+                        <h1>Huấn luyện viên</h1>
                         <span>Đội ngũ huấn luyện viên chất lượng, tận tình sẵn sàng phục vụ mọi người</span>
                     </div>
                     <div className={cx('coach-list')}>
@@ -93,6 +112,9 @@ const Home = () => {
                             <button id={cx('view-btn')}>Xem thông tin</button>
                         </div> */}
                     </div>
+                    <a href="./coaches">
+                        <button id={cx('view-all-btn')}>Xem tất cả</button>
+                    </a>
                 </div>
             </div>
         </div>

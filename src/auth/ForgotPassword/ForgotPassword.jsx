@@ -36,12 +36,12 @@ const Login = ({ open, setForgotOpen, setLoginOpen }) => {
         <div className={cx('wrapper')}>
             {open && (
                 <Modal show={open} onClose={() => setForgotOpen(false)}>
-                    <div className={cx('imgWrapper')}>
+                    <div className={cx('img-wrapper')}>
                         <h1>iCoaching</h1>
                         <img src={require('~/assets/images/modal-bg.png')} alt="" />
                     </div>
 
-                    <form id={cx('forgotForm')} onSubmit={handleSubmit(handleForgot)}>
+                    <form id={cx('forgot-form')} onSubmit={handleSubmit(handleForgot)}>
                         <motion.div
                             initial={{ x: 100, opacity: 0 }}
                             animate={{
@@ -52,10 +52,10 @@ const Login = ({ open, setForgotOpen, setLoginOpen }) => {
                                 },
                             }}
                         >
-                            <button id={cx('backBtn')} onClick={switchLogin}>
+                            <button id={cx('back-btn')} onClick={switchLogin}>
                                 <BsArrowLeft />
                             </button>
-                            <h1 className={cx('alignCenter')}>Quên mật khẩu</h1>
+                            <h1 className={cx('align-center')}>Quên mật khẩu</h1>
                             <label>Địa chỉ email</label>
                             <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />
                             {isResetPassword && (
@@ -65,12 +65,12 @@ const Login = ({ open, setForgotOpen, setLoginOpen }) => {
                                 </span>
                             )}
                             <div>
-                                <button type="submit" id={cx('submitBtn')} className={cx('alignCenter')}>
+                                <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
                                     Gửi
                                 </button>
-                                <p className={cx('alignCenter')}>
+                                <p className={cx('align-center')}>
                                     Chưa nhận được mail?
-                                    <button id={cx('resendBtn')}> Gửi lại</button>
+                                    <button id={cx('resend-btn')}> Gửi lại</button>
                                 </p>
                             </div>
                         </motion.div>
