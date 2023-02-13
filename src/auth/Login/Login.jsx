@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Modal from '~/components/Modals';
 import { loginAsync } from '~/features/userSlice';
+import ErrorMessage from './../../components/ErrorMessage/ErrorMessage';
 
 const cx = classNames.bind(styles);
 const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
@@ -23,11 +24,14 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
     };
 
     const dispatch = useDispatch();
-    const { register, handleSubmit } = useForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
     const navigate = useNavigate();
-    const currentUser = useSelector((state) => state.user.currentUser);
-    const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-
+    const { currentUser, isLoggedIn, error } = useSelector((state) => state.user);
+    console.log(error);
     useEffect(() => {
         if (isLoggedIn && currentUser) {
             switch (currentUser.role) {
@@ -71,11 +75,26 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
                         >
                             <h1 className={cx('align-center')}>Đăng nhập</h1>
                             <label>Tài khoản</label>
-                            <input type="text" placeholder="Nhập địa chỉ email" {...register('username')} />
+                            <input
+                                type="text"
+                                placeholder="Nhập tài khoản"
+                                {...register('username', { required: true })}
+                            />
+                            {errors?.username?.type === 'required' && (
+                                <ErrorMessage message="Tài khoản không được để trống !" />
+                            )}
+
                             <label>Mật khẩu</label>
-                            <input type="password" placeholder="Nhập mật khẩu" {...register('password')} />
+                            <input
+                                type="password"
+                                placeholder="Nhập mật khẩu"
+                                {...register('password', { required: true })}
+                            />
+                            {errors?.password?.type === 'required' && (
+                                <ErrorMessage message="Mật khẩu không được để trống !" />
+                            )}
+                            {error && <ErrorMessage message="Tài khoản hoặc mật khẩu không đúng !" />}
                             <div>
-                                <input className={cx('checkbox')} type="checkbox" /> Ghi nhớ mật khẩu
                                 <button id={cx('forgot-btn')} onClick={switchForgot}>
                                     Quên mật khẩu?
                                 </button>

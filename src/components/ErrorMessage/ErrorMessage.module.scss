@@ -1,0 +1,10 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: red;
+    .message {
+        margin-left: 4px;
+    }
+}

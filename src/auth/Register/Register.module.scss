@@ -44,7 +44,9 @@
     label {
         font-size: 18px;
     }
-    input {
+    input,
+    select,
+    option {
         width: 100%;
         padding: 16px 20px;
         margin: 8px 0 20px;

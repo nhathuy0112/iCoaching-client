@@ -19,19 +19,28 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
     const dispatch = useDispatch();
     const { register, handleSubmit } = useForm();
 
+    const convertDateFormat = (dateString) => {
+        const dateArray = dateString.split('-');
+        return [dateArray[2], dateArray[1], dateArray[0]].join('-');
+    };
+
     const handleRegister = (data) => {
         if (data.isAgreed) {
             dispatch(
                 registerAsync({
                     email: data.email,
                     fullname: data.fullname,
+                    dob: convertDateFormat(data.dob),
+                    gender: data.gender,
+                    phoneNumber: data.phoneNumber,
+                    username: data.username,
                     password: data.password,
                     confirmPassword: data.confirmPassword,
-                    phone: data.phone,
                     isCoach: data.isCoach ? true : false,
                 }),
             );
         }
+        // console.log(convertDateFormat(data.dob));
     };
 
     return (
@@ -57,14 +66,35 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                             <h1 className={cx('align-center')}>Đăng ký tài khoản</h1>
                             <label>Họ và Tên</label>
                             <input type="text" placeholder="Nhập Họ và Tên" {...register('fullname')} />
+
+                            <div className={cx('col2')}>
+                                <label>Giới tính</label>
+                                <select name="gender" id="gender" {...register('gender')}>
+                                    <option value="Male">Nam</option>
+                                    <option value="Female">Nữ</option>
+                                    <option value="Other">Khác</option>
+                                </select>
+                            </div>
+
+                            <div className={cx('col2', 'f-right')}>
+                                <label>Ngày sinh</label>
+                                <input type="date" id="birthdaytime" name="dob" {...register('dob')} />
+                            </div>
+
+                            <label>Số điện thoại</label>
+                            <input type="tel" placeholder="Nhập số điện thoại" {...register('phoneNumber')} />
+
                             <label>Địa chỉ email</label>
                             <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />
-                            <label>Số điện thoại</label>
-                            <input type="tel" placeholder="Nhập số điện thoại" {...register('phone')} />
+
+                            <label>Tài khoản</label>
+                            <input type="text" placeholder="Nhập địa chỉ email" {...register('username')} />
+
                             <div className={cx('col2')}>
                                 <label>Mật khẩu</label>
                                 <input type="password" placeholder="Nhập mật khẩu" {...register('password')} />
                             </div>
+
                             <div className={cx('col2', 'f-right')}>
                                 <label>Xác nhận mật khẩu</label>
                                 <input
@@ -73,12 +103,14 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                     {...register('confirmPassword')}
                                 />
                             </div>
+
                             <div>
                                 <input className={cx('checkbox')} type="checkbox" {...register('isCoach')} /> Đăng ký
                                 trở thành huấn luyện viên <br />
                                 <input className={cx('checkbox')} type="checkbox" {...register('isAgreed')} /> Tôi đồng
                                 ý với các điều khoản
                             </div>
+
                             <div>
                                 <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
                                     Đăng ký
