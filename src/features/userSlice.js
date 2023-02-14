@@ -25,10 +25,14 @@ export const registerAsync = createAsyncThunk('user/register', async (payload) =
 export const loginAsync = createAsyncThunk('user/login', async (payload) => {
     try {
         const response = await login({ username: payload.username, password: payload.password });
+        if (response.error) {
+            throw response.error;
+        }
         setLocalStorage('auth', response);
         return response;
     } catch (error) {
-        return { error: error.message };
+        console.log(error);
+        throw error;
     }
 });
 
@@ -65,11 +69,19 @@ const initialState = {
     currentUser: getLocalStorage('auth') ? parseJwt(getLocalStorage('auth').accessToken) : null,
     loading: false,
     error: null,
+    message: null,
 };
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
+    reducers: {
+        resetAuth: (state) => {
+            state.loading = false;
+            state.error = null;
+            state.message = null;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(registerAsync.fulfilled, (state, action) => {
@@ -78,18 +90,21 @@ export const userSlice = createSlice({
             //login
             .addCase(loginAsync.pending, (state) => {
                 state.loading = true;
+                state.error = null;
+                state.message = null;
             })
             .addCase(loginAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.isLoggedIn = true;
                 const authData = parseJwt(action.payload.accessToken);
                 if (state.isLoggedIn) {
                     state.currentUser = authData;
-                    state.errorMessage = action.payload?.message;
+                    state.message = action.payload?.message;
                 }
             })
             .addCase(loginAsync.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error
+                state.error = action.error.message;
             })
 
             //refresh
@@ -104,5 +119,7 @@ export const userSlice = createSlice({
             .addCase(forgotAsync.fulfilled, (state) => state);
     },
 });
+
+export const { resetAuth } = userSlice.actions;
 
 export default userSlice.reducer;

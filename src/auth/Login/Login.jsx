@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
@@ -31,7 +31,17 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
     } = useForm();
     const navigate = useNavigate();
     const { currentUser, isLoggedIn, error } = useSelector((state) => state.user);
-    console.log(error);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        if (error) {
+            setErrorMessage(error);
+            setTimeout(() => {
+                setErrorMessage(null);
+            }, 3000);
+        }
+    }, [error]);
+
     useEffect(() => {
         if (isLoggedIn && currentUser) {
             switch (currentUser.role) {
@@ -51,6 +61,7 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
 
     const handleLogin = (data) => {
         dispatch(loginAsync({ username: data.username, password: data.password }));
+        setErrorMessage(null);
     };
 
     return (
@@ -93,7 +104,7 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
                             {errors?.password?.type === 'required' && (
                                 <ErrorMessage message="Mật khẩu không được để trống !" />
                             )}
-                            {error && <ErrorMessage message="Tài khoản hoặc mật khẩu không đúng !" />}
+                            {errorMessage && <ErrorMessage message={errorMessage} />}
                             <div>
                                 <button id={cx('forgot-btn')} onClick={switchForgot}>
                                     Quên mật khẩu?
