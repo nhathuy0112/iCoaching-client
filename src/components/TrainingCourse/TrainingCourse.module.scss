@@ -1,0 +1,14 @@
+.course {
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 20px 30px;
+    width: 45%;
+    margin: 10px 10px;
+    label {
+        display: block;
+    }
+    a {
+        float: right;
+    }
+}

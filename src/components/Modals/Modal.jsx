@@ -6,7 +6,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 const cx = classNames.bind(styles);
 
-const Modal = ({ show, onClose, children }) => {
+const Modal = ({ show, onClose, children, modalStyle, closeBtnStyle }) => {
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         return () => (document.body.style.overflow = 'unset');
@@ -14,9 +14,9 @@ const Modal = ({ show, onClose, children }) => {
 
     return (
         <div className={cx('backdrop')}>
-            <div className={cx('modal')}>
+            <div className={cx('modal')} style={{ ...modalStyle }}>
                 <div className={cx('content')}>
-                    <button onClick={() => onClose()} id={cx('closeBtn')}>
+                    <button onClick={() => onClose()} id={cx('closeBtn')} style={{ ...closeBtnStyle }}>
                         <AiOutlineCloseCircle />
                     </button>
                     {children}

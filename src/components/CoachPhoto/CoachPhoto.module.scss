@@ -1,0 +1,19 @@
+.wrapper {
+    margin-left: 5%;
+    img {
+        border-radius: 10px;
+        object-fit: cover;
+        width: 160px;
+        height: 160px;
+        margin: 10px 5px;
+    }
+}
+#modal {
+    width: fit-content;
+}
+#photo {
+    display: block;
+    width: 700px;
+    height: 100%;
+    margin: 0 auto;
+}
