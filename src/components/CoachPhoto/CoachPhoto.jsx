@@ -63,7 +63,7 @@ const CoachPhoto = () => {
                     modalStyle={{ background: 'none' }}
                     closeBtnStyle={{ display: 'none' }}
                 >
-                    <button onClick={handleClose}>
+                    <button className={cx('closeBtn')} onClick={handleClose}>
                         <AiOutlineClose />
                     </button>
                     <img id={cx('photo')} src={file} alt="" />

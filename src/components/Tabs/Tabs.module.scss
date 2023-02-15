@@ -4,11 +4,7 @@
     margin: 0 0 20px;
     padding: 0;
     .tab {
-        // background-color: #f7f7f7;
         border: 2px solid #ffffff00;
-        // border-bottom: none;
-        // border-top-left-radius: 4px;
-        // border-top-right-radius: 4px;
         box-sizing: border-box;
         color: var(--primary-color);
         cursor: pointer;
@@ -21,7 +17,6 @@
 }
 .tab.active {
     color: black;
-    background-color: #fff;
     border-bottom-color: var(--primary-color);
     font-weight: bold;
 }

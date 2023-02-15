@@ -3,24 +3,24 @@ import classNames from 'classnames/bind';
 import styles from './CoachDetail.module.scss';
 
 import Tabs from '~/components/Tabs/Tabs';
-import Tab1 from '~/components/AboutMe/AboutMe';
-import Tab2 from '~/components/CoachPhoto/CoachPhoto';
-import Tab3 from '~/components/TrainingCourse/TrainingCourse';
+import AboutMe from '~/components/AboutMe/AboutMe';
+import CoachPhoto from '~/components/CoachPhoto/CoachPhoto';
+import TrainingCourse from '~/components/TrainingCourse/TrainingCourse';
 
 const cx = classNames.bind(styles);
 const CoachDetail = () => {
     const tabs = [
         {
             label: 'Giới thiệu',
-            content: <Tab1 />,
+            content: <AboutMe />,
         },
         {
             label: 'Ảnh',
-            content: <Tab2 />,
+            content: <CoachPhoto />,
         },
         {
             label: 'Gói tập',
-            content: <Tab3 />,
+            content: <TrainingCourse />,
         },
     ];
     return (
@@ -30,23 +30,23 @@ const CoachDetail = () => {
                 <div className={cx('coach-info')}>
                     <img src={require('~/assets/images/coach-avatar.png')} alt="coach avatar" />
                     <p>
-                        <label className={cx('label')}>Họ và tên</label>
+                        <label>Họ và tên</label>
                         <span>Adam Smith</span>
                     </p>
                     <p>
-                        <label className={cx('label')}>Giới tính</label>
+                        <label>Giới tính</label>
                         Nam
                     </p>
                     <p>
-                        <label className={cx('label')}>Tuổi</label>
+                        <label>Tuổi</label>
                         32
                     </p>
                     <p>
-                        <label className={cx('label')}>Email</label>
+                        <label>Email</label>
                         adamsmt@email.com
                     </p>
                     <p>
-                        <label className={cx('label')}>Số điện thoại</label>
+                        <label>Số điện thoại</label>
                         012345678
                     </p>
                 </div>

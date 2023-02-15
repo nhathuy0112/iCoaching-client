@@ -10,18 +10,22 @@ const TrainingCourse = () => {
             <div className={cx('content')}>
                 <div className={cx('course')}>
                     <label>Gói 12 tuần</label>
+                    <span>10.000.000 VNĐ</span>
                     <Link to={''}>Đăng ký ngay</Link>
                 </div>
                 <div className={cx('course')}>
                     <label>Gói 12 tuần</label>
+                    <span>10.000.000 VNĐ</span>
                     <Link to={''}>Đăng ký ngay</Link>
                 </div>
                 <div className={cx('course')}>
                     <label>Gói 12 tuần</label>
+                    <span>10.000.000 VNĐ</span>
                     <Link to={''}>Đăng ký ngay</Link>
                 </div>
                 <div className={cx('course')}>
                     <label>Gói 12 tuần</label>
+                    <span>10.000.000 VNĐ</span>
                     <Link to={''}>Đăng ký ngay</Link>
                 </div>
             </div>
