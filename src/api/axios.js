@@ -25,13 +25,13 @@ instance.interceptors.response.use(
         return response.data;
     },
     (error) => {
-        // console.log(error.response.data);
+        console.log(error.response.data);
         switch (error.response.status) {
             case 401:
                 const message401 = error.response.data.message;
                 return Promise.reject(message401);
             case 400:
-                const message400 = error.response.data.fail || error.response.data;
+                const message400 = error.response.data.errors || error.response.data.message;
                 return Promise.reject(message400);
             default:
                 break;

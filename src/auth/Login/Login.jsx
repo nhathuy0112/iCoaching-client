@@ -30,8 +30,12 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         formState: { errors },
     } = useForm();
     const navigate = useNavigate();
+
     const { currentUser, isLoggedIn, error } = useSelector((state) => state.user);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState(null);
+
+    // console.log('Error Message: ', errorMessage);
+    // console.log('error from state: ', error);
 
     useEffect(() => {
         if (error) {

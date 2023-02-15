@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 
 import Modal from '~/components/Modals';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { registerAsync } from '~/features/userSlice';
+import ErrorMessage from '~/components/ErrorMessage';
+import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +19,22 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
     };
 
     const dispatch = useDispatch();
-    const { register, handleSubmit } = useForm();
+    const { error } = useSelector((state) => state.user);
+    console.log(error);
+    const [errorMessages, setErrorMessages] = useState(null);
+
+    useEffect(() => {
+        if (error) {
+            setErrorMessages(error);
+        }
+    }, [error]);
+
+    // console.log(errorMessages);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
     const convertDateFormat = (dateString) => {
         const dateArray = dateString.split('-');
@@ -40,7 +57,6 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                 }),
             );
         }
-        // console.log(convertDateFormat(data.dob));
     };
 
     return (
@@ -65,52 +81,102 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                         >
                             <h1 className={cx('align-center')}>Đăng ký tài khoản</h1>
                             <label>Họ và Tên</label>
-                            <input type="text" placeholder="Nhập Họ và Tên" {...register('fullname')} />
-
+                            <input
+                                type="text"
+                                placeholder="Nhập Họ và Tên"
+                                {...register('fullname', { required: true })}
+                            />
+                            {errors?.fullname?.type === 'required' && (
+                                <ErrorMessage message="Họ và tên không được để trống !" />
+                            )}
                             <div className={cx('col2')}>
                                 <label>Giới tính</label>
-                                <select name="gender" id="gender" {...register('gender')}>
+                                <select name="gender" id="gender" {...register('gender', { required: true })}>
+                                    <option value="">--Chọn giới tính--</option>
                                     <option value="Male">Nam</option>
                                     <option value="Female">Nữ</option>
                                     <option value="Other">Khác</option>
                                 </select>
+                                {errors?.gender?.type === 'required' && (
+                                    <ErrorMessage message="Giới tính phải được chọn !" />
+                                )}
                             </div>
 
                             <div className={cx('col2', 'f-right')}>
                                 <label>Ngày sinh</label>
-                                <input type="date" id="birthdaytime" name="dob" {...register('dob')} />
+                                <input type="date" id="dob" name="dob" {...register('dob', { required: true })} />
+                                {errors?.dob?.type === 'required' && (
+                                    <ErrorMessage message="Ngày sinh không được để trống !" />
+                                )}
                             </div>
 
                             <label>Số điện thoại</label>
-                            <input type="tel" placeholder="Nhập số điện thoại" {...register('phoneNumber')} />
-
+                            <input
+                                type="tel"
+                                placeholder="Nhập số điện thoại"
+                                name="phoneNumber"
+                                {...register('phoneNumber', { required: true })}
+                            />
+                            {errors?.phoneNumber?.type === 'required' && (
+                                <ErrorMessage message="Số điện thoại không được để trống !" />
+                            )}
                             <label>Địa chỉ email</label>
-                            <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />
-
+                            <input
+                                type="email"
+                                placeholder="Nhập địa chỉ email"
+                                name="email"
+                                {...register('email', { required: true })}
+                            />
+                            {errors?.email?.type === 'required' && (
+                                <ErrorMessage message="Email không được để trống !" />
+                            )}
                             <label>Tài khoản</label>
-                            <input type="text" placeholder="Nhập địa chỉ email" {...register('username')} />
+                            <input
+                                type="text"
+                                placeholder="Nhập tài khoản"
+                                {...register('username', { required: true })}
+                            />
+                            {errors?.username?.type === 'required' && (
+                                <ErrorMessage message="Tài khoản không được để trống !" />
+                            )}
 
-                            <div className={cx('col2')}>
+                            <div className={cx('col-2')}>
                                 <label>Mật khẩu</label>
-                                <input type="password" placeholder="Nhập mật khẩu" {...register('password')} />
+                                <input
+                                    type="password"
+                                    placeholder="Nhập mật khẩu"
+                                    {...register('password', { required: true })}
+                                />
+                                {errors?.password?.type === 'required' && (
+                                    <ErrorMessage message="Mật khẩu không được để trống !" />
+                                )}
                             </div>
-
                             <div className={cx('col2', 'f-right')}>
                                 <label>Xác nhận mật khẩu</label>
                                 <input
                                     type="password"
                                     placeholder="Xác nhận mật khẩu"
-                                    {...register('confirmPassword')}
+                                    name="c"
+                                    {...register('confirmPassword', { required: true })}
                                 />
+                                {errors?.confirmPassword?.type === 'required' && (
+                                    <ErrorMessage message="Xác nhận mật khẩu không được để trống !" />
+                                )}
                             </div>
 
                             <div>
                                 <input className={cx('checkbox')} type="checkbox" {...register('isCoach')} /> Đăng ký
                                 trở thành huấn luyện viên <br />
-                                <input className={cx('checkbox')} type="checkbox" {...register('isAgreed')} /> Tôi đồng
-                                ý với các điều khoản
+                                <input
+                                    className={cx('checkbox')}
+                                    type="checkbox"
+                                    {...register('isAgreed', { required: true })}
+                                />{' '}
+                                Tôi đồng ý với các điều khoản
+                                {errors?.isAgreed?.type === 'required' && (
+                                    <ErrorMessage message="Bạn phải đồng ý với các điều khoản !" />
+                                )}
                             </div>
-
                             <div>
                                 <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
                                     Đăng ký

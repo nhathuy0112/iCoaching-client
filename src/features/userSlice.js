@@ -19,15 +19,13 @@ export const registerAsync = createAsyncThunk('user/register', async (payload) =
         return response;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 });
 
 export const loginAsync = createAsyncThunk('user/login', async (payload) => {
     try {
         const response = await login({ username: payload.username, password: payload.password });
-        if (response.error) {
-            throw response.error;
-        }
         setLocalStorage('auth', response);
         return response;
     } catch (error) {
@@ -60,6 +58,7 @@ export const forgotAsync = createAsyncThunk('user/forgot', async (payload) => {
         await forgot(payload);
     } catch (error) {
         console.log(error);
+        throw error;
     }
 });
 
@@ -69,7 +68,6 @@ const initialState = {
     currentUser: getLocalStorage('auth') ? parseJwt(getLocalStorage('auth').accessToken) : null,
     loading: false,
     error: null,
-    message: null,
 };
 
 export const userSlice = createSlice({
@@ -79,27 +77,35 @@ export const userSlice = createSlice({
         resetAuth: (state) => {
             state.loading = false;
             state.error = null;
-            state.message = null;
         },
     },
     extraReducers: (builder) => {
         builder
+            //register
+            .addCase(registerAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
             .addCase(registerAsync.fulfilled, (state, action) => {
                 state.users.push(action.payload);
             })
+            .addCase(registerAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error;
+            })
+
             //login
             .addCase(loginAsync.pending, (state) => {
                 state.loading = true;
                 state.error = null;
-                state.message = null;
             })
+
             .addCase(loginAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.isLoggedIn = true;
                 const authData = parseJwt(action.payload.accessToken);
                 if (state.isLoggedIn) {
                     state.currentUser = authData;
-                    state.message = action.payload?.message;
                 }
             })
             .addCase(loginAsync.rejected, (state, action) => {
@@ -112,11 +118,23 @@ export const userSlice = createSlice({
                 state.isLoggedIn = true;
                 state.currentUser = parseJwt(getLocalStorage('auth').accessToken);
             })
+
+            //logout
             .addCase(logoutAsync.fulfilled, (state) => {
                 state.isLoggedIn = false;
                 state.currentUser = null;
             })
-            .addCase(forgotAsync.fulfilled, (state) => state);
+
+            //forgot
+            .addCase(forgotAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(forgotAsync.fulfilled, (state) => state)
+            .addCase(forgotAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
     },
 });
 
