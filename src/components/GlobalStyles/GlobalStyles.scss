@@ -4,12 +4,18 @@
 :root {
     //Colors
     --primary-color: #0c79f6;
-    --primary-border-color: #f0e68c;
+    --primary-active-color: #0e1385;
     --white-color: #fff;
-    --text-color: #333;
+    --text-color: #4e4e4e;
 
     //Width
     --default-layout-max-width: 1480px;
+
+    //Border-radius
+    --default-border-radius: 4px;
+
+    //Box-shadow
+    --default-box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
 
     //Height
     --default-navbar-height: 100px;

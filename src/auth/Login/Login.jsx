@@ -32,15 +32,13 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         if (isLoggedIn && currentUser) {
             switch (currentUser.role) {
                 case 'CLIENT':
-                    navigate(`/client/${currentUser.Id}`);
+                    navigate(`/client/${currentUser.Id}/all-coaches`);
                     break;
                 case 'COACH':
-                    navigate(`/coach/${currentUser.Id}`);
-                    break;
-                case 'SUPER_ADMIN':
+                    navigate(`/coach/${currentUser.Id}/verify`);
                     break;
                 default:
-                    return;
+                    navigate('/');
             }
         }
     }, [currentUser, isLoggedIn, navigate]);

@@ -1,0 +1,54 @@
+.container {
+    height: 100vh;
+    padding: 32px;
+    background-color: var(--primary-color);
+
+    .logo {
+        color: #8694de;
+        font-size: 4rem;
+        font-weight: 600;
+        margin-bottom: 32px;
+    }
+
+    .link-item {
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.6;
+        }
+
+        .link-url,
+        #logout-btn {
+            display: flex;
+            align-items: center;
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin: 4px 0;
+            padding: 4px 8px;
+            color: var(--white-color);
+            background-color: unset;
+
+            .link-name {
+                flex: 1;
+                margin-left: 16px;
+            }
+
+            &.active {
+                border-right: 3px solid var(--white-color);
+            }
+        }
+
+        #logout-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border: none;
+            outline: none;
+            cursor: pointer;
+
+            .action {
+                margin-left: 16px;
+            }
+        }
+    }
+}
