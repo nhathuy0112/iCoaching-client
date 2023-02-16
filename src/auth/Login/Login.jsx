@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
@@ -8,13 +8,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import Modal from '~/components/Modals';
-import { loginAsync } from '~/features/userSlice';
-import ErrorMessage from './../../components/ErrorMessage/ErrorMessage';
+import { loginAsync, resetAuth } from '~/features/userSlice';
+import ErrorMessage from '~/components/ErrorMessage';
 
 const cx = classNames.bind(styles);
 const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
-    const switchForgot = (e) => {
+    const switchForgot = () => {
         setLoginOpen(false);
+        dispatch(resetAuth());
         setForgotOpen(true);
     };
 
@@ -36,15 +37,6 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
 
     // console.log('Error Message: ', errorMessage);
     // console.log('error from state: ', error);
-
-    useEffect(() => {
-        if (error) {
-            setErrorMessage(error);
-            setTimeout(() => {
-                setErrorMessage(null);
-            }, 3000);
-        }
-    }, [error]);
 
     useEffect(() => {
         if (isLoggedIn && currentUser) {
@@ -108,7 +100,7 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
                             {errors?.password?.type === 'required' && (
                                 <ErrorMessage message="Mật khẩu không được để trống !" />
                             )}
-                            {errorMessage && <ErrorMessage message={errorMessage} />}
+                            {error && <ErrorMessage message={error} />}
                             <div>
                                 <button id={cx('forgot-btn')} onClick={switchForgot}>
                                     Quên mật khẩu?

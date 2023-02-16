@@ -7,22 +7,20 @@ import { useForm } from 'react-hook-form';
 import Modal from '~/components/Modals';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { forgotAsync } from './../../features/userSlice';
+import { forgotAsync, resetAuth } from './../../features/userSlice';
 import ErrorMessage from '~/components/ErrorMessage';
 
 const cx = classNames.bind(styles);
 
-const Login = ({ open, setForgotOpen, setLoginOpen }) => {
-    const [isResetPassword, setIsResetPassword] = useState(false);
-
-    const switchLogin = (e) => {
+const ForgotPassword = ({ open, setForgotOpen, setLoginOpen }) => {
+    const switchLogin = () => {
         setForgotOpen(false);
+        dispatch(resetAuth());
         setLoginOpen(true);
     };
 
     const dispatch = useDispatch();
     const { error } = useSelector((state) => state.user);
-    const [errorMessage, setErrorMessage] = useState(null);
 
     const {
         register,
@@ -31,17 +29,8 @@ const Login = ({ open, setForgotOpen, setLoginOpen }) => {
         formState: { errors },
     } = useForm();
 
-    useEffect(() => {
-        if (error) {
-            setErrorMessage(error);
-            setIsResetPassword(false);
-        }
-    }, [error]);
-
     const handleForgot = (data) => {
         dispatch(forgotAsync(data.email));
-        setIsResetPassword(true);
-        setErrorMessage(null);
     };
 
     return (
@@ -77,13 +66,13 @@ const Login = ({ open, setForgotOpen, setLoginOpen }) => {
                             {errors?.email?.type === 'required' && (
                                 <ErrorMessage message="Email không được để trống !" />
                             )}
-                            {isResetPassword && (
+                            {/* {isResetPassword && (
                                 <span style={{ color: 'var(--primary-color)' }}>
                                     Truy cập email <span style={{ color: 'red' }}>{getValues('email')}</span> để khôi
                                     phục mật khẩu
                                 </span>
-                            )}
-                            {errorMessage && <ErrorMessage message={errorMessage} />}
+                            )} */}
+                            {error && <ErrorMessage message={error} />}
                             <div>
                                 <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
                                     Gửi
@@ -101,4 +90,4 @@ const Login = ({ open, setForgotOpen, setLoginOpen }) => {
     );
 };
 
-export default Login;
+export default ForgotPassword;

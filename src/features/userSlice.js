@@ -3,7 +3,7 @@ import { forgot, login, logout, refresh, register } from '~/services/userService
 import { parseJwt } from '~/utils/jwt';
 import { setLocalStorage, getLocalStorage, removeLocalStorage } from '~/utils/localStorage';
 
-export const registerAsync = createAsyncThunk('user/register', async (payload) => {
+export const registerAsync = createAsyncThunk('user/register', async (payload, { rejectWithValue }) => {
     try {
         const response = await register({
             email: payload.email,
@@ -19,7 +19,12 @@ export const registerAsync = createAsyncThunk('user/register', async (payload) =
         return response;
     } catch (error) {
         console.log(error);
-        throw error;
+        throw new Error('Email này đã tồn tại');
+        // return rejectWithValue({
+        //     name: 'email Existed',
+        //     message: 'Email này đã tồn tại',
+
+        // });
     }
 });
 

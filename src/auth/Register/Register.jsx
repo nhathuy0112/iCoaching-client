@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import Modal from '~/components/Modals';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerAsync } from '~/features/userSlice';
+import { registerAsync, resetAuth } from '~/features/userSlice';
 import ErrorMessage from '~/components/ErrorMessage';
 import { useEffect, useState } from 'react';
 
@@ -22,6 +22,13 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
     const { error } = useSelector((state) => state.user);
     console.log(error);
     const [errorMessages, setErrorMessages] = useState(null);
+
+    // useEffect(() => {
+    //     // Reset error message when unmount
+    //     return () => {
+    //         dispatch(resetAuth());
+    //     };
+    // }, [dispatch]);
 
     useEffect(() => {
         if (error) {
@@ -43,6 +50,7 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
 
     const handleRegister = (data) => {
         if (data.isAgreed) {
+            // try {
             dispatch(
                 registerAsync({
                     email: data.email,
@@ -56,6 +64,9 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                     isCoach: data.isCoach ? true : false,
                 }),
             );
+            // } catch (error) {
+            //     console.log(error);
+            // }
         }
     };
 
