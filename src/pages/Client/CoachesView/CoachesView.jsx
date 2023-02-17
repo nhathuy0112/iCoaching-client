@@ -1,10 +1,9 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo} from 'react';
 import classNames from 'classnames/bind';
 import Pagination from '~/components/Pagination';
 import styles from './CoachesView.module.scss';
 
-import { FaUserCircle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import UserCard from '~/components/UserCard';
 
 const cx = classNames.bind(styles);
 
@@ -12,8 +11,8 @@ const CoachesView = () => {
     const coaches = [
         {
             id: 1,
-            fullname: 'Hoang Tran',
-            gender: 'Nam',
+            fullname: 'Le Minh Hoang Tran',
+            gender: 'Male',
             age: 18,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -22,7 +21,7 @@ const CoachesView = () => {
         {
             id: 2,
             fullname: 'Hoang Tran',
-            gender: 'Nam',
+            gender: 'Other',
             age: 30,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -31,7 +30,7 @@ const CoachesView = () => {
         {
             id: 3,
             fullname: 'Hoang Tran',
-            gender: 'Nam',
+            gender: 'Female',
             age: 19,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -40,8 +39,8 @@ const CoachesView = () => {
         {
             id: 4,
             fullname: 'Hoang Tran',
-            gender: 'Nam',
-            age: 18,
+            gender: 'Male',
+            age: 50,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
             avatar: '~/assets/images/coach-photo1.png',
@@ -49,7 +48,7 @@ const CoachesView = () => {
         {
             id: 5,
             fullname: 'Huy Tran',
-            gender: 'Nam',
+            gender: 'Male',
             age: 18,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -58,7 +57,7 @@ const CoachesView = () => {
         {
             id: 6,
             fullname: 'Phongg Tran',
-            gender: 'Nam',
+            gender: 'Male',
             age: 18,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -67,7 +66,7 @@ const CoachesView = () => {
         {
             id: 7,
             fullname: 'Phu Tran',
-            gender: 'Nam',
+            gender: 'Male',
             age: 18,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -75,7 +74,7 @@ const CoachesView = () => {
         {
             id: 8,
             fullname: 'Nguyen Tran',
-            gender: 'Nam',
+            gender: 'Male',
             age: 18,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -83,7 +82,7 @@ const CoachesView = () => {
         {
             id: 9,
             fullname: 'Khanh Tran',
-            gender: 'Nam',
+            gender: 'Male',
             age: 18,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -91,7 +90,7 @@ const CoachesView = () => {
         {
             id: 10,
             fullname: 'Minh Tran',
-            gender: 'Nam',
+            gender: 'Male',
             age: 18,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -99,7 +98,7 @@ const CoachesView = () => {
         {
             id: 11,
             fullname: 'Vinhh Tran',
-            gender: 'Nam',
+            gender: 'Male',
             age: 18,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -107,7 +106,7 @@ const CoachesView = () => {
         {
             id: 12,
             fullname: 'Kha Tran',
-            gender: 'Nam',
+            gender: 'Male',
             age: 18,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -116,7 +115,7 @@ const CoachesView = () => {
         {
             id: 13,
             fullname: 'Phuc Tran',
-            gender: 'Nam',
+            gender: 'Male',
             age: 18,
             email: 'aa@gmail.com',
             phoneNumber: '0123456789',
@@ -124,18 +123,19 @@ const CoachesView = () => {
     ];
     console.log(window.innerWidth);
     //Pagtination
-    const [pageSize, setPageSize] = useState(12);
+    // const [pageSize, setPageSize] = useState(12);
 
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth <= 1536) {
-                setPageSize(10);
-            } else {
-                setPageSize(12);
-            }
-        }
-        handleResize();
-    }, [pageSize]);
+    // useEffect(() => {
+    //     const handleResize = () => {
+    //         if (window.innerWidth <= 1536) {
+    //             setPageSize(10);
+    //         } else {
+    //             setPageSize(12);
+    //         }
+    //     }
+    //     handleResize();
+    // }, [pageSize]);
+    let pageSize = 12;
     const [currentPage, setCurrentPage] = useState(1);
 
     const currentCoachesPagination = useMemo(() => {
@@ -147,35 +147,11 @@ const CoachesView = () => {
     return (
         <div className={cx('wrapper')}>
             <h4 className={cx('title')}>Danh sách Huấn luyện viên</h4>
-            <ul className={cx('coach-list')}>
+            <div className={cx('coach-list')}>
                 {currentCoachesPagination.map((coach) => (
-                    <li className={cx('coach-item')} key={coach.id}>
-                        <Link to="/" className={cx('card')}>
-                            <div className={cx('avatar')}>
-                                {coach.avatar ? (
-                                    <img src={require('~/assets/images/coach-photo1.png')} alt="Coach" />
-                                ) : (
-                                    <div className={cx('default')}>
-                                        <FaUserCircle className={cx('icon')} />
-                                    </div>
-                                )}
-                            </div>
-                            <div className={cx('fullname')}>
-                                <label>Họ và tên</label>
-                                <span>{coach.fullname}</span>
-                            </div>
-                            <div className={cx('gender')}>
-                                <label>Giới tính</label>
-                                <span>{coach.gender}</span>
-                            </div>
-                            <div className={cx('age')}>
-                                <label>Tuổi</label>
-                                <span>{coach.age}</span>
-                            </div>
-                        </Link>
-                    </li>
+                   <UserCard user={coach}/>
                 ))}
-            </ul>
+            </div>
             <Pagination
                 className={cx('pagination-bar')}
                 currentPage={currentPage}
