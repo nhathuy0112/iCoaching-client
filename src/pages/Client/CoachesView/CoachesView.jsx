@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Pagination from '~/components/Pagination';
 import styles from './CoachesView.module.scss';
@@ -122,9 +122,20 @@ const CoachesView = () => {
             phoneNumber: '0123456789',
         },
     ];
-
+    console.log(window.innerWidth);
     //Pagtination
-    let pageSize = 12;
+    const [pageSize, setPageSize] = useState(12);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth <= 1536) {
+                setPageSize(10);
+            } else {
+                setPageSize(12);
+            }
+        }
+        handleResize();
+    }, [pageSize]);
     const [currentPage, setCurrentPage] = useState(1);
 
     const currentCoachesPagination = useMemo(() => {
@@ -160,14 +171,6 @@ const CoachesView = () => {
                             <div className={cx('age')}>
                                 <label>Tuổi</label>
                                 <span>{coach.age}</span>
-                            </div>
-                            <div className={cx('email')}>
-                                <label>Email</label>
-                                <span>{coach.email}</span>
-                            </div>
-                            <div className={cx('phone')}>
-                                <label>SĐT</label>
-                                <span>{coach.phoneNumber}</span>
                             </div>
                         </Link>
                     </li>
