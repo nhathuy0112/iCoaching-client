@@ -2,12 +2,78 @@
     height: 100%;
     position: relative;
 
-    .title {
-        font-size: 2rem;
-        font-weight: 600;
-        color: var(--text-color);
+    .title-and-action{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         margin-bottom: 16px;
+
+        .title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .action{
+            display: flex;
+            align-items: center;
+            .filter{
+                display: flex;
+                align-items: center;
+                margin-right: 4px;
+
+                .filter-icon{
+                    color: #2B3674;
+                    font-size: 1.4rem;
+                    margin-right: 4px;
+                }
+
+                .filter-title{
+                    margin-right: 4px;
+                    font-size: 1.6rem;
+                    font-weight: 600;
+                    color: var(--text-color);
+                }
+
+                #filter-gender-form,
+                #filter-age-form{
+                    display: flex;
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    background-color: var(--search-filter-background-color);
+                    margin: 0 4px;
+
+                    .filter-form-select{
+                        border: none;
+                        outline: none;
+                        background-color: var(--search-filter-background-color);
+                        color: var(--text-color);
+                    }
+                }
+            }
+
+            .search{
+                .search-form{
+                    display: flex;
+                    align-items: center;
+                    padding: 8px 12px;
+                    border-radius: 8px;   
+                    background-color: var(--search-filter-background-color);
+
+                    .search-icon{
+                        color: #2B3674;
+                        font-size: 1.4rem;
+                    }
+
+                    .search-input{
+                        background-color: var(--search-filter-background-color);
+                        margin-left: 8px;
+                    }
+                }
+            }
+        }
     }
+
 
     .coach-list {
         display: grid;

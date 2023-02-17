@@ -5,6 +5,8 @@ import styles from './CoachesView.module.scss';
 
 import UserCard from '~/components/UserCard';
 
+import {ImFilter,ImSearch} from 'react-icons/im'
+
 const cx = classNames.bind(styles);
 
 const CoachesView = () => {
@@ -121,20 +123,6 @@ const CoachesView = () => {
             phoneNumber: '0123456789',
         },
     ];
-    console.log(window.innerWidth);
-    //Pagtination
-    // const [pageSize, setPageSize] = useState(12);
-
-    // useEffect(() => {
-    //     const handleResize = () => {
-    //         if (window.innerWidth <= 1536) {
-    //             setPageSize(10);
-    //         } else {
-    //             setPageSize(12);
-    //         }
-    //     }
-    //     handleResize();
-    // }, [pageSize]);
     let pageSize = 12;
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -146,7 +134,38 @@ const CoachesView = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <h4 className={cx('title')}>Danh sách Huấn luyện viên</h4>
+            <div className={cx('title-and-action')}>
+                <h4 className={cx('title')}>Danh sách Huấn luyện viên</h4>
+                <div className={cx('action')}>
+                    <div className={cx('filter')}>
+                        <ImFilter className={cx('filter-icon')}/>
+                        <h4 className={cx('filter-title')}>Lọc</h4>
+                        <form id={cx('filter-gender-form')}>
+                            <select className={cx('filter-form-select')}>
+                                <option value="">Giới tính</option>
+                                <option value="Male">Nam</option>
+                                <option value="Female">Nữ</option>
+                                <option value="Other">Khác</option>
+                            </select>
+                        </form>
+                        <form id={cx('filter-age-form')}>
+                            <select className={cx('filter-form-select')}>
+                                <option value="">Độ tuổi</option>
+                                <option value="Male">18-25</option>
+                                <option value="Female">25-30</option>
+                                <option value="Other">30-35</option>
+                                <option value="Other">35-40</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div className={cx('search')}>
+                        <form className={cx('search-form')}>
+                            <ImSearch className={cx('search-icon')}/>
+                            <input type="text" placeholder='Tìm kiếm' className={cx('search-input')}/>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div className={cx('coach-list')}>
                 {currentCoachesPagination.map((coach) => (
                    <UserCard user={coach}/>
