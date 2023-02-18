@@ -5,6 +5,9 @@
 
 .wrapper {
     display: inline-block;
+    .content {
+        display: flex;
+    }
 }
 
 .login-btn {
@@ -16,6 +19,8 @@
     background-image: linear-gradient(var(--primary-color), rgba(143, 101, 154, 0.753));
     display: inline-block;
     border-radius: 20px 0 0 20px;
+    position: relative;
+    min-height: 700px;
     h1,
     img {
         color: rgba(#fff, 0.3);
@@ -26,16 +31,23 @@
     h1 {
         margin-bottom: 20%;
     }
+    img {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+    }
 }
 
 #login-form {
-    float: right;
     width: 50%;
     display: inline-block;
+    margin: auto 2% auto auto;
     h1 {
         display: flex;
         justify-content: center;
-        margin: 18% auto 8%;
+        margin-bottom: 20px;
     }
     label {
         font-size: 18px;
@@ -43,7 +55,7 @@
     input {
         width: 100%;
         padding: 16px 20px;
-        margin: 10px 0 10px;
+        margin: 10px 0 24px;
         border: 1px solid rgba(0, 0, 0, 0.3);
         border-radius: 12px;
         font-size: 16px;
@@ -69,7 +81,7 @@
         width: 35%;
         padding: 12px;
         background-color: var(--primary-color);
-        margin: 12% auto 6px;
+        margin: 10% auto 6px;
         border-radius: 16px;
     }
     #switch-btn {

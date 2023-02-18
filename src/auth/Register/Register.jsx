@@ -74,133 +74,130 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
         <div className={cx('wrapper')}>
             {open && (
                 <Modal show={open} onClose={() => setRegisterOpen(false)}>
-                    <div className={cx('img-wrapper')}>
-                        <h1>iCoaching</h1>
-                        <img src={require('~/assets/images/modal-bg.png')} alt="" />
-                    </div>
-
-                    <form id={cx('register-form')} onSubmit={handleSubmit(handleRegister)}>
-                        <motion.div
-                            initial={{ x: 100, opacity: 0 }}
-                            animate={{
-                                x: 0,
-                                opacity: 1,
-                                transition: {
-                                    duration: 0.2,
-                                },
-                            }}
-                        >
-                            <h1 className={cx('align-center')}>Đăng ký tài khoản</h1>
-                            <label>Họ và Tên</label>
-                            <input
-                                type="text"
-                                placeholder="Nhập Họ và Tên"
-                                {...register('fullname', { required: true })}
-                            />
-                            {errors?.fullname?.type === 'required' && (
-                                <ErrorMessage message="Họ và tên không được để trống !" />
-                            )}
-                            <div className={cx('col2')}>
-                                <label>Giới tính</label>
-                                <select name="gender" id="gender" {...register('gender', { required: true })}>
-                                    <option value="">--Chọn giới tính--</option>
-                                    <option value="Male">Nam</option>
-                                    <option value="Female">Nữ</option>
-                                    <option value="Other">Khác</option>
-                                </select>
-                                {errors?.gender?.type === 'required' && (
-                                    <ErrorMessage message="Giới tính phải được chọn !" />
-                                )}
-                            </div>
-
-                            <div className={cx('col2', 'f-right')}>
-                                <label>Ngày sinh</label>
-                                <input type="date" id="dob" name="dob" {...register('dob', { required: true })} />
-                                {errors?.dob?.type === 'required' && (
-                                    <ErrorMessage message="Ngày sinh không được để trống !" />
-                                )}
-                            </div>
-
-                            <label>Số điện thoại</label>
-                            <input
-                                type="tel"
-                                placeholder="Nhập số điện thoại"
-                                name="phoneNumber"
-                                {...register('phoneNumber', { required: true })}
-                            />
-                            {errors?.phoneNumber?.type === 'required' && (
-                                <ErrorMessage message="Số điện thoại không được để trống !" />
-                            )}
-                            <label>Địa chỉ email</label>
-                            <input
-                                type="email"
-                                placeholder="Nhập địa chỉ email"
-                                name="email"
-                                {...register('email', { required: true })}
-                            />
-                            {errors?.email?.type === 'required' && (
-                                <ErrorMessage message="Email không được để trống !" />
-                            )}
-                            <label>Tài khoản</label>
-                            <input
-                                type="text"
-                                placeholder="Nhập tài khoản"
-                                {...register('username', { required: true })}
-                            />
-                            {errors?.username?.type === 'required' && (
-                                <ErrorMessage message="Tài khoản không được để trống !" />
-                            )}
-
-                            <div className={cx('col-2')}>
-                                <label>Mật khẩu</label>
+                    <div className={cx('content')}>
+                        <div className={cx('img-wrapper')}>
+                            <h1>iCoaching</h1>
+                            <img src={require('~/assets/images/modal-bg.png')} alt="" />
+                        </div>
+                        <form id={cx('register-form')} onSubmit={handleSubmit(handleRegister)}>
+                            <motion.div
+                                initial={{ x: 100, opacity: 0 }}
+                                animate={{
+                                    x: 0,
+                                    opacity: 1,
+                                    transition: {
+                                        duration: 0.2,
+                                    },
+                                }}
+                            >
+                                <h1 className={cx('align-center')}>Đăng ký tài khoản</h1>
+                                <label>Họ và Tên</label>
                                 <input
-                                    type="password"
-                                    placeholder="Nhập mật khẩu"
-                                    {...register('password', { required: true })}
+                                    type="text"
+                                    placeholder="Nhập Họ và Tên"
+                                    {...register('fullname', { required: true })}
                                 />
-                                {errors?.password?.type === 'required' && (
-                                    <ErrorMessage message="Mật khẩu không được để trống !" />
+                                {errors?.fullname?.type === 'required' && (
+                                    <ErrorMessage message="Họ và tên không được để trống !" />
                                 )}
-                            </div>
-                            <div className={cx('col2', 'f-right')}>
-                                <label>Xác nhận mật khẩu</label>
+                                <div className={cx('col2')}>
+                                    <label>Giới tính</label>
+                                    <select name="gender" id="gender" {...register('gender', { required: true })}>
+                                        <option value="">--Chọn giới tính--</option>
+                                        <option value="Male">Nam</option>
+                                        <option value="Female">Nữ</option>
+                                        <option value="Other">Khác</option>
+                                    </select>
+                                    {errors?.gender?.type === 'required' && (
+                                        <ErrorMessage message="Giới tính phải được chọn !" />
+                                    )}
+                                </div>
+                                <div className={cx('col2', 'f-right')}>
+                                    <label>Ngày sinh</label>
+                                    <input type="date" id="dob" name="dob" {...register('dob', { required: true })} />
+                                    {errors?.dob?.type === 'required' && (
+                                        <ErrorMessage message="Ngày sinh không được để trống !" />
+                                    )}
+                                </div>
+                                <label>Số điện thoại</label>
                                 <input
-                                    type="password"
-                                    placeholder="Xác nhận mật khẩu"
-                                    name="c"
-                                    {...register('confirmPassword', { required: true })}
+                                    type="tel"
+                                    placeholder="Nhập số điện thoại"
+                                    name="phoneNumber"
+                                    {...register('phoneNumber', { required: true })}
                                 />
-                                {errors?.confirmPassword?.type === 'required' && (
-                                    <ErrorMessage message="Xác nhận mật khẩu không được để trống !" />
+                                {errors?.phoneNumber?.type === 'required' && (
+                                    <ErrorMessage message="Số điện thoại không được để trống !" />
                                 )}
-                            </div>
-
-                            <div>
-                                <input className={cx('checkbox')} type="checkbox" {...register('isCoach')} /> Đăng ký
-                                trở thành huấn luyện viên <br />
+                                <label>Địa chỉ email</label>
                                 <input
-                                    className={cx('checkbox')}
-                                    type="checkbox"
-                                    {...register('isAgreed', { required: true })}
-                                />{' '}
-                                Tôi đồng ý với các điều khoản
-                                {errors?.isAgreed?.type === 'required' && (
-                                    <ErrorMessage message="Bạn phải đồng ý với các điều khoản !" />
+                                    type="email"
+                                    placeholder="Nhập địa chỉ email"
+                                    name="email"
+                                    {...register('email', { required: true })}
+                                />
+                                {errors?.email?.type === 'required' && (
+                                    <ErrorMessage message="Email không được để trống !" />
                                 )}
-                            </div>
-                            <div>
-                                <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
-                                    Đăng ký
-                                </button>
-                                <p className={cx('align-center')}>
-                                    Đã có tài khoản?
-                                    <button onClick={switchLogin} id={cx('switch-btn')}>
-                                        Đăng nhập
+                                <label>Tài khoản</label>
+                                <input
+                                    type="text"
+                                    placeholder="Nhập tài khoản"
+                                    {...register('username', { required: true })}
+                                />
+                                {errors?.username?.type === 'required' && (
+                                    <ErrorMessage message="Tài khoản không được để trống !" />
+                                )}
+                                <div className={cx('col2')}>
+                                    <label>Mật khẩu</label>
+                                    <input
+                                        type="password"
+                                        placeholder="Nhập mật khẩu"
+                                        {...register('password', { required: true })}
+                                    />
+                                    {errors?.password?.type === 'required' && (
+                                        <ErrorMessage message="Mật khẩu không được để trống !" />
+                                    )}
+                                </div>
+                                <div className={cx('col2', 'f-right')}>
+                                    <label>Xác nhận mật khẩu</label>
+                                    <input
+                                        type="password"
+                                        placeholder="Xác nhận mật khẩu"
+                                        name="c"
+                                        {...register('confirmPassword', { required: true })}
+                                    />
+                                    {errors?.confirmPassword?.type === 'required' && (
+                                        <ErrorMessage message="Xác nhận mật khẩu không được để trống !" />
+                                    )}
+                                </div>
+                                <div>
+                                    <input className={cx('checkbox')} type="checkbox" {...register('isCoach')} /> Đăng
+                                    ký trở thành huấn luyện viên <br />
+                                    <input
+                                        className={cx('checkbox')}
+                                        type="checkbox"
+                                        {...register('isAgreed', { required: true })}
+                                    />{' '}
+                                    Tôi đồng ý với các điều khoản
+                                    {errors?.isAgreed?.type === 'required' && (
+                                        <ErrorMessage message="Bạn phải đồng ý với các điều khoản !" />
+                                    )}
+                                </div>
+                                <div>
+                                    <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
+                                        Đăng ký
                                     </button>
-                                </p>
-                            </div>
-                        </motion.div>
-                    </form>
+                                    <p className={cx('align-center')}>
+                                        Đã có tài khoản?
+                                        <button onClick={switchLogin} id={cx('switch-btn')}>
+                                            Đăng nhập
+                                        </button>
+                                    </p>
+                                </div>
+                            </motion.div>
+                        </form>
+                    </div>
                 </Modal>
             )}
         </div>
