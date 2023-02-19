@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
@@ -33,10 +33,6 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
     const navigate = useNavigate();
 
     const { currentUser, isLoggedIn, error } = useSelector((state) => state.user);
-    const [errorMessage, setErrorMessage] = useState(null);
-
-    // console.log('Error Message: ', errorMessage);
-    // console.log('error from state: ', error);
 
     useEffect(() => {
         if (isLoggedIn && currentUser) {
@@ -57,7 +53,6 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
 
     const handleLogin = (data) => {
         dispatch(loginAsync({ username: data.username, password: data.password }));
-        setErrorMessage(null);
     };
 
     return (
