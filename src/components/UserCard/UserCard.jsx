@@ -7,11 +7,11 @@ import { handleRenderGenderClassNames, handleRenderGenders } from '~/utils/gende
 
 const cx = classNames.bind(styles);
 
-const UserCard = ({user}) => {
-    const {id, fullname, gender, age, avatar} = user;
+const UserCard = ({ user, role }) => {
+    const { id, fullname, gender, age, avatar } = user;
     return (
         <div className={cx('user-item')} key={id}>
-            <Link to="/" className={cx('card')}>
+            <Link to={`view-details/${role}/${id}`} className={cx('card')}>
                 <div className={cx('avatar')}>
                     {avatar ? (
                         <img src={require('~/assets/images/coach-photo1.png')} alt="Coach" />
@@ -32,7 +32,7 @@ const UserCard = ({user}) => {
                 </div>
             </Link>
         </div>
-    )
-}
+    );
+};
 
-export default UserCard
+export default UserCard;

@@ -1,11 +1,11 @@
-import { useState, useMemo} from 'react';
+import { useState, useMemo } from 'react';
 import classNames from 'classnames/bind';
 import Pagination from '~/components/Pagination';
 import styles from './CoachesView.module.scss';
 
 import UserCard from '~/components/UserCard';
 
-import {ImFilter,ImSearch} from 'react-icons/im'
+import { ImFilter, ImSearch } from 'react-icons/im';
 
 const cx = classNames.bind(styles);
 
@@ -138,7 +138,7 @@ const CoachesView = () => {
                 <h4 className={cx('title')}>Danh sách Huấn luyện viên</h4>
                 <div className={cx('action')}>
                     <div className={cx('filter')}>
-                        <ImFilter className={cx('filter-icon')}/>
+                        <ImFilter className={cx('filter-icon')} />
                         <h4 className={cx('filter-title')}>Lọc</h4>
                         <form id={cx('filter-gender-form')}>
                             <select className={cx('filter-form-select')}>
@@ -160,15 +160,15 @@ const CoachesView = () => {
                     </div>
                     <div className={cx('search')}>
                         <form className={cx('search-form')}>
-                            <ImSearch className={cx('search-icon')}/>
-                            <input type="text" placeholder='Tìm kiếm' className={cx('search-input')}/>
+                            <ImSearch className={cx('search-icon')} />
+                            <input type="text" placeholder="Tìm kiếm" className={cx('search-input')} />
                         </form>
                     </div>
                 </div>
             </div>
             <div className={cx('coach-list')}>
                 {currentCoachesPagination.map((coach) => (
-                   <UserCard user={coach}/>
+                    <UserCard user={coach} role="coach" />
                 ))}
             </div>
             <Pagination
