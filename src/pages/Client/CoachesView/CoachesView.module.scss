@@ -2,7 +2,7 @@
     height: 100%;
     position: relative;
 
-    .title-and-action{
+    .title-and-action {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -14,21 +14,21 @@
             color: var(--text-color);
         }
 
-        .action{
+        .action {
             display: flex;
             align-items: center;
-            .filter{
+            .filter {
                 display: flex;
                 align-items: center;
                 margin-right: 4px;
 
-                .filter-icon{
-                    color: #2B3674;
+                .filter-icon {
+                    color: #2b3674;
                     font-size: 1.4rem;
                     margin-right: 4px;
                 }
 
-                .filter-title{
+                .filter-title {
                     margin-right: 4px;
                     font-size: 1.6rem;
                     font-weight: 600;
@@ -36,14 +36,14 @@
                 }
 
                 #filter-gender-form,
-                #filter-age-form{
+                #filter-age-form {
                     display: flex;
                     padding: 8px 12px;
                     border-radius: 8px;
                     background-color: var(--search-filter-background-color);
                     margin: 0 4px;
 
-                    .filter-form-select{
+                    .filter-form-select {
                         border: none;
                         outline: none;
                         background-color: var(--search-filter-background-color);
@@ -52,20 +52,20 @@
                 }
             }
 
-            .search{
-                .search-form{
+            .search {
+                .search-form {
                     display: flex;
                     align-items: center;
                     padding: 8px 12px;
-                    border-radius: 8px;   
+                    border-radius: 8px;
                     background-color: var(--search-filter-background-color);
 
-                    .search-icon{
-                        color: #2B3674;
+                    .search-icon {
+                        color: #2b3674;
                         font-size: 1.4rem;
                     }
 
-                    .search-input{
+                    .search-input {
                         background-color: var(--search-filter-background-color);
                         margin-left: 8px;
                     }
@@ -74,12 +74,20 @@
         }
     }
 
-
     .coach-list {
         display: grid;
         grid-template-columns: repeat(6, 1fr);
         grid-template-rows: repeat(2, auto);
         gap: 12px;
         margin-bottom: 20px;
+
+        .coach-item {
+            height: 320px;
+            width: 240px;
+            @media only screen and (min-width: 1201px) and (max-width: 1920px) {
+                height: 216px;
+                width: 176px;
+            }
+        }
     }
 }

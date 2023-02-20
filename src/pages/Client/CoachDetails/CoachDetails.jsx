@@ -45,14 +45,14 @@ const CoachDetails = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('back')}>
-                <Link to={`/client/${currentUser.Id}/all-coaches`}>
+                <Link to={`/client/${currentUser.Id}/all-coaches`} className={cx('back-link')}>
                     <IoIosArrowBack />
                     <span>Quay lại</span>
                 </Link>
             </div>
             <div className={cx('content')}>
                 <div className={cx('profile')}>
-                    <UserCard user={coach} />
+                    <UserCard user={coach} role="coach" />
                 </div>
                 <div className={cx('tabs')}>
                     <Tabs tabs={tabs} />

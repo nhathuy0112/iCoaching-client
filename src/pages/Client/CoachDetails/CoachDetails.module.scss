@@ -1,0 +1,29 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .back {
+        margin-bottom: 16px;
+        .back-link {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+    }
+
+    .content {
+        display: flex;
+        flex: 1;
+
+        .profile {
+            flex: 0 0 30%;
+        }
+
+        .tabs {
+            flex: 1;
+        }
+    }
+}

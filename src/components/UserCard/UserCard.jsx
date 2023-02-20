@@ -10,17 +10,17 @@ const cx = classNames.bind(styles);
 const UserCard = ({ user, role }) => {
     const { id, fullname, gender, age, avatar } = user;
     return (
-        <div className={cx('user-item')} key={id}>
-            <Link to={`view-details/${role}/${id}`} className={cx('card')}>
-                <div className={cx('avatar')}>
-                    {avatar ? (
-                        <img src={require('~/assets/images/coach-photo1.png')} alt="Coach" />
-                    ) : (
-                        <div className={cx('default')}>
-                            <FaUserCircle className={cx('icon')} />
-                        </div>
-                    )}
-                </div>
+        <Link to={`view-details/${role}/${id}`} className={cx('card')}>
+            <div className={cx('avatar')}>
+                {avatar ? (
+                    <img src={require('~/assets/images/coach-photo1.png')} alt="Coach" />
+                ) : (
+                    <div className={cx('default')}>
+                        <FaUserCircle className={cx('icon')} />
+                    </div>
+                )}
+            </div>
+            <div className={cx('info')}>
                 <div className={cx('fullname')}>
                     <span>{fullname}</span>
                 </div>
@@ -30,8 +30,8 @@ const UserCard = ({ user, role }) => {
                 <div className={cx('age')}>
                     <span>{age} tuổi</span>
                 </div>
-            </Link>
-        </div>
+            </div>
+        </Link>
     );
 };
 

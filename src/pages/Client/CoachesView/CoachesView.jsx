@@ -168,7 +168,9 @@ const CoachesView = () => {
             </div>
             <div className={cx('coach-list')}>
                 {currentCoachesPagination.map((coach) => (
-                    <UserCard user={coach} role="coach" />
+                    <div className={cx('coach-item')} key={coach.id}>
+                        <UserCard user={coach} role="coach" />
+                    </div>
                 ))}
             </div>
             <Pagination

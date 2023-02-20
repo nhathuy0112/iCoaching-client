@@ -14,8 +14,6 @@ const AuthLayout = ({ children }) => {
     const [links, setLinks] = useState([]);
     const [role, setRole] = useState('');
 
-    console.log(currentUser);
-
     useEffect(() => {
         if (currentUser) {
             setLinks(handleRenderNavLinks(currentUser?.role));
