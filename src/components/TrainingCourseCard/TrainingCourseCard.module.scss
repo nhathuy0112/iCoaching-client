@@ -1,0 +1,27 @@
+.card {
+    padding: 16px;
+    box-shadow: var(--default-box-shadow);
+    border-radius: var(--default-border-radius);
+    position: relative;
+
+    .name {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .price {
+        font-size: 1.6rem;
+        font-weight: 500;
+        color: #1e3cd7;
+    }
+
+    .detail-btn {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        background-color: unset;
+        color: var(--primary-color);
+        cursor: pointer;
+    }
+}

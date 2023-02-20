@@ -4,7 +4,7 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 
-import Modal from '~/components/Modals';
+import Modal from '~/components/Modal';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { forgotAsync } from './../../features/userSlice';

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import Modal from '~/components/Modals';
+import Modal from '~/components/Modal';
 import { loginAsync } from '~/features/userSlice';
 
 const cx = classNames.bind(styles);

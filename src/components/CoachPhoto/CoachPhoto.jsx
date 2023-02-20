@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './CoachPhoto.module.scss';
 import classNames from 'classnames/bind';
-import Modal from '../Modals/Modal';
+import Modal from '../Modal/Modal';
 import { AiOutlineClose } from 'react-icons/ai';
 
 import photo1 from '~/assets/images/coach-photo1.png';

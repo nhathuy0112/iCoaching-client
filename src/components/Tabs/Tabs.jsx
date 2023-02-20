@@ -16,7 +16,7 @@ const Tabs = ({ tabs }) => {
     };
 
     return (
-        <div>
+        <div className={cx('wrapper')}>
             <ul className={cx('tab-list')}>
                 {tabs.map((tab, index) => (
                     <li
