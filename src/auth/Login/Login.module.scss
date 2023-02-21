@@ -57,7 +57,7 @@
         padding: 16px 20px;
         margin: 10px 0 24px;
         border: 1px solid rgba(0, 0, 0, 0.3);
-        border-radius: 12px;
+        border-radius: var(--default-border-radius);
         font-size: 16px;
         background-color: rgba(173, 173, 173, 0.1);
     }
@@ -82,7 +82,7 @@
         padding: 12px;
         background-color: var(--primary-color);
         margin: 10% auto 6px;
-        border-radius: 16px;
+        border-radius: var(--default-border-radius);
     }
     #switch-btn {
         background: none;

@@ -1,17 +1,17 @@
 import classNames from 'classnames/bind';
-import styles from './ErrorMessage.module.scss';
+import styles from './SuccessMessage.module.scss';
 
-import { AiOutlineWarning } from 'react-icons/ai';
+import { HiCheckCircle } from 'react-icons/hi';
 
 const cx = classNames.bind(styles);
 
-const ErrorMessage = ({ message }) => {
+const SuccessMessage = ({ message }) => {
     return (
         <div className={cx('wrapper')}>
-            <AiOutlineWarning />
+            <HiCheckCircle />
             <p className={cx('message')}>{message}!</p>
         </div>
     );
 };
 
-export default ErrorMessage;
+export default SuccessMessage;

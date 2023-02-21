@@ -3,34 +3,42 @@ import classNames from 'classnames/bind';
 import { BsArrowLeft } from 'react-icons/bs';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-import Modal from '~/components/Modals';
+import Modal from '~/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
 import { forgotAsync, resetAuth } from './../../features/userSlice';
 import ErrorMessage from '~/components/ErrorMessage';
+import SuccessMessage from '~/components/SuccessMessage';
 
 const cx = classNames.bind(styles);
 
+const schema = yup.object({
+    email: yup.string().required('Email không được để trống'),
+});
+
 const ForgotPassword = ({ open, setForgotOpen, setLoginOpen }) => {
+    const dispatch = useDispatch();
+
     const switchLogin = () => {
         setForgotOpen(false);
         dispatch(resetAuth());
         setLoginOpen(true);
     };
 
-    const dispatch = useDispatch();
-    const { error } = useSelector((state) => state.user);
+    const { error, message } = useSelector((state) => state.user);
 
     const {
         register,
-        getValues,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+        reset,
+    } = useForm({ resolver: yupResolver(schema) });
 
     const handleForgot = (data) => {
         dispatch(forgotAsync(data.email));
+        reset(data);
     };
 
     return (
@@ -58,21 +66,10 @@ const ForgotPassword = ({ open, setForgotOpen, setLoginOpen }) => {
                                 </button>
                                 <h1 className={cx('align-center')}>Quên mật khẩu</h1>
                                 <label>Địa chỉ email</label>
-                                <input
-                                    type="email"
-                                    placeholder="Nhập địa chỉ email"
-                                    {...register('email', { required: true })}
-                                />
-                                {errors?.email?.type === 'required' && (
-                                    <ErrorMessage message="Email không được để trống !" />
-                                )}
-                                {/* {isResetPassword && (
-                                    <span style={{ color: 'var(--primary-color)' }}>
-                                        Truy cập email <span style={{ color: 'red' }}>{getValues('email')}</span> để khôi
-                                        phục mật khẩu
-                                    </span>
-                                )} */}
+                                <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />
+                                {errors.email && <ErrorMessage message={errors.email.message} />}
                                 {error && <ErrorMessage message={error} />}
+                                {message && <SuccessMessage message={message} />}
                                 <div>
                                     <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
                                         Gửi

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
@@ -7,13 +7,16 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import Modal from '~/components/Modals';
+import Modal from '~/components/Modal';
 import { loginAsync, resetAuth } from '~/features/userSlice';
 import ErrorMessage from '~/components/ErrorMessage';
 
 const cx = classNames.bind(styles);
 const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
-    const switchForgot = () => {
+    const dispatch = useDispatch();
+
+    const switchForgot = (e) => {
+        e.preventDefault();
         setLoginOpen(false);
         dispatch(resetAuth());
         setForgotOpen(true);
@@ -21,14 +24,15 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
 
     const switchRegister = (e) => {
         setLoginOpen(false);
+        dispatch(resetAuth());
         setRegisterOpen(true);
     };
 
-    const dispatch = useDispatch();
     const {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm();
     const navigate = useNavigate();
 
@@ -53,6 +57,7 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
 
     const handleLogin = (data) => {
         dispatch(loginAsync({ username: data.username, password: data.password }));
+        reset(data);
     };
 
     return (

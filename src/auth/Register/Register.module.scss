@@ -22,7 +22,7 @@
     width: 40%;
     background-image: linear-gradient(var(--primary-color), rgba(143, 101, 154, 0.753));
     display: inline-block;
-    border-radius: 20px 0 0 20px;
+    border-radius: 4px 0 0 4px;
     position: relative;
     min-height: 700px;
     h1,
@@ -62,7 +62,7 @@
         padding: 14px 20px;
         margin: 4px 0;
         border: 1px solid rgba(0, 0, 0, 0.3);
-        border-radius: 12px;
+        border-radius: var(--default-border-radius);
         font-size: 16px;
         background-color: rgba(173, 173, 173, 0.1);
     }
@@ -81,7 +81,7 @@
         padding: 16px;
         background-color: var(--primary-color);
         margin: 18px auto 2px;
-        border-radius: 16px;
+        border-radius: var(--default-border-radius);
     }
     #switch-btn {
         background: none;

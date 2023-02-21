@@ -19,12 +19,8 @@ export const registerAsync = createAsyncThunk('user/register', async (payload, {
         return response;
     } catch (error) {
         console.log(error);
-        throw new Error('Email này đã tồn tại');
-        // return rejectWithValue({
-        //     name: 'email Existed',
-        //     message: 'Email này đã tồn tại',
-
-        // });
+        // throw error;
+        return rejectWithValue(error);
     }
 });
 
@@ -60,7 +56,8 @@ export const logoutAsync = createAsyncThunk('user/logout', async (payload) => {
 
 export const forgotAsync = createAsyncThunk('user/forgot', async (payload) => {
     try {
-        await forgot(payload);
+        const response = await forgot(payload);
+        return response;
     } catch (error) {
         console.log(error);
         throw error;
@@ -73,6 +70,7 @@ const initialState = {
     currentUser: getLocalStorage('auth') ? parseJwt(getLocalStorage('auth').accessToken) : null,
     loading: false,
     error: null,
+    message: ''
 };
 
 export const userSlice = createSlice({
@@ -82,6 +80,7 @@ export const userSlice = createSlice({
         resetAuth: (state) => {
             state.loading = false;
             state.error = null;
+            state.message = ''
         },
     },
     extraReducers: (builder) => {
@@ -93,10 +92,13 @@ export const userSlice = createSlice({
             })
             .addCase(registerAsync.fulfilled, (state, action) => {
                 state.users.push(action.payload);
+                state.message = 'Đăng ký thành công. Vui lòng kiểm tra email để xác thực tài khoản'
+                state.error = null;
             })
             .addCase(registerAsync.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error;
+                state.error = action.payload;
+                // console.log(action);
             })
 
             //login
@@ -109,9 +111,7 @@ export const userSlice = createSlice({
                 state.loading = false;
                 state.isLoggedIn = true;
                 const authData = parseJwt(action.payload.accessToken);
-                if (state.isLoggedIn) {
-                    state.currentUser = authData;
-                }
+                state.currentUser = authData;
             })
             .addCase(loginAsync.rejected, (state, action) => {
                 state.loading = false;
@@ -135,7 +135,9 @@ export const userSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(forgotAsync.fulfilled, (state) => state)
+            .addCase(forgotAsync.fulfilled, (state, action) => {
+                state.message = action.payload;
+            })
             .addCase(forgotAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
