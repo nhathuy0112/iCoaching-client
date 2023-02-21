@@ -3,82 +3,89 @@ import classNames from 'classnames/bind';
 import { BsArrowLeft } from 'react-icons/bs';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import Modal from '~/components/Modal';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
-import { forgotAsync } from './../../features/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { forgotAsync, resetAuth } from './../../features/userSlice';
+import ErrorMessage from '~/components/ErrorMessage';
+import SuccessMessage from '~/components/SuccessMessage';
 
 const cx = classNames.bind(styles);
 
-const Login = ({ open, setForgotOpen, setLoginOpen }) => {
-    const [isResetPassword, setIsResetPassword] = useState(false);
+const schema = yup.object({
+    email: yup.string().required('Email không được để trống'),
+});
 
-    const switchLogin = (e) => {
+const ForgotPassword = ({ open, setForgotOpen, setLoginOpen }) => {
+    const dispatch = useDispatch();
+
+    const switchLogin = () => {
         setForgotOpen(false);
+        dispatch(resetAuth());
         setLoginOpen(true);
     };
 
-    const dispatch = useDispatch();
+    const { error, message } = useSelector((state) => state.user);
 
-    const { register, getValues, handleSubmit, resetField } = useForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({ resolver: yupResolver(schema) });
 
     const handleForgot = (data) => {
-        setIsResetPassword(true);
         dispatch(forgotAsync(data.email));
-        setTimeout(() => {
-            setIsResetPassword(false);
-            resetField('email');
-        }, 20000);
+        reset(data);
     };
 
     return (
         <div className={cx('wrapper')}>
             {open && (
                 <Modal show={open} onClose={() => setForgotOpen(false)}>
-                    <div className={cx('img-wrapper')}>
-                        <h1>iCoaching</h1>
-                        <img src={require('~/assets/images/modal-bg.png')} alt="" />
-                    </div>
-
-                    <form id={cx('forgot-form')} onSubmit={handleSubmit(handleForgot)}>
-                        <motion.div
-                            initial={{ x: 100, opacity: 0 }}
-                            animate={{
-                                x: 0,
-                                opacity: 1,
-                                transition: {
-                                    duration: 0.2,
-                                },
-                            }}
-                        >
-                            <button id={cx('back-btn')} onClick={switchLogin}>
-                                <BsArrowLeft />
-                            </button>
-                            <h1 className={cx('align-center')}>Quên mật khẩu</h1>
-                            <label>Địa chỉ email</label>
-                            <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />
-                            {isResetPassword && (
-                                <span style={{ color: 'var(--primary-color)' }}>
-                                    Truy cập email <span style={{ color: 'red' }}>{getValues('email')}</span> để khôi
-                                    phục mật khẩu
-                                </span>
-                            )}
-                            <div>
-                                <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
-                                    Gửi
+                    <div className={cx('content')}>
+                        <div className={cx('img-wrapper')}>
+                            <h1>iCoaching</h1>
+                            <img src={require('~/assets/images/modal-bg.png')} alt="" />
+                        </div>
+                        <form id={cx('forgot-form')} onSubmit={handleSubmit(handleForgot)}>
+                            <motion.div
+                                initial={{ x: 100, opacity: 0 }}
+                                animate={{
+                                    x: 0,
+                                    opacity: 1,
+                                    transition: {
+                                        duration: 0.2,
+                                    },
+                                }}
+                            >
+                                <button id={cx('back-btn')} onClick={switchLogin}>
+                                    <BsArrowLeft />
                                 </button>
-                                <p className={cx('align-center')}>
-                                    Chưa nhận được mail?
-                                    <button id={cx('resend-btn')}> Gửi lại</button>
-                                </p>
-                            </div>
-                        </motion.div>
-                    </form>
+                                <h1 className={cx('align-center')}>Quên mật khẩu</h1>
+                                <label>Địa chỉ email</label>
+                                <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />
+                                {errors.email && <ErrorMessage message={errors.email.message} />}
+                                {error && <ErrorMessage message={error} />}
+                                {message && <SuccessMessage message={message} />}
+                                <div>
+                                    <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
+                                        Gửi
+                                    </button>
+                                    <p className={cx('align-center')}>
+                                        Chưa nhận được mail?
+                                        <button id={cx('resend-btn')}> Gửi lại</button>
+                                    </p>
+                                </div>
+                            </motion.div>
+                        </form>
+                    </div>
                 </Modal>
             )}
         </div>
     );
 };
 
-export default Login;
+export default ForgotPassword;

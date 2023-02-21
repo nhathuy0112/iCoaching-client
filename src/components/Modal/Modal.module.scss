@@ -18,7 +18,7 @@
     transform: translate(-50%, -50%);
     background-color: #fff;
     padding: 0px;
-    border-radius: 20px;
+    border-radius: var(--default-border-radius);
 }
 
 #closeBtn {
