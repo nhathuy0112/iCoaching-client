@@ -7,7 +7,7 @@ import { CgGym } from 'react-icons/cg';
 import { BiTimeFive } from 'react-icons/bi';
 import ServiceCard from '~/components/ServiceCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllCoachesAsync } from '~/features/guestSlice';
+import { getAllCoachesAsync, setPage } from '~/features/guestSlice';
 import { useEffect, useMemo, useState } from 'react';
 import UserCard from '~/components/UserCard';
 import { Link } from 'react-router-dom';
@@ -40,7 +40,7 @@ const Home = () => {
     ];
 
     const dispatch = useDispatch();
-    const { coaches } = useSelector((state) => state.guest);
+    const { coaches, pageSize, pageIndex, totalCount } = useSelector((state) => state.guest);
 
     // const coaches = [
     //     {
@@ -106,16 +106,21 @@ const Home = () => {
     // ];
 
     useEffect(() => {
-        dispatch(getAllCoachesAsync({ pageSize: 8 }));
+        dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
     }, [dispatch]);
-    let pageSize = 8;
-    const [currentPage, setCurrentPage] = useState(1);
 
-    const currentCoachesPagination = useMemo(() => {
-        const firstPageIndex = (currentPage - 1) * pageSize;
-        const lastPageIndex = firstPageIndex + pageSize;
-        return coaches.slice(firstPageIndex, lastPageIndex);
-    }, [currentPage, pageSize, coaches]);
+    //Pagination
+    // const [pageChange, setPageChange] = useState(pageIndex);
+
+    // const handlePageChange = (pageNumber) => {
+    //     setPageChange(pageNumber);
+    //     dispatch(setPage(pageNumber));
+    //     dispatch(getAllCoachesAsync({ pageIndex: pageNumber, pageSize }));
+    // };
+
+    // const currentCoachesPagination = useMemo(() => {
+    //     return coaches;
+    // }, [coaches]);
 
     return (
         <div className={cx('wrapper')}>
@@ -173,19 +178,19 @@ const Home = () => {
                         <span>Đội ngũ huấn luyện viên chất lượng, tận tình sẵn sàng phục vụ mọi người</span>
                     </div>
                     <div className={cx('coach-list')}>
-                        {currentCoachesPagination.map((coach) => (
+                        {coaches.map((coach) => (
                             <div className={cx('coach-item')} key={coach.id}>
                                 <UserCard user={coach} role="coach" />
                             </div>
                         ))}
                     </div>
-                    <Pagination
+                    {/* <Pagination
                         className={cx('pagination-bar')}
-                        currentPage={currentPage}
-                        totalCount={coaches.length}
+                        currentPage={pageChange}
+                        totalCount={totalCount}
                         pageSize={pageSize}
-                        onPageChange={(page) => setCurrentPage(page)}
-                    />
+                        onPageChange={(pageChange) => handlePageChange(pageChange)}
+                    /> */}
                     <Link to="/all-coaches" id={cx('view-all-btn')}>
                         Xem tất cả
                     </Link>

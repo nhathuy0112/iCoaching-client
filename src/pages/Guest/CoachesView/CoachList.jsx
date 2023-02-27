@@ -11,60 +11,11 @@ const cx = classNames.bind(styles);
 
 const Coaches = () => {
     const dispatch = useDispatch();
-    // const { coaches } = useSelector((state) => state.guest);
-    // useEffect(() => {
-    //     dispatch(getAllCoachesAsync({ pageSize: 8 }));
-    // }, [dispatch]);
-    const coaches = [
-        {
-            id: 1,
-            name: 'Hoang Tran',
-            age: 32,
-            gender: 'Male',
-        },
-        {
-            id: 2,
-            name: 'Hoang Nguyen',
-            age: 24,
-            gender: 'Female',
-        },
-        {
-            id: 3,
-            name: 'Hoang Le',
-            age: 18,
-            gender: 'Other',
-        },
-        {
-            id: 4,
-            name: 'Hoang Tran',
-            age: 32,
-            gender: 'Male',
-        },
-        {
-            id: 5,
-            name: 'Hoang Tran',
-            age: 32,
-            gender: 'Male',
-        },
-        {
-            id: 6,
-            name: 'Hoang Tran',
-            age: 32,
-            gender: 'Male',
-        },
-        {
-            id: 7,
-            name: 'Hoang Tran',
-            age: 32,
-            gender: 'Male',
-        },
-        {
-            id: 8,
-            name: 'Hoang Tran',
-            age: 32,
-            gender: 'Male',
-        },
-    ];
+    const { coaches } = useSelector((state) => state.guest);
+    useEffect(() => {
+        dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
+    }, [dispatch]);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>

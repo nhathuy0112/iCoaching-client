@@ -22,6 +22,7 @@ import GuestLayout from '~/layouts/GuestLayout';
 const guestRoutes = [
     { path: '/', component: Home },
     { path: '/all-coaches', component: ViewAllCoaches },
+    { path: '/all-coaches/view-details/coach/:id', component: CoachDetail },
     { path: '/view-details/coach/:id', component: CoachDetail }
 ];
 

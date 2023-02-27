@@ -7,9 +7,9 @@ const END_POINTS = {
 
 export const getAllCoaches = ({ pageIndex, pageSize, sort, search }) => {
     const pageIndexParam = pageIndex ? `?PageIndex=${pageIndex}` : '';
-    const pageSizeParam = pageSize ? `?PageSize=${pageSize}` : '';
-    const sortParam = sort ? `?Sort=${sort}` : '';
-    const searchParam = search ? `?Search=${search}` : '';
+    const pageSizeParam = pageSize ? `&PageSize=${pageSize}` : '';
+    const sortParam = sort ? `&Sort=${sort}` : '';
+    const searchParam = search ? `&Search=${search}` : '';
     return axios.get(`${END_POINTS.GET_ALL}${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}`);
 };
 

@@ -7,7 +7,7 @@ import AboutMe from '~/components/AboutMe/AboutMe';
 import CoachPhoto from '~/components/CoachPhoto/CoachPhoto';
 import TrainingCourse from '~/components/TrainingCourse/TrainingCourse';
 import { handleRenderGenderClassNames, handleRenderGenders } from '~/utils/gender';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCoachProfileAsync } from '~/features/guestSlice';
 import { FaUserCircle } from 'react-icons/fa';
@@ -30,6 +30,7 @@ const CoachDetail = () => {
         },
     ];
     const { id } = useParams();
+    const location = useLocation();
     const dispatch = useDispatch();
     const { currentCoach } = useSelector((state) => state.guest);
 
@@ -42,7 +43,10 @@ const CoachDetail = () => {
             <div className={cx('content')}>
                 <div className={cx('title-and-back')}>
                     <div className={cx('back')}>
-                        <Link to={`/`} className={cx('back-link')}>
+                        <Link
+                            to={location.pathname.startsWith('/all-coaches') ? '/all-coaches' : '/'}
+                            className={cx('back-link')}
+                        >
                             <IoIosArrowBack />
                             <span>Quay lại</span>
                         </Link>

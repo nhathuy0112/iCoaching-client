@@ -22,6 +22,9 @@ export const getCoachProfileAsync = createAsyncThunk('/guest/getCoachProfile', a
 const initialState = {
     coaches: [],
     currentCoach: {},
+    pageSize: 6,
+    pageIndex: 1,
+    totalCount: null,
     loading: false,
     error: null,
     message: ''
@@ -30,6 +33,11 @@ const initialState = {
 export const guestSlice = createSlice({
     name: 'guest',
     initialState,
+    reducers: {
+        setPage: (state, action) => {
+            state.pageIndex = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             //get all coaches
@@ -40,6 +48,9 @@ export const guestSlice = createSlice({
             .addCase(getAllCoachesAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.coaches = action.payload.data;
+                state.pageSize = action.payload.pageSize;
+                state.pageIndex = action.payload.pageIndex;
+                state.totalCount = action.payload.count;
             })
             .addCase(getAllCoachesAsync.rejected, (state, action) => {
                 state.loading = false;
@@ -61,5 +72,7 @@ export const guestSlice = createSlice({
             })
     }
 });
+
+export const { setPage } = guestSlice.actions;
 
 export default guestSlice.reducer;
