@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
-import styles from './CoachList.module.scss';
+import styles from './CoachesView.module.scss';
 
 import CoachCard from '~/components/CoachCard';
 const cx = classNames.bind(styles);

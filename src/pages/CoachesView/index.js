@@ -1,1 +1,1 @@
-export { default } from './CoachList';
+export { default } from './CoachesView';

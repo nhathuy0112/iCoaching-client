@@ -3,9 +3,9 @@ import classNames from 'classnames/bind';
 import styles from './CoachDetail.module.scss';
 
 import Tabs from '~/components/Tabs/Tabs';
-import AboutMe from '~/components/AboutMe/AboutMe';
-import CoachPhoto from '~/components/CoachPhoto/CoachPhoto';
-import TrainingCourse from '~/components/TrainingCourse/TrainingCourse';
+import AboutMe from './components/AboutMe/AboutMe';
+import CoachPhoto from './components/CoachPhoto/CoachPhoto';
+import TrainingCourse from './components/TrainingCourse/TrainingCourse';
 
 const cx = classNames.bind(styles);
 const CoachDetail = () => {

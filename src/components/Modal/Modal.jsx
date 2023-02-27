@@ -25,6 +25,7 @@ const Modal = ({ show, onClose, children, modalStyle, closeBtnStyle }) => {
                             dispatch(resetAuth());
                         }}
                         id={cx('closeBtn')}
+                        style={{ ...closeBtnStyle }}
                     >
                         <AiOutlineCloseCircle />
                     </button>

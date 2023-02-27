@@ -4,7 +4,8 @@ import { formatMoney } from '~/utils/money';
 import styles from './TrainingCourseCard.module.scss';
 import Modal from '~/components/Modal';
 
-import { AiOutlineClose } from 'react-icons/ai';
+import { BsCheckLg } from 'react-icons/bs';
+import { BsXLg } from 'react-icons/bs';
 
 const cx = classNames.bind(styles);
 
@@ -28,17 +29,10 @@ const TrainingCourseCard = ({ course }) => {
                 Xem chi tiết
             </button>
             {isViewDetails && (
-                <Modal
-                    open={isViewDetails}
-                    onClose={handleClose}
-                    modalStyle={{ background: 'none' }}
-                    closeBtnStyle={{ display: 'none' }}
-                >
-                    <button className={cx('closeBtn')} onClick={handleClose}>
-                        <AiOutlineClose />
-                    </button>
+                <Modal open={isViewDetails} onClose={handleClose} modalStyle={{}} closeBtnStyle={{ display: 'none' }}>
                     <div className={cx('body')}>
-                        <h1>Bạn có đồng ý gửi yêu cầu cho huấn luyện viên về gói tập này?</h1>
+                        <h1>iCoaching</h1>
+                        <h2>Bạn có đồng ý gửi yêu cầu cho huấn luyện viên về gói tập này?</h2>
                         <div className={cx('course-detail')}>
                             <div>
                                 <label>Tên gói tập</label>
@@ -64,6 +58,15 @@ const TrainingCourseCard = ({ course }) => {
                                     Ipsum.
                                 </span>
                             </div>
+                        </div>
+                        <div className={cx('button')}>
+                            <button className={cx('btn-confirm')}>
+                                <BsCheckLg className={cx('icon')} />
+                                Đồng ý
+                            </button>
+                            <button className={cx('btn-warn')} onClick={() => setIsViewDetails(false)}>
+                                <BsXLg className={cx('icon')} /> Huỷ bỏ
+                            </button>
                         </div>
                     </div>
                 </Modal>

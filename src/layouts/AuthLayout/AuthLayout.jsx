@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import styles from './AuthLayout.module.scss';
 import classNames from 'classnames/bind';
 import Sidebar from '~/layouts/components/Sidebar';
-import { clientNavLinks, coachNavLinks } from '~/config/navLink';
+import { clientNavLinks, coachNavLinks, adminNavLinks } from '~/config/navLink';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
@@ -30,6 +30,8 @@ const AuthLayout = ({ children }) => {
                 return clientNavLinks;
             case 'COACH':
                 return coachNavLinks;
+            case 'ADMIN':
+                return adminNavLinks;
             default:
                 return [];
         }
@@ -42,7 +44,7 @@ const AuthLayout = ({ children }) => {
             case 'COACH':
                 return 'Huấn luyện viên';
             case 'ADMIN':
-                return 'Kiếm duyệt viên';
+                return 'Kiểm duyệt viên';
             case 'SUPER_ADMIN':
                 return 'Quản trị Kiểm duyệt viên';
             default:
