@@ -31,7 +31,7 @@ const CoachesView = () => {
         },
         {
             id: 3,
-            fullname: 'Hoang Tran',
+            fullname: 'Quang Phu Nguyen Hoang',
             gender: 'Female',
             age: 19,
             email: 'aa@gmail.com',

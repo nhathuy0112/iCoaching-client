@@ -1,4 +1,4 @@
-import Home from '~/pages/Home';
+import Home from '~/pages/Guest/Home';
 /*-----pages-----*/
 //Client
 import CoachesView from '~/pages/Client/CoachesView';
@@ -11,13 +11,19 @@ import Messages from '~/pages/Client/Messages';
 
 //Coach
 import CoachHome from '~/pages/Coach/Home/CoachHome';
-import ViewAllCoaches from '~/pages/CoachesView/CoachList'
-import CoachDetail from '~/pages/CoachDetail/CoachDetail'
+import ViewAllCoaches from '~/pages/Guest/CoachesView/CoachList'
+import CoachDetail from '~/pages/Guest/CoachDetail/CoachDetail'
 
 /*-----layouts-----*/
 import AuthLayout from '~/layouts/AuthLayout';
 import GuestLayout from '~/layouts/GuestLayout';
 
+
+const guestRoutes = [
+    { path: '/', component: Home },
+    { path: '/all-coaches', component: ViewAllCoaches },
+    { path: '/view-details/coach/:id', component: CoachDetail }
+];
 
 const clientRoutes = [
     { path: '/client/:id/all-coaches', component: CoachesView, layout: AuthLayout },
@@ -31,8 +37,5 @@ const clientRoutes = [
 
 const coachRoutes = [{ path: '/coach/:id', component: CoachHome, layout: AuthLayout }];
 
-const guestCoachListRoutes = [{ path: '/coaches', component: ViewAllCoaches, layout: GuestLayout }];
 
-const guestCoachDetailRoutes = [{ path: '/coaches/:id', component: CoachDetail, layout: GuestLayout }]
-
-export const routes = [{ path: '/', component: Home }, ...clientRoutes, ...coachRoutes, ...guestCoachListRoutes, ...guestCoachDetailRoutes];
+export const routes = [...guestRoutes, ...clientRoutes, ...coachRoutes];

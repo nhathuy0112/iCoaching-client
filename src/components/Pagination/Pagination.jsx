@@ -6,14 +6,14 @@ import { usePagination, DOTS } from '~/hooks/usePagination';
 
 const cx = classNames.bind(styles);
 
-function Pagination({ onPageChange, totalCount, siblingCount = 1, currentPage, pageSize, className }) {
+const Pagination = ({ onPageChange, totalCount, siblingCount = 1, currentPage, pageSize, className }) => {
     const paginationRange = usePagination({
         currentPage,
         totalCount,
         siblingCount,
         pageSize,
     });
-
+    // console.log(paginationRange);
     // If there are less than 2 times in pagination range we shall not render the component
     if (currentPage === 0 || paginationRange.length < 2) {
         return null;
@@ -76,6 +76,6 @@ function Pagination({ onPageChange, totalCount, siblingCount = 1, currentPage, p
             </li>
         </ul>
     );
-}
+};
 
 export default Pagination;

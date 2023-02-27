@@ -54,7 +54,7 @@ const CoachPhoto = () => {
     return (
         <div className={cx('wrapper')}>
             {images.map((item) => (
-                <img onClick={() => handleOpen(item.url)} src={item.url} alt="" />
+                <img key={item.id} onClick={() => handleOpen(item.url)} src={item.url} alt="" />
             ))}
             {open && (
                 <Modal

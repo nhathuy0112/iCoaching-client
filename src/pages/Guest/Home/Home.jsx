@@ -1,12 +1,16 @@
 import styles from './Home.module.scss';
 import classNames from 'classnames/bind';
+import Pagination from '~/components/Pagination';
 
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { CgGym } from 'react-icons/cg';
 import { BiTimeFive } from 'react-icons/bi';
-// import { FaUserCircle } from 'react-icons/fa';
 import ServiceCard from '~/components/ServiceCard';
-import CoachCard from '~/components/CoachCard';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllCoachesAsync } from '~/features/guestSlice';
+import { useEffect, useMemo, useState } from 'react';
+import UserCard from '~/components/UserCard';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -34,6 +38,84 @@ const Home = () => {
             content: 'Tư vấn dinh dưỡng',
         },
     ];
+
+    const dispatch = useDispatch();
+    const { coaches } = useSelector((state) => state.guest);
+
+    // const coaches = [
+    //     {
+    //         id: 1,
+    //         name: 'Hoang Tran',
+    //         age: 32,
+    //         gender: 'Male',
+    //     },
+    //     {
+    //         id: 2,
+    //         name: 'Hoang Nguyen',
+    //         age: 24,
+    //         gender: 'Female',
+    //     },
+    //     {
+    //         id: 3,
+    //         name: 'Hoang Le',
+    //         age: 18,
+    //         gender: 'Other',
+    //     },
+    //     {
+    //         id: 4,
+    //         name: 'Hoang Tran',
+    //         age: 32,
+    //         gender: 'Male',
+    //     },
+    //     {
+    //         id: 5,
+    //         name: 'Hoang Tran',
+    //         age: 32,
+    //         gender: 'Male',
+    //     },
+    //     {
+    //         id: 6,
+    //         name: 'Hoang Tran',
+    //         age: 32,
+    //         gender: 'Male',
+    //     },
+    //     {
+    //         id: 7,
+    //         name: 'Hoang Tran',
+    //         age: 32,
+    //         gender: 'Male',
+    //     },
+    //     {
+    //         id: 8,
+    //         name: 'Hoang Tran',
+    //         age: 32,
+    //         gender: 'Male',
+    //     },
+    //     {
+    //         id: 9,
+    //         name: 'Hoang Tran',
+    //         age: 32,
+    //         gender: 'Male',
+    //     },
+    //     {
+    //         id: 10,
+    //         name: 'Hoang Tran',
+    //         age: 32,
+    //         gender: 'Male',
+    //     },
+    // ];
+
+    useEffect(() => {
+        dispatch(getAllCoachesAsync({ pageSize: 8 }));
+    }, [dispatch]);
+    let pageSize = 8;
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const currentCoachesPagination = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * pageSize;
+        const lastPageIndex = firstPageIndex + pageSize;
+        return coaches.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, pageSize, coaches]);
 
     return (
         <div className={cx('wrapper')}>
@@ -91,30 +173,22 @@ const Home = () => {
                         <span>Đội ngũ huấn luyện viên chất lượng, tận tình sẵn sàng phục vụ mọi người</span>
                     </div>
                     <div className={cx('coach-list')}>
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        {/* <div className={cx('coach-item')}>
-                            <div className={cx('status')}>
-                                <div className={cx('icon')}></div>
-                                <span className={cx('status-title')}>Trực tuyến</span>
+                        {currentCoachesPagination.map((coach) => (
+                            <div className={cx('coach-item')} key={coach.id}>
+                                <UserCard user={coach} role="coach" />
                             </div>
-                            <div className={cx('avatar')}>
-                                <FaUserCircle className={cx('icon')} />
-                            </div>
-                            <h3 className={cx('name')}>Huy Tran Nhat</h3>
-                            <span className={cx('experience')}>5 năm kinh nghiệm</span>
-                            <button id={cx('view-btn')}>Xem thông tin</button>
-                        </div> */}
+                        ))}
                     </div>
-                    <a href="./coaches">
-                        <button id={cx('view-all-btn')}>Xem tất cả</button>
-                    </a>
+                    <Pagination
+                        className={cx('pagination-bar')}
+                        currentPage={currentPage}
+                        totalCount={coaches.length}
+                        pageSize={pageSize}
+                        onPageChange={(page) => setCurrentPage(page)}
+                    />
+                    <Link to="/all-coaches" id={cx('view-all-btn')}>
+                        Xem tất cả
+                    </Link>
                 </div>
             </div>
         </div>
