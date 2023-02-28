@@ -6,10 +6,13 @@ import ImageUploading from 'react-images-uploading';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { BiTrash } from 'react-icons/bi';
 import { MdOutlineEdit } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { certificationSubmitAsync } from '~/features/coachSlice';
 
 const cx = classNames.bind(styles);
 
 const Verify = () => {
+    const dispatch = useDispatch();
     const [images, setImages] = useState([]);
     const maxNumber = 69;
 
@@ -17,6 +20,10 @@ const Verify = () => {
         // data for submit
         console.log(imageList, addUpdateIndex);
         setImages(imageList);
+    };
+
+    const handleSubmit = () => {
+        dispatch(certificationSubmitAsync({ file: images }));
     };
 
     return (
@@ -81,7 +88,11 @@ const Verify = () => {
                     </ImageUploading>
                 </div>
             </div>
-            {images && <button id={cx('send-btn')}>Gửi</button>}
+            {images && (
+                <button id={cx('send-btn')} onClick={handleSubmit}>
+                    Gửi
+                </button>
+            )}
         </div>
     );
 };
