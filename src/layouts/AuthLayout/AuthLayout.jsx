@@ -61,7 +61,7 @@ const AuthLayout = ({ children }) => {
                         Xin chào, bạn là <span className={cx('role')}>{role}</span> của hệ thống
                     </h3>
                     <div className={cx('info')}>
-                        <span className={cx('name')}>{currentUser?.fullname}</span>
+                        <span className={cx('name')}>{currentUser?.Fullname}</span>
                         <div className={cx('avatar-wrapper')}>
                             <FaUserCircle className={cx('avatar')} />
                         </div>

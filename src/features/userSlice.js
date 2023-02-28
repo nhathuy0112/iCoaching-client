@@ -154,7 +154,7 @@ export const userSlice = createSlice({
             })
 
             //profile
-            .addCase(getUserProfileAsync.pending, (state, action) => {
+            .addCase(getUserProfileAsync.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
