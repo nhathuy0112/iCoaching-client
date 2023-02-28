@@ -16,7 +16,12 @@ export const clientNavLinks = [
 
 export const coachNavLinks = [
     { url: 'verify', name: 'Xác minh tài khoản' },
-    { url: 'my-client', name: 'Khách hàng của tôi' }
+    { url: 'my-clients', name: 'Khách hàng của tôi' },
+    { url: 'request-coaching', name: 'Yêu cầu huấn luyện' },
+    { url: 'my-courses', name: 'Gói tập của tôi' },
+    { url: 'account-information', name: 'Thông tin tài khoản' },
+    { url: 'portfolio', name: 'Hồ sơ năng lực' },
+    { url: 'messages', icon: <MdMessage />, name: 'Tin nhắn' },
 ]
 
 export const adminNavLinks = [

@@ -11,12 +11,6 @@
     }
 
     .link-item {
-        cursor: pointer;
-
-        &:hover {
-            opacity: 0.6;
-        }
-
         .link-url,
         #logout-btn {
             display: flex;
@@ -35,6 +29,16 @@
 
             &.active {
                 border-right: 3px solid var(--white-color);
+            }
+
+            &.disabled {
+                color: #a8a8a8;
+                pointer-events: none;
+                cursor: default;
+            }
+
+            &:hover {
+                opacity: 0.6;
             }
         }
 

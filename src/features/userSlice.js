@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { forgot, login, logout, refresh, register } from '~/services/userService';
+import { forgot, getUserProfile, login, logout, refresh, register } from '~/services/userService';
 import { parseJwt } from '~/utils/jwt';
 import { setLocalStorage, getLocalStorage, removeLocalStorage } from '~/utils/localStorage';
 
@@ -64,10 +64,20 @@ export const forgotAsync = createAsyncThunk('user/forgot', async (payload) => {
     }
 });
 
+export const getUserProfileAsync = createAsyncThunk('user/getUserProfile', async () => {
+    try {
+        const response = await getUserProfile();
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 const initialState = {
     isLoggedIn: getLocalStorage('auth') ? true : false,
     users: [],
     currentUser: getLocalStorage('auth') ? parseJwt(getLocalStorage('auth').accessToken) : null,
+    isVerified: false,
     loading: false,
     error: null,
     message: ''
@@ -139,6 +149,19 @@ export const userSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(forgotAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //profile
+            .addCase(getUserProfileAsync.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUserProfileAsync.fulfilled, (state, action) => {
+                state.isVerified = action.payload.isVerified;
+            })
+            .addCase(getUserProfileAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             })
