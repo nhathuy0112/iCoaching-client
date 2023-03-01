@@ -6,20 +6,16 @@
     padding: 16px;
     width: 100%;
     height: 100%;
+    background-color: var(--white-color);
     box-shadow: var(--default-box-shadow);
     border-radius: var(--default-border-radius);
     cursor: pointer;
 
-    &:hover {
-        transform: translateY(-4px);
-        transition: transform 0.1s ease-in-out;
-    }
-
     .avatar {
         flex: 0 0 50%;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
         width: 100%;
-        // height: 164px;
+        height: 164px;
         border-radius: var(--default-border-radius);
 
         .default {
@@ -41,9 +37,9 @@
             width: 100%;
             height: 100%;
         }
-        @media only screen and (min-width: 1201px) and (max-width: 1920px) {
-            height: 114px;
-        }
+        // @media only screen and (min-width: 1201px) and (max-width: 1920px) {
+        //     height: 114px;
+        // }
     }
 
     .info {
@@ -53,6 +49,7 @@
         .age {
             display: flex;
             align-items: center;
+            justify-content: center;
 
             span {
                 font-size: 1.2rem;
@@ -63,7 +60,7 @@
 
         .fullname span {
             color: var(--text-color);
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             font-weight: 600;
         }
 
@@ -71,6 +68,7 @@
             span {
                 color: green;
                 font-weight: 600;
+                font-size: 1.6rem;
             }
             .male {
                 color: #0a66e0;
@@ -83,6 +81,7 @@
         .age {
             span {
                 color: red;
+                font-size: 1.6rem;
             }
         }
     }

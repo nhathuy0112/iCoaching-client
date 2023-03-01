@@ -8,12 +8,12 @@ import { handleRenderGenderClassNames, handleRenderGenders } from '~/utils/gende
 const cx = classNames.bind(styles);
 
 const UserCard = ({ user, role }) => {
-    const { id, fullname, gender, age, avatar } = user;
+    const { id, fullname, gender, age, avatarUrl } = user;
     return (
         <Link to={`view-details/${role}/${id}`} className={cx('card')}>
             <div className={cx('avatar')}>
-                {avatar ? (
-                    <img src={require('~/assets/images/coach-photo1.png')} alt="Coach" />
+                {avatarUrl ? (
+                    <img src={avatarUrl} alt="Coach" />
                 ) : (
                     <div className={cx('default')}>
                         <FaUserCircle className={cx('icon')} />

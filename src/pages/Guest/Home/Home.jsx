@@ -3,10 +3,15 @@ import classNames from 'classnames/bind';
 
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { CgGym } from 'react-icons/cg';
-import { BiTimeFive } from 'react-icons/bi';
-// import { FaUserCircle } from 'react-icons/fa';
+import { GiWeightScale, GiWeightLiftingUp } from 'react-icons/gi';
+import { MdOutlineNoFood } from 'react-icons/md';
+import { RiBaseStationLine } from 'react-icons/ri';
 import ServiceCard from '~/components/ServiceCard';
-import CoachCard from '~/components/CoachCard';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllCoachesAsync } from '~/features/guestSlice';
+import { useEffect } from 'react';
+import UserCard from '~/components/UserCard';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -14,26 +19,46 @@ const Home = () => {
     const services = [
         {
             id: 1,
-            icon: <BiTimeFive />,
+            icon: <GiWeightLiftingUp />,
             content: 'Bài tập khoa học',
         },
         {
             id: 2,
-            icon: <BiTimeFive />,
+            icon: <RiBaseStationLine />,
             content: 'Huấn luyện trực tuyến',
             isMain: true,
         },
         {
             id: 3,
-            icon: <BiTimeFive />,
+            icon: <GiWeightScale />,
             content: 'Giảm cân cấp tốc',
         },
         {
             id: 4,
-            icon: <BiTimeFive />,
+            icon: <MdOutlineNoFood />,
             content: 'Tư vấn dinh dưỡng',
         },
     ];
+
+    const dispatch = useDispatch();
+    const { coaches } = useSelector((state) => state.guest);
+
+    useEffect(() => {
+        dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
+    }, [dispatch]);
+
+    //Pagination
+    // const [pageChange, setPageChange] = useState(pageIndex);
+
+    // const handlePageChange = (pageNumber) => {
+    //     setPageChange(pageNumber);
+    //     dispatch(setPage(pageNumber));
+    //     dispatch(getAllCoachesAsync({ pageIndex: pageNumber, pageSize }));
+    // };
+
+    // const currentCoachesPagination = useMemo(() => {
+    //     return coaches;
+    // }, [coaches]);
 
     return (
         <div className={cx('wrapper')}>
@@ -91,30 +116,22 @@ const Home = () => {
                         <span>Đội ngũ huấn luyện viên chất lượng, tận tình sẵn sàng phục vụ mọi người</span>
                     </div>
                     <div className={cx('coach-list')}>
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        <CoachCard />
-                        {/* <div className={cx('coach-item')}>
-                            <div className={cx('status')}>
-                                <div className={cx('icon')}></div>
-                                <span className={cx('status-title')}>Trực tuyến</span>
+                        {coaches.map((coach) => (
+                            <div className={cx('coach-item')} key={coach.id}>
+                                <UserCard user={coach} role="coach" />
                             </div>
-                            <div className={cx('avatar')}>
-                                <FaUserCircle className={cx('icon')} />
-                            </div>
-                            <h3 className={cx('name')}>Huy Tran Nhat</h3>
-                            <span className={cx('experience')}>5 năm kinh nghiệm</span>
-                            <button id={cx('view-btn')}>Xem thông tin</button>
-                        </div> */}
+                        ))}
                     </div>
-                    <a href="./coaches">
-                        <button id={cx('view-all-btn')}>Xem tất cả</button>
-                    </a>
+                    {/* <Pagination
+                        className={cx('pagination-bar')}
+                        currentPage={pageChange}
+                        totalCount={totalCount}
+                        pageSize={pageSize}
+                        onPageChange={(pageChange) => handlePageChange(pageChange)}
+                    /> */}
+                    <Link to="/all-coaches" id={cx('view-all-btn')}>
+                        Xem tất cả
+                    </Link>
                 </div>
             </div>
         </div>

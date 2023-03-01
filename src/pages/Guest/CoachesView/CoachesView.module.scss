@@ -1,0 +1,77 @@
+.wrapper {
+    background-image: url('../../../assets/images/service-bg.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding-bottom: 96px;
+    position: relative;
+
+    .content {
+        margin: auto;
+        max-width: var(--default-layout-max-width);
+        min-height: var(--default-content-min-height);
+
+        .title-and-back {
+            margin-top: var(--default-navbar-height);
+            display: flex;
+            align-items: center;
+            .back {
+                margin-bottom: 16px;
+                .back-link {
+                    display: flex;
+                    align-items: center;
+                    font-size: 2rem;
+                    font-weight: 600;
+                    color: var(--primary-color);
+                }
+            }
+
+            .title {
+                flex: 1;
+                padding-top: 32px;
+                margin-bottom: 16px;
+                text-align: center;
+                color: var(--text-color);
+            }
+        }
+
+        .coach-list {
+            margin: auto;
+            width: var(--default-layout-max-width);
+            display: grid;
+            gap: 12px;
+            grid-template-columns: repeat(5, 1fr);
+
+            .coach-item {
+                height: 300px;
+                width: 280px;
+                background-color: var(--white-color);
+
+                &:hover {
+                    transform: translateY(-4px);
+                    transition: transform 0.1s ease-in-out;
+                }
+            }
+        }
+    }
+    #view-all-btn {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 32px;
+        width: 170px;
+        font-size: 16px;
+        color: var(--white-color);
+        padding: 16px;
+        justify-content: center;
+        background-color: var(--primary-color);
+        border-radius: var(--default-border-radius);
+        cursor: pointer;
+        font-size: 1.6rem;
+        font-weight: 500;
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+}

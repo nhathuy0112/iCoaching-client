@@ -1,10 +1,7 @@
 .container {
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
+    min-height: var(--default-content-min-height);
 }
 
 .content {
-    // width: var(--default-layout-max-width);
-    // max-width: var(--default-layout-max-width);
+    height: 100%;
 }

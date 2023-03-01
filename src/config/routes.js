@@ -1,5 +1,10 @@
-import Home from '~/pages/Home';
 /*-----pages-----*/
+
+//Guest
+import Home from '~/pages/Guest/Home';
+import GuestCoachesView from '~/pages/Guest/CoachesView'
+import CoachDetail from '~/pages/Guest/CoachDetails'
+
 //Client
 import CoachesView from '~/pages/Client/CoachesView';
 import CoachDetails from '~/pages/Client/CoachDetails';
@@ -17,9 +22,6 @@ import MyCourse from '~/pages/Coach/MyCourse';
 import CoachAccountInformation from '~/pages/Coach/AccountInformation';
 import Portfolio from '~/pages/Coach/Portfolio';
 
-//Guest
-import GuestCoachesView from '~/pages/CoachesView/CoachesView'
-import CoachDetail from '~/pages/CoachDetail/CoachDetail'
 
 //Admin
 import AdminCoachesView from '~/pages/Admin/CoachesView'
@@ -28,6 +30,12 @@ import AdminCoachesView from '~/pages/Admin/CoachesView'
 import AuthLayout from '~/layouts/AuthLayout';
 
 
+const guestRoutes = [
+    { path: '/', component: Home },
+    { path: '/coaches', component: GuestCoachesView },
+    { path: '/all-coaches/view-details/coach/:id', component: CoachDetail },
+    { path: '/view-details/coach/:id', component: CoachDetail }
+];
 
 const clientRoutes = [
     { path: '/client/:id/all-coaches', component: CoachesView, layout: AuthLayout },
@@ -39,10 +47,6 @@ const clientRoutes = [
     { path: '/client/:id/messages', component: Messages, layout: AuthLayout },
 ];
 
-const guestRoutes = [
-    { path: '/coaches', component: GuestCoachesView },
-    { path: '/coaches/:id', component: CoachDetail }
-]
 const coachRoutes = [
     { path: '/coach/:id/verify', component: Verify, layout: AuthLayout },
     { path: '/coach/:id/my-clients', component: MyClient, layout: AuthLayout },
