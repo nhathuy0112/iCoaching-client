@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import classNames from 'classnames/bind';
-import styles from './CoachDetail.module.scss';
+import styles from './CoachDetails.module.scss';
 
 import Tabs from '~/components/Tabs/Tabs';
 import AboutMe from '~/components/AboutMe/AboutMe';
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCoachProfileAsync } from '~/features/guestSlice';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
+import UserCard from '~/components/UserCard';
 
 const cx = classNames.bind(styles);
 const CoachDetail = () => {
@@ -57,7 +58,7 @@ const CoachDetail = () => {
                     <div className={cx('profile')}>
                         <div className={cx('avatar')}>
                             {currentCoach.avatarUrl ? (
-                                <img src={require('~/assets/images/coach-photo1.png')} className={cx('image')} />
+                                <img src={currentCoach.avatarUrl} className={cx('image')} alt={'coach'} />
                             ) : (
                                 <FaUserCircle className={cx('default')} />
                             )}

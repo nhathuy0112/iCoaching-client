@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import styles from './CoachList.module.scss';
+import styles from './CoachesView.module.scss';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCoachesAsync } from '~/features/guestSlice';
@@ -9,12 +9,33 @@ import { Link } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 const cx = classNames.bind(styles);
 
-const Coaches = () => {
+const CoachesView = () => {
     const dispatch = useDispatch();
-    const { coaches } = useSelector((state) => state.guest);
+    const { coaches, totalCount } = useSelector((state) => state.guest);
+    const [coachesDisplay, setCoachesDisplay] = useState(15);
+
     useEffect(() => {
-        dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
-    }, [dispatch]);
+        dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
+    }, [dispatch, coachesDisplay]);
+
+    const handleShowMoreCoaches = () => {
+        const newCoachesDisplay = totalCount - coachesDisplay;
+        if (newCoachesDisplay >= 15) {
+            setCoachesDisplay(
+                (prev) => prev + 15,
+                () => {
+                    dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
+                },
+            );
+        } else {
+            setCoachesDisplay(
+                (prev) => prev + newCoachesDisplay,
+                () => {
+                    dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
+                },
+            );
+        }
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -38,10 +59,14 @@ const Coaches = () => {
                         </div>
                     ))}
                 </div>
-                <button id={cx('view-all-btn')}>Xem thêm</button>
             </div>
+            {coachesDisplay !== totalCount && (
+                <button id={cx('view-all-btn')} onClick={handleShowMoreCoaches}>
+                    Xem thêm
+                </button>
+            )}
         </div>
     );
 };
 
-export default Coaches;
+export default CoachesView;

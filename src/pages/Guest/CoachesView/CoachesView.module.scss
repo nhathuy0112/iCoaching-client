@@ -3,12 +3,13 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    padding-bottom: 96px;
+    position: relative;
 
     .content {
         margin: auto;
         max-width: var(--default-layout-max-width);
         min-height: var(--default-content-min-height);
-        position: relative;
 
         .title-and-back {
             margin-top: var(--default-navbar-height);
@@ -27,8 +28,8 @@
 
             .title {
                 flex: 1;
-                padding-top: 30px;
-                margin-bottom: 20px;
+                padding-top: 32px;
+                margin-bottom: 16px;
                 text-align: center;
                 color: var(--text-color);
             }
@@ -52,25 +53,25 @@
                 }
             }
         }
-        #view-all-btn {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: 32px;
-            width: 170px;
-            font-size: 16px;
-            color: var(--white-color);
-            padding: 16px;
-            justify-content: center;
-            background-color: var(--primary-color);
-            border-radius: var(--default-border-radius);
-            cursor: pointer;
-            font-size: 1.6rem;
-            font-weight: 500;
+    }
+    #view-all-btn {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 32px;
+        width: 170px;
+        font-size: 16px;
+        color: var(--white-color);
+        padding: 16px;
+        justify-content: center;
+        background-color: var(--primary-color);
+        border-radius: var(--default-border-radius);
+        cursor: pointer;
+        font-size: 1.6rem;
+        font-weight: 500;
 
-            &:hover {
-                opacity: 0.6;
-            }
+        &:hover {
+            opacity: 0.6;
         }
     }
 }

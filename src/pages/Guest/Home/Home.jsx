@@ -1,14 +1,15 @@
 import styles from './Home.module.scss';
 import classNames from 'classnames/bind';
-import Pagination from '~/components/Pagination';
 
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { CgGym } from 'react-icons/cg';
-import { BiTimeFive } from 'react-icons/bi';
+import { GiWeightScale, GiWeightLiftingUp } from 'react-icons/gi';
+import { MdOutlineNoFood } from 'react-icons/md';
+import { RiBaseStationLine } from 'react-icons/ri';
 import ServiceCard from '~/components/ServiceCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllCoachesAsync, setPage } from '~/features/guestSlice';
-import { useEffect, useMemo, useState } from 'react';
+import { getAllCoachesAsync } from '~/features/guestSlice';
+import { useEffect } from 'react';
 import UserCard from '~/components/UserCard';
 import { Link } from 'react-router-dom';
 
@@ -18,92 +19,29 @@ const Home = () => {
     const services = [
         {
             id: 1,
-            icon: <BiTimeFive />,
+            icon: <GiWeightLiftingUp />,
             content: 'Bài tập khoa học',
         },
         {
             id: 2,
-            icon: <BiTimeFive />,
+            icon: <RiBaseStationLine />,
             content: 'Huấn luyện trực tuyến',
             isMain: true,
         },
         {
             id: 3,
-            icon: <BiTimeFive />,
+            icon: <GiWeightScale />,
             content: 'Giảm cân cấp tốc',
         },
         {
             id: 4,
-            icon: <BiTimeFive />,
+            icon: <MdOutlineNoFood />,
             content: 'Tư vấn dinh dưỡng',
         },
     ];
 
     const dispatch = useDispatch();
-    const { coaches, pageSize, pageIndex, totalCount } = useSelector((state) => state.guest);
-
-    // const coaches = [
-    //     {
-    //         id: 1,
-    //         name: 'Hoang Tran',
-    //         age: 32,
-    //         gender: 'Male',
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'Hoang Nguyen',
-    //         age: 24,
-    //         gender: 'Female',
-    //     },
-    //     {
-    //         id: 3,
-    //         name: 'Hoang Le',
-    //         age: 18,
-    //         gender: 'Other',
-    //     },
-    //     {
-    //         id: 4,
-    //         name: 'Hoang Tran',
-    //         age: 32,
-    //         gender: 'Male',
-    //     },
-    //     {
-    //         id: 5,
-    //         name: 'Hoang Tran',
-    //         age: 32,
-    //         gender: 'Male',
-    //     },
-    //     {
-    //         id: 6,
-    //         name: 'Hoang Tran',
-    //         age: 32,
-    //         gender: 'Male',
-    //     },
-    //     {
-    //         id: 7,
-    //         name: 'Hoang Tran',
-    //         age: 32,
-    //         gender: 'Male',
-    //     },
-    //     {
-    //         id: 8,
-    //         name: 'Hoang Tran',
-    //         age: 32,
-    //         gender: 'Male',
-    //     },
-    //     {
-    //         id: 9,
-    //         name: 'Hoang Tran',
-    //         age: 32,
-    //         gender: 'Male',
-    //     },
-    //     {
-    //         id: 10,
-    //         name: 'Hoang Tran',
-    //         age: 32,
-    //         gender: 'Male',
-    //     },
-    // ];
+    const { coaches } = useSelector((state) => state.guest);
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));

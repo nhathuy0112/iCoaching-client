@@ -11,13 +11,11 @@ import Messages from '~/pages/Client/Messages';
 
 //Coach
 import CoachHome from '~/pages/Coach/Home/CoachHome';
-import ViewAllCoaches from '~/pages/Guest/CoachesView/CoachList'
-import CoachDetail from '~/pages/Guest/CoachDetail/CoachDetail'
+import ViewAllCoaches from '~/pages/Guest/CoachesView'
+import CoachDetail from '~/pages/Guest/CoachDetails'
 
 /*-----layouts-----*/
 import AuthLayout from '~/layouts/AuthLayout';
-import GuestLayout from '~/layouts/GuestLayout';
-
 
 const guestRoutes = [
     { path: '/', component: Home },
