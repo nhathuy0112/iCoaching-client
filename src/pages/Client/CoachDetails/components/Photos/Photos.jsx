@@ -35,7 +35,7 @@ const Photos = () => {
             <div className={cx('photo-list')}>
                 {currentPhotosPagination.map((photo) => (
                     <div className={cx('photo-item')} key={photo.id}>
-                        <img src={require('~/assets/images/coach-photo1.png')} className={cx('image')} />
+                        <img src={require('~/assets/images/coach-photo1.png')} alt={'coach'} className={cx('image')} />
                     </div>
                 ))}
             </div>

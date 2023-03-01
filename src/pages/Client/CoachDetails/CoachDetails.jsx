@@ -2,14 +2,12 @@ import styles from './CoachDetails.module.scss';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import About from './components/About';
-
 import { IoIosArrowBack } from 'react-icons/io';
 import { FaUserCircle } from 'react-icons/fa';
-
+import About from './components/About';
 import Photos from './components/Photos';
 import TrainingCourse from './components/TrainingCourses';
-import Feedback from './components/Feedback';
+import Feedback from './components/TrainingCourses';
 import Tabs from '~/components/Tabs';
 
 import { handleRenderGenders, handleRenderGenderClassNames } from '~/utils/gender';
@@ -58,7 +56,11 @@ const CoachDetails = () => {
                 <div className={cx('profile')}>
                     <div className={cx('avatar')}>
                         {coach.avatar ? (
-                            <img src={require('~/assets/images/coach-photo1.png')} className={cx('image')} />
+                            <img
+                                src={require('~/assets/images/coach-photo1.png')}
+                                alt={'avatar'}
+                                className={cx('image')}
+                            />
                         ) : (
                             <FaUserCircle className={cx('default')} />
                         )}

@@ -3,16 +3,15 @@ import classNames from 'classnames/bind';
 import styles from './CoachDetails.module.scss';
 
 import Tabs from '~/components/Tabs/Tabs';
-import AboutMe from '~/components/AboutMe/AboutMe';
-import CoachPhoto from '~/components/CoachPhoto/CoachPhoto';
-import TrainingCourse from '~/components/TrainingCourse/TrainingCourse';
+import AboutMe from './components/AboutMe';
+import CoachPhoto from './components/CoachPhoto';
+import TrainingCourse from './components/TrainingCourse';
 import { handleRenderGenderClassNames, handleRenderGenders } from '~/utils/gender';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCoachProfileAsync } from '~/features/guestSlice';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
-import UserCard from '~/components/UserCard';
 
 const cx = classNames.bind(styles);
 const CoachDetail = () => {

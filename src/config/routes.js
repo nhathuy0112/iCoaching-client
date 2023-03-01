@@ -32,7 +32,7 @@ import AuthLayout from '~/layouts/AuthLayout';
 
 const guestRoutes = [
     { path: '/', component: Home },
-    { path: '/coaches', component: GuestCoachesView },
+    { path: '/all-coaches', component: GuestCoachesView },
     { path: '/all-coaches/view-details/coach/:id', component: CoachDetail },
     { path: '/view-details/coach/:id', component: CoachDetail }
 ];
