@@ -6,7 +6,7 @@ const END_POINTS = {
     REFRESH: '/User/refresh',
     LOGOUT: '/User/logout',
     FORGOT: '/User/password-forgot',
-    PROFILE: '/User/profile'
+    PROFILE: '/User/profile',
 };
 
 export const register = (payload) => axios.post(END_POINTS.REGISTER, payload);
