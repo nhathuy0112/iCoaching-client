@@ -9,7 +9,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
-import { getAllCoachesAsync, updateStatusAsync, setStatus } from '~/features/adminSlice';
+import { getAllCoachesAsync, updateStatusAsync, setLock } from '~/features/adminSlice';
 import { handleRenderGenders } from '~/utils/gender';
 
 const cx = classNames.bind(styles);
@@ -33,7 +33,7 @@ const CoachesView = () => {
 
     const handleUpdateStatus = (id) => {
         dispatch(updateStatusAsync(id));
-        dispatch(setStatus(id));
+        dispatch(setLock(id));
         setLockOpen(false);
     };
     return (
@@ -70,10 +70,10 @@ const CoachesView = () => {
                                 <td>{coach.phoneNumber}</td>
                                 <td>
                                     <button
-                                        className={cx(`${coach.isLocked === true ? 'btn-confirm' : 'btn-warn'}`)}
+                                        className={cx(`${coach.isLocked ? 'btn-confirm' : 'btn-warn'}`)}
                                         onClick={() => handleLockOpen(coach)}
                                     >
-                                        {coach.isLocked === true ? 'Mở khoá tài khoản' : 'Khoá tài khoản'}
+                                        {coach.isLocked ? 'Mở khoá tài khoản' : 'Khoá tài khoản'}
                                     </button>
                                 </td>
                             </tr>
@@ -98,7 +98,9 @@ const CoachesView = () => {
                     <div className={cx('lock-modal')}>
                         <h1 className={cx('modal-header')}>iCoaching</h1>
                         <form action="">
-                            <p>{`Bạn có đồng ý khoá tài khoản ${coachAccount.userName}?`}</p>
+                            <p>{`Bạn có đồng ý ${coachAccount.isLocked ? 'mở' : ''} khoá tài khoản ${
+                                coachAccount.userName
+                            }?`}</p>
                             <div className={cx('button')}>
                                 <button
                                     className={cx('btn-confirm')}

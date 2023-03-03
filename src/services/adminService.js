@@ -2,7 +2,7 @@ import axios from '~/api/axios'
 
 const END_POINTS = {
     GET_ALL: 'Admin/coaches',
-    UPDATE_STATUS: '/Admin/coach-account-status/'
+    UPDATE_STATUS: '/Admin/coach-account-status'
 };
 
 export const getAllCoaches = ({ pageIndex, pageSize, sort, search }) => {

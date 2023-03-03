@@ -27,7 +27,7 @@ const initialState = {
     loading: false,
     error: null,
     message: '',
-    isLocked: null
+    isLocked: false
 }
 
 export const adminSlice = createSlice({
@@ -71,6 +71,6 @@ export const adminSlice = createSlice({
     }
 });
 
-export const { setPage, setStatus } = adminSlice.actions;
+export const { setPage, setLock } = adminSlice.actions;
 
 export default adminSlice.reducer;
