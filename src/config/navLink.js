@@ -1,4 +1,3 @@
-import { FaUserTie, FaUserAlt, FaBookReader } from 'react-icons/fa';
 import { FaUserShield, FaUserAlt, FaUserTie, FaBookReader } from 'react-icons/fa';
 import { CiSquareQuestion } from 'react-icons/ci';
 import { CgGym } from 'react-icons/cg';
