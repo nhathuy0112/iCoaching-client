@@ -49,6 +49,8 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
                     break;
                 case 'ADMIN':
                     navigate(`/admin/${currentUser.Id}/all-coaches`);
+                case 'SUPER_ADMIN':
+                    navigate(`/super_admin/${currentUser.Id}/list_admin`);
                     break;
                 default:
                     navigate('/');

@@ -71,7 +71,7 @@ export const getUserProfileAsync = createAsyncThunk('user/getUserProfile', async
     } catch (error) {
         console.log(error);
     }
-})
+});
 
 const initialState = {
     isLoggedIn: getLocalStorage('auth') ? true : false,
@@ -80,7 +80,7 @@ const initialState = {
     isVerified: false,
     loading: false,
     error: null,
-    message: ''
+    message: '',
 };
 
 export const userSlice = createSlice({
@@ -90,7 +90,7 @@ export const userSlice = createSlice({
         resetAuth: (state) => {
             state.loading = false;
             state.error = null;
-            state.message = ''
+            state.message = '';
         },
     },
     extraReducers: (builder) => {
@@ -102,7 +102,7 @@ export const userSlice = createSlice({
             })
             .addCase(registerAsync.fulfilled, (state, action) => {
                 state.users.push(action.payload);
-                state.message = 'Đăng ký thành công. Vui lòng kiểm tra email để xác thực tài khoản'
+                state.message = 'Đăng ký thành công. Vui lòng kiểm tra email để xác thực tài khoản';
                 state.error = null;
             })
             .addCase(registerAsync.rejected, (state, action) => {
@@ -164,7 +164,7 @@ export const userSlice = createSlice({
             .addCase(getUserProfileAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
-            })
+            });
     },
 });
 

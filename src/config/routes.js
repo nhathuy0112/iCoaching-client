@@ -2,8 +2,8 @@
 
 //Guest
 import Home from '~/pages/Guest/Home';
-import GuestCoachesView from '~/pages/Guest/CoachesView'
-import CoachDetail from '~/pages/Guest/CoachDetails'
+import GuestCoachesView from '~/pages/Guest/CoachesView';
+import CoachDetail from '~/pages/Guest/CoachDetails';
 
 //Client
 import CoachesView from '~/pages/Client/CoachesView';
@@ -22,19 +22,22 @@ import MyCourse from '~/pages/Coach/MyCourse';
 import CoachAccountInformation from '~/pages/Coach/AccountInformation';
 import Portfolio from '~/pages/Coach/Portfolio';
 
-
 //Admin
-import AdminCoachesView from '~/pages/Admin/CoachesView'
+import AdminCoachesView from '~/pages/Admin/CoachesView';
+
+//SuperAdmin
+import ListAdmin from '~/pages/SuperAdmin/ListAdmin';
+import SuperAdminCreateAccount from '~/pages/SuperAdmin/CreateAccount/CreateAccount';
+import SuperAdminAccountProfile from '~/pages/SuperAdmin/AccountProfile/AccountProfile';
 
 /*-----layouts-----*/
 import AuthLayout from '~/layouts/AuthLayout';
-
 
 const guestRoutes = [
     { path: '/', component: Home },
     { path: '/all-coaches', component: GuestCoachesView },
     { path: '/all-coaches/view-details/coach/:id', component: CoachDetail },
-    { path: '/view-details/coach/:id', component: CoachDetail }
+    { path: '/view-details/coach/:id', component: CoachDetail },
 ];
 
 const clientRoutes = [
@@ -54,10 +57,21 @@ const coachRoutes = [
     { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout },
     { path: '/coach/:id/account-information', component: CoachAccountInformation, layout: AuthLayout },
     { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout },
-    { path: '/coach/:id/messages', component: Messages, layout: AuthLayout }
+    { path: '/coach/:id/messages', component: Messages, layout: AuthLayout },
 ];
 
-const adminRoutes = [
-    { path: '/admin/:id/all-coaches', component: AdminCoachesView, layout: AuthLayout }
-]
-export const routes = [{ path: '/', component: Home }, ...guestRoutes, ...clientRoutes, ...coachRoutes, ...adminRoutes];
+const adminRoutes = [{ path: '/admin/:id/all-coaches', component: AdminCoachesView, layout: AuthLayout }];
+
+const superAdminRoutes = [
+    { path: '/super_admin/:id/create_account/', component: SuperAdminCreateAccount, layout: AuthLayout },
+    { path: '/super_admin/:id/account_profile/', component: SuperAdminAccountProfile, layout: AuthLayout },
+    { path: '/super_admin/:id/list_admin/', component: ListAdmin, layout: AuthLayout },
+];
+export const routes = [
+    { path: '/', component: Home },
+    ...guestRoutes,
+    ...clientRoutes,
+    ...coachRoutes,
+    ...adminRoutes,
+    ...superAdminRoutes,
+];
