@@ -47,7 +47,7 @@ const CoachesView = () => {
                     </div>
                 </form>
 
-                <table>
+                <table className={cx('tb-coaches')}>
                     <thead>
                         <tr>
                             <th>Tên đăng nhập</th>
