@@ -3,10 +3,11 @@ import { certificationSubmit, getCertificationRequest } from "~/services/coachSe
 
 export const certificationSubmitAsync = createAsyncThunk('/coach/certificationSubmit', async (payload) => {
     try {
-        const response = await certificationSubmit({ files: payload.files });
+        const response = await certificationSubmit(payload);
         return response;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 });
 
@@ -38,8 +39,8 @@ export const coachSlice = createSlice({
                 state.error = null;
                 state.message = '';
             })
-            .addCase(certificationSubmitAsync.fulfilled, (state) => {
-                state.message = 'Nộp chứng chỉ thành công. Vui lòng đợi phê duyệt'
+            .addCase(certificationSubmitAsync.fulfilled, (state, action) => {
+                state.message = action.payload;
             })
             .addCase(certificationSubmitAsync.rejected, (state, action) => {
                 state.loading = true;

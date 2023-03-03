@@ -4,14 +4,10 @@ const END_POINTS = {
     CERTIFICATION_REQUEST: '/Coach/certification-request'
 }
 
-export const certificationSubmit = (files) => {
-    const formData = new FormData();
-    files.forEach(file => {
-        formData.append('files', file);
-    });
-    return axios.post(END_POINTS.CERTIFICATION_REQUEST, formData, {
+export const certificationSubmit = (payload) => {
+    return axios.post(END_POINTS.CERTIFICATION_REQUEST, payload, {
         headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
         },
     });
 };

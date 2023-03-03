@@ -9,21 +9,18 @@ import { MdOutlineEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { certificationSubmitAsync, getCertificationAsync } from '~/features/coachSlice';
 import SuccessMessage from '~/components/SuccessMessage';
+import { dataURItoBlob } from '~/utils/blob';
 
 const cx = classNames.bind(styles);
 
 const Verify = () => {
     const dispatch = useDispatch();
     const { certificationImages, status, message } = useSelector((state) => state.coach);
-    console.log('images: ', certificationImages);
-    console.log('status: ', status);
-
     const [images, setImages] = useState([]);
     const maxNumber = 69;
 
-    const onChange = (imageList, addUpdateIndex) => {
-        // data for submit
-        console.log(imageList, addUpdateIndex);
+    const onChange = (imageList) => {
+        console.log(imageList);
         setImages(imageList);
     };
 
@@ -32,7 +29,12 @@ const Verify = () => {
     }, [dispatch]);
 
     const handleSubmit = () => {
-        dispatch(certificationSubmitAsync({ files: images }));
+        const formData = new FormData();
+        images.forEach((image) => {
+            const blob = dataURItoBlob(image.data_url);
+            formData.append('files', blob);
+        });
+        dispatch(certificationSubmitAsync(formData));
     };
 
     return (
@@ -112,7 +114,7 @@ const Verify = () => {
                 )}
             </div>
             {message && <SuccessMessage message={message} />}
-            <button id={cx('send-btn')} className={status === 'Pending' && cx('disabled')} onClick={handleSubmit}>
+            <button id={cx('send-btn')} className={status === 'Pending' ? cx('disabled') : ''} onClick={handleSubmit}>
                 Gửi
             </button>
         </div>
