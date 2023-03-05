@@ -21,6 +21,7 @@ export const getCertificationAsync = createAsyncThunk('/coach/getCertificationRe
 })
 
 const initialState = {
+    isRequestSent: false,
     certificationImages: [],
     loading: false,
     error: null,
@@ -35,12 +36,14 @@ export const coachSlice = createSlice({
         builder
             //submit certification
             .addCase(certificationSubmitAsync.pending, (state) => {
+                state.isRequestSent = false;
                 state.loading = true;
                 state.error = null;
                 state.message = '';
             })
             .addCase(certificationSubmitAsync.fulfilled, (state, action) => {
-                state.message = action.payload;
+                state.certificationImages = action.payload.urls;
+                state.status = action.payload.status;
             })
             .addCase(certificationSubmitAsync.rejected, (state, action) => {
                 state.loading = true;
@@ -62,5 +65,7 @@ export const coachSlice = createSlice({
             })
     }
 })
+
+export const { setRequestSent, resetRequestSent } = coachSlice.actions;
 
 export default coachSlice.reducer;

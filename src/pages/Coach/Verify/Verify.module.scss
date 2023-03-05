@@ -1,5 +1,7 @@
 .wrapper {
     height: 100%;
+    display: flex;
+    flex-direction: column;
     position: relative;
 
     .title {
@@ -8,6 +10,7 @@
         color: var(--text-color);
     }
     .content {
+        flex: 1;
         .notification {
             text-align: center;
         }
@@ -36,6 +39,12 @@
 
                         &:hover {
                             opacity: 0.6;
+                        }
+
+                        &.disabled {
+                            background-color: gray;
+                            cursor: pointer;
+                            pointer-events: none;
                         }
                     }
 
@@ -98,6 +107,18 @@
             }
         }
     }
+    .message {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+
+        &.warning {
+            top: unset;
+            bottom: 60px;
+        }
+    }
+
     #send-btn {
         position: absolute;
         bottom: 0;
