@@ -37,7 +37,7 @@ const Verify = () => {
 
     const handleRenderUploadingByStatus = (status) => {
         switch (status) {
-            case '':
+            case null || undefined:
                 return (
                     <>
                         <div className={cx('notification')}>

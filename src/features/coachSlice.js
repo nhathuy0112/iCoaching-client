@@ -26,7 +26,7 @@ const initialState = {
     loading: false,
     error: null,
     message: '',
-    status: '',
+    status: null,
 }
 
 export const coachSlice = createSlice({
