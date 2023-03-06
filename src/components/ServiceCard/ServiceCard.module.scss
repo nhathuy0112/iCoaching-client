@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: space-evenly;
     background-color: var(--white-color);
-    border-radius: 16px;
+    border-radius: var(--default-border-radius);
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.3);
 
     &.main {

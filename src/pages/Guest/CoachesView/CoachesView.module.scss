@@ -1,8 +1,4 @@
 .wrapper {
-    background-image: url('../../../assets/images/service-bg.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
     padding-bottom: 96px;
     position: relative;
 
@@ -31,7 +27,14 @@
                 padding-top: 32px;
                 margin-bottom: 16px;
                 text-align: center;
-                color: var(--text-color);
+
+                h1 {
+                    color: var(--primary-color);
+                }
+
+                span {
+                    color: var(--text-color);
+                }
             }
         }
 
