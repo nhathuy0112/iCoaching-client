@@ -25,7 +25,8 @@ const Header = () => {
                 <div className={cx('navbar')}>
                     <div className={cx('navbar-content')}>
                         <div className={cx('logo')}>
-                            <span>iCoaching</span>
+                            <img src={require('../../../assets/images/Logo.png')} alt="logo" />
+                            <span className={cx('name')}>iCoaching</span>
                         </div>
                         <div className={cx('auth-btn')}>
                             <button onClick={handleLogin} id={cx('login')}>
