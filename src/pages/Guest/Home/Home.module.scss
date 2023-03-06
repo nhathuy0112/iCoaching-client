@@ -6,7 +6,6 @@
         justify-content: center;
         .title {
             text-align: center;
-            margin-top: 48px;
 
             h1 {
                 font-size: 4rem;
@@ -23,7 +22,7 @@
         }
     }
     .banner-content {
-        background-image: url('../../../assets/images/Header-Campaign-FR-2.png');
+        background-image: url('../../../assets/images/background-home.jpg');
         width: 100%;
         background-repeat: no-repeat;
         background-position: center;
@@ -36,7 +35,6 @@
         justify-content: space-between;
 
         .slogan-and-train {
-            max-width: var(--default-layout-max-width);
             padding: 32px 0;
             display: flex;
             flex-direction: column;
@@ -118,18 +116,12 @@
             }
         }
     }
-    .service {
-        // height: 620px;
-        width: 100%;
-        background-image: url('../../../assets/images/service-bg.png');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-    }
 
     .service {
-        text-align: center;
         padding: 48px 0;
+        text-align: center;
+        width: 100%;
+        background-color: var(--light-white-color);
 
         .service-list {
             margin: auto;
@@ -142,16 +134,17 @@
     }
 
     .coaches {
-        padding: 32px 0;
         width: 100%;
-        background-image: url('../../../assets/images/coaches-bg.png');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
+        background-color: var(--light-white-color);
 
         .title {
             margin-top: 0;
             margin-bottom: 32px;
+            padding: 48px 0;
+            background-image: url('../../../assets/images/coach-bg.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
         }
 
         .coach-list {
