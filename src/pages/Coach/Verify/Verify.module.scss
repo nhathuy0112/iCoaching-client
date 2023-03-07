@@ -136,11 +136,5 @@
         &:hover {
             opacity: 0.6;
         }
-
-        &.disabled {
-            background-color: gray;
-            cursor: pointer;
-            pointer-events: none;
-        }
     }
 }

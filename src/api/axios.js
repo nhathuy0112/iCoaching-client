@@ -4,7 +4,7 @@ import { getLocalStorage } from '~/utils/localStorage';
 let accessToken = getLocalStorage('auth') ? getLocalStorage('auth').accessToken : null;
 
 const instance = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
+    baseURL: process.env.REACT_APP_API_URL_LOCAL,
     headers: {
         Authorization: `Bearer ${accessToken}`,
     },
