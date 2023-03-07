@@ -9,8 +9,8 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { BsCheckLg } from 'react-icons/bs';
 import { HiOutlineXMark } from 'react-icons/hi2';
 import { setPage, setSearch, setLock, updateAdminStatus, getAdminData } from '~/features/superAdminSlice';
-import Modal from '~/components/Modal/Modal';
-import Pagination from '~/layouts/components/Pagination';
+import Modal from '~/components/Modal';
+import Pagination from '~/components/Pagination';
 
 const cx = classNames.bind(styles);
 

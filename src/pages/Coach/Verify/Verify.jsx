@@ -19,11 +19,7 @@ const Verify = () => {
     const [images, setImages] = useState(certificationImages);
     const maxNumber = 69;
 
-    console.log('status: ', status);
-    console.log(images);
-
     const onChange = (imageList) => {
-        // console.log(imageList);
         setImages(imageList);
     };
 
