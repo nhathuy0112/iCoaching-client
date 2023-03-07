@@ -3,6 +3,9 @@ import classNames from 'classnames/bind';
 import styles from './About.module.scss';
 import 'react-quill/dist/quill.snow.css';
 import { useForm, Controller } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAboutMeAsync, postAboutMeAsync } from '~/features/coachSlice';
+import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -36,22 +39,42 @@ const formats = [
 ];
 
 const About = () => {
+    const dispatch = useDispatch();
+    const { aboutMe } = useSelector((state) => state.coach);
     const { control, handleSubmit } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const [editorValue, setEditorValue] = useState('');
+
+    useEffect(() => {
+        dispatch(getAboutMeAsync());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (aboutMe) {
+            setEditorValue(aboutMe);
+        }
+    }, [aboutMe]);
+
+    const handlePostAboutMe = (data) => {
+        dispatch(postAboutMeAsync(editorValue ? editorValue : data.about));
+        // console.log(data);
     };
+
+    const handleEditorChange = (value) => {
+        setEditorValue(value);
+    };
+
     return (
         <div className={cx('wrapper')}>
-            <form onSubmit={handleSubmit(onSubmit)} id={cx('about-form')}>
+            <form onSubmit={handleSubmit(handlePostAboutMe)} id={cx('about-form')}>
                 <Controller
                     name="about"
                     control={control}
-                    defaultValue=""
+                    defaultValue={aboutMe ? aboutMe : ''}
                     render={({ field: { onChange, value } }) => (
                         <ReactQuill
-                            value={value}
-                            onChange={onChange}
+                            value={editorValue}
+                            onChange={handleEditorChange}
                             modules={modules}
                             formats={formats}
                             bounds={'.app'}

@@ -1,7 +1,8 @@
 import axios from '~/api/axios'
 
 const END_POINTS = {
-    CERTIFICATION_REQUEST: '/Coach/certification-request'
+    CERTIFICATION_REQUEST: '/Coach/certification-request',
+    ABOUT_ME: '/Coach/about-me'
 }
 
 export const certificationSubmit = (payload) => {
@@ -13,3 +14,11 @@ export const certificationSubmit = (payload) => {
 };
 
 export const getCertificationRequest = () => axios.get(END_POINTS.CERTIFICATION_REQUEST);
+
+export const postAboutMe = (data) => axios.post(END_POINTS.ABOUT_ME, data, {
+    headers: {
+        "Content-Type": "application/json",
+    }
+});
+
+export const getAboutMe = () => axios.get(END_POINTS.ABOUT_ME);
