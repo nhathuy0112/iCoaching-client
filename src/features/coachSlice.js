@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify';
 import { certificationSubmit, getCertificationRequest, postAboutMe, getAboutMe, postPortfolioPhotos, getPortfolioPhotos } from '~/services/coachService';
+import { removePortfolioPhotos } from './../services/coachService';
 
 export const certificationSubmitAsync = createAsyncThunk('/coach/certificationSubmit', async (payload) => {
     try {
@@ -25,7 +26,7 @@ export const postAboutMeAsync = createAsyncThunk('/coach/postAboutMe', async (da
     try {
         const response = await postAboutMe(data);
         if (response) {
-            toast.success('Cập nhật hồ sơ thành công')
+            toast.success('Cập nhật hồ sơ thành công!')
             return response;
         }
     } catch (error) {
@@ -46,7 +47,7 @@ export const postPortfolioPhotosAsync = createAsyncThunk('/coach/postPortfolioPh
     try {
         const response = await postPortfolioPhotos(payload);
         if (response) {
-            toast.success('Cập nhật danh sách ảnh thành công!')
+            toast.success('Thêm ảnh thành công!')
             return response;
         }
     } catch (error) {
@@ -63,6 +64,18 @@ export const getPortfolioPhotosAsync = createAsyncThunk('/coach/getPortfolioPhot
         console.log(error);
     }
 });
+
+export const removePortfolioPhotosAsync = createAsyncThunk('/coach/removePortfolioPhotos', async (id) => {
+    try {
+        const response = await removePortfolioPhotos(id);
+        if (response) {
+            toast.success('Xóa ảnh thành công!')
+            return { id };
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 const initialState = {
     certificationImages: [],
@@ -140,8 +153,8 @@ export const coachSlice = createSlice({
                 state.error = null;
                 state.message = '';
             })
-            .addCase(postPortfolioPhotosAsync.fulfilled, (state) => {
-                state.message = 'Post successfully'
+            .addCase(postPortfolioPhotosAsync.fulfilled, (state, action) => {
+                state.portfolioImages = state.portfolioImages.concat(action.payload);
             })
             .addCase(postPortfolioPhotosAsync.rejected, (state, action) => {
                 state.loading = true;
@@ -156,9 +169,22 @@ export const coachSlice = createSlice({
             })
             .addCase(getPortfolioPhotosAsync.fulfilled, (state, action) => {
                 state.portfolioImages = action.payload.data;
-                state.status = action.payload.status;
             })
             .addCase(getPortfolioPhotosAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            // remove photos of portfolio
+            .addCase(removePortfolioPhotosAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(removePortfolioPhotosAsync.fulfilled, (state, action) => {
+                state.portfolioImages = state.portfolioImages.filter(image => image.id !== action.payload.id);
+            })
+            .addCase(removePortfolioPhotosAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             })

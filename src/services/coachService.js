@@ -3,7 +3,8 @@ import axios from '~/api/axios'
 const END_POINTS = {
     CERTIFICATION_REQUEST: '/Coach/certification-request',
     ABOUT_ME: '/Coach/about-me',
-    PORTFOLIO_PHOTOS: '/Coach/portfolio-photos'
+    PORTFOLIO_PHOTOS: '/Coach/portfolio-photos',
+    PHOTO_REMOVE: '/Coach/photo-remove'
 }
 
 export const certificationSubmit = (payload) => {
@@ -33,5 +34,7 @@ export const postPortfolioPhotos = (payload) => {
 };
 
 export const getPortfolioPhotos = () => axios.get(END_POINTS.PORTFOLIO_PHOTOS);
+
+export const removePortfolioPhotos = (photoId) => axios.delete(`${END_POINTS.PHOTO_REMOVE}/${photoId}`);
 
 
