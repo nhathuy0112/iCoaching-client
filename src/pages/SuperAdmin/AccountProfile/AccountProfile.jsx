@@ -120,7 +120,7 @@ const AccountProfile = () => {
                             </Modal>
                         )}
                     </div>
-                    <div>{currentUser.email}</div>
+                    <div>{currentUser?.email}</div>
                 </div>
 
                 <div className={cx('right_container')}>

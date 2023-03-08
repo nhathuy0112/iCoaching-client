@@ -82,12 +82,11 @@
         margin-bottom: 20px;
 
         .coach-item {
-            height: 320px;
-            width: 240px;
-            // @media only screen and (min-width: 1201px) and (max-width: 1920px) {
-            //     height: 216px;
-            //     width: 176px;
-            // }
+            height: 300px;
+            width: 280px;
+            @media (min-width: 1201px) and (max-width: 1920px) {
+                width: 224px;
+            }
         }
     }
 }

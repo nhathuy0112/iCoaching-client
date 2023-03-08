@@ -15,6 +15,11 @@ const CoachesView = () => {
     const [coachesDisplay, setCoachesDisplay] = useState(15);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
+
+
+    useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
     }, [dispatch, coachesDisplay]);
 

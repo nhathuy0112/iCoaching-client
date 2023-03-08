@@ -48,7 +48,10 @@ const Sidebar = ({ links }) => {
 
     return (
         <div className={cx('container')}>
-            <h1 className={cx('logo')}>iCoaching</h1>
+            <div className={cx('logo')}>
+                <img src={require('../../../assets/images/Logo-black.png')} alt="logo" />
+                <span>iCoaching</span>
+            </div>
             <ul className={cx('link-list')}>
                 {links.map((link, index) => {
                     const isDisabled = disabledLinks.some((disabledLink) => disabledLink.url === link.url);
@@ -68,12 +71,12 @@ const Sidebar = ({ links }) => {
                     );
                 })}
                 <li className={cx('link-item')}>
-                    <button id={cx('logout-btn')} onClick={handleLogout}>
+                    <div id={cx('logout-btn')} onClick={handleLogout}>
                         <span>
                             <BiLogOut />
                         </span>
                         <span className={cx('action')}>Đăng xuất</span>
-                    </button>
+                    </div>
                 </li>
             </ul>
         </div>

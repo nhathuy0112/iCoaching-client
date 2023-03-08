@@ -12,15 +12,15 @@ const cx = classNames.bind(styles);
 const AuthLayout = ({ children }) => {
     const { currentUser } = useSelector((state) => state.user);
     const [links, setLinks] = useState([]);
-    const [role, setRole] = useState('');
+    const url = window.location.href;
+    const path = url.split("/");
+    const lastPath = path[path.length - 1];
 
     useEffect(() => {
         if (currentUser) {
             setLinks(handleRenderNavLinks(currentUser?.role));
-            setRole(handleRenderRole(currentUser?.role));
         } else {
             setLinks([]);
-            setRole('');
         }
     }, [currentUser]);
 
@@ -39,28 +39,15 @@ const AuthLayout = ({ children }) => {
         }
     };
 
-    const handleRenderRole = (role) => {
-        switch (role) {
-            case 'CLIENT':
-                return 'Khách hàng';
-            case 'COACH':
-                return 'Huấn luyện viên';
-            case 'ADMIN':
-                return 'Kiểm duyệt viên';
-            case 'SUPER_ADMIN':
-                return 'Quản trị Kiểm duyệt viên';
-            default:
-                return '';
-        }
-    };
-
     return (
         <div className={cx('wrapper')}>
             <Sidebar links={links} />
             <div className={cx('container')}>
                 <div className={cx('header')}>
-                    <h3 className={cx('welcome')}>
-                        Xin chào, bạn là <span className={cx('role')}>{role}</span> của hệ thống
+                    <h3>
+                        {links.map(link => {
+                            if(link.url === lastPath) return link.name
+                        })}
                     </h3>
                     <div className={cx('info')}>
                         <span className={cx('name')}>{currentUser?.Fullname}</span>

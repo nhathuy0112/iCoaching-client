@@ -34,6 +34,11 @@
                 margin-bottom: 20px;
                 text-align: center;
                 color: var(--text-color);
+
+                @media (min-width: 1201px) and (max-width: 1920px){
+                    padding-top: 0;
+                    margin-bottom: 0;
+                }
             }
         }
         .main {

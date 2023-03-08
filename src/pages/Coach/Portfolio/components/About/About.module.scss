@@ -7,6 +7,10 @@
 
         .editor {
             height: 85%;
+
+            @media(min-width: 1201px) and (max-width: 1920px){
+                height: 82%;
+            }
         }
 
         #update-btn {
@@ -24,6 +28,11 @@
 
             &:hover {
                 opacity: 0.6;
+            }
+
+            @media (min-width: 1201px) and (max-width: 1920px){
+                padding: 8px 20px;
+                font-size: 1.4rem;
             }
         }
     }

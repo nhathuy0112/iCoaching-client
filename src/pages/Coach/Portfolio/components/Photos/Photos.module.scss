@@ -3,6 +3,10 @@
     position: relative;
     .image-wrapper {
         .image-upload {
+            @media (min-width: 1201px) and (max-width:1920px){
+                margin-top: -12px;
+            }
+
             .action {
                 display: flex;
                 justify-content: flex-end;
@@ -37,11 +41,11 @@
 
                 #add-btn {
                     background-color: green;
-                    margin-right: 8px;
-                }
 
-                #remove-all-btn {
-                    background-color: red;
+                    @media (min-width: 1201px) and (max-width: 1920px){
+                        padding: 12px;
+                        font-size: 1.4rem;
+                    }
                 }
             }
             .image-list {
@@ -53,7 +57,7 @@
                 .image-item {
                     position: relative;
                     width: 338px;
-                    height: 200px;
+                    height: 224px;
                     border: 1px solid var(--border-color);
                     border-radius: var(--default-border-radius);
                     cursor: pointer;
@@ -89,6 +93,12 @@
                             display: flex;
                         }
                     }
+
+                    
+                    @media (min-width: 1201px) and (max-width: 1920px) {
+                        width: 208px;
+                        height: 124px;
+                    }
                 }
             }
         }
@@ -112,6 +122,11 @@
             &:hover {
                 opacity: 0.6;
             }
+
+            @media (min-width: 1201px) and (max-width: 1920px){
+                padding: 12px;
+                font-size: 1.4rem;
+            }
         }
 
         #cancel-btn {
@@ -127,6 +142,11 @@
 
             &:hover {
                 opacity: 0.6;
+            }
+
+            @media (min-width: 1201px) and (max-width: 1920px){
+                padding: 12px;
+                font-size: 1.4rem;
             }
         }
     }

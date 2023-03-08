@@ -280,7 +280,7 @@ const Verify = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <h4 className={cx('title')}>Xác minh tài khoản</h4>
+            {/* <h4 className={cx('title')}>Xác minh tài khoản</h4> */}
             <div className={cx('content')}>{handleRenderUploadingByStatus(status)}</div>
         </div>
     );

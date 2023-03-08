@@ -8,7 +8,6 @@ import { AiOutlineClose } from 'react-icons/ai';
 import photo1 from '~/assets/images/coach-photo1.png';
 import photo2 from '~/assets/images/coach-photo2.png';
 import photo3 from '~/assets/images/coach-photo3.png';
-import photo4 from '~/assets/images/Header-Campaign-FR-2.png';
 import photo5 from '~/assets/images/LinkedIn.png';
 import photo6 from '~/assets/images/service-bg.png';
 
@@ -41,7 +40,7 @@ const CoachPhoto = () => {
         },
         {
             id: 4,
-            url: photo4,
+            url: photo3,
         },
         {
             id: 5,
@@ -54,9 +53,14 @@ const CoachPhoto = () => {
     ];
     return (
         <div className={cx('wrapper')}>
+            <div className={cx('image-list')}>
             {images.map((item) => (
-                <img key={item.id} onClick={() => handleOpen(item.url)} src={item.url} alt="" />
+                <div className={cx('image-item')}>
+                    <img key={item.id} onClick={() => handleOpen(item.url)} src={item.url} alt="" />
+                </div>
             ))}
+            </div>
+           
             {open && (
                 <Modal
                     open={open}
