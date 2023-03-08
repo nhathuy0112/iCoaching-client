@@ -7,7 +7,13 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { BiTrash } from 'react-icons/bi';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { certificationSubmitAsync, getCertificationAsync } from '~/features/coachSlice';
+import {
+    certificationSubmitAsync,
+    getCertificationAsync,
+    resetCertificationImages,
+    resetEditor,
+    resetPortfolioImages,
+} from '~/features/coachSlice';
 import SuccessMessage from '~/components/SuccessMessage';
 import { dataURItoBlob } from '~/utils/blob';
 import ErrorMessage from '~/components/ErrorMessage';
@@ -16,14 +22,11 @@ const cx = classNames.bind(styles);
 const Verify = () => {
     const dispatch = useDispatch();
     const { certificationImages, status } = useSelector((state) => state.coach);
+    const { currentUser } = useSelector((state) => state.user);
     const [images, setImages] = useState(certificationImages);
     const maxNumber = 69;
 
-    console.log('status: ', status);
-    console.log(images);
-
     const onChange = (imageList) => {
-        // console.log(imageList);
         setImages(imageList);
     };
 
@@ -32,8 +35,16 @@ const Verify = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        setImages(certificationImages);
+        if (certificationImages) setImages(certificationImages);
     }, [certificationImages]);
+
+    useEffect(() => {
+        if (currentUser === null) {
+            dispatch(resetCertificationImages());
+            dispatch(resetEditor());
+            dispatch(resetPortfolioImages());
+        }
+    }, [currentUser, dispatch]);
 
     const handleRenderUploadingByStatus = (status) => {
         switch (status) {
