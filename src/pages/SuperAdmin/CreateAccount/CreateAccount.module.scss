@@ -34,6 +34,37 @@
         text-align: center;
     }
 }
+@media only screen and (max-width: 768px) {
+    #register-form {
+        width: 90%;
+        margin: 10% auto 5%;
+    }
+
+    .col2 {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    label {
+        font-size: 1.5rem;
+    }
+
+    input {
+        font-size: 1.2rem;
+    }
+
+    #submit-btn {
+        font-size: 1.2rem;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    #register-form {
+        width: 60%;
+        margin: 2% auto;
+    }
+}
 
 .container_confirm {
     display: flex;
