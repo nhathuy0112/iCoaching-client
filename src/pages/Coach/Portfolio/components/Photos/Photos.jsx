@@ -8,18 +8,24 @@ import { BiTrash } from 'react-icons/bi';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { dataURItoBlob } from '~/utils/blob';
-import { getPortfolioPhotosAsync, postPortfolioPhotosAsync, removePortfolioPhotosAsync } from '~/features/coachSlice';
+import {
+    getPortfolioPhotosAsync,
+    postPortfolioPhotosAsync,
+    removePortfolioPhotosAsync,
+    resetCertificationImages,
+    resetEditor,
+    resetPortfolioImages,
+} from '~/features/coachSlice';
 
 const cx = classNames.bind(styles);
 
 const Photos = () => {
     const dispatch = useDispatch();
     const { portfolioImages } = useSelector((state) => state.coach);
+    const { currentUser } = useSelector((state) => state.user);
     const [isAddingImage, setIsAddingImage] = useState(false);
     const [images, setImages] = useState(portfolioImages);
     const maxNumber = 69;
-
-    console.log(portfolioImages);
 
     const onChange = (imageList) => {
         setImages(imageList);
@@ -31,8 +37,16 @@ const Photos = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        setImages(portfolioImages);
+        if (portfolioImages) setImages(portfolioImages);
     }, [portfolioImages]);
+
+    useEffect(() => {
+        if (currentUser === null) {
+            dispatch(resetCertificationImages());
+            dispatch(resetEditor());
+            dispatch(resetPortfolioImages());
+        }
+    }, [currentUser, dispatch]);
 
     const handlePostImages = () => {
         const formData = new FormData();
@@ -53,23 +67,22 @@ const Photos = () => {
     };
 
     const handleCancelAdding = () => {
-        setImages(portfolioImages);
+        if (images !== portfolioImages) setImages(portfolioImages);
         setIsAddingImage(false);
     };
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('image-wrapper')}>
-                <ImageUploading multiple value={images} onChange={onChange} maxNumber={maxNumber} dataURLKey="data_url">
-                    {({
-                        imageList,
-                        onImageUpload,
-                        onImageRemoveAll,
-                        onImageUpdate,
-                        onImageRemove,
-                        isDragging,
-                        dragProps,
-                    }) => (
+                <ImageUploading
+                    multiple
+                    value={images}
+                    onChange={onChange}
+                    maxNumber={maxNumber}
+                    dataURLKey="data_url"
+                    onClose={handleCancelAdding}
+                >
+                    {({ imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                         // write your building UI
                         <div className={cx('image-upload')}>
                             <div className={cx('action')}>

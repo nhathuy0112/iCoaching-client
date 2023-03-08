@@ -90,6 +90,17 @@ const initialState = {
 export const coachSlice = createSlice({
     name: 'coach',
     initialState,
+    reducers: {
+        resetCertificationImages: (state) => {
+            state.certificationImages = [];
+        },
+        resetEditor: (state) => {
+            state.aboutMe = ''
+        },
+        resetPortfolioImages: (state) => {
+            state.portfolioImages = [];
+        }
+    },
     extraReducers: (builder) => {
         builder
             //submit certification
@@ -190,5 +201,7 @@ export const coachSlice = createSlice({
             })
     }
 })
+
+export const { resetCertificationImages, resetEditor, resetPortfolioImages } = coachSlice.actions;
 
 export default coachSlice.reducer;
