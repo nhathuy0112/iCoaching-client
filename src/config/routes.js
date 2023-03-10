@@ -26,6 +26,8 @@ import Portfolio from '~/pages/Coach/Portfolio';
 import AdminCoachesView from '~/pages/Admin/CoachesView';
 import VerifyCoach from '~/pages/Admin/VerifyCoach';
 import CoachCertificate from '~/pages/Admin/VerifyCoach/CoachCertificate';
+import Reports from '~/pages/Admin/Reports';
+import ReportDetails from '~/pages/Admin/Reports/ReportDetails';
 
 //SuperAdmin
 import ListAdmin from '~/pages/SuperAdmin/ListAdmin';
@@ -66,7 +68,8 @@ const adminRoutes = [
     { path: '/admin/:id/all-coaches', component: AdminCoachesView, layout: AuthLayout },
     { path: '/admin/:id/verify-coach', component: VerifyCoach, layout: AuthLayout },
     { path: '/admin/:id/verify-coach/:coachId', component: CoachCertificate, layout: AuthLayout },
-
+    { path: '/admin/:id/reports', component: Reports, layout: AuthLayout },
+    { path: '/admin/:id/reports/:userId', component: ReportDetails, layout: AuthLayout }
 ];
 
 const superAdminRoutes = [

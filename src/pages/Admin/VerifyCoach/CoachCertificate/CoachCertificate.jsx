@@ -58,7 +58,7 @@ const CoachCertificate = ({ id }) => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title-and-back')}>
-                <div className={cx('back')}>
+                <div className={cx('title-and-back')}>
                     <Link to={`/admin/${currentUser?.Id}/verify-coach`} className={cx('back-link')}>
                         <IoIosArrowBack />
                         <span>Quay lại</span>

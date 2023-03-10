@@ -39,7 +39,7 @@ const CoachesView = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h2>Danh sách kiểm duyệt viên</h2>
+                <h2>Danh sách huấn luyện viên</h2>
                 <form className={cx('search')}>
                     <div className={cx('search-box')} type="submit">
                         <AiOutlineSearch className={cx('search-icon')} />
@@ -96,7 +96,7 @@ const CoachesView = () => {
                     modalStyle={{ width: '60%' }}
                 >
                     <div className={cx('lock-modal')}>
-                        <h1 className={cx('modal-header')}>iCoaching</h1>
+                        <h2 className={cx('modal-header')}>iCoaching</h2>
                         <form action="">
                             <p>{`Bạn có đồng ý ${coachAccount.isLocked ? 'mở' : ''} khoá tài khoản ${
                                 coachAccount.userName
