@@ -1,18 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import userReducer from '~/features/userSlice';
+import adminReducer from '~/features/adminSlice';
 import guestReducer from '~/features/guestSlice';
+import superAdminReducer from '~/features/superAdminSlice';
+import userReducer from '~/features/userSlice';
 import coachReducer from '~/features/coachSlice';
-import adminReducer from '~/features/adminSlice'
-import superAdminSlice from '~/features/superAdminSlice';
 
 const rootReducer = {
     user: userReducer,
     guest: guestReducer,
     coach: coachReducer,
     admin: adminReducer,
-    superadmin: superAdminSlice,
-
+    superAdmin: superAdminReducer,
 };
 
 export const store = configureStore({

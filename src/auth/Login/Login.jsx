@@ -36,7 +36,9 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
     } = useForm();
     const navigate = useNavigate();
 
-    const { currentUser, isLoggedIn, error } = useSelector((state) => state.user);
+    const { currentUser, isLoggedIn, error} = useSelector((state) => state.user);
+
+
 
     useEffect(() => {
         if (isLoggedIn && currentUser) {

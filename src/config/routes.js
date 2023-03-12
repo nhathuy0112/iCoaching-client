@@ -45,43 +45,56 @@ const guestRoutes = [
 ];
 
 const clientRoutes = [
-    { path: '/client/:id/all-coaches', component: CoachesView, layout: AuthLayout },
-    { path: '/client/:id/all-coaches/view-details/coach/:coachId', component: CoachDetails, layout: AuthLayout },
-    { path: '/client/:id/request', component: ClientRequest, layout: AuthLayout },
-    { path: '/client/:id/ongoing-course', component: OnGoingCourse, layout: AuthLayout },
-    { path: '/client/:id/history-course', component: HistoryCourse, layout: AuthLayout },
-    { path: '/client/:id/account-information', component: AccountInformation, layout: AuthLayout },
-    { path: '/client/:id/messages', component: Messages, layout: AuthLayout },
+    { path: '/client/:id/all-coaches', component: CoachesView, layout: AuthLayout, isProtected: true },
+    {
+        path: '/client/:id/all-coaches/view-details/coach/:coachId',
+        component: CoachDetails,
+        layout: AuthLayout,
+        isProtected: true,
+    },
+    { path: '/client/:id/request', component: ClientRequest, layout: AuthLayout, isProtected: true },
+    { path: '/client/:id/ongoing-course', component: OnGoingCourse, layout: AuthLayout, isProtected: true },
+    { path: '/client/:id/history-course', component: HistoryCourse, layout: AuthLayout, isProtected: true },
+    { path: '/client/:id/account-information', component: AccountInformation, layout: AuthLayout, isProtected: true },
+    { path: '/client/:id/messages', component: Messages, layout: AuthLayout, isProtected: true },
 ];
 
 const coachRoutes = [
-    { path: '/coach/:id/verify', component: Verify, layout: AuthLayout },
+    { path: '/coach/:id/verify', component: Verify, layout: AuthLayout, isProtected: true },
     { path: '/coach/:id/my-clients', component: MyClient, layout: AuthLayout },
-    { path: '/coach/:id/request-coaching', component: RequestCoaching, layout: AuthLayout },
-    { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout },
-    { path: '/coach/:id/account-information', component: CoachAccountInformation, layout: AuthLayout },
-    { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout },
-    { path: '/coach/:id/messages', component: Messages, layout: AuthLayout },
+    { path: '/coach/:id/request-coaching', component: RequestCoaching, layout: AuthLayout, isProtected: true },
+    { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout, isProtected: true },
+    {
+        path: '/coach/:id/account-information',
+        component: CoachAccountInformation,
+        layout: AuthLayout,
+        isProtected: true,
+    },
+    { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout, isProtected: true },
+    { path: '/coach/:id/messages', component: Messages, layout: AuthLayout, isProtected: true },
 ];
 
 const adminRoutes = [
-    { path: '/admin/:id/all-coaches', component: AdminCoachesView, layout: AuthLayout },
-    { path: '/admin/:id/verify-coach', component: VerifyCoach, layout: AuthLayout },
-    { path: '/admin/:id/verify-coach/:coachId', component: CoachCertificate, layout: AuthLayout },
-    { path: '/admin/:id/reports', component: Reports, layout: AuthLayout },
-    { path: '/admin/:id/reports/:userId', component: ReportDetails, layout: AuthLayout }
+    { path: '/admin/:id/all-coaches', component: AdminCoachesView, layout: AuthLayout, isProtected: true },
+    { path: '/admin/:id/verify-coach', component: VerifyCoach, layout: AuthLayout, isProtected: true },
+    { path: '/admin/:id/verify-coach/:coachId', component: CoachCertificate, layout: AuthLayout, isProtected: true },
+    { path: '/admin/:id/reports', component: Reports, layout: AuthLayout, isProtected: true },
+    { path: '/admin/:id/reports/:userId', component: ReportDetails, layout: AuthLayout, isProtected: true },
 ];
 
 const superAdminRoutes = [
-    { path: '/super_admin/:id/create_account/', component: SuperAdminCreateAccount, layout: AuthLayout },
-    { path: '/super_admin/:id/account_profile/', component: SuperAdminAccountProfile, layout: AuthLayout },
-    { path: '/super_admin/:id/list_admin/', component: ListAdmin, layout: AuthLayout },
+    {
+        path: '/super_admin/:id/create_account/',
+        component: SuperAdminCreateAccount,
+        layout: AuthLayout,
+        isProtected: true,
+    },
+    {
+        path: '/super_admin/:id/account_profile/',
+        component: SuperAdminAccountProfile,
+        layout: AuthLayout,
+        isProtected: true,
+    },
+    { path: '/super_admin/:id/list_admin/', component: ListAdmin, layout: AuthLayout, isProtected: true },
 ];
-export const routes = [
-    { path: '/', component: Home },
-    ...guestRoutes,
-    ...clientRoutes,
-    ...coachRoutes,
-    ...adminRoutes,
-    ...superAdminRoutes,
-];
+export const routes = [...guestRoutes, ...clientRoutes, ...coachRoutes, ...adminRoutes, ...superAdminRoutes];

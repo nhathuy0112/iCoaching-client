@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { getLocalStorage } from '~/utils/localStorage';
+import { logout } from '~/services/userService';
+import { getLocalStorage, setLocalStorage } from '~/utils/localStorage';
 
 let accessToken = getLocalStorage('auth') ? getLocalStorage('auth').accessToken : null;
 
@@ -24,12 +25,28 @@ instance.interceptors.response.use(
     (response) => {
         return response.data;
     },
-    (error) => {
+    async (error) => {
         console.log(error.response);
         switch (error.response.status) {
             case 401:
-                const message401 = error.response.data.message;
-                return Promise.reject(message401);
+                // call refresh token
+                // call failure api
+                const refreshToken = getLocalStorage('auth').refreshToken;
+                const data = {
+                    accessToken: getLocalStorage('auth').accessToken,
+                    refreshToken,
+                };
+                // TODO: enhance call refresh token only one
+                try {
+                    const token = await instance.post('/User/refresh', data);
+                    setLocalStorage('auth', token);
+                    return instance(error.config);
+                } catch (error) {
+                    // store.dispatch(logoutAsync({ currentRefreshToken: refreshToken }));
+                    await logout({ currentRefreshToken: refreshToken });
+                    window.location.href = '/';
+                }
+                break;
             case 400:
                 const message400 = error.response.data.errors || error.response.data.message;
                 return Promise.reject(message400);

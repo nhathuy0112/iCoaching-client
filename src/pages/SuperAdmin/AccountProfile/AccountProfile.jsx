@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const AccountProfile = () => {
     const dispatch = useDispatch();
-    const userAvatar = useSelector((state) => state.superadmin.avatar);
+    const userAvatar = useSelector((state) => state.superAdmin.avatar);
     const currentUser = useSelector((state) => state.user.currentUser);
     const [imageProfile, setImageProfile] = useState(userAvatar);
     const [loading, setLoading] = useState(true);

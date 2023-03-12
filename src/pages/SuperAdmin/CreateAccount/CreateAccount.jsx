@@ -43,7 +43,7 @@ const CreateAccount = () => {
                 <input type="text" placeholder="Nhập Họ và Tên" {...register('fullname')} />
                 <label>Địa chỉ email</label>
                 <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />
-                <label>Tên ngườI dùng</label>
+                <label>Tên người dùng</label>
                 <input type="text" placeholder="Nhập số điện thoại" {...register('username')} />
                 <div className={cx('pwd')}>
                     <div className={cx('col2')}>

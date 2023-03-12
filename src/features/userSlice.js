@@ -129,10 +129,19 @@ export const userSlice = createSlice({
             })
 
             //refresh
-            .addCase(refreshAsync.fulfilled, (state) => {
-                state.isLoggedIn = true;
-                state.currentUser = parseJwt(getLocalStorage('auth').accessToken);
-            })
+            // .addCase(refreshAsync.pending, (state) => {
+            //     state.loading = true;
+            //     state.error = null;
+            // })
+            // .addCase(refreshAsync.fulfilled, (state, action) => {
+            //     state.isLoggedIn = true;
+            //     const authData = parseJwt(action.payload.accessToken);
+            //     state.currentUser = authData;
+            // })
+            // .addCase(refreshAsync.rejected, (state, action) => {
+            //     state.loading = false;
+            //     state.error = action.error.message;
+            // })
 
             //logout
             .addCase(logoutAsync.fulfilled, (state) => {
