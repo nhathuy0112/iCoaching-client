@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { logout } from '~/services/userService';
-import { getLocalStorage, setLocalStorage } from '~/utils/localStorage';
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '~/utils/localStorage';
 
 let accessToken = getLocalStorage('auth') ? getLocalStorage('auth').accessToken : null;
 
@@ -42,8 +41,7 @@ instance.interceptors.response.use(
                     setLocalStorage('auth', token);
                     return instance(error.config);
                 } catch (error) {
-                    // store.dispatch(logoutAsync({ currentRefreshToken: refreshToken }));
-                    await logout({ currentRefreshToken: refreshToken });
+                    removeLocalStorage('auth');
                     window.location.href = '/';
                 }
                 break;

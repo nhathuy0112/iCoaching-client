@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import styles from './ListAdmin.module.scss';
 import classNames from 'classnames/bind';
 import { AiOutlineSearch } from 'react-icons/ai';
@@ -14,35 +13,12 @@ const cx = classNames.bind(styles);
 
 const ListAdmin = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const currentUser = useSelector((state) => state.user.currentUser);
     const { data, currentPage, pageSize, search, isLocked, count } = useSelector((state) => state.superAdmin);
     const [page, setPageChanged] = useState(currentPage);
     const [searchValue, setSearchValue] = useState('');
     const [open, setOpen] = useState(false);
     const [id, setId] = useState(null);
 
-    useEffect(() => {
-        if (currentUser === null) navigate('/');
-    }, [currentUser, navigate]);
-
-    // useEffect(() => {
-    //     const autoRefreshToken = async () => {
-    //         if (currentUser) {
-    //             let currentDate = new Date();
-    //             let expTime = currentUser.exp;
-    //             if (expTime * 1000 < currentDate.getTime()) {
-    //                 dispatch(
-    //                     refreshAsync({
-    //                         accessToken: getLocalStorage('auth').accessToken,
-    //                         refreshToken: getLocalStorage('auth').refreshToken,
-    //                     }),
-    //                 );
-    //             }
-    //         }
-    //     };
-    //     autoRefreshToken();
-    // }, [dispatch, currentUser]);
 
     useEffect(() => {
         dispatch(
