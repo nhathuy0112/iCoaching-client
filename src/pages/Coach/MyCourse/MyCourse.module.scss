@@ -1,0 +1,143 @@
+.wrapper{
+    height: 100%;
+    position: relative;
+
+    .action{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .add{
+            #add-btn{
+                padding: 16px;
+                display: flex;
+                align-items: center;
+                background-color: green;
+                color: var(--white-color);
+                border-radius: var(--default-border-radius);
+                cursor: pointer;
+
+                .icon{
+                    font-size: 2rem;
+                    font-weight: 600;
+                    margin-right: 8px;
+                }
+
+                span{
+                    font-size: 1.6rem;
+                    font-weight: 600;
+                }
+
+                &:hover{
+                    opacity: 0.6;
+                }
+            }
+        }
+    }
+
+    .course-list{
+        margin-top: 32px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    //Modal
+    .header{
+        padding: 16px;
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        text-align: center;
+    }
+    .body{
+        padding: 32px 64px;
+
+        .title{
+            font-size: 3rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        #add-form{
+            .input-group{
+                display: flex;
+                align-items: center;
+                margin: 16px 0;
+
+                &.description{
+                    align-items: unset;
+
+                    label{
+                        margin-top: 8px;
+                    }
+                }
+
+                label{
+                    font-size: 2rem;
+                    font-weight: 500;
+                    color: #1A97CC;
+                    min-width: 160px;
+                }
+
+                input,
+                textarea{
+                    padding: 12px 16px;
+                    border: 1px solid var(--primary-color);
+                    border-radius: var(--default-border-radius);
+                    flex: 1;
+                    font-size: 1.6rem;
+                    font-weight: 500;
+                    color: #000;
+                }
+
+                textarea{
+                    outline: none;
+                    height: 140px;
+                }
+            }
+
+            .error{
+                margin-left: 160px;
+            }
+
+            .modal-action{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+    
+                #agree-btn,
+                #cancle-btn{
+                    display: flex;
+                    align-items: center;
+                    padding: 16px 32px;
+                    margin: 0 8px;
+                    color: var(--white-color);
+                    font-size: 1.6rem;
+                    font-weight: 500;
+                    border-radius: var(--default-border-radius);
+                    cursor: pointer;
+                    
+                    span{
+                        margin-left: 8px;
+                    }
+    
+                    &:hover{
+                        opacity: 0.6;
+                    }
+                }
+    
+                #agree-btn{
+                    background-color: green;
+                }
+    
+                #cancle-btn{
+                    background-color: red;
+                }
+            }
+        }
+
+        
+    }
+    
+}

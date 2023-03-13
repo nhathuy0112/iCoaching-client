@@ -10,6 +10,7 @@ import { BsXLg } from 'react-icons/bs';
 const cx = classNames.bind(styles);
 
 const TrainingCourseCard = ({ course }) => {
+    const {name, price, duration, description} = course;
     const [isViewDetails, setIsViewDetails] = useState(false);
 
     const handleViewDetailsClick = (e) => {
@@ -23,8 +24,8 @@ const TrainingCourseCard = ({ course }) => {
 
     return (
         <div className={cx('card')}>
-            <h3 className={cx('name')}>{course.name}</h3>
-            <span className={cx('price')}>{formatMoney(course.price)}</span>
+            <h3 className={cx('name')}>{name}</h3>
+            <span className={cx('price')}>{formatMoney(price)}</span>
             <button className={cx('detail-btn')} onClick={handleViewDetailsClick}>
                 Xem chi tiết
             </button>
@@ -36,26 +37,20 @@ const TrainingCourseCard = ({ course }) => {
                         <div className={cx('course-detail')}>
                             <div>
                                 <label>Tên gói tập</label>
-                                <span>{course.name}</span>
+                                <span>{name}</span>
                             </div>
                             <div>
                                 <label>Số buổi</label>
-                                <span>{course.duration}</span>
+                                <span>{duration}</span>
                             </div>
                             <div>
                                 <label>Giá</label>
-                                <span>{formatMoney(course.price)}</span>
+                                <span>{formatMoney(price)}</span>
                             </div>
                             <div>
                                 <label>Mô tả khóa tập</label>
                                 <span>
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when
-                                    an unknown printer took a galley of type and scrambled it to make a type specimen
-                                    book. It has survived not only five centuries, but also the leap into electronic
-                                    typesetting, remaining essentially unchanged. It was popularised in the 1960s with
-                                    the release of Letraset sheets containing Lorem Ipsum passages, and more recently
-                                    with desktop publishing software like Aldus PageMaker including versions of Lorem
-                                    Ipsum.
+                                   {description}
                                 </span>
                             </div>
                         </div>

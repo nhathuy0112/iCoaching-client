@@ -1,8 +1,20 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { certificationSubmit, getCertificationRequest, postAboutMe, getAboutMe, postPortfolioPhotos, getPortfolioPhotos } from '~/services/coachService';
-import { removePortfolioPhotos } from './../services/coachService';
+import {
+    certificationSubmit,
+    getCertificationRequest,
+    postAboutMe,
+    getAboutMe,
+    postPortfolioPhotos,
+    getPortfolioPhotos,
+    removePortfolioPhotos,
+    addTrainingCourse,
+    getTrainingCourses,
+    editTrainingCourse,
+    deleteTrainingCourse,
+} from '~/services/coachService';
 
+//Certification
 export const certificationSubmitAsync = createAsyncThunk('/coach/certificationSubmit', async (payload) => {
     try {
         const response = await certificationSubmit(payload);
@@ -22,11 +34,12 @@ export const getCertificationAsync = createAsyncThunk('/coach/getCertificationRe
     }
 });
 
+// Portfolio
 export const postAboutMeAsync = createAsyncThunk('/coach/postAboutMe', async (data) => {
     try {
         const response = await postAboutMe(data);
         if (response) {
-            toast.success('Cập nhật hồ sơ thành công!')
+            toast.success('Cập nhật hồ sơ thành công!');
             return response;
         }
     } catch (error) {
@@ -47,7 +60,7 @@ export const postPortfolioPhotosAsync = createAsyncThunk('/coach/postPortfolioPh
     try {
         const response = await postPortfolioPhotos(payload);
         if (response) {
-            toast.success('Thêm ảnh thành công!')
+            toast.success('Thêm ảnh thành công!');
             return response;
         }
     } catch (error) {
@@ -69,17 +82,71 @@ export const removePortfolioPhotosAsync = createAsyncThunk('/coach/removePortfol
     try {
         const response = await removePortfolioPhotos(id);
         if (response) {
-            toast.success('Xóa ảnh thành công!')
+            toast.success('Xóa ảnh thành công!');
             return { id };
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-})
+});
+
+//Training Course
+export const addTrainingCourseAsync = createAsyncThunk('/coach/addTrainingCourse', async (payload) => {
+    try {
+        const response = await addTrainingCourse({
+            name: payload.name,
+            price: payload.price,
+            duration: payload.duration,
+            description: payload.description,
+        });
+        if (response) {
+            toast.success('Thêm gói tập thành công!');
+            return response;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+export const getTrainingCourseAsync = createAsyncThunk('/coach/getTrainingCourse', async (payload) => {
+    try {
+        const response = await getTrainingCourses(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+export const editTrainingCourseAsync = createAsyncThunk('/coach/editTrainingCourse', async (payload) => {
+    try {
+        const response = await editTrainingCourse(payload.id, {
+            name: payload.name,
+            price: payload.price,
+            duration: payload.duration,
+            description: payload.description,
+        });
+        return { id: payload.id, name: response.name, price: response.price, duration: response.duration };
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+export const deleteTrainingCourseAsync = createAsyncThunk('/coach/deleteTrainingCourse', async (id) => {
+    try {
+        await deleteTrainingCourse(id);
+        return { id };
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 const initialState = {
     certificationImages: [],
     portfolioImages: [],
+    trainingCourses: [],
+    pageSize: 6,
+    pageIndex: 1,
+    totalCount: null,
     loading: false,
     error: null,
     message: '',
@@ -95,11 +162,14 @@ export const coachSlice = createSlice({
             state.certificationImages = [];
         },
         resetEditor: (state) => {
-            state.aboutMe = ''
+            state.aboutMe = '';
         },
         resetPortfolioImages: (state) => {
             state.portfolioImages = [];
-        }
+        },
+        setPage: (state, action) => {
+            state.pageIndex = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -193,15 +263,82 @@ export const coachSlice = createSlice({
                 state.message = '';
             })
             .addCase(removePortfolioPhotosAsync.fulfilled, (state, action) => {
-                state.portfolioImages = state.portfolioImages.filter(image => image.id !== action.payload.id);
+                state.portfolioImages = state.portfolioImages.filter((image) => image.id !== action.payload.id);
             })
             .addCase(removePortfolioPhotosAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             })
-    }
-})
 
-export const { resetCertificationImages, resetEditor, resetPortfolioImages } = coachSlice.actions;
+            //add training course
+            .addCase(addTrainingCourseAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(addTrainingCourseAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.trainingCourses.push(action.payload);
+            })
+            .addCase(addTrainingCourseAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //get training course
+            .addCase(getTrainingCourseAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(getTrainingCourseAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.trainingCourses = action.payload.data;
+                state.pageSize = action.payload.pageSize;
+                state.pageIndex = action.payload.pageIndex;
+                state.totalCount = action.payload.count;
+            })
+            .addCase(getTrainingCourseAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //edit training course
+            .addCase(editTrainingCourseAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(editTrainingCourseAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.trainingCourses.findIndex((course) => course.id === action.payload.id);
+                state.trainingCourses[index].name = action.payload.name;
+                state.trainingCourses[index].price = action.payload.price;
+                state.trainingCourses[index].duration = action.payload.duration;
+                state.trainingCourses[index].description = action.payload.description;
+            })
+            .addCase(editTrainingCourseAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //delete training course
+            .addCase(deleteTrainingCourseAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(deleteTrainingCourseAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                return state.trainingCourses.filter((course) => course.id !== action.payload.id);
+            })
+            .addCase(deleteTrainingCourseAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            });
+    },
+});
+
+export const { resetCertificationImages, resetEditor, resetPortfolioImages, setPage } = coachSlice.actions;
 
 export default coachSlice.reducer;
