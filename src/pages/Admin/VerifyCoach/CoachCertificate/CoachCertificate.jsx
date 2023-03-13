@@ -1,60 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './CoachCertificate.module.scss';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { getCertRequestDetailAsync, updateCertStatusAsync } from '~/features/adminSlice';
 import { IoIosArrowBack } from 'react-icons/io';
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import { handleRenderGenders, handleRenderGenderClassNames } from '~/utils/gender';
 import Modal from '~/components/Modal';
 
-import cert1 from '~/assets/images/coach-cert.png';
-import cert2 from '~/assets/images/coach-cert2.jpeg';
-import cert3 from '~/assets/images/cccd-mt.jpeg';
-import cert4 from '~/assets/images/cccd-ms.jpeg';
-
 const cx = classNames.bind(styles);
 
-const CoachCertificate = ({ id }) => {
+const CoachCertificate = () => {
     const { currentUser } = useSelector((state) => state.user);
-    const [viewDetail, setViewDetail] = useState(false);
-    const [file, setFile] = useState('');
+    const { certRequest, status } = useSelector((state) => state.admin);
 
-    const handleViewDetail = (img) => {
-        setViewDetail(true);
+    const [viewDetail, setViewDetail] = useState(false);
+    const [denied, setDenied] = useState(false);
+    const [file, setFile] = useState('');
+    const [reason, setReason] = useState(null);
+
+    const dispatch = useDispatch();
+    const id = useParams().certId;
+
+    useEffect(() => {
+        dispatch(getCertRequestDetailAsync(id));
+    }, [dispatch, id, status]);
+
+    const handleOpenModal = (modal, img) => {
+        modal(true);
         setFile(img);
     };
-
-    const coach = {
-        id: 1,
-        fullname: 'Vinhh Tran',
-        gender: 'Male',
-        age: 18,
-        email: 'aa@gmail.com',
-        phoneNumber: '0123456789',
+    const handleClose = () => {
+        setViewDetail(false);
+        setDenied(false);
     };
 
-    const images = [
-        {
-            id: 1,
-            url: cert1,
-        },
-        {
-            id: 2,
-            url: cert2,
-        },
-        {
-            id: 3,
-            url: cert3,
-        },
-        {
-            id: 4,
-            url: cert4,
-        },
-    ];
-
+    const handleUpdateStatus = (option, reason) => {
+        dispatch(updateCertStatusAsync({ certId: id, option: option, reason }));
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title-and-back')}>
@@ -63,51 +49,66 @@ const CoachCertificate = ({ id }) => {
                         <IoIosArrowBack />
                         <span>Quay lại</span>
                     </Link>
-                    <h3>Yêu cầu từ Huấn luyện viên hoangtlm</h3>
+                    <h3>
+                        Yêu cầu từ Huấn luyện viên <span>{`${certRequest.fullname}`}</span>
+                    </h3>
                 </div>
             </div>
             <div className={cx('content')}>
                 <div className={cx('profile')}>
                     <div className={cx('profile')}>
                         <div className={cx('avatar')}>
-                            <img
-                                src={require('~/assets/images/coach-avatar.png')}
-                                alt={'avatar'}
-                                className={cx('image')}
-                            />
+                            <img src={certRequest.avatarUrl} alt={'avatar'} className={cx('image')} />
                         </div>
-                        <h2 className={cx('name')}>{coach.fullname}</h2>
+                        <h2 className={cx('name')}>{certRequest.fullname}</h2>
                         <div className={cx('gender')}>
-                            <span className={cx(handleRenderGenderClassNames('Male'))}>
-                                {handleRenderGenders(coach.gender)}
+                            <span className={cx(handleRenderGenderClassNames(certRequest.gender))}>
+                                {handleRenderGenders(certRequest.gender)}
                             </span>
                         </div>
-                        <span className={cx('age')}>{coach.age} tuổi</span>
+                        <span className={cx('age')}>{certRequest.age} tuổi</span>
                     </div>
                 </div>
                 <div className={cx('certificates')}>
                     <h3>Danh sách chứng chỉ</h3>
                     <div className={cx('img-wrapper')}>
-                        {images.map((item) => (
-                            <img key={item.id} src={item.url} alt="" onClick={() => handleViewDetail(item.url)} />
+                        {certRequest.certPhotos?.map((item) => (
+                            <img src={item} alt="cert-photos" onClick={() => handleOpenModal(setViewDetail, item)} />
                         ))}
                     </div>
                 </div>
             </div>
-            <div className={cx('button')}>
-                <button className={cx('btn-confirm')}>
-                    <BsCheckLg className={cx('icon')} />
-                    Xác nhận
-                </button>
-                <button className={cx('btn-warn')}>
-                    <BsXLg className={cx('icon')} />
-                    Từ chối
-                </button>
+            <div className={cx('status')}>
+                {(() => {
+                    switch (certRequest.status) {
+                        case 'Pending':
+                            return (
+                                <div className={cx('button')}>
+                                    <button
+                                        className={cx('btn-confirm')}
+                                        onClick={() => handleUpdateStatus('Accepted', '')}
+                                    >
+                                        <BsCheckLg className={cx('icon')} />
+                                        Xác nhận
+                                    </button>
+                                    <button className={cx('btn-warn')} onClick={() => handleOpenModal(setDenied)}>
+                                        <BsXLg className={cx('icon')} />
+                                        Từ chối
+                                    </button>
+                                </div>
+                            );
+                        case 'Denied':
+                            return <p className={cx('denied')}>Đã từ chối</p>;
+                        default:
+                            return <p className={cx('accepted')}>Đã xác nhận</p>;
+                    }
+                })()}
             </div>
+
             {viewDetail && (
                 <Modal
-                    open={viewDetail}
-                    onClose={() => setViewDetail(false)}
+                    show={viewDetail}
+                    onClose={handleClose}
                     modalStyle={{ background: 'none' }}
                     closeBtnStyle={{ display: 'none' }}
                 >
@@ -115,6 +116,39 @@ const CoachCertificate = ({ id }) => {
                         <AiOutlineClose />
                     </button>
                     <img id={cx('photo')} src={file} alt="" />
+                </Modal>
+            )}
+            {denied && (
+                <Modal
+                    open={denied}
+                    onClose={handleClose}
+                    closeBtnStyle={{ display: 'none' }}
+                    modalStyle={{ width: '60%' }}
+                >
+                    <div className={cx('modal')}>
+                        <h2 className={cx('modal-header')}>iCoaching</h2>
+                        <form onSubmit={() => handleUpdateStatus('Denied', reason)}>
+                            <p>{'Vui lòng nhập lý do từ chối'}</p>
+                            <textarea
+                                name=""
+                                id=""
+                                cols="90"
+                                rows="10"
+                                required
+                                value={reason}
+                                onChange={(e) => setReason(e.target.value)}
+                            ></textarea>
+                            <div className={cx('button')}>
+                                <button className={cx('btn-confirm')} type="submit">
+                                    <BsCheckLg className={cx('icon')} />
+                                    Xác nhận
+                                </button>
+                                <button className={cx('btn-warn')} onClick={handleClose}>
+                                    <BsXLg className={cx('icon')} /> Huỷ bỏ
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </Modal>
             )}
         </div>

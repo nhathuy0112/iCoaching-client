@@ -1,6 +1,11 @@
 import classNames from 'classnames/bind';
 import styles from './VerifyCoach.module.scss';
 
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Pagination from '~/components/Pagination';
+import { getAllCertRequestsAsync } from '~/features/adminSlice';
+
 import { handleRenderGenders } from '~/utils/gender';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { AiOutlineSearch } from 'react-icons/ai';
@@ -9,26 +14,14 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 const VerifyCoach = () => {
-    const coaches = [
-        {
-            id: 1,
-            username: 'thedevil',
-            fullname: 'Trần Lê Minh Hoàng',
-            gender: 'Male',
-            age: 18,
-            email: 'aa@gmail.com',
-            phoneNumber: '0123456789',
-        },
-        {
-            id: 2,
-            username: 'thedevil',
-            fullname: 'Ngô Hiểu Khánh',
-            gender: 'Female',
-            age: 22,
-            email: 'example@gmail.com',
-            phoneNumber: '0987654321',
-        },
-    ];
+    const dispatch = useDispatch();
+    const { coaches, totalCount, pageSize, pageIndex } = useSelector((state) => state.admin);
+    const [currentPage, setCurrentPage] = useState(pageIndex);
+
+    useEffect(() => {
+        dispatch(getAllCertRequestsAsync({ pageIndex: currentPage }));
+    }, [dispatch, currentPage]);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -62,7 +55,7 @@ const VerifyCoach = () => {
                                 <td>{coach.email}</td>
                                 <td>{coach.phoneNumber}</td>
                                 <td>
-                                    <Link to={`${coach.id}`}>
+                                    <Link to={`${coach.certId}`}>
                                         <button className={cx('btn-info')}>
                                             Xem chi tiết <MdOutlineKeyboardArrowRight className={cx('icon')} />
                                         </button>
@@ -72,6 +65,13 @@ const VerifyCoach = () => {
                         ))}
                     </tbody>
                 </table>
+                <Pagination
+                    className={cx('pagination-bar')}
+                    currentPage={currentPage}
+                    totalCount={totalCount}
+                    pageSize={pageSize}
+                    onPageChange={(page) => setCurrentPage(page)}
+                />
             </div>
         </div>
     );

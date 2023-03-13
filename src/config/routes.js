@@ -75,11 +75,11 @@ const coachRoutes = [
 ];
 
 const adminRoutes = [
-    { path: '/admin/:id/all-coaches', component: AdminCoachesView, layout: AuthLayout, isProtected: true },
-    { path: '/admin/:id/verify-coach', component: VerifyCoach, layout: AuthLayout, isProtected: true },
-    { path: '/admin/:id/verify-coach/:coachId', component: CoachCertificate, layout: AuthLayout, isProtected: true },
-    { path: '/admin/:id/reports', component: Reports, layout: AuthLayout, isProtected: true },
-    { path: '/admin/:id/reports/:userId', component: ReportDetails, layout: AuthLayout, isProtected: true },
+    { path: '/admin/:id/all-coaches', component: AdminCoachesView, layout: AuthLayout },
+    { path: '/admin/:id/verify-coach', component: VerifyCoach, layout: AuthLayout },
+    { path: '/admin/:id/verify-coach/:certId', component: CoachCertificate, layout: AuthLayout },
+    { path: '/admin/:id/reports', component: Reports, layout: AuthLayout },
+    { path: '/admin/:id/reports/:userId', component: ReportDetails, layout: AuthLayout }
 ];
 
 const superAdminRoutes = [

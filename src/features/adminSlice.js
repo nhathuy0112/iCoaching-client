@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { getAllCoaches, updateStatus } from '~/services/adminService';
+import { getAllCoaches, updateStatus, getAllCertRequests, getCertRequestDetail, updateCertStatus } from '~/services/adminService';
 
 export const getAllCoachesAsync = createAsyncThunk('/admin/getAllCoaches', async (payload) => {
     try {
@@ -19,15 +19,46 @@ export const updateStatusAsync = createAsyncThunk('/admin/updateStatus', async (
     }
 });
 
+export const getAllCertRequestsAsync = createAsyncThunk('/admin/getAllCertRequests', async (payload) => {
+    try {
+        const response = await getAllCertRequests(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+export const getCertRequestDetailAsync = createAsyncThunk('/admin/getCertRequestDetail', async (payload) => {
+    try {
+        const response = await getCertRequestDetail(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+export const updateCertStatusAsync = createAsyncThunk('/admin/updateCertStatus', async (payload) => {
+    try {
+        const response = await updateCertStatus({ certId: payload.certId, option: payload.option, data: payload.reason });
+        console.log(response)
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+
 const initialState = {
     coaches: [],
+    certRequest: {},
+    certId: null,
     pageSize: 6,
     pageIndex: 1,
     totalCount: null,
     loading: false,
     error: null,
     message: '',
-    isLocked: false
+    status: false
 }
 
 export const adminSlice = createSlice({
@@ -41,12 +72,13 @@ export const adminSlice = createSlice({
             state.search = action.payload;
             state.currentPage = 1;
         },
-        setLock: (state, action) => {
-            state.isLocked = action.payload;
+        setStatus: (state, action) => {
+            state.status = action.payload;
         },
     },
     extraReducers: (builder) => {
         builder
+            //get all coaches
             .addCase(getAllCoachesAsync.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -63,14 +95,53 @@ export const adminSlice = createSlice({
                 state.error = action.error.message;
             })
 
-
+            //update coach status
             .addCase(updateStatusAsync.fulfilled, (state, action) => {
                 state.coachId = action.payload.coachId;
-                state.isLocked = action.payload.isLocked;
+                state.status = action.payload.status;
             })
+
+            //get all certificate verification requests
+            .addCase(getAllCertRequestsAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getAllCertRequestsAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.coaches = action.payload.data;
+                state.pageSize = action.payload.pageSize;
+                state.pageIndex = action.payload.pageIndex;
+                state.totalCount = action.payload.count;
+            })
+            .addCase(getAllCertRequestsAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //get certificate verification request detail
+            .addCase(getCertRequestDetailAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.certRequest = action.payload;
+            })
+
+            //update certificate verification request detail
+            .addCase(updateCertStatusAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(updateCertStatusAsync.fulfilled, (state, action) => {
+                state.message = action.payload;
+                state.status = action.payload.status
+            })
+            .addCase(updateCertStatusAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
     }
 });
 
-export const { setPage, setLock } = adminSlice.actions;
+export const { setPage, setStatus } = adminSlice.actions;
 
 export default adminSlice.reducer;

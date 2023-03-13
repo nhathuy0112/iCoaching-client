@@ -9,19 +9,19 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
-import { getAllCoachesAsync, updateStatusAsync, setLock } from '~/features/adminSlice';
+import { getAllCoachesAsync, updateStatusAsync } from '~/features/adminSlice';
 import { handleRenderGenders } from '~/utils/gender';
 
 const cx = classNames.bind(styles);
 
 const CoachesView = () => {
     const dispatch = useDispatch();
-    const { coaches, totalCount, pageSize, pageIndex, isLocked } = useSelector((state) => state.admin);
+    const { coaches, totalCount, pageSize, pageIndex, status } = useSelector((state) => state.admin);
     const [currentPage, setCurrentPage] = useState(pageIndex);
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: currentPage }));
-    }, [dispatch, currentPage, isLocked]);
+    }, [dispatch, currentPage, status]);
 
     const [lockOpen, setLockOpen] = useState(false);
     const [coachAccount, setCoachAccount] = useState();
@@ -33,7 +33,6 @@ const CoachesView = () => {
 
     const handleUpdateStatus = (id) => {
         dispatch(updateStatusAsync(id));
-        dispatch(setLock(id));
         setLockOpen(false);
     };
     return (
@@ -97,23 +96,18 @@ const CoachesView = () => {
                 >
                     <div className={cx('lock-modal')}>
                         <h2 className={cx('modal-header')}>iCoaching</h2>
-                        <form action="">
-                            <p>{`Bạn có đồng ý ${coachAccount.isLocked ? 'mở' : ''} khoá tài khoản ${
-                                coachAccount.userName
-                            }?`}</p>
-                            <div className={cx('button')}>
-                                <button
-                                    className={cx('btn-confirm')}
-                                    onClick={() => handleUpdateStatus(coachAccount.id)}
-                                >
-                                    <BsCheckLg className={cx('icon')} />
-                                    Đồng ý
-                                </button>
-                                <button className={cx('btn-warn')} onClick={() => setLockOpen(false)}>
-                                    <BsXLg className={cx('icon')} /> Huỷ bỏ
-                                </button>
-                            </div>
-                        </form>
+                        <p>{`Bạn có đồng ý ${coachAccount.isLocked ? 'mở' : ''} khoá tài khoản ${
+                            coachAccount.userName
+                        }?`}</p>
+                        <div className={cx('button')}>
+                            <button className={cx('btn-confirm')} onClick={() => handleUpdateStatus(coachAccount.id)}>
+                                <BsCheckLg className={cx('icon')} />
+                                Đồng ý
+                            </button>
+                            <button className={cx('btn-warn')} onClick={() => setLockOpen(false)}>
+                                <BsXLg className={cx('icon')} /> Huỷ bỏ
+                            </button>
+                        </div>
                     </div>
                 </Modal>
             )}
