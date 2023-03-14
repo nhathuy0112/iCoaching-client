@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { forgot, getUserProfile, login, logout, refresh, register } from '~/services/userService';
+import { forgot, getUserProfile, login, logout, refresh, register, getUserAvatar, updateUserProfile, updateUserAvatar } from '~/services/userService';
 import { parseJwt } from '~/utils/jwt';
 import { setLocalStorage, getLocalStorage, removeLocalStorage } from '~/utils/localStorage';
 
@@ -73,6 +73,34 @@ export const getUserProfileAsync = createAsyncThunk('user/getUserProfile', async
     }
 });
 
+export const updateUserProfileAsync = createAsyncThunk('user/updateUserProfile', async (payload) => {
+    try {
+        const response = await updateUserProfile(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+export const getUserAvatarAsync = createAsyncThunk('user/getUserAvatar', async () => {
+    try {
+        const response = await getUserAvatar();
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+export const updateUserAvatarAsync = createAsyncThunk('user/updateUserAvatar', async (payload) => {
+    try {
+        const response = await updateUserAvatar(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+        console.log(payload.value('file'))
+    }
+})
+
 const initialState = {
     isLoggedIn: getLocalStorage('auth') ? true : false,
     users: [],
@@ -81,6 +109,8 @@ const initialState = {
     loading: false,
     error: null,
     message: '',
+    profile: {},
+    avatar: '',
 };
 
 export const userSlice = createSlice({
@@ -162,18 +192,52 @@ export const userSlice = createSlice({
                 state.error = action.error.message;
             })
 
-            //profile
+            //get profile
             .addCase(getUserProfileAsync.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(getUserProfileAsync.fulfilled, (state, action) => {
                 state.isVerified = action.payload.isVerified;
+                state.profile = action.payload
             })
             .addCase(getUserProfileAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
-            });
+            })
+
+            //update profile 
+            .addCase(updateUserProfileAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateUserProfileAsync.fulfilled, (state, action) => {
+                state.message = action.payload
+            })
+            .addCase(updateUserProfileAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //get avatar
+            .addCase(getUserAvatarAsync.fulfilled, (state, action) => {
+                state.avatar = action.payload
+            })
+
+            //update avatar
+            .addCase(updateUserAvatarAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateUserAvatarAsync.fulfilled, (state, action) => {
+                state.avatar = action.payload
+            })
+            .addCase(updateUserAvatarAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+
     },
 });
 

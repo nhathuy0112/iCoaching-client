@@ -1,0 +1,229 @@
+.container {
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 5%;
+}
+
+.left_container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+
+    .change_image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        opacity: 0;
+        visibility: visible;
+        transition: opacity 0.3s ease-in-out;
+        background-color: rgba(0, 0, 0, 0.5);
+        border: 2px solid white;
+        padding: 5px;
+        color: white;
+        transition: background-color 0.3s ease-in-out, border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        white-space: nowrap;
+    }
+    .avatar {
+        &:hover .change_image {
+            opacity: 1;
+        }
+    }
+    button {
+        cursor: pointer;
+        padding: 10px 20px;
+    }
+}
+.text_wrapper {
+    align-items: left;
+    vertical-align: left;
+    letter-spacing: -2%;
+    color: #4e4e4e;
+    font-style: bold;
+    font-size: 25px;
+    padding-bottom: 15px;
+}
+
+.button_lock {
+    background-color: #ca1414;
+    border-radius: 10px;
+    width: 150px;
+    height: 50px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 28px;
+    letter-spacing: -2%;
+    color: #e4eafa;
+}
+
+.button_active {
+    background-color: #2c8415;
+    border-radius: 10px;
+    width: 150px;
+    height: 50px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 28px;
+    letter-spacing: -2%;
+    color: #e4eafa;
+}
+
+.right_container {
+    display: flex;
+    margin-left: 8%;
+    position: relative;
+    label {
+        font-size: 1.8rem;
+    }
+    input {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0 20px;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border-radius: var(--default-border-radius);
+        text-align: start;
+        font-size: 1.4rem;
+        background-color: rgba(173, 173, 173, 0.1);
+    }
+    .column {
+        display: flex;
+        justify-content: space-between;
+    }
+    select {
+        display: block;
+        padding: 10px;
+        margin-top: 10px;
+    }
+    #submit_btn {
+        cursor: pointer;
+        margin: 12px auto;
+        display: block;
+        padding: 12px 24px;
+        background-color: #eed91d;
+        color: white;
+    }
+}
+
+.container_confirm {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 15px;
+}
+.text_modal {
+    text-align: center;
+    margin: 20px 0;
+}
+.icon_modal {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+.modal_header {
+    background-color: var(--primary-color);
+    color: rgba(255, 255, 255, 0.6);
+    padding: 14px;
+    text-align: center;
+}
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding-top: 10%;
+    }
+
+    .left_container {
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .text_wrapper {
+        font-size: 20px;
+        padding-bottom: 10px;
+    }
+
+    .right_container {
+        margin-left: 0;
+
+        input {
+            padding: 10px 16px;
+            margin: 8px 0 16px;
+            font-size: 1.2rem;
+        }
+
+        select {
+            margin-top: 8px;
+            padding: 8px;
+        }
+
+        #submit_btn {
+            padding: 10px 20px;
+        }
+    }
+}
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding-top: 10%;
+    }
+
+    .left_container {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        width: 80%;
+        height: auto;
+        text-align: center;
+        margin-bottom: 30px;
+
+        button {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            width: 100%;
+            font-size: 16px;
+        }
+    }
+
+    .text_wrapper {
+        text-align: center;
+        font-size: 22px;
+        letter-spacing: -1%;
+        padding-bottom: 10px;
+    }
+
+    .right_container {
+        margin: 0 auto;
+        width: 80%;
+        margin-top: 30px;
+
+        label {
+            font-size: 1.4rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0 20px;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            border-radius: var(--default-border-radius);
+            text-align: start;
+            font-size: 1.2rem;
+        }
+
+        .column {
+            flex-direction: column;
+        }
+
+        select {
+            margin-top: 10px;
+        }
+
+        #submit_btn {
+            width: 100%;
+            font-size: 16px;
+        }
+    }
+}

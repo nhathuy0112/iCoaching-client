@@ -150,7 +150,6 @@ const AccountProfile = () => {
                         <input type="tel" placeholder="Nhập số điện thoại" {...register('phoneNumber')} />
 
                         <button
-                            type="submit"
                             id={cx('submit_btn')}
                             className={cx('align-center')}
                             onClick={() => setChangeProfile(true)}
@@ -168,7 +167,7 @@ const AccountProfile = () => {
                                     <h1 className={cx('modal_header')}>iCoaching</h1>
                                     <h2 className={cx('text_modal')}>Bạn có đồng ý cập nhật thông tin cá nhân ? </h2>
                                     <div className={cx('container_confirm')}>
-                                        <button className={cx('button_active')} onClick={handleUpdate}>
+                                        <button type="submit" className={cx('button_active')}>
                                             <BsCheckLg className={cx('icon_modal')} />
                                             Đồng ý
                                         </button>
