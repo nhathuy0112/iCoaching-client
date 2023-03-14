@@ -1,39 +1,45 @@
 .wrapper{
     height: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+
+    .course-empty{
+        margin: auto;
+    }
 
     .action{
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
 
-        .add{
-            #add-btn{
-                padding: 16px;
-                display: flex;
-                align-items: center;
-                background-color: green;
-                color: var(--white-color);
-                border-radius: var(--default-border-radius);
-                cursor: pointer;
+    
+    #add-btn{
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        background-color: green;
+        color: var(--white-color);
+        border-radius: var(--default-border-radius);
+        cursor: pointer;
 
-                .icon{
-                    font-size: 2rem;
-                    font-weight: 600;
-                    margin-right: 8px;
-                }
+        .icon{
+            font-size: 2rem;
+            font-weight: 600;
+            margin-right: 8px;
+        }
 
-                span{
-                    font-size: 1.6rem;
-                    font-weight: 600;
-                }
+        span{
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
 
-                &:hover{
-                    opacity: 0.6;
-                }
-            }
+        &:hover{
+            opacity: 0.6;
         }
     }
+
 
     .course-list{
         margin-top: 32px;
@@ -107,9 +113,11 @@
                 justify-content: center;
     
                 #agree-btn,
-                #cancle-btn{
+                #cancel-btn{
                     display: flex;
                     align-items: center;
+                    justify-content: center;
+                    width: 180px;
                     padding: 16px 32px;
                     margin: 0 8px;
                     color: var(--white-color);
@@ -131,7 +139,7 @@
                     background-color: green;
                 }
     
-                #cancle-btn{
+                #cancel-btn{
                     background-color: red;
                 }
             }

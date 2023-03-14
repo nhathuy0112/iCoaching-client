@@ -26,6 +26,8 @@ const MyCourse = () => {
     const {trainingCourses, pageIndex, pageSize, totalCount} = useSelector(state => state.coach);
     const dispatch = useDispatch();
 
+    console.log(trainingCourses);
+
 
     useEffect(() => {
         dispatch(getTrainingCourseAsync({pageIndex: pageIndex, pageSize: 20}))
@@ -74,7 +76,7 @@ const MyCourse = () => {
     return (
         <div className={cx('wrapper')}>
             {
-                trainingCourses ? (
+                trainingCourses && trainingCourses.length > 0 ? (
                     <>
                         <div className={cx('action')}>
                             <div className={cx('add')}>
@@ -103,9 +105,12 @@ const MyCourse = () => {
                         </div>
                     </>
                 ): (
-                    <div>
+                    <div className={cx('course-empty')}>
                         <h1>Hiện chưa có gói tập nào</h1>
-                        <button>Thêm gói tập</button>
+                        <button id={cx('add-btn')} onClick={() => setIsAdd(true)} style={{margin: 'auto'}}>
+                            <AiOutlinePlus className={cx('icon')}/>
+                            <span>Thêm gói tập</span>
+                        </button>
                     </div>
                 )
             }
@@ -143,9 +148,9 @@ const MyCourse = () => {
                         <div className={cx('modal-action')}>
                             <button id={cx('agree-btn')} type='submit'>
                                 <BsCheckLg/>
-                                <span>Đồng ý</span>
+                                <span>Thêm mới</span>
                             </button>
-                            <button id={cx('cancle-btn')} onClick={handleCloseAndResetAddForm}>
+                            <button id={cx('cancel-btn')} onClick={handleCloseAndResetAddForm}>
                                 <BsXLg/>
                                 <span>Hủy bỏ</span>
                             </button>

@@ -49,6 +49,8 @@ export const getTrainingCourses = ({ pageIndex, pageSize, sort, search }) => {
     return axios.get(`${END_POINTS.TRAINING_COURSES}${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}`);
 };
 
+export const getTrainingCourseById = (id) => axios.get(`${END_POINTS.TRAINING_COURSE}/${id}`);
+
 export const editTrainingCourse = (id, payload) => axios.put(`${END_POINTS.TRAINING_COURSE}/${id}`, payload);
 
 export const deleteTrainingCourse = (id) => axios.delete(`${END_POINTS.TRAINING_COURSE}/${id}`);
