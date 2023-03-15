@@ -1,13 +1,8 @@
 import axios from 'axios';
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from '~/utils/localStorage';
 
-let accessToken = getLocalStorage('auth') ? getLocalStorage('auth').accessToken : null;
-
 const instance = axios.create({
     baseURL: process.env.REACT_APP_API_URL_LOCAL,
-    headers: {
-        Authorization: `Bearer ${accessToken}`,
-    },
     timeout: 300000,
 });
 
@@ -30,19 +25,25 @@ instance.interceptors.response.use(
             case 401:
                 // call refresh token
                 // call failure api
-                const refreshToken = getLocalStorage('auth').refreshToken;
-                const data = {
-                    accessToken: getLocalStorage('auth').accessToken,
-                    refreshToken,
-                };
                 // TODO: enhance call refresh token only one
-                try {
-                    const token = await instance.post('/User/refresh', data);
-                    setLocalStorage('auth', token);
-                    return instance(error.config);
-                } catch (error) {
-                    removeLocalStorage('auth');
-                    window.location.href = '/';
+                if (!getLocalStorage('auth')) {
+                    const message401 = error.response.data.message;
+                    return Promise.reject(message401);
+                } else {
+                    const accessToken = getLocalStorage('auth').accessToken;
+                    const refreshToken = getLocalStorage('auth').refreshToken;
+                    const data = {
+                        accessToken,
+                        refreshToken,
+                    };
+                    try {
+                        const token = await instance.post('/User/refresh', data);
+                        setLocalStorage('auth', token);
+                        return instance(error.config);
+                    } catch (error) {
+                        removeLocalStorage('auth');
+                        window.location.href = '/';
+                    }
                 }
                 break;
             case 400:

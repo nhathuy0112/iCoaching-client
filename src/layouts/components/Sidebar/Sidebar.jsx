@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { getUserProfileAsync, logoutAsync, refreshAsync } from '~/features/userSlice';
+import { getUserProfileAsync, logoutAsync} from '~/features/userSlice';
 import { getLocalStorage } from '~/utils/localStorage';
 
 import { BiLogOut } from 'react-icons/bi';
