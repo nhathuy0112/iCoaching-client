@@ -135,7 +135,10 @@ export const editTrainingCourseAsync = createAsyncThunk('/coach/editTrainingCour
             duration: payload.duration,
             description: payload.description,
         });
-        return { id: payload.id, name: response.name, price: response.price, duration: response.duration };
+        if (response) {
+            toast.success('Chỉnh sửa gói tập thành công!');
+            return { id: payload.id, name: response.name, price: response.price, duration: response.duration };
+        }
     } catch (error) {
         console.log(error);
     }
@@ -366,7 +369,7 @@ export const coachSlice = createSlice({
             })
             .addCase(deleteTrainingCourseAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                return state.trainingCourses.filter((course) => course.id !== action.payload.id);
+                state.trainingCourses = state.trainingCourses.filter((course) => course.id !== action.payload.id);
             })
             .addCase(deleteTrainingCourseAsync.rejected, (state, action) => {
                 state.loading = true;

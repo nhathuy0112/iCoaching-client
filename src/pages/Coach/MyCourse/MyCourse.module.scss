@@ -46,6 +46,37 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 12px;
+
+        .course-item{
+            position: relative;
+
+            .item-action{
+                position: absolute;
+                bottom: 0;
+                right: 8px;
+
+                #edit-btn,
+                #delete-btn{
+                    font-size: 2rem;
+                    font-weight: 500;
+                    background-color: transparent;
+                    cursor: pointer;
+                    margin: 0 4px;
+
+                    &:hover{
+                        opacity: 0.6;
+                    }
+                }
+
+                #edit-btn{
+                    color: green;
+                }
+
+                #delete-btn{
+                    color: red;
+                }
+            }
+        }
     }
 
     //Modal
@@ -65,7 +96,8 @@
             margin-bottom: 32px;
         }
 
-        #add-form{
+        #add-form,
+        #edit-form{
             .input-group{
                 display: flex;
                 align-items: center;
@@ -76,6 +108,15 @@
 
                     label{
                         margin-top: 8px;
+                    }
+                }
+
+                &.price-edit{
+                    position: relative;
+
+                    .unit{
+                        position: absolute;
+                        right: 16px;
                     }
                 }
 
@@ -107,44 +148,44 @@
                 margin-left: 160px;
             }
 
-            .modal-action{
+            
+        }
+        .modal-action{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            #agree-btn,
+            #cancel-btn{
                 display: flex;
                 align-items: center;
                 justify-content: center;
-    
-                #agree-btn,
-                #cancel-btn{
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 180px;
-                    padding: 16px 32px;
-                    margin: 0 8px;
-                    color: var(--white-color);
-                    font-size: 1.6rem;
-                    font-weight: 500;
-                    border-radius: var(--default-border-radius);
-                    cursor: pointer;
-                    
-                    span{
-                        margin-left: 8px;
-                    }
-    
-                    &:hover{
-                        opacity: 0.6;
-                    }
+                width: 180px;
+                padding: 16px 32px;
+                margin: 0 8px;
+                color: var(--white-color);
+                font-size: 1.6rem;
+                font-weight: 500;
+                border-radius: var(--default-border-radius);
+                cursor: pointer;
+                
+                span{
+                    margin-left: 8px;
                 }
-    
-                #agree-btn{
-                    background-color: green;
-                }
-    
-                #cancel-btn{
-                    background-color: red;
+
+                &:hover{
+                    opacity: 0.6;
                 }
             }
-        }
 
+            #agree-btn{
+                background-color: green;
+            }
+
+            #cancel-btn{
+                background-color: red;
+            }
+        }
         
     }
     
