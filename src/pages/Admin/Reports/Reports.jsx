@@ -32,7 +32,6 @@ const Reports = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h2>Danh sách khiếu nại</h2>
                 <form className={cx('search')}>
                     <div className={cx('search-box')} type="submit">
                         <AiOutlineSearch className={cx('search-icon')} />

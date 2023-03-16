@@ -19,7 +19,6 @@ const ListAdmin = () => {
     const [open, setOpen] = useState(false);
     const [id, setId] = useState(null);
 
-
     useEffect(() => {
         dispatch(
             getAdminData({
@@ -59,7 +58,6 @@ const ListAdmin = () => {
     };
 
     const currentAdminPagination = useMemo(() => {
-        console.log(page);
         return data;
     }, [data, page]);
 
@@ -72,7 +70,6 @@ const ListAdmin = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
-                <h2 className={cx('container_text')}>Danh sách kiểm duyệt viên</h2>
                 <form className={cx('search')} onSubmit={handleSearchSubmit}>
                     <div className={cx('search_box')} type="submit">
                         <AiOutlineSearch className={cx('search_icon')} />

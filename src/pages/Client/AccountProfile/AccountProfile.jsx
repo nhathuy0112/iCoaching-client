@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Spinner from '~/layouts/components/Spinner';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,7 +21,8 @@ import {
 
 import Modal from '~/components/Modal/Modal';
 import { BsCheckLg } from 'react-icons/bs';
-import { HiXMark } from 'react-icons/hi2';
+import { IoIosArrowBack } from 'react-icons/io';
+import { HiOutlineXMark } from 'react-icons/hi2';
 const cx = classNames.bind(styles);
 
 const schema = yup.object({
@@ -53,7 +55,7 @@ const schema = yup.object({
 
 const AccountProfile = () => {
     const dispatch = useDispatch();
-    const { avatar, profile, error, status, message } = useSelector((state) => state.user);
+    const { avatar, profile, error, status, message, currentUser } = useSelector((state) => state.user);
     const [currentAvatar, setCurrentAvatar] = useState(avatar);
     const [response, setResponse] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -129,9 +131,15 @@ const AccountProfile = () => {
     };
     return (
         <div className={cx('wrapper')}>
+            <div className={cx('title-and-back')}>
+                <Link to={`/client/${currentUser?.Id}/all-coaches`} className={cx('back-link')}>
+                    <IoIosArrowBack />
+                    <span>Trang chủ</span>
+                </Link>
+                <h1 className={cx('header')}>Thông tin tài khoản</h1>
+            </div>
             <div className={cx('container')}>
                 <div className={cx('left_container')}>
-                    <h3>Ảnh đại diện</h3>
                     {loading ? (
                         <Spinner />
                     ) : (
@@ -221,11 +229,11 @@ const AccountProfile = () => {
                         <h2 className={cx('text_modal')}>Bạn có đồng ý cập nhật ảnh đại diện?</h2>
                         <div className={cx('container_confirm')}>
                             <button className={cx('button_active')} onClick={handleSubmitAvatar}>
-                                <BsCheckLg className={cx('icon')} />
+                                <BsCheckLg className={cx('icon_modal')} />
                                 Đồng ý
                             </button>
                             <button className={cx('button_lock')} onClick={handleClose}>
-                                <HiXMark className={cx('icon')} />
+                                <HiOutlineXMark className={cx('icon_modal')} />
                                 Huỷ bỏ
                             </button>
                         </div>

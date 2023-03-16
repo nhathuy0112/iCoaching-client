@@ -44,31 +44,28 @@ const CoachCertificate = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title-and-back')}>
-                <div className={cx('title-and-back')}>
-                    <Link to={`/admin/${currentUser?.Id}/verify-coach`} className={cx('back-link')}>
-                        <IoIosArrowBack />
-                        <span>Quay lại</span>
-                    </Link>
-                    <h3>
-                        Yêu cầu từ Huấn luyện viên <span>{`${certRequest.fullname}`}</span>
-                    </h3>
-                </div>
+                <Link to={`/admin/${currentUser?.Id}/verify-coach`} className={cx('back-link')}>
+                    <IoIosArrowBack />
+                    <span>Quay lại</span>
+                </Link>
+                <h3>
+                    Yêu cầu từ Huấn luyện viên <span>{`${certRequest.fullname}`}</span>
+                </h3>
             </div>
             <div className={cx('content')}>
                 <div className={cx('profile')}>
-                    <div className={cx('profile')}>
-                        <div className={cx('avatar')}>
-                            <img src={certRequest.avatarUrl} alt={'avatar'} className={cx('image')} />
-                        </div>
-                        <h2 className={cx('name')}>{certRequest.fullname}</h2>
-                        <div className={cx('gender')}>
-                            <span className={cx(handleRenderGenderClassNames(certRequest.gender))}>
-                                {handleRenderGenders(certRequest.gender)}
-                            </span>
-                        </div>
-                        <span className={cx('age')}>{certRequest.age} tuổi</span>
+                    <div className={cx('avatar')}>
+                        <img src={certRequest.avatarUrl} alt={'avatar'} className={cx('image')} />
                     </div>
+                    <h2 className={cx('name')}>{certRequest.fullname}</h2>
+                    <div className={cx('gender')}>
+                        <span className={cx(handleRenderGenderClassNames(certRequest.gender))}>
+                            {handleRenderGenders(certRequest.gender)}
+                        </span>
+                    </div>
+                    <span className={cx('age')}>{certRequest.age} tuổi</span>
                 </div>
+
                 <div className={cx('certificates')}>
                     <h3>Danh sách chứng chỉ</h3>
                     <div className={cx('img-wrapper')}>
@@ -83,18 +80,20 @@ const CoachCertificate = () => {
                     switch (certRequest.status) {
                         case 'Pending':
                             return (
-                                <div className={cx('button')}>
-                                    <button
-                                        className={cx('btn-confirm')}
-                                        onClick={() => handleUpdateStatus('Accepted', '')}
-                                    >
-                                        <BsCheckLg className={cx('icon')} />
-                                        Xác nhận
-                                    </button>
-                                    <button className={cx('btn-warn')} onClick={() => handleOpenModal(setDenied)}>
-                                        <BsXLg className={cx('icon')} />
-                                        Từ chối
-                                    </button>
+                                <div className={cx('btn-wrapper')}>
+                                    <div className={cx('button')}>
+                                        <button
+                                            className={cx('btn-confirm')}
+                                            onClick={() => handleUpdateStatus('Accepted', '')}
+                                        >
+                                            <BsCheckLg className={cx('icon')} />
+                                            Xác nhận
+                                        </button>
+                                        <button className={cx('btn-warn')} onClick={() => handleOpenModal(setDenied)}>
+                                            <BsXLg className={cx('icon')} />
+                                            Từ chối
+                                        </button>
+                                    </div>
                                 </div>
                             );
                         case 'Denied':

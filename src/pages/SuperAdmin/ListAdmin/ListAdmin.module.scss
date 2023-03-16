@@ -1,3 +1,10 @@
+.wrapper {
+    button {
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}
 .container {
     display: flex;
 }
@@ -53,7 +60,7 @@
     font-size: 14px;
     line-height: 28px;
     letter-spacing: -2%;
-    color: #e4eafa;
+    color: white;
 }
 
 .button_active {
@@ -66,7 +73,7 @@
     font-size: 14px;
     line-height: 28px;
     letter-spacing: -2%;
-    color: #e4eafa;
+    color: white;
 }
 
 table {

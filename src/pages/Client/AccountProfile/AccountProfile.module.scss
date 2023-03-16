@@ -1,11 +1,35 @@
-.container {
-    display: flex;
-    justify-content: space-evenly;
-    padding-top: 8%;
-    position: relative;
-    button {
-        &:hover {
-            opacity: 0.8;
+.wrapper {
+    .title-and-back {
+        margin: 16px 0 8px;
+        position: relative;
+        .back-link {
+            position: relative;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            width: fit-content;
+            z-index: 2;
+        }
+        .header {
+            position: absolute;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: var(--primary-color);
+            display: inline-block;
+        }
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-evenly;
+        padding-top: 5%;
+        position: relative;
+        button {
+            &:hover {
+                opacity: 0.8;
+            }
         }
     }
 }

@@ -30,8 +30,7 @@ export const getAllCertRequests = ({ pageIndex, pageSize, sort, search }) => {
 export const getCertRequestDetail = (certId) => axios.get(`${END_POINTS.GET_CERT_REQUEST_DETAIL}/${certId}`)
 
 export const updateCertStatus = (payload) => {
-    const optionParam = payload.option ? `?option=${payload.option}` : '';
-    return axios.put(`${END_POINTS.UPDATE_CERT_STATUS}/${payload.certId}${optionParam}`, payload.data, {
+    return axios.put(`${END_POINTS.UPDATE_CERT_STATUS}/${payload.certId}?option=${payload.option}`, payload.data, {
         headers: {
             "Content-Type": "application/json",
         },

@@ -38,7 +38,6 @@ const CoachesView = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h2>Danh sách huấn luyện viên</h2>
                 <form className={cx('search')}>
                     <div className={cx('search-box')} type="submit">
                         <AiOutlineSearch className={cx('search-icon')} />
