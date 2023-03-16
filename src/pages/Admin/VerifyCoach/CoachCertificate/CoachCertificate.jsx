@@ -44,15 +44,13 @@ const CoachCertificate = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title-and-back')}>
-                <div className={cx('title-and-back')}>
-                    <Link to={`/admin/${currentUser?.Id}/verify-coach`} className={cx('back-link')}>
-                        <IoIosArrowBack />
-                        <span>Quay lại</span>
-                    </Link>
-                    <h3>
-                        Yêu cầu từ Huấn luyện viên <span>{`${certRequest.fullname}`}</span>
-                    </h3>
-                </div>
+                <Link to={`/admin/${currentUser?.Id}/verify-coach`} className={cx('back-link')}>
+                    <IoIosArrowBack />
+                    <span>Quay lại</span>
+                </Link>
+                <h3>
+                    Yêu cầu từ Huấn luyện viên <span>{`${certRequest.fullname}`}</span>
+                </h3>
             </div>
             <div className={cx('content')}>
                 <div className={cx('profile')}>
