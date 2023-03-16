@@ -37,7 +37,6 @@ const CreateAccount = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <h2 className={cx('align-center')}>Tạo tài khoản</h2>
             <form id={cx('register-form')} onSubmit={handleSubmit(onSubmit)}>
                 <label>Họ và Tên</label>
                 <input type="text" placeholder="Nhập Họ và Tên" {...register('fullname')} />

@@ -111,6 +111,7 @@ const initialState = {
     message: '',
     profile: {},
     avatar: '',
+    status: false
 };
 
 export const userSlice = createSlice({
@@ -213,6 +214,7 @@ export const userSlice = createSlice({
             })
             .addCase(updateUserProfileAsync.fulfilled, (state, action) => {
                 state.message = action.payload
+                state.status = !state.status
             })
             .addCase(updateUserProfileAsync.rejected, (state, action) => {
                 state.loading = true;

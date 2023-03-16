@@ -20,7 +20,7 @@ import {
 
 import Modal from '~/components/Modal/Modal';
 import { BsCheckLg } from 'react-icons/bs';
-import { HiXMark } from 'react-icons/hi2';
+import { HiOutlineXMark } from 'react-icons/hi2';
 const cx = classNames.bind(styles);
 
 const schema = yup.object({
@@ -129,9 +129,11 @@ const AccountProfile = () => {
     };
     return (
         <div className={cx('wrapper')}>
+            <h2 className={cx('text_wrapper')}>Thông tin tài khoản</h2>
+
             <div className={cx('container')}>
                 <div className={cx('left_container')}>
-                    <h3>Ảnh đại diện</h3>
+                    <label>Ảnh đại diện</label>
                     {loading ? (
                         <Spinner />
                     ) : (
@@ -146,7 +148,7 @@ const AccountProfile = () => {
                         </>
                     )}
                     <button type="submit" onClick={() => setConfirmAvatar(true)}>
-                        Thay đổi
+                        Cập nhật ảnh đại diện
                     </button>
                 </div>
 
@@ -163,7 +165,10 @@ const AccountProfile = () => {
                         <div className={cx('column')}>
                             <div className={cx('col-2')}>
                                 <label>Giới tính</label>
-                                <select defaultValue={profile.gender} {...register('gender', { required: true })}>
+                                <select
+                                    defaultValue={profile.gender ? profile.gender : ''}
+                                    {...register('gender', { required: true })}
+                                >
                                     <option value="" disabled>
                                         ----Chọn giới tính----
                                     </option>
@@ -204,7 +209,7 @@ const AccountProfile = () => {
                         {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
                         {response && <SuccessMessage message={message} />}
                         <button type="submit" id={cx('submit_btn')} className={cx('align-center')}>
-                            <BsCheckLg className={cx('icon')} /> Cập nhật
+                            Cập nhật thông tin cá nhân
                         </button>
                     </form>
                 </div>
@@ -221,11 +226,11 @@ const AccountProfile = () => {
                         <h2 className={cx('text_modal')}>Bạn có đồng ý cập nhật ảnh đại diện?</h2>
                         <div className={cx('container_confirm')}>
                             <button className={cx('button_active')} onClick={handleSubmitAvatar}>
-                                <BsCheckLg className={cx('icon')} />
+                                <BsCheckLg className={cx('icon_modal')} />
                                 Đồng ý
                             </button>
                             <button className={cx('button_lock')} onClick={handleClose}>
-                                <HiXMark className={cx('icon')} />
+                                <HiOutlineXMark className={cx('icon_modal')} />
                                 Huỷ bỏ
                             </button>
                         </div>

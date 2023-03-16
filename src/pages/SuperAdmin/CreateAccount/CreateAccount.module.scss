@@ -1,3 +1,11 @@
+.wrapper {
+    padding-top: 4%;
+    button {
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}
 #register-form {
     width: 80%;
     margin: 4% auto 2%;

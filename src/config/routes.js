@@ -11,7 +11,7 @@ import CoachDetails from '~/pages/Client/CoachDetails';
 import ClientRequest from '~/pages/Client/ClientRequest';
 import OnGoingCourse from '~/pages/Client/OnGoingCourse';
 import HistoryCourse from '~/pages/Client/HistoryCourse';
-import AccountInformation from '~/pages/Client/AccountInformation';
+import AccountProfile from '~/pages/Client/AccountProfile';
 import Messages from '~/pages/Client/Messages';
 
 //Coach
@@ -19,7 +19,7 @@ import Verify from '~/pages/Coach/Verify';
 import MyClient from '~/pages/Coach/MyClient';
 import RequestCoaching from '~/pages/Coach/RequestCoaching';
 import MyCourse from '~/pages/Coach/MyCourse';
-import CoachAccountInformation from '~/pages/Coach/AccountInformation';
+import CoachAccountProfile from '~/pages/Coach/AccountProfile';
 import Portfolio from '~/pages/Coach/Portfolio';
 
 //Admin
@@ -56,7 +56,7 @@ const clientRoutes = [
     { path: '/client/:id/request', component: ClientRequest, layout: AuthLayout, isProtected: true },
     { path: '/client/:id/ongoing-course', component: OnGoingCourse, layout: AuthLayout, isProtected: true },
     { path: '/client/:id/history-course', component: HistoryCourse, layout: AuthLayout, isProtected: true },
-    { path: '/client/:id/account-information', component: AccountInformation, layout: AuthLayout, isProtected: true },
+    { path: '/client/:id/account-information', component: AccountProfile, layout: AuthLayout, isProtected: true },
     { path: '/client/:id/messages', component: Messages, layout: AuthLayout, isProtected: true },
 ];
 
@@ -67,7 +67,7 @@ const coachRoutes = [
     { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout, isProtected: true },
     {
         path: '/coach/:id/account-information',
-        component: CoachAccountInformation,
+        component: CoachAccountProfile,
         layout: AuthLayout,
         isProtected: true,
     },

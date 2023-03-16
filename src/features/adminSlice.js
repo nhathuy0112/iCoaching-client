@@ -97,7 +97,7 @@ export const adminSlice = createSlice({
 
             //update coach status
             .addCase(updateStatusAsync.fulfilled, (state, action) => {
-                state.status = action.payload;
+                state.status = !state.status;
             })
 
             //get all certificate verification requests

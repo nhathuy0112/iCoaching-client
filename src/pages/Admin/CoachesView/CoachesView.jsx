@@ -9,7 +9,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
-import { getAllCoachesAsync, setStatus, updateStatusAsync } from '~/features/adminSlice';
+import { getAllCoachesAsync, updateStatusAsync } from '~/features/adminSlice';
 import { handleRenderGenders } from '~/utils/gender';
 
 const cx = classNames.bind(styles);
@@ -33,13 +33,11 @@ const CoachesView = () => {
 
     const handleUpdateStatus = (id) => {
         dispatch(updateStatusAsync(id));
-        setStatus(id);
         setLockOpen(false);
     };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h2>Danh sách huấn luyện viên</h2>
                 <form className={cx('search')}>
                     <div className={cx('search-box')} type="submit">
                         <AiOutlineSearch className={cx('search-icon')} />

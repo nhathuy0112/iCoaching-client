@@ -1,32 +1,79 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentUserAvatar, updateCurrentUserAvatar, updateUser } from '~/features/superAdminSlice';
-import Spinner from '~/layouts/components/Spinner';
 import styles from './AccountProfile.module.scss';
-import { useForm } from 'react-hook-form';
 import classNames from 'classnames/bind';
+
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Spinner from '~/layouts/components/Spinner';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { dataURItoBlob } from '~/utils/blob';
+import ErrorMessage from '~/components/ErrorMessage';
+import SuccessMessage from '~/components/SuccessMessage';
+
+import {
+    getUserAvatarAsync,
+    getUserProfileAsync,
+    updateUserAvatarAsync,
+    updateUserProfileAsync,
+} from '~/features/userSlice';
+
 import Modal from '~/components/Modal/Modal';
 import { BsCheckLg } from 'react-icons/bs';
-import { HiOutlineXMark } from 'react-icons/hi2';
+import { HiXMark } from 'react-icons/hi2';
 const cx = classNames.bind(styles);
+
+const schema = yup.object({
+    fullname: yup.string().required('Họ và tên không được để trống'),
+    gender: yup.string().required('Giới tính phải được chọn'),
+    dob: yup
+        .date()
+        .transform((value, originalValue) => {
+            if (originalValue === '') return null;
+            return value;
+        })
+        .max(new Date(), 'Ngày sinh không được chọn trong tương lai')
+        .required('Ngày sinh không được để trống')
+        .test('age', 'Chưa đủ 16 tuổi', function (value) {
+            const today = new Date();
+            const birthDate = new Date(value);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const month = today.getMonth() - birthDate.getMonth();
+            if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age >= 16;
+        }),
+    phoneNumber: yup
+        .string()
+        .matches(/(0[3|5|7|8|9])+([0-9]{8})\b/g, 'Số điện thoại không hợp lệ')
+        .required('Số điện thoại không được để trống'),
+    email: yup.string().required('Email không được để trống'),
+});
 
 const AccountProfile = () => {
     const dispatch = useDispatch();
-    const userAvatar = useSelector((state) => state.superAdmin.avatar);
-    const currentUser = useSelector((state) => state.user.currentUser);
-    const [imageProfile, setImageProfile] = useState(userAvatar);
+    const { avatar, profile, error, status, message } = useSelector((state) => state.user);
+    const [currentAvatar, setCurrentAvatar] = useState(avatar);
+    const [response, setResponse] = useState(false);
     const [loading, setLoading] = useState(true);
-    const { register, handleSubmit, reset } = useForm();
-    const [updateImage, setUpdateImage] = useState();
-    const [changeProfile, setChangeProfile] = useState(false);
-    const [changeAva, setChangeAva] = useState(false);
-    const [formData, setFormData] = useState(null);
+    const [confirmAvatar, setConfirmAvatar] = useState(false);
 
     useEffect(() => {
-        dispatch(getCurrentUserAvatar());
-        setImageProfile(userAvatar);
+        dispatch(getUserAvatarAsync());
+        setCurrentAvatar(avatar);
         setLoading(false);
-    }, [dispatch, userAvatar]);
+    }, [dispatch, avatar]);
+
+    useEffect(() => {
+        dispatch(getUserProfileAsync());
+    }, [dispatch, status]);
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({ resolver: yupResolver(schema) });
 
     const convertDateFormat = (dateString) => {
         const date = new Date(dateString);
@@ -36,151 +83,154 @@ const AccountProfile = () => {
         return `${day}-${month}-${year}`;
     };
 
-    const handleButtonClick = () => {
+    const handleProfile = (data) => {
+        try {
+            dispatch(
+                updateUserProfileAsync({
+                    fullname: data.fullname,
+                    email: data.email,
+                    dob: convertDateFormat(data.dob),
+                    gender: data.gender,
+                    phoneNumber: data.phoneNumber,
+                }),
+            ).then(() => setResponse(true));
+        } catch (error) {
+            console.log(error);
+        }
+        setTimeout(() => {
+            setResponse(false);
+        }, 3000);
+    };
+
+    const handleChangeAvatar = () => {
         onchange = (event) => {
             const file = event.target.files[0];
             const reader = new FileReader();
             reader.onload = () => {
-                setImageProfile(reader.result);
-                setUpdateImage(file);
+                setCurrentAvatar(reader.result);
             };
             reader.readAsDataURL(file);
         };
     };
 
-    const handleUpload = () => {
-        if (updateImage) {
-            setLoading(true);
-            dispatch(updateCurrentUserAvatar(updateImage)).then(() => {
-                setLoading(false);
-            });
-            setChangeAva(false);
-        }
-    };
-
-    const onSubmit = (data) => {
-        setFormData({
-            email: data.email,
-            fullname: data.fullname,
-            dob: convertDateFormat(data.dob),
-            gender: data.gender,
-            phoneNumber: data.phoneNumber,
+    const handleSubmitAvatar = () => {
+        const formData = new FormData();
+        const blob = dataURItoBlob(currentAvatar);
+        formData.append('file', blob);
+        setLoading(true);
+        dispatch(updateUserAvatarAsync(formData)).then(() => {
+            setLoading(false);
         });
-    };
-    const handleUpdate = async () => {
-        const result = await dispatch(updateUser(formData));
-        if (result.payload) {
-            reset();
-            setChangeProfile(false);
-        }
-        setChangeProfile(false);
+        setConfirmAvatar(false);
     };
 
+    const handleClose = (e) => {
+        setConfirmAvatar(false);
+    };
     return (
         <div className={cx('wrapper')}>
-            <h2 className={cx('text_wrapper')}>Thông tin tài khoản</h2>
-
             <div className={cx('container')}>
                 <div className={cx('left_container')}>
-                    <label>Ảnh đại diện</label>
+                    <h3>Ảnh đại diện</h3>
                     {loading ? (
                         <Spinner />
                     ) : (
                         <>
-                            <img src={imageProfile} alt="" style={{ width: '100%', height: '100%' }} />
-                            <input id="upload" type="file" accept="image/*" hidden />
-                            <label className={cx('change_image')} htmlFor="upload" onClick={handleButtonClick}>
-                                Change Image
-                            </label>
+                            <div className={cx('avatar')}>
+                                <img src={currentAvatar} alt="" style={{ width: '100%', height: '100%' }} />
+                                <input id="upload" type="file" accept="image/*" hidden />
+                                <label className={cx('change_image')} htmlFor="upload" onClick={handleChangeAvatar}>
+                                    Change Image
+                                </label>
+                            </div>
                         </>
                     )}
-                    <button type="submit" onClick={() => setChangeAva(true)}>
-                        Cập nhật ảnh đại diện
+                    <button type="submit" onClick={() => setConfirmAvatar(true)}>
+                        Thay đổi
                     </button>
-                    <div className={cx('modal_container')}>
-                        {changeAva && (
-                            <Modal
-                                show={changeAva}
-                                onClose={() => setChangeAva(false)}
-                                modalStyle={{ width: '60%' }}
-                                closeBtnStyle={{ display: 'none' }}
-                            >
-                                <h1 className={cx('modal_header')}>iCoaching</h1>
-                                <h2 className={cx('text_modal')}>Bạn có đồng ý cập nhật ảnh đại diện ? </h2>
-                                <div className={cx('container_confirm')}>
-                                    <button className={cx('button_active')} onClick={handleUpload}>
-                                        <BsCheckLg className={cx('icon_modal')} />
-                                        Đồng ý
-                                    </button>
-                                    <button className={cx('button_lock')} onClick={() => setChangeAva(false)}>
-                                        <HiOutlineXMark className={cx('icon_modal')} />
-                                        Huỷ bỏ
-                                    </button>
-                                </div>
-                            </Modal>
-                        )}
-                    </div>
-                    <div>{currentUser?.email}</div>
                 </div>
 
                 <div className={cx('right_container')}>
-                    <form id={cx('update_form')} onSubmit={handleSubmit(onSubmit)}>
+                    <form id={cx('update_form')} onSubmit={handleSubmit(handleProfile)}>
                         <label>Họ và Tên</label>
-                        <input type="text" placeholder="Nhập Họ và Tên" {...register('fullname')} />
+                        <input
+                            type="text"
+                            placeholder="Nhập Họ và Tên"
+                            defaultValue={profile.fullname}
+                            {...register('fullname')}
+                        />
+                        {errors.fullname && <ErrorMessage message={errors.fullname.message} />}
                         <div className={cx('column')}>
                             <div className={cx('col-2')}>
                                 <label>Giới tính</label>
-                                <select defaultValue="" {...register('gender', { required: true })}>
+                                <select defaultValue={profile.gender} {...register('gender', { required: true })}>
                                     <option value="" disabled>
-                                        Chọn giới tính
+                                        ----Chọn giới tính----
                                     </option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
+                                    <option value="Male">Nam</option>
+                                    <option value="Female">Nữ</option>
+                                    <option value="Other">Khác</option>
                                 </select>
+                                {errors.gender && <ErrorMessage message={errors.gender.message} />}
                             </div>
                             <div className={cx('col-2')}>
                                 <label>Ngày sinh</label>
-                                <input type="date" {...register('dob')} />
+
+                                <input
+                                    type="date"
+                                    defaultValue={profile.dob?.replace(/(..).(..).(....)/, '$3-$1-$2')}
+                                    {...register('dob')}
+                                />
+                                {errors.dob && <ErrorMessage message={errors.dob.message} />}
                             </div>
                         </div>
                         <label>Địa chỉ email</label>
-                        <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />
+                        <input
+                            type="email"
+                            placeholder="Nhập địa chỉ email"
+                            defaultValue={profile.email}
+                            {...register('email')}
+                        />{' '}
+                        {errors.email && <ErrorMessage message={errors.email.message} />}
+                        {error?.Email && <ErrorMessage message={error.Email?.message} />}
                         <label>Số điện thoại</label>
-                        <input type="tel" placeholder="Nhập số điện thoại" {...register('phoneNumber')} />
-
-                        <button
-                            id={cx('submit_btn')}
-                            className={cx('align-center')}
-                            onClick={() => setChangeProfile(true)}
-                        >
-                            Cập nhật thông tin cá nhân
+                        <input
+                            type="tel"
+                            placeholder="Nhập số điện thoại"
+                            defaultValue={profile.phoneNumber}
+                            {...register('phoneNumber')}
+                        />
+                        {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
+                        {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
+                        {response && <SuccessMessage message={message} />}
+                        <button type="submit" id={cx('submit_btn')} className={cx('align-center')}>
+                            <BsCheckLg className={cx('icon')} /> Cập nhật
                         </button>
-                        <div className={cx('modal_container')}>
-                            {changeProfile && (
-                                <Modal
-                                    show={changeProfile}
-                                    onClose={() => setChangeProfile(false)}
-                                    modalStyle={{ width: '60%' }}
-                                    closeBtnStyle={{ display: 'none' }}
-                                >
-                                    <h1 className={cx('modal_header')}>iCoaching</h1>
-                                    <h2 className={cx('text_modal')}>Bạn có đồng ý cập nhật thông tin cá nhân ? </h2>
-                                    <div className={cx('container_confirm')}>
-                                        <button type="submit" className={cx('button_active')}>
-                                            <BsCheckLg className={cx('icon_modal')} />
-                                            Đồng ý
-                                        </button>
-                                        <button className={cx('button_lock')} onClick={() => setChangeProfile(false)}>
-                                            <HiOutlineXMark className={cx('icon_modal')} />
-                                            Huỷ bỏ
-                                        </button>
-                                    </div>
-                                </Modal>
-                            )}
-                        </div>
                     </form>
                 </div>
+            </div>
+            <div className={cx('modal_container')}>
+                {confirmAvatar && (
+                    <Modal
+                        show={confirmAvatar}
+                        onClose={handleClose}
+                        modalStyle={{ width: '60%' }}
+                        closeBtnStyle={{ display: 'none' }}
+                    >
+                        <h1 className={cx('modal_header')}>iCoaching</h1>
+                        <h2 className={cx('text_modal')}>Bạn có đồng ý cập nhật ảnh đại diện?</h2>
+                        <div className={cx('container_confirm')}>
+                            <button className={cx('button_active')} onClick={handleSubmitAvatar}>
+                                <BsCheckLg className={cx('icon')} />
+                                Đồng ý
+                            </button>
+                            <button className={cx('button_lock')} onClick={handleClose}>
+                                <HiXMark className={cx('icon')} />
+                                Huỷ bỏ
+                            </button>
+                        </div>
+                    </Modal>
+                )}
             </div>
         </div>
     );
