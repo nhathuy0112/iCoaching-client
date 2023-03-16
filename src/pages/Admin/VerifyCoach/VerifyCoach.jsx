@@ -15,7 +15,7 @@ const cx = classNames.bind(styles);
 
 const VerifyCoach = () => {
     const dispatch = useDispatch();
-    const { coaches, totalCount, pageSize, pageIndex } = useSelector((state) => state.admin);
+    const { coaches, totalCount, pageSize } = useSelector((state) => state.admin);
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {

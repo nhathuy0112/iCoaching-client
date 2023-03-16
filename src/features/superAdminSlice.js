@@ -3,23 +3,9 @@ import {
     getAdmins,
     register,
     updateStatus,
-    updateProfile,
-    getUserAvatar,
-    postUserAvatar,
 } from '~/services/superAdminService';
 
-const initialState = {
-    data: [],
-    admins: [],
-    update: [],
-    isLocked: false,
-    currentPage: 1,
-    pageSize: 5,
-    search: '',
-    adminId: '',
-    count: '',
-    avatar: null,
-};
+
 
 export const getAdminData = createAsyncThunk('superadmin/adminList', async ({ currentPage, pageSize, search }) => {
     try {
@@ -54,40 +40,20 @@ export const createAdmin = createAsyncThunk('superadmin/createAdmin', async (pay
     }
 });
 
-export const updateUser = createAsyncThunk('superadmin/updateProfile', async (payload) => {
-    try {
-        const response = await updateProfile({
-            email: payload.email,
-            fullname: payload.fullname,
-            dob: payload.dob,
-            gender: payload.gender,
-            phoneNumber: payload.phoneNumber,
-        });
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-});
-
-export const getCurrentUserAvatar = createAsyncThunk('superadmin/getAvatar', async () => {
-    try {
-        const response = await getUserAvatar();
-        return response.url;
-    } catch (error) {
-        console.log(error);
-    }
-});
-
-export const updateCurrentUserAvatar = createAsyncThunk('superadmin/updateAvatar', async (data) => {
-    try {
-        const formData = new FormData();
-        formData.append('file', data);
-        const response = await postUserAvatar(formData);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-});
+const initialState = {
+    data: [],
+    admins: [],
+    update: [],
+    isLocked: false,
+    currentPage: 1,
+    pageSize: 5,
+    search: '',
+    adminId: '',
+    count: '',
+    avatar: null,
+    message: '',
+    error: null
+};
 
 export const superAdminSlice = createSlice({
     name: 'superadmin',
@@ -114,23 +80,22 @@ export const superAdminSlice = createSlice({
                 state.adminId = action.payload.adminId;
                 state.isLocked = action.payload.isLocked;
             })
+            .addCase(createAdmin.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
             .addCase(createAdmin.fulfilled, (state, action) => {
                 state.admins.push(action.payload);
+                state.message = 'Thêm thành công'
             })
-            .addCase(getCurrentUserAvatar.fulfilled, (state, action) => {
-                state.avatar = action.payload;
+            .addCase(createAdmin.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error;
             })
-            .addCase(updateCurrentUserAvatar.fulfilled, (state, action) => {
-                console.log(action.payload);
-                state.avatar = action.payload;
-            })
-            .addCase(updateUser.fulfilled, (state, action) => {
-                console.log(action);
-                state.update.push(action.payload);
-            });
     },
 });
 
-export const { setPage, setSearch, setLock, setImage } = superAdminSlice.actions;
+export const { setPage, setSearch, setLock } = superAdminSlice.actions;
 
 export default superAdminSlice.reducer;

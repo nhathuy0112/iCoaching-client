@@ -46,13 +46,11 @@ const ReportDetails = ({ id }) => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title-and-back')}>
-                <div className={cx('title-and-back')}>
-                    <Link to={`/admin/${currentUser?.Id}/reports`} className={cx('back-link')}>
-                        <IoIosArrowBack />
-                        <span>Quay lại</span>
-                    </Link>
-                    <h3>Hợp đồng huấn luyện</h3>
-                </div>
+                <Link to={`/admin/${currentUser?.Id}/reports`} className={cx('back-link')}>
+                    <IoIosArrowBack />
+                    <span>Quay lại</span>
+                </Link>
+                <h2>Hợp đồng huấn luyện</h2>
             </div>
             <div className={cx('content')}>
                 <div className={cx('contract-info')}>

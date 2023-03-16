@@ -139,7 +139,6 @@ export const userSlice = createSlice({
             .addCase(registerAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                // console.log(action);
             })
 
             //login
