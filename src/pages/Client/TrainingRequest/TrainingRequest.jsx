@@ -1,7 +1,7 @@
 import React from 'react';
 
-const ClientRequest = () => {
+const TrainingRequest = () => {
     return <div>ClientRequest</div>;
 };
 
-export default ClientRequest;
+export default TrainingRequest;

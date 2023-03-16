@@ -43,30 +43,95 @@
                 }
             }
 
-            .nav-link{
-                .nav-link-item{
+            .avatar-link {
+                display: flex;
+                flex-direction: column;
+                background-color: var(--white-color);
+                z-index: 100;
+
+                .avatar-link-item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    padding: 4px 8px;
+                    margin: 4px -8px;
+                    cursor: pointer;
+                    background-color: var(--white-color);
+                    color: #000;
+                    font-size: 1.6rem;
+                    font-weight: 500;
+
+                    .icon {
+                        margin-right: 8px;
+                    }
+
+                    .title {
+                        color: #000;
+                        font-size: 1.6rem;
+                        font-weight: 500;
+                    }
+
+                    &:hover {
+                        background-color: var(--primary-color);
+                        color: var(--white-color);
+
+                        .title {
+                            color: var(--white-color);
+                        }
+                    }
+                }
+            }
+
+            .drop-link {
+                background-color: var(--white-color);
+                box-shadow: var(--default-box-shadow);
+                border-radius: var(--default-border-radius);
+                position: relative;
+
+                .arrow {
+                    height: 20px;
+                    width: 180px;
+                    position: absolute;
+                    top: -12px;
+                    right: 0px;
+                    background-color: transparent;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        right: 36px;
+                        top: -8px;
+                        border-width: 12px;
+                        border-style: solid;
+                        border-color: transparent transparent var(--white-color) transparent;
+                    }
+                }
+            }
+
+            .nav-link {
+                .nav-link-item {
                     color: var(--white-color);
                     margin: 0 8px;
                     padding: 8px 0;
 
-                    &.active{
+                    &.active {
                         border-bottom: 1px solid var(--white-color);
                     }
                 }
             }
 
-            .info{
+            .info {
                 display: flex;
                 align-items: center;
                 cursor: pointer;
 
-                .name{
-                    color: var(--white-color)
+                .name {
+                    color: var(--white-color);
                 }
 
-                .avatar-wrapper{
+                .avatar-wrapper {
                     margin-left: 8px;
-                    .avatar{
+                    .avatar {
                         color: var(--primary-color);
                         height: 28px;
                         width: 28px;

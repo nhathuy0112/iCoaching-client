@@ -1,11 +1,9 @@
-import { useEffect } from 'react';
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
 
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import Modal from '~/components/Modal';
 import { loginAsync, resetAuth } from '~/features/userSlice';
@@ -14,7 +12,6 @@ import ErrorMessage from '~/components/ErrorMessage';
 const cx = classNames.bind(styles);
 const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
     const dispatch = useDispatch();
-
     const switchForgot = (e) => {
         e.preventDefault();
         setLoginOpen(false);
@@ -34,32 +31,8 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         formState: { errors },
         reset,
     } = useForm();
-    const navigate = useNavigate();
 
-    const { currentUser, isLoggedIn, error} = useSelector((state) => state.user);
-
-
-
-    useEffect(() => {
-        if (isLoggedIn && currentUser) {
-            switch (currentUser.role) {
-                case 'CLIENT':
-                    navigate(`/client/${currentUser.Id}/all-coaches`);
-                    break;
-                case 'COACH':
-                    navigate(`/coach/${currentUser.Id}/verify`);
-                    break;
-                case 'ADMIN':
-                    navigate(`/admin/${currentUser.Id}/all-coaches`);
-                    break;
-                case 'SUPER_ADMIN':
-                    navigate(`/super_admin/${currentUser.Id}/list_admin`);
-                    break;
-                default:
-                    navigate('/');
-            }
-        }
-    }, [currentUser, isLoggedIn, navigate]);
+    const {error} = useSelector((state) => state.user);
 
     const handleLogin = (data) => {
         dispatch(loginAsync({ username: data.username, password: data.password }));

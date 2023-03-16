@@ -42,6 +42,7 @@ const Home = () => {
 
     const dispatch = useDispatch();
     const { coaches } = useSelector((state) => state.guest);
+    const {currentUser} = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
@@ -109,7 +110,7 @@ const Home = () => {
                             </div>
                         ))}
                     </div>
-                    <Link to='/all-coaches' id={cx('view-all-btn')}>
+                    <Link to={`/client/${currentUser?.Id}/all-coaches`} id={cx('view-all-btn')}>
                         Xem tất cả
                     </Link>
                 </div>
