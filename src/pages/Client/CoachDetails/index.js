@@ -1,1 +1,1 @@
-export { default } from './CoachDetails'
+export { default } from './CoachDetails';

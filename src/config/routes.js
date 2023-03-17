@@ -2,16 +2,18 @@
 
 //Guest
 import Home from '~/pages/Guest/Home';
-import GuestCoachesView from '~/pages/Guest/CoachesView';
+import CoachesView from '~/pages/Guest/CoachesView';
 import CoachDetail from '~/pages/Guest/CoachDetails';
 
 //Client
-import CoachesView from '~/pages/Client/CoachesView';
-import CoachDetails from '~/pages/Client/CoachDetails';
-import ClientRequest from '~/pages/Client/ClientRequest';
+import ClientHome from '~/pages/Client/Home';
+import TrainingRequest from '~/pages/Client/TrainingRequest';
+import TrainingHistory from '~/pages/Client/TrainingHistory';
+import ClientCoachesView from '~/pages/Client/CoachesView';
+import ClientCoachDetails from '~/pages/Client/CoachDetails';
 import OnGoingCourse from '~/pages/Client/OnGoingCourse';
-import HistoryCourse from '~/pages/Client/HistoryCourse';
 import AccountProfile from '~/pages/Client/AccountProfile';
+// import HistoryCourse from '~/pages/Client/HistoryCourse';
 import Messages from '~/pages/Client/Messages';
 
 //Coach
@@ -37,42 +39,39 @@ import SuperAdminAccountProfile from '~/pages/SuperAdmin/AccountProfile/AccountP
 
 /*-----layouts-----*/
 import AuthLayout from '~/layouts/AuthLayout';
+import ClientLayout from '~/layouts/ClientLayout';
 
 const guestRoutes = [
     { path: '/', component: Home },
-    { path: '/all-coaches', component: GuestCoachesView },
+    { path: '/all-coaches', component: CoachesView },
     { path: '/all-coaches/view-details/coach/:id', component: CoachDetail },
     { path: '/view-details/coach/:id', component: CoachDetail },
 ];
 
 const clientRoutes = [
-    { path: '/client/:id/all-coaches', component: CoachesView, layout: AuthLayout, isProtected: true },
+    { path: '/client/:id', component: ClientHome, layout: ClientLayout },
+    { path: '/client/:id/all-coaches', component: ClientCoachesView, layout: ClientLayout },
     {
         path: '/client/:id/all-coaches/view-details/coach/:coachId',
-        component: CoachDetails,
-        layout: AuthLayout,
-        isProtected: true,
+        component: ClientCoachDetails,
+        layout: ClientLayout,
     },
-    { path: '/client/:id/request', component: ClientRequest, layout: AuthLayout, isProtected: true },
-    { path: '/client/:id/ongoing-course', component: OnGoingCourse, layout: AuthLayout, isProtected: true },
-    { path: '/client/:id/history-course', component: HistoryCourse, layout: AuthLayout, isProtected: true },
-    { path: '/client/:id/account-information', component: AccountProfile, layout: AuthLayout, isProtected: true },
-    { path: '/client/:id/messages', component: Messages, layout: AuthLayout, isProtected: true },
+    { path: '/client/:id/view-details/coach/:coachId', component: ClientCoachDetails, layout: ClientLayout },
+    { path: '/client/:id/training-request', component: TrainingRequest, layout: ClientLayout },
+    { path: '/client/:id/ongoing-course', component: OnGoingCourse, layout: ClientLayout },
+    { path: '/client/:id/training-history', component: TrainingHistory, layout: ClientLayout },
+    { path: '/client/:id/account-information', component: AccountProfile, layout: ClientLayout },
+    { path: '/client/:id/all-messages', component: Messages, layout: ClientLayout },
 ];
 
 const coachRoutes = [
-    { path: '/coach/:id/verify', component: Verify, layout: AuthLayout, isProtected: true },
+    { path: '/coach/:id/verify', component: Verify, layout: AuthLayout },
     { path: '/coach/:id/my-clients', component: MyClient, layout: AuthLayout },
-    { path: '/coach/:id/request-coaching', component: RequestCoaching, layout: AuthLayout, isProtected: true },
-    { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout, isProtected: true },
-    {
-        path: '/coach/:id/account-information',
-        component: CoachAccountProfile,
-        layout: AuthLayout,
-        isProtected: true,
-    },
-    { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout, isProtected: true },
-    { path: '/coach/:id/messages', component: Messages, layout: AuthLayout, isProtected: true },
+    { path: '/coach/:id/request-coaching', component: RequestCoaching, layout: AuthLayout },
+    { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout },
+    { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout },
+    { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout },
+    { path: '/coach/:id/messages', component: Messages, layout: AuthLayout },
 ];
 
 const adminRoutes = [
@@ -89,14 +88,12 @@ const superAdminRoutes = [
         path: '/super_admin/:id/create_account/',
         component: SuperAdminCreateAccount,
         layout: AuthLayout,
-        isProtected: true,
     },
     {
         path: '/super_admin/:id/account_profile/',
         component: SuperAdminAccountProfile,
         layout: AuthLayout,
-        isProtected: true,
     },
-    { path: '/super_admin/:id/list_admin/', component: ListAdmin, layout: AuthLayout, isProtected: true },
+    { path: '/super_admin/:id/list_admin/', component: ListAdmin, layout: AuthLayout },
 ];
 export const routes = [...guestRoutes, ...clientRoutes, ...coachRoutes, ...adminRoutes, ...superAdminRoutes];
