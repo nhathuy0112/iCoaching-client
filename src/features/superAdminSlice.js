@@ -25,7 +25,7 @@ export const updateAdminStatus = createAsyncThunk('superadmin/updateData', async
     }
 });
 
-export const createAdmin = createAsyncThunk('superadmin/createAdmin', async (payload) => {
+export const createAdmin = createAsyncThunk('superadmin/createAdmin', async (payload, { rejectWithValue }) => {
     try {
         const response = await register({
             email: payload.email,
@@ -37,6 +37,7 @@ export const createAdmin = createAsyncThunk('superadmin/createAdmin', async (pay
         return response;
     } catch (error) {
         console.log(error);
+        return rejectWithValue(error);
     }
 });
 
@@ -91,7 +92,8 @@ export const superAdminSlice = createSlice({
             })
             .addCase(createAdmin.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error;
+                state.error = action.payload;
+                state.message = null
             })
     },
 });

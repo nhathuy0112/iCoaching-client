@@ -52,8 +52,6 @@ const CreateAccount = () => {
                     confirmPassword: data.confirmPassword,
                 }),
             ).then(() => setResponse(true));
-            reset(data);
-            console.log(error);
         } catch (error) {
             console.log(error);
         }
@@ -77,6 +75,7 @@ const CreateAccount = () => {
                 <label>Tên người dùng</label>
                 <input type="text" placeholder="Nhập tên người dùng" {...register('username')} />
                 {errors.username && <ErrorMessage message={errors.username.message} />}
+                {error?.Username && <ErrorMessage message={error.Username.message} />}
 
                 <div className={cx('pwd')}>
                     <div className={cx('col2')}>
