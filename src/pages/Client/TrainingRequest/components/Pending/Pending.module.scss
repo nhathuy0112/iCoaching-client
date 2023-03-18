@@ -46,13 +46,13 @@
                 justify-content: center;
                 margin-top: 16px;
 
-                #payment-btn,
                 #canceled-btn {
                     flex: 0 0 50%;
                     padding: 8px;
                     margin: 0 4px;
                     border-radius: var(--default-border-radius);
                     color: var(--white-color);
+                    background-color: red;
                     font-size: 1.6;
                     font-weight: 500;
                     cursor: pointer;
@@ -61,15 +61,15 @@
                         opacity: 0.6;
                     }
                 }
-
-                #payment-btn {
-                    background-color: green;
-                }
-
-                #canceled-btn {
-                    background-color: red;
-                }
             }
+        }
+    }
+
+    .request-empty {
+        h2 {
+            text-align: center;
+            color: red;
+            font-size: 2rem;
         }
     }
 }

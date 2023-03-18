@@ -55,7 +55,7 @@ const Header = () => {
                                             isActive ? cx('nav-link-item', 'active') : cx('nav-link-item')
                                         }
                                     >
-                                        Đang tập
+                                        Đang tập luyện
                                     </NavLink>
                                     <NavLink
                                         to={`/${currentUser?.role.toLowerCase()}/${currentUser?.Id}/training-history`}

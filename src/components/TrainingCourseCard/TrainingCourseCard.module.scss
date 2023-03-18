@@ -31,7 +31,7 @@
     h1,
     h2 {
         align-content: center;
-        margin-bottom: 15px;
+        margin-bottom: 16px;
         text-align: center;
     }
     h1 {
@@ -96,5 +96,25 @@
                 opacity: 0.6;
             }
         }
+    }
+    .message-frame {
+        padding: 0 120px;
+        height: 200px;
+        margin-bottom: 16px;
+
+        textarea {
+            resize: none;
+            outline: none;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+    }
+
+    .error {
+        margin-bottom: 16px;
+        margin-left: 120px;
     }
 }

@@ -1,6 +1,6 @@
 import styles from './TrainingCourse.module.scss';
 import classNames from 'classnames/bind';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCoachTrainingCourseAsync, setPage } from '~/features/guestSlice';
@@ -11,9 +11,7 @@ const cx = classNames.bind(styles);
 
 const TrainingCourse = () => {
     const { id, coachId } = useParams();
-    const location = useLocation();
     const dispatch = useDispatch();
-    // const { currentUser } = useSelector((state) => state.user);
     const { trainingCourses, totalCount, pageSize, pageIndex } = useSelector((state) => state.guest);
 
     useEffect(() => {
@@ -54,14 +52,7 @@ const TrainingCourse = () => {
                 ) : (
                     <div className={cx('course-empty')}>
                         <h3 className={cx('message')}>Huấn luyện viên này chưa có gói tập nào!</h3>
-                        <Link
-                            className={cx('link')}
-                            to={
-                                location.pathname.startsWith(`/client/${id}/all-coaches`)
-                                    ? `/client/${id}/all-coaches`
-                                    : '/'
-                            }
-                        >
+                        <Link className={cx('find-link')} to={`/client/${id}/all-coaches`}>
                             Tìm HLV khác!
                         </Link>
                     </div>

@@ -35,7 +35,7 @@ const TrainingRequest = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title-and-back')}>
-                <Link to={`/client/${id}/all-coaches`} className={cx('back-link')}>
+                <Link to={`/client/${id}`} className={cx('back-link')}>
                     <IoIosArrowBack />
                     <span>Trang chủ</span>
                 </Link>

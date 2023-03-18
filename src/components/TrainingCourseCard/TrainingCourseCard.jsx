@@ -8,20 +8,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import Login from '~/auth/Login';
 import Register from '~/auth/Register';
 import ForgotPassword from '~/auth/ForgotPassword';
-import { resetAuth } from '~/features/userSlice';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getCoachingRequestsAsync, resetError, sendCoachingRequestAsync } from '~/features/clientSlice';
+import ErrorMessage from '../ErrorMessage';
 
 const cx = classNames.bind(styles);
 
 const TrainingCourseCard = ({ course }) => {
     const { id, name, price, duration, description } = course;
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { error } = useSelector((state) => state.client);
     const { currentUser } = useSelector((state) => state.user);
     const [isViewDetails, setIsViewDetails] = useState(false);
     const [loginOpen, setLoginOpen] = useState(false);
     const [registerOpen, setRegisterOpen] = useState(false);
     const [forgotOpen, setForgotOpen] = useState(false);
+    const [isSendMessage, setIsSendMessage] = useState(false);
+    const [message, setMessage] = useState('');
+    const [messageError, setMessageError] = useState('');
     const { coachId } = useParams();
+
+    console.log(error);
 
     const handleViewDetailsClick = () => {
         setIsViewDetails(true);
@@ -35,13 +43,42 @@ const TrainingCourseCard = ({ course }) => {
         setLoginOpen(true);
     };
 
-    const handleSendRequestCoaching = () => {
+    const handleSendRequestClick = () => {
         if (currentUser) {
-            console.log(course.id);
-            console.log(coachId);
+            setIsViewDetails(false);
+            setIsSendMessage(true);
         } else {
             handleLogin();
         }
+    };
+
+    const handleOnChangeMessage = (e) => {
+        setMessage(e.target.value);
+        if (messageError) {
+            setMessageError('');
+        }
+    };
+
+    const handleSendRequestCoaching = () => {
+        if (!message) {
+            setMessageError('Lời nhắn không được để trống');
+        } else {
+            dispatch(sendCoachingRequestAsync({ coachId: coachId, courseId: id, data: message }));
+            if (error) {
+                setMessageError(error);
+            } else {
+                setIsSendMessage(false);
+                setMessage('');
+                dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 6, clientRequestStatus: 'Init' }));
+                navigate(`/client/${currentUser.Id}/training-request`);
+            }
+        }
+    };
+
+    const handleCloseRequestCoaching = () => {
+        dispatch(resetError());
+        setIsSendMessage(false);
+        setMessageError('');
     };
 
     return (
@@ -78,7 +115,7 @@ const TrainingCourseCard = ({ course }) => {
                             </div>
                         </div>
                         <div className={cx('button')}>
-                            <button className={cx('btn-confirm')} onClick={handleSendRequestCoaching}>
+                            <button className={cx('btn-confirm')} onClick={handleSendRequestClick}>
                                 <BsCheckLg className={cx('icon')} />
                                 Đồng ý
                             </button>
@@ -92,6 +129,32 @@ const TrainingCourseCard = ({ course }) => {
             <Login open={loginOpen} setLoginOpen={setLoginOpen}></Login>
             <Register open={registerOpen} setLoginOpen={setLoginOpen} setRegisterOpen={setRegisterOpen}></Register>
             <ForgotPassword open={forgotOpen} setForgotOpen={setForgotOpen} setLoginOpen={setLoginOpen} />
+
+            {isSendMessage && (
+                <Modal open={isSendMessage} onClose={handleClose} modalStyle={{}} closeBtnStyle={{ display: 'none' }}>
+                    <div className={cx('body')}>
+                        <h1>iCoaching</h1>
+                        <h2>Vui lòng gửi lời nhắn cho huấn luyện viên !</h2>
+                        <div className={cx('message-frame')}>
+                            <textarea name="message" id="message" value={message} onChange={handleOnChangeMessage} />
+                        </div>
+                        {messageError && (
+                            <div className={cx('error')}>
+                                <ErrorMessage message={messageError} />
+                            </div>
+                        )}
+                        <div className={cx('button')}>
+                            <button className={cx('btn-confirm')} onClick={handleSendRequestCoaching}>
+                                <BsCheckLg className={cx('icon')} />
+                                Gửi
+                            </button>
+                            <button className={cx('btn-warn')} onClick={handleCloseRequestCoaching}>
+                                <BsXLg className={cx('icon')} /> Huỷ bỏ
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 };
