@@ -73,12 +73,13 @@ export const getUserProfileAsync = createAsyncThunk('user/getUserProfile', async
     }
 });
 
-export const updateUserProfileAsync = createAsyncThunk('user/updateUserProfile', async (payload) => {
+export const updateUserProfileAsync = createAsyncThunk('user/updateUserProfile', async (payload, { rejectWithValue }) => {
     try {
         const response = await updateUserProfile(payload);
         return response;
     } catch (error) {
         console.log(error);
+        return rejectWithValue(error)
     }
 })
 
@@ -216,8 +217,9 @@ export const userSlice = createSlice({
                 state.status = !state.status
             })
             .addCase(updateUserProfileAsync.rejected, (state, action) => {
-                state.loading = true;
-                state.error = action.error.message;
+                state.loading = false;
+                state.error = action.payload;
+                state.message = null
             })
 
             //get avatar

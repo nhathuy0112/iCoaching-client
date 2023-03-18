@@ -14,6 +14,8 @@ import {
     resetEditor,
     resetPortfolioImages,
 } from '~/features/coachSlice';
+
+import Spinner from '~/layouts/components/Spinner';
 import SuccessMessage from '~/components/SuccessMessage';
 import { dataURItoBlob } from '~/utils/blob';
 import ErrorMessage from '~/components/ErrorMessage';
@@ -24,6 +26,8 @@ const Verify = () => {
     const { certificationImages, status } = useSelector((state) => state.coach);
     const { currentUser } = useSelector((state) => state.user);
     const [images, setImages] = useState(certificationImages);
+    const [loading, setLoading] = useState(false);
+
     const maxNumber = 69;
 
     const onChange = (imageList) => {
@@ -31,8 +35,8 @@ const Verify = () => {
     };
 
     useEffect(() => {
-        dispatch(getCertificationAsync());
-    }, [dispatch]);
+        dispatch(getCertificationAsync()).then(() => setLoading(false));
+    }, [dispatch, status]);
 
     useEffect(() => {
         if (certificationImages) setImages(certificationImages);
@@ -266,6 +270,7 @@ const Verify = () => {
     };
 
     const handleSubmit = () => {
+        setLoading(true);
         const formData = new FormData();
         images.forEach((image) => {
             if (image.hasOwnProperty('data_url')) {
@@ -281,7 +286,7 @@ const Verify = () => {
     return (
         <div className={cx('wrapper')}>
             {/* <h4 className={cx('title')}>Xác minh tài khoản</h4> */}
-            <div className={cx('content')}>{handleRenderUploadingByStatus(status)}</div>
+            {loading ? <Spinner /> : <div className={cx('content')}>{handleRenderUploadingByStatus(status)}</div>}
         </div>
     );
 };
