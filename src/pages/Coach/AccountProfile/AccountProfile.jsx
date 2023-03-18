@@ -202,7 +202,7 @@ const AccountProfile = () => {
                         />
                         {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
                         {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
-                        {response && <SuccessMessage message={message} />}
+                        {response && message && <SuccessMessage message={message} />}
                         <button type="submit" id={cx('submit_btn')} className={cx('align-center')}>
                             <BsCheckLg className={cx('icon')} /> Cập nhật
                         </button>

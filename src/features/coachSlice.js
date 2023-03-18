@@ -199,7 +199,7 @@ export const coachSlice = createSlice({
             .addCase(certificationSubmitAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.certificationImages = action.payload.urls;
-                state.status = action.payload.status;
+                state.status = 'Submitted';
             })
             .addCase(certificationSubmitAsync.rejected, (state, action) => {
                 state.loading = true;
