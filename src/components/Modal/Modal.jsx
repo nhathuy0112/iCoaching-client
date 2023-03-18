@@ -10,6 +10,7 @@ const cx = classNames.bind(styles);
 
 const Modal = ({ show, onClose, children, modalStyle, closeBtnStyle }) => {
     const dispatch = useDispatch();
+
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         return () => (document.body.style.overflow = 'unset');
@@ -37,7 +38,7 @@ const Modal = ({ show, onClose, children, modalStyle, closeBtnStyle }) => {
 };
 
 Modal.propTypes = {
-    show: PropTypes.bool.isRequired,
+    show: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
 };

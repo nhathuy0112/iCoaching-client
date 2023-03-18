@@ -20,6 +20,7 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
     };
 
     const switchRegister = (e) => {
+        e.preventDefault();
         setLoginOpen(false);
         dispatch(resetAuth());
         setRegisterOpen(true);
@@ -32,7 +33,7 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         reset,
     } = useForm();
 
-    const {error} = useSelector((state) => state.user);
+    const { error } = useSelector((state) => state.user);
 
     const handleLogin = (data) => {
         dispatch(loginAsync({ username: data.username, password: data.password }));

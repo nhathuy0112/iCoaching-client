@@ -59,7 +59,7 @@ const ListAdmin = () => {
 
     const currentAdminPagination = useMemo(() => {
         return data;
-    }, [data, page]);
+    }, [data]);
 
     const handlePageChanged = (pageNumber) => {
         setPageChanged(pageNumber);

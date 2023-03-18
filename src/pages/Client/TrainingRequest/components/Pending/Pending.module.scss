@@ -1,0 +1,75 @@
+.wrapper {
+    .request-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 80px;
+
+        .request-item {
+            position: relative;
+            width: 388px;
+            box-shadow: var(--default-box-shadow);
+            padding: 16px;
+            border-radius: var(--default-border-radius);
+
+            .card {
+                .card-content {
+                    display: flex;
+                    align-items: center;
+                    margin: 4px 0;
+
+                    .card-title {
+                        min-width: 160px;
+
+                        &.coach {
+                            color: #0c21e0;
+                        }
+
+                        &.course-name {
+                            color: #1da032;
+                        }
+
+                        &.duration {
+                            color: #c33333;
+                        }
+
+                        &.price {
+                            color: #1a97cc;
+                        }
+                    }
+                }
+            }
+
+            .action {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 16px;
+
+                #payment-btn,
+                #canceled-btn {
+                    flex: 0 0 50%;
+                    padding: 8px;
+                    margin: 0 4px;
+                    border-radius: var(--default-border-radius);
+                    color: var(--white-color);
+                    font-size: 1.6;
+                    font-weight: 500;
+                    cursor: pointer;
+
+                    &:hover {
+                        opacity: 0.6;
+                    }
+                }
+
+                #payment-btn {
+                    background-color: green;
+                }
+
+                #canceled-btn {
+                    background-color: red;
+                }
+            }
+        }
+    }
+}

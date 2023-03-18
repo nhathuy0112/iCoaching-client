@@ -1,8 +1,8 @@
-import axios from '~/api/axios'
+import axios from '~/api/axios';
 
 const END_POINTS = {
     GET_ALL: '/coaches',
-    GET_BY_ID: '/coach'
+    GET_BY_ID: '/coach',
 };
 
 export const getAllCoaches = ({ pageIndex, pageSize, sort, search }) => {
@@ -19,6 +19,15 @@ export const getCoachAbout = (coachId) => axios.get(`${END_POINTS.GET_BY_ID}/${c
 
 export const getCoachPhotos = (coachId) => axios.get(`${END_POINTS.GET_BY_ID}/${coachId}/photos`);
 
-export const getCoachTrainingCourses = (coachId) => axios.get(`${END_POINTS.GET_BY_ID}/${coachId}/training-courses`);
+export const getCoachTrainingCourses = ({ coachId, pageIndex, pageSize, sort, search }) => {
+    const pageIndexParam = pageIndex ? `?PageIndex=${pageIndex}` : '';
+    const pageSizeParam = pageSize ? `&PageSize=${pageSize}` : '';
+    const sortParam = sort ? `&Sort=${sort}` : '';
+    const searchParam = search ? `&Search=${search}` : '';
+    return axios.get(
+        `${END_POINTS.GET_BY_ID}/${coachId}/training-courses${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}`,
+    );
+};
 
-export const getCoachTrainingCourseDetails = (coachId, courseId) => axios.get(`${END_POINTS.GET_BY_ID}/${coachId}/training-course-detail/${courseId}`);
+export const getCoachTrainingCourseDetails = (coachId, courseId) =>
+    axios.get(`${END_POINTS.GET_BY_ID}/${coachId}/training-course-detail/${courseId}`);

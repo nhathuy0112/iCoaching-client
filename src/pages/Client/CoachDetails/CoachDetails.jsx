@@ -29,12 +29,10 @@ const CoachDetail = () => {
             content: <TrainingCourse />,
         },
     ];
-    const { coachId } = useParams();
+    const { id, coachId } = useParams();
     const location = useLocation();
     const dispatch = useDispatch();
     const { currentCoach } = useSelector((state) => state.guest);
-
-    // console.log(coachId);
 
     useEffect(() => {
         dispatch(getCoachProfileAsync(coachId));
@@ -47,7 +45,11 @@ const CoachDetail = () => {
                     <div className={cx('title-and-back')}>
                         <div className={cx('back')}>
                             <Link
-                                to={location.pathname.startsWith('/all-coaches') ? '/all-coaches' : '/'}
+                                to={
+                                    location.pathname.startsWith(`/client/${id}/all-coaches`)
+                                        ? `/client/${id}/all-coaches`
+                                        : '/'
+                                }
                                 className={cx('back-link')}
                             >
                                 <IoIosArrowBack />
@@ -75,7 +77,7 @@ const CoachDetail = () => {
                             <Tabs tabs={tabs}></Tabs>
                         </div>
                     </div>
-                </div >
+                </div>
             </div>
         </div>
     );

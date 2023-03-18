@@ -29,14 +29,14 @@ const CoachDetail = () => {
             content: <TrainingCourse />,
         },
     ];
-    const { id } = useParams();
+    const { coachId } = useParams();
     const location = useLocation();
     const dispatch = useDispatch();
     const { currentCoach } = useSelector((state) => state.guest);
 
     useEffect(() => {
-        dispatch(getCoachProfileAsync(id));
-    }, [dispatch, id]);
+        dispatch(getCoachProfileAsync(coachId));
+    }, [dispatch, coachId]);
 
     return (
         <div className={cx('wrapper')}>
@@ -73,7 +73,7 @@ const CoachDetail = () => {
                             <Tabs tabs={tabs}></Tabs>
                         </div>
                     </div>
-                </div >
+                </div>
             </div>
         </div>
     );

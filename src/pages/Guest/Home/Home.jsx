@@ -47,6 +47,10 @@ const Home = () => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
     }, [dispatch]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -109,7 +113,7 @@ const Home = () => {
                             </div>
                         ))}
                     </div>
-                    <Link to='/all-coaches' id={cx('view-all-btn')}>
+                    <Link to="/all-coaches" id={cx('view-all-btn')}>
                         Xem tất cả
                     </Link>
                 </div>

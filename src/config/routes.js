@@ -44,8 +44,8 @@ import ClientLayout from '~/layouts/ClientLayout';
 const guestRoutes = [
     { path: '/', component: Home },
     { path: '/all-coaches', component: CoachesView },
-    { path: '/all-coaches/view-details/coach/:id', component: CoachDetail },
-    { path: '/view-details/coach/:id', component: CoachDetail },
+    { path: '/all-coaches/view-details/coach/:coachId', component: CoachDetail },
+    { path: '/view-details/coach/:coachId', component: CoachDetail },
 ];
 
 const clientRoutes = [
