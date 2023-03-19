@@ -51,7 +51,7 @@ const VerifyCoach = () => {
                         </thead>
                         <tbody>
                             {coaches.map((coach) => (
-                                <tr>
+                                <tr key={coach.id}>
                                     <td>{coach.username}</td>
                                     <td>{coach.fullname}</td>
                                     <td>{handleRenderGenders(coach.gender)}</td>

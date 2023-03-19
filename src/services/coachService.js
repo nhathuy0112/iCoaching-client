@@ -5,8 +5,8 @@ const END_POINTS = {
     ABOUT_ME: '/Coach/about-me',
     PORTFOLIO_PHOTOS: '/Coach/portfolio-photos',
     PHOTO_REMOVE: '/Coach/photo-remove',
-    TRAINING_COURSES: '/Coach/training-courses',
     TRAINING_COURSE: '/Coach/training-course',
+    COACHING_REQUEST: '/Coach/coaching-request',
 };
 
 export const certificationSubmit = (payload) => {
@@ -46,7 +46,7 @@ export const getTrainingCourses = ({ pageIndex, pageSize, sort, search }) => {
     const pageSizeParam = pageSize ? `&PageSize=${pageSize}` : '';
     const sortParam = sort ? `&Sort=${sort}` : '';
     const searchParam = search ? `&Search=${search}` : '';
-    return axios.get(`${END_POINTS.TRAINING_COURSES}${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}`);
+    return axios.get(`${END_POINTS.TRAINING_COURSE}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}`);
 };
 
 export const getTrainingCourseById = (id) => axios.get(`${END_POINTS.TRAINING_COURSE}/${id}`);
@@ -54,3 +54,14 @@ export const getTrainingCourseById = (id) => axios.get(`${END_POINTS.TRAINING_CO
 export const editTrainingCourse = (id, payload) => axios.put(`${END_POINTS.TRAINING_COURSE}/${id}`, payload);
 
 export const deleteTrainingCourse = (id) => axios.delete(`${END_POINTS.TRAINING_COURSE}/${id}`);
+
+export const getCoachingRequests = ({ pageIndex, pageSize, sort, search, coachRequestStatus }) => {
+    const pageIndexParam = pageIndex ? `?PageIndex=${pageIndex}` : '';
+    const pageSizeParam = pageSize ? `&PageSize=${pageSize}` : '';
+    const sortParam = sort ? `&Sort=${sort}` : '';
+    const searchParam = search ? `&Search=${search}` : '';
+    const coachRequestStatusParam = coachRequestStatus ? `&coachRequestStatus=${coachRequestStatus}` : '';
+    return axios.get(
+        `${END_POINTS.COACHING_REQUEST}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}${coachRequestStatusParam}`,
+    );
+};

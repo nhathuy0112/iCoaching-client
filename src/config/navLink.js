@@ -25,7 +25,7 @@ export const clientNavLinks = [
 export const coachNavLinks = [
     { url: 'verify', icon: <MdVerifiedUser />, name: 'Xác minh tài khoản' },
     { url: 'my-clients', icon: <FaUserAlt />, name: 'Khách hàng của tôi' },
-    { url: 'request-coaching', icon: <FaUserTie />, name: 'Yêu cầu huấn luyện' },
+    { url: 'coaching-requests', icon: <FaUserTie />, name: 'Yêu cầu huấn luyện' },
     { url: 'my-courses', icon: <CgGym />, name: 'Gói tập của tôi' },
     { url: 'account-information', icon: <IoMdSettings />, name: 'Thông tin tài khoản' },
     { url: 'portfolio', icon: <FaBookReader />, name: 'Hồ sơ năng lực' },

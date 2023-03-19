@@ -19,7 +19,7 @@ import Messages from '~/pages/Client/Messages';
 //Coach
 import Verify from '~/pages/Coach/Verify';
 import MyClient from '~/pages/Coach/MyClient';
-import RequestCoaching from '~/pages/Coach/RequestCoaching';
+import CoachingRequest from '~/pages/Coach/CoachingRequest';
 import MyCourse from '~/pages/Coach/MyCourse';
 import CoachAccountProfile from '~/pages/Coach/AccountProfile';
 import Portfolio from '~/pages/Coach/Portfolio';
@@ -57,7 +57,7 @@ const clientRoutes = [
         layout: ClientLayout,
     },
     { path: '/client/:id/view-details/coach/:coachId', component: ClientCoachDetails, layout: ClientLayout },
-    { path: '/client/:id/training-request', component: TrainingRequest, layout: ClientLayout },
+    { path: '/client/:id/training-requests', component: TrainingRequest, layout: ClientLayout },
     { path: '/client/:id/ongoing-course', component: OnGoingCourse, layout: ClientLayout },
     { path: '/client/:id/ongoing-course/view-details/:contractId', component: ContractDetails, layout: ClientLayout },
     { path: '/client/:id/training-history', component: TrainingHistory, layout: ClientLayout },
@@ -68,7 +68,7 @@ const clientRoutes = [
 const coachRoutes = [
     { path: '/coach/:id/verify', component: Verify, layout: AuthLayout },
     { path: '/coach/:id/my-clients', component: MyClient, layout: AuthLayout },
-    { path: '/coach/:id/request-coaching', component: RequestCoaching, layout: AuthLayout },
+    { path: '/coach/:id/coaching-requests', component: CoachingRequest, layout: AuthLayout },
     { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout },
     { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout },
     { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout },

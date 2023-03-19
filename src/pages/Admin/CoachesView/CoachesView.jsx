@@ -59,7 +59,7 @@ const CoachesView = () => {
                     </thead>
                     <tbody>
                         {coaches.map((coach) => (
-                            <tr className="">
+                            <tr className="" key={coach.id}>
                                 <td>{coach.userName}</td>
                                 <td>{coach.fullname}</td>
                                 <td>{handleRenderGenders(coach.gender)}</td>

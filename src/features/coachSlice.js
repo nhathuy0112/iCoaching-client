@@ -13,6 +13,7 @@ import {
     editTrainingCourse,
     deleteTrainingCourse,
     getTrainingCourseById,
+    getCoachingRequests,
 } from '~/services/coachService';
 
 //Certification
@@ -156,10 +157,20 @@ export const deleteTrainingCourseAsync = createAsyncThunk('/coach/deleteTraining
     }
 });
 
+export const getCoachingRequestsAsync = createAsyncThunk('client/getCoachingRequests', async (payload) => {
+    try {
+        const response = await getCoachingRequests(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 const initialState = {
     certificationImages: [],
     portfolioImages: [],
     trainingCourses: [],
+    coachingRequests: [],
     currentTrainingCourse: {},
     pageSize: 6,
     pageIndex: 1,
@@ -372,6 +383,21 @@ export const coachSlice = createSlice({
                 state.trainingCourses = state.trainingCourses.filter((course) => course.id !== action.payload.id);
             })
             .addCase(deleteTrainingCourseAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //get coaching request
+            .addCase(getCoachingRequestsAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(getCoachingRequestsAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.coachingRequests = action.payload.data;
+            })
+            .addCase(getCoachingRequestsAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             });

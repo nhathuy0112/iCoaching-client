@@ -42,7 +42,7 @@ const Header = () => {
                             <>
                                 <div className={cx('nav-link')}>
                                     <NavLink
-                                        to={`/${currentUser?.role.toLowerCase()}/${currentUser?.Id}/training-request`}
+                                        to={`/${currentUser?.role.toLowerCase()}/${currentUser?.Id}/training-requests`}
                                         className={({ isActive }) =>
                                             isActive ? cx('nav-link-item', 'active') : cx('nav-link-item')
                                         }
