@@ -22,7 +22,12 @@ const Tabs = ({ tabs }) => {
                     <li
                         key={index}
                         className={cx('tab', `${index === activeTabIndex ? 'active' : ''}`)}
-                        onClick={() => handleTabClick(index)}
+                        onClick={() => {
+                            handleTabClick(index);
+                            if (tab.onClick) {
+                                tab.onClick();
+                            }
+                        }}
                     >
                         {tab.label}
                     </li>

@@ -12,7 +12,6 @@ export const superAdminNavLinks = [
     { url: 'create_account', icon: <FaUserTie />, name: 'Tạo tài khoản admin' },
     { url: 'account_profile', icon: <FaUserAlt />, name: 'Thông tin tài khoản' },
 ];
-
 export const clientNavLinks = [
     { url: 'all-coaches', icon: <FaUserTie />, name: 'Huấn luyện viên' },
     { url: 'request', icon: <CiSquareQuestion />, name: 'Yêu cầu tập luyện' },

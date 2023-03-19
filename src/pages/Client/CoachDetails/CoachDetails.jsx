@@ -12,6 +12,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCoachProfileAsync } from '~/features/guestSlice';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
+import Chat from '~/components/Chat/Chat';
+import Chats from '~/components/Chat/Chats';
+import Home from '~/components/Chat/Home';
+import { changeUser } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 const CoachDetail = () => {
@@ -28,13 +32,21 @@ const CoachDetail = () => {
             label: 'Gói tập',
             content: <TrainingCourse />,
         },
+        {
+            label: 'Trò chuyện',
+            content: <Home />,
+            onClick: () => handleSelect(),
+        },
     ];
     const { coachId } = useParams();
     const location = useLocation();
     const dispatch = useDispatch();
     const { currentCoach } = useSelector((state) => state.guest);
+    const { currentUser } = useSelector((state) => state.user);
 
-    // console.log(coachId);
+    const handleSelect = () => {
+        dispatch(changeUser({ currentUser: currentUser, payload: coachId }));
+    };
 
     useEffect(() => {
         dispatch(getCoachProfileAsync(coachId));
@@ -75,7 +87,7 @@ const CoachDetail = () => {
                             <Tabs tabs={tabs}></Tabs>
                         </div>
                     </div>
-                </div >
+                </div>
             </div>
         </div>
     );

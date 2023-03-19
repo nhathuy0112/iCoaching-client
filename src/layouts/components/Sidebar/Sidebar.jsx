@@ -3,18 +3,19 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { getUserProfileAsync, logoutAsync} from '~/features/userSlice';
+import { getUserProfileAsync, logoutAsync } from '~/features/userSlice';
 import { getLocalStorage } from '~/utils/localStorage';
 
 import { BiLogOut } from 'react-icons/bi';
 import { coachNavLinks } from '~/config/navLink';
+import { changeUser } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 
 const Sidebar = ({ links }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { currentUser, isVerified} = useSelector((state) => state.user);
+    const { currentUser, isVerified } = useSelector((state) => state.user);
     const [disabledLinks, setDisabledLinks] = useState([]);
 
     useEffect(() => {
@@ -40,7 +41,6 @@ const Sidebar = ({ links }) => {
             }
         }
     }, [currentUser, navigate, isVerified]);
-
 
     const handleLogout = (e) => {
         e.preventDefault();

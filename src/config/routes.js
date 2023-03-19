@@ -40,6 +40,7 @@ import SuperAdminAccountProfile from '~/pages/SuperAdmin/AccountProfile/AccountP
 /*-----layouts-----*/
 import AuthLayout from '~/layouts/AuthLayout';
 import ClientLayout from '~/layouts/ClientLayout';
+import Chat from '~/components/Chat/Chat';
 
 const guestRoutes = [
     { path: '/', component: Home },
@@ -72,6 +73,7 @@ const coachRoutes = [
     { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout },
     { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout },
     { path: '/coach/:id/messages', component: Messages, layout: AuthLayout },
+    { path: '/coach/:id/messages/:userId', component: Chat, layout: AuthLayout },
 ];
 
 const adminRoutes = [
