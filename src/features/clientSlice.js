@@ -15,6 +15,7 @@ export const sendCoachingRequestAsync = createAsyncThunk(
                 toast.success('Yêu cầu tập luyện thành công!');
                 return response;
             }
+            // return response;
         } catch (error) {
             console.log(error);
             return rejectWithValue(error);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './TrainingCourseCard.module.scss';
 import Modal from '~/components/Modal';
@@ -18,7 +18,6 @@ const TrainingCourseCard = ({ course }) => {
     const { id, name, price, duration, description } = course;
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { error } = useSelector((state) => state.client);
     const { currentUser } = useSelector((state) => state.user);
     const [isViewDetails, setIsViewDetails] = useState(false);
     const [loginOpen, setLoginOpen] = useState(false);
@@ -28,8 +27,6 @@ const TrainingCourseCard = ({ course }) => {
     const [message, setMessage] = useState('');
     const [messageError, setMessageError] = useState('');
     const { coachId } = useParams();
-
-    console.log(error);
 
     const handleViewDetailsClick = () => {
         setIsViewDetails(true);
@@ -63,15 +60,17 @@ const TrainingCourseCard = ({ course }) => {
         if (!message) {
             setMessageError('Lời nhắn không được để trống');
         } else {
-            dispatch(sendCoachingRequestAsync({ coachId: coachId, courseId: id, data: message }));
-            if (error) {
-                setMessageError(error);
-            } else {
-                setIsSendMessage(false);
-                setMessage('');
-                dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 6, clientRequestStatus: 'Init' }));
-                navigate(`/client/${currentUser.Id}/training-request`);
-            }
+            dispatch(sendCoachingRequestAsync({ coachId: coachId, courseId: id, data: message }))
+                .unwrap()
+                .then(() => {
+                    setIsSendMessage(false);
+                    setMessage('');
+                    dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 6, clientRequestStatus: 'Init' }));
+                    navigate(`/client/${currentUser.Id}/training-request`);
+                })
+                .catch((error) => {
+                    setMessageError(error);
+                });
         }
     };
 
