@@ -15,6 +15,7 @@
     align-items: center;
     right: 0;
     display: inline-block;
+    z-index: 2;
     .search-box {
         display: flex;
         height: 36px;
@@ -33,39 +34,70 @@
         }
     }
 }
-.tb-users {
-    table-layout: auto;
-    width: 100%;
-    margin-top: 4%;
-    text-align: center;
-    th {
-        text-align: center;
-        font-weight: 500;
-        font-size: 1.4rem;
-        padding: 10px 0;
-        color: #909090;
-    }
 
-    td {
-        width: 100px;
-        padding: 10px 0;
-        color: #24306e;
-        font-size: 1.4rem;
-        font-weight: 500;
+.list-reports {
+    // margin-top: 42px;
+    .rp {
+        position: relative;
+        display: block;
+        border-bottom: 1px solid black;
+        label {
+            color: var(--primary-color);
+            font-weight: 600;
+            display: block;
+            margin: 10px 0;
+            font-size: 1.8rem;
+        }
+        .photos {
+            display: flex;
+            img {
+                width: 15%;
+                height: 80px;
+                margin: 0 8px;
+                cursor: pointer;
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+        p {
+            margin-top: 8px;
+            display: block;
+        }
+        a {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 6px;
+            .btn-info {
+                cursor: pointer;
+                display: block;
+                background-color: var(--primary-color);
+                border-radius: var(--default-border-radius);
+                width: 150px;
+                height: 50px;
+                font-size: 1.5rem;
+                color: white;
+            }
+        }
     }
-}
-
-.btn-info {
-    cursor: pointer;
-    background-color: var(--primary-color);
-    border-radius: var(--default-border-radius);
-    width: 150px;
-    height: 50px;
-    font-size: 1.5rem;
-    color: white;
 }
 
 .icon {
     vertical-align: text-bottom;
     margin-left: 5px;
+}
+
+#photo {
+    border-radius: 0;
+    display: block;
+    width: 60%;
+    max-height: 800px;
+    margin: 0 auto;
+}
+.closeBtn {
+    color: white;
+    background: none;
+    font-size: 3.2rem;
+    float: right;
+    cursor: pointer;
 }
