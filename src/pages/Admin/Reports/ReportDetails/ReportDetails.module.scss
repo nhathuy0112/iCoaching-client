@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    height: 100%;
     .title-and-back {
         margin: 16px 0;
         .back-link {
@@ -16,117 +17,32 @@
             text-align: center;
         }
     }
-
-    label {
-        display: inline-block;
-        width: 130px;
-        color: #1a97cc;
-        vertical-align: top;
-    }
-    button {
-        &:hover {
-            opacity: 0.8;
-        }
+    .tabs {
+        width: 100%;
     }
 }
 
 .content {
     display: flex;
     flex-direction: column;
-    position: relative;
     margin-bottom: 10px;
     justify-content: center;
     margin-left: 15px;
-    .contract-info {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        .f-col {
-            width: 280px;
-        }
-        span {
-            display: inline-block;
-            width: 150px;
-        }
-        .col {
-            width: 280px;
-            label {
-                width: 100px;
-            }
-            span {
-                width: 100px;
-            }
-        }
-        #sm {
-            width: 180px;
-            span {
-                width: 60px;
-            }
-        }
-    }
-    .description {
-        margin-top: 20px;
-        p {
-            width: calc(100% - 130px);
-            display: inline-block;
-        }
-        .img-wrapper {
-            margin: 10px;
-
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-evenly;
-            img {
-                margin: 10px;
-                width: 140px;
-                height: 140px;
-                cursor: pointer;
-                &:hover {
-                    opacity: 0.7;
-                }
-            }
-        }
-    }
 }
 .button {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    margin: 3% 25% 0;
     .icon {
         vertical-align: text-bottom;
         margin-right: 10px;
     }
 }
 .btn-wrapper {
-    .btn-warn {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        margin-right: 30%;
-    }
-
-    .btn-confirm {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        margin-left: 30%;
-    }
-}
-
-#photo {
-    border-radius: 0;
-    display: block;
-    width: 50%;
-    max-height: 800px;
-    margin: 0 auto;
-}
-.closeBtn {
-    color: white;
-    background: none;
-    font-size: 3.2rem;
-    float: right;
-    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
 }
 
 .modal {
