@@ -21,7 +21,6 @@ const Pending = () => {
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isViewMessage, setIsViewMessage] = useState(false);
     const [isAccept, setIsAccept] = useState(false);
-    const [isOpenAcceptMessage, setIsOpenAcceptMessage] = useState(false);
     const [isReject, setIsReject] = useState(false);
     const [isOpenRejectMessage, setIsOpenRejectMessage] = useState(false);
     const [message, setMessage] = useState('');
@@ -76,28 +75,19 @@ const Pending = () => {
         setIsAccept(true);
     };
 
-    const handleOpenAcceptMessage = () => {
-        setIsAccept(false);
-        setIsOpenAcceptMessage(true);
-    };
-
     const handleAcceptRequest = () => {
-        if (!message) {
-            setMessageError('Lời nhắn không được để trống');
-        } else {
-            dispatch(updateCoachingRequestAsync({ requestId: selectedRequest.id, options: 'Accept', data: message }))
-                .unwrap()
-                .then(() => {
-                    setIsOpenAcceptMessage(false);
-                    setMessage('');
-                    dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 6, coachRequestStatus: 'Pending' }));
-                    toast.success('Chấp nhận yêu cầu thành công');
-                    navigate(`/coach/${id}/my-clients`);
-                })
-                .catch((error) => {
-                    setMessageError(error);
-                });
-        }
+        dispatch(updateCoachingRequestAsync({ requestId: selectedRequest.id, options: 'Accept', data: message }))
+            .unwrap()
+            .then(() => {
+                setIsAccept(false);
+                setMessage('');
+                dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 6, coachRequestStatus: 'Pending' }));
+                toast.success('Chấp nhận yêu cầu thành công');
+                navigate(`/coach/${id}/my-clients`);
+            })
+            .catch((error) => {
+                setMessageError(error);
+            });
     };
 
     return (
@@ -199,45 +189,11 @@ const Pending = () => {
                             <span style={{ color: '#1A97CC' }}>{selectedRequest.clientName}</span>?
                         </h2>
                         <div className={cx('modal-action')}>
-                            <button id={cx('agree-btn')} type="submit" onClick={handleOpenAcceptMessage}>
+                            <button id={cx('agree-btn')} type="submit" onClick={() => handleAcceptRequest()}>
                                 <BsCheckLg />
                                 <span>Đồng ý</span>
                             </button>
                             <button id={cx('cancel-btn')} onClick={() => setIsAccept(false)}>
-                                <BsXLg />
-                                <span>Hủy bỏ</span>
-                            </button>
-                        </div>
-                    </div>
-                </Modal>
-            )}
-
-            {isOpenAcceptMessage && (
-                <Modal
-                    open={isOpenAcceptMessage}
-                    onClose={() => setIsAccept(false)}
-                    modalStyle={{}}
-                    closeBtnStyle={{ display: 'none' }}
-                >
-                    <div className={cx('header')}>
-                        <h1>iCoaching</h1>
-                    </div>
-                    <div className={cx('body')}>
-                        <h2 className={cx('title')}>Vui lòng nhập lời nhắn cho khách hàng!</h2>
-                        <div className={cx('message-frame')}>
-                            <textarea name="message" id="message" value={message} onChange={handleOnChangeMessage} />
-                        </div>
-                        {messageError && (
-                            <div className={cx('error')}>
-                                <ErrorMessage message={messageError} />
-                            </div>
-                        )}
-                        <div className={cx('modal-action')}>
-                            <button id={cx('agree-btn')} type="submit" onClick={() => handleAcceptRequest()}>
-                                <BsCheckLg />
-                                <span>Gửi</span>
-                            </button>
-                            <button id={cx('cancel-btn')} onClick={() => setIsOpenAcceptMessage(false)}>
                                 <BsXLg />
                                 <span>Hủy bỏ</span>
                             </button>
