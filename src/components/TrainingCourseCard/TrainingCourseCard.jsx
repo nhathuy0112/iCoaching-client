@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './TrainingCourseCard.module.scss';
 import Modal from '~/components/Modal';

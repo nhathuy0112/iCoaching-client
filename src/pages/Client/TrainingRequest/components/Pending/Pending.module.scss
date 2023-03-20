@@ -72,4 +72,86 @@
             font-size: 2rem;
         }
     }
+
+    //Modal
+    .header {
+        padding: 16px;
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        text-align: center;
+    }
+    .body {
+        padding: 32px 64px;
+
+        .title {
+            font-size: 3rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .reason {
+            width: 100%;
+            resize: none;
+            padding: 8px 16px;
+            font-size: 1.6rem;
+            font-weight: 500;
+        }
+
+        .modal-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            #agree-btn,
+            #cancel-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 180px;
+                padding: 16px 32px;
+                margin: 0 8px;
+                color: var(--white-color);
+                font-size: 1.6rem;
+                font-weight: 500;
+                border-radius: var(--default-border-radius);
+                cursor: pointer;
+
+                span {
+                    margin-left: 8px;
+                }
+
+                &:hover {
+                    opacity: 0.6;
+                }
+            }
+
+            #agree-btn {
+                background-color: green;
+            }
+
+            #cancel-btn {
+                background-color: red;
+            }
+        }
+    }
+    .message-frame {
+        padding: 0 120px;
+        height: 200px;
+        margin-bottom: 16px;
+
+        textarea {
+            resize: none;
+            outline: none;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+    }
+
+    .error {
+        margin-bottom: 16px;
+        margin-left: 120px;
+    }
 }

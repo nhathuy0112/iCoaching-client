@@ -47,6 +47,7 @@ const AuthLayout = ({ children }) => {
                     <h3>
                         {links.map((link) => {
                             if (link.url === lastPath) return link.name;
+                            return '';
                         })}
                     </h3>
                     <div className={cx('info')}>

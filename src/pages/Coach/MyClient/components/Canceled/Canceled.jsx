@@ -30,25 +30,37 @@ const Canceled = () => {
                     <div className={cx('contract-list')}>
                         {contracts.map((contract) => (
                             <div className={cx('contract-item')} key={contract.id}>
-                                <Link to={`contract`} className={cx('card')}>
-                                    <div className={cx('avatar')}>
-                                        <img
-                                            src={require('../../../../../assets/images/coach-avatar.png')}
-                                            alt="Coach"
-                                        />
+                                <div className={cx('card')}>
+                                    <div className={cx('card-content')}>
+                                        <span className={cx('card-title', 'course-name')}>Gói tập</span>
+                                        <span>{contract.courseName}</span>
                                     </div>
-                                    <div className={cx('info')}>
-                                        <div className={cx('fullname')}>
-                                            <span>{contract.clientName}</span>
-                                        </div>
-                                        <div className={cx('gender')}>
-                                            <span className={cx('')}>{handleRenderGenders(contract.clientGender)}</span>
-                                        </div>
-                                        <div className={cx('age')}>
-                                            <span>{contract.clientAge} tuổi</span>
-                                        </div>
+                                    <div className={cx('card-content')}>
+                                        <span className={cx('card-title', 'client')}>Khách hàng</span>
+                                        <span>{contract.clientName}</span>
                                     </div>
-                                </Link>
+                                    <div className={cx('card-content')}>
+                                        <span className={cx('card-title', 'age')}>Tuổi</span>
+                                        <span>{contract.clientAge}</span>
+                                    </div>
+                                    <div className={cx('card-content')}>
+                                        <span className={cx('card-title', 'gender')}>Giới tính</span>
+                                        <span>{handleRenderGenders(contract.clientGender)}</span>
+                                    </div>
+                                    <div className={cx('card-content')}>
+                                        <span className={cx('card-title', 'email')}>Email</span>
+                                        <span>{contract.clientEmail}</span>
+                                    </div>
+                                    <div className={cx('card-content')}>
+                                        <span className={cx('card-title', 'phone')}>Số điện thoại</span>
+                                        <span>{contract.clientPhoneNumber}</span>
+                                    </div>
+                                </div>
+                                <div className={cx('action')}>
+                                    <Link to={``} id={cx('view-detail-link')}>
+                                        Xem chi tiết
+                                    </Link>
+                                </div>
                             </div>
                         ))}
                     </div>

@@ -33,3 +33,10 @@ export const getTrainingCourses = ({ pageIndex, pageSize, sort, search, status }
         `${END_POINTS.CONTRACT}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}${statusParam}`,
     );
 };
+
+export const cancelTrainingRequest = ({ requestId, data }) =>
+    axios.put(`${END_POINTS.COACHING_REQUEST}-cancellation/${requestId}`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });

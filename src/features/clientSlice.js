@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { getCoachingRequests, getTrainingCourses, sendCoachingRequest } from '~/services/clientService';
+import {
+    cancelTrainingRequest,
+    getCoachingRequests,
+    getTrainingCourses,
+    sendCoachingRequest,
+} from '~/services/clientService';
 
 export const sendCoachingRequestAsync = createAsyncThunk(
     'client/sendCoachingRequest',
@@ -35,6 +40,15 @@ export const getCoachingRequestsAsync = createAsyncThunk('client/getCoachingRequ
 export const getTrainingCoursesAsync = createAsyncThunk('client/getTrainingCourses', async (payload) => {
     try {
         const response = await getTrainingCourses(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+export const cancelTrainingRequestAsync = createAsyncThunk('client/cancelRequest', async (payload) => {
+    try {
+        const response = await cancelTrainingRequest(payload);
         return response;
     } catch (error) {
         console.log(error);
@@ -105,6 +119,20 @@ export const clientSlice = createSlice({
                 state.trainingCourses = action.payload.data;
             })
             .addCase(getTrainingCoursesAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //cancel coaching request
+            .addCase(cancelTrainingRequestAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(cancelTrainingRequestAsync.fulfilled, (state) => {
+                state.loading = false;
+            })
+            .addCase(cancelTrainingRequestAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             });

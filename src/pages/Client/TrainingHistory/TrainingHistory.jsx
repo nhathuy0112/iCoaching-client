@@ -54,8 +54,12 @@ const TrainingHistory = () => {
                                     </div>
                                 </div>
                                 <div className={cx('action')}>
-                                    <button id={cx('payment-btn')}>Thanh toán</button>
-                                    <button id={cx('canceled-btn')}>Hủy</button>
+                                    <Link
+                                        to={`/client/${id}/ongoing-course/view-details/${course.id}`}
+                                        id={cx('view-detail-link')}
+                                    >
+                                        Xem chi tiết
+                                    </Link>
                                 </div>
                             </div>
                         ))}
