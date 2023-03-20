@@ -66,7 +66,7 @@ const TrainingCourseCard = ({ course }) => {
                     setIsSendMessage(false);
                     setMessage('');
                     dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 6, clientRequestStatus: 'Init' }));
-                    navigate(`/client/${currentUser.Id}/training-request`);
+                    navigate(`/client/${currentUser.Id}/training-requests`);
                 })
                 .catch((error) => {
                     setMessageError(error);

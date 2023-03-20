@@ -75,7 +75,7 @@ const Canceled = () => {
                     </div>
                     <div className={cx('body')}>
                         <h2 className={cx('title')}>Lý do hủy gói tập !</h2>
-                        <textarea className={cx('reason')} defaultValue={selectedRequest.cancelReason} />
+                        <textarea className={cx('reason')} defaultValue={selectedRequest.cancelReason} readOnly />
                     </div>
                 </Modal>
             )}

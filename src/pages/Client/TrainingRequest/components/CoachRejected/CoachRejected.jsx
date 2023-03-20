@@ -64,7 +64,7 @@ const CoachRejected = () => {
 
             {isViewDetails && (
                 <Modal
-                    id={cx('delete-modal')}
+                    id={cx('view-detail-modal')}
                     show={isViewDetails}
                     onClose={() => setIsViewDetails(false)}
                     modalStyle={{}}
@@ -75,7 +75,7 @@ const CoachRejected = () => {
                     </div>
                     <div className={cx('body')}>
                         <h2 className={cx('title')}>Lý do bị từ chối gói tập !</h2>
-                        <textarea className={cx('reason')} defaultValue={selectedRequest.rejectReason} />
+                        <textarea className={cx('reason')} defaultValue={selectedRequest.rejectReason} readOnly />
                     </div>
                 </Modal>
             )}
