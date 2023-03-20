@@ -60,7 +60,10 @@ const Sidebar = ({ links }) => {
                             <NavLink
                                 to={`/${currentUser?.role.toLowerCase()}/${currentUser?.Id}/${link.url}`}
                                 className={({ isActive }) =>
-                                    isActive ? cx('link-url', 'active') : cx('link-url', isDisabled && 'disabled')
+                                    isActive
+                                        ? // || link.url.includes('coaching-requests')
+                                          cx('link-url', 'active')
+                                        : cx('link-url', isDisabled && 'disabled')
                                 }
                                 disabled={isDisabled}
                             >

@@ -2,7 +2,7 @@ import axios from '~/api/axios';
 
 const END_POINTS = {
     COACHING_REQUEST: 'Client/coaching-request',
-    CONTRACTS: '/Client/contracts',
+    CONTRACT: '/Client/contract',
 };
 
 export const sendCoachingRequest = ({ coachId, courseId, data }) =>
@@ -30,6 +30,6 @@ export const getTrainingCourses = ({ pageIndex, pageSize, sort, search, status }
     const searchParam = search ? `&Search=${search}` : '';
     const statusParam = status ? `&status=${status}` : '';
     return axios.get(
-        `${END_POINTS.CONTRACTS}${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}${statusParam}`,
+        `${END_POINTS.CONTRACT}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}${statusParam}`,
     );
 };

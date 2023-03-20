@@ -7,8 +7,10 @@ const END_POINTS = {
     PHOTO_REMOVE: '/Coach/photo-remove',
     TRAINING_COURSE: '/Coach/training-course',
     COACHING_REQUEST: '/Coach/coaching-request',
+    CONTRACT: '/Coach/contract',
 };
 
+//verification
 export const certificationSubmit = (payload) => {
     return axios.post(END_POINTS.CERTIFICATION_REQUEST, payload, {
         headers: {
@@ -19,6 +21,7 @@ export const certificationSubmit = (payload) => {
 
 export const getCertificationRequest = () => axios.get(END_POINTS.CERTIFICATION_REQUEST);
 
+//portfolio
 export const postAboutMe = (data) =>
     axios.post(END_POINTS.ABOUT_ME, data, {
         headers: {
@@ -39,6 +42,7 @@ export const getPortfolioPhotos = () => axios.get(END_POINTS.PORTFOLIO_PHOTOS);
 
 export const removePortfolioPhotos = (photoId) => axios.delete(`${END_POINTS.PHOTO_REMOVE}/${photoId}`);
 
+//training courses
 export const addTrainingCourse = (payload) => axios.post(END_POINTS.TRAINING_COURSE, payload);
 
 export const getTrainingCourses = ({ pageIndex, pageSize, sort, search }) => {
@@ -55,6 +59,7 @@ export const editTrainingCourse = (id, payload) => axios.put(`${END_POINTS.TRAIN
 
 export const deleteTrainingCourse = (id) => axios.delete(`${END_POINTS.TRAINING_COURSE}/${id}`);
 
+//coaching request
 export const getCoachingRequests = ({ pageIndex, pageSize, sort, search, coachRequestStatus }) => {
     const pageIndexParam = pageIndex ? `?PageIndex=${pageIndex}` : '';
     const pageSizeParam = pageSize ? `&PageSize=${pageSize}` : '';
@@ -63,5 +68,24 @@ export const getCoachingRequests = ({ pageIndex, pageSize, sort, search, coachRe
     const coachRequestStatusParam = coachRequestStatus ? `&coachRequestStatus=${coachRequestStatus}` : '';
     return axios.get(
         `${END_POINTS.COACHING_REQUEST}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}${coachRequestStatusParam}`,
+    );
+};
+
+export const updateCoachingRequest = ({ requestId, options, data }) =>
+    axios.put(`${END_POINTS.COACHING_REQUEST}/${requestId}?options=${options}`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+//contract
+export const getAllContracts = ({ pageIndex, pageSize, sort, search, status }) => {
+    const pageIndexParam = pageIndex ? `?PageIndex=${pageIndex}` : '';
+    const pageSizeParam = pageSize ? `&PageSize=${pageSize}` : '';
+    const sortParam = sort ? `&Sort=${sort}` : '';
+    const searchParam = search ? `&Search=${search}` : '';
+    const statusParam = status ? `&status=${status}` : '';
+    return axios.get(
+        `${END_POINTS.CONTRACT}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}${statusParam}`,
     );
 };

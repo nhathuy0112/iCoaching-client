@@ -7,7 +7,7 @@ import styles from './CoachingRequest.module.scss';
 
 const cx = classNames.bind(styles);
 
-const RequestCoaching = () => {
+const CoachingRequests = () => {
     const tabs = [
         {
             label: 'Chờ xác nhận',
@@ -32,4 +32,4 @@ const RequestCoaching = () => {
     );
 };
 
-export default RequestCoaching;
+export default CoachingRequests;

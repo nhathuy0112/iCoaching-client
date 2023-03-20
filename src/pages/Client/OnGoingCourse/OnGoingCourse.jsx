@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
+import { handleRenderGenders } from '~/utils/gender';
 
 const cx = classNames.bind(styles);
 
@@ -42,14 +43,14 @@ const OnGoingCourse = () => {
                                     </div>
                                     <div className={cx('card-content')}>
                                         <span className={cx('card-title', 'gender')}>Giới tính</span>
-                                        <span>{course.coachGender}</span>
+                                        <span>{handleRenderGenders(course.coachGender)}</span>
                                     </div>
                                     <div className={cx('card-content')}>
                                         <span className={cx('card-title', 'email')}>Email</span>
                                         <span>{course.coachEmail}</span>
                                     </div>
                                     <div className={cx('card-content')}>
-                                        <span className={cx('card-title', 'phone')}>Sđt</span>
+                                        <span className={cx('card-title', 'phone')}>Số điện thoại</span>
                                         <span>{course.coachPhoneNumber}</span>
                                     </div>
                                 </div>

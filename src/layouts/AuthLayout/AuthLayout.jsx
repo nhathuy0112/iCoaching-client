@@ -13,7 +13,7 @@ const AuthLayout = ({ children }) => {
     const { currentUser } = useSelector((state) => state.user);
     const [links, setLinks] = useState([]);
     const url = window.location.href;
-    const path = url.split("/");
+    const path = url.split('/');
     const lastPath = path[path.length - 1];
 
     useEffect(() => {
@@ -45,8 +45,8 @@ const AuthLayout = ({ children }) => {
             <div className={cx('container')}>
                 <div className={cx('header')}>
                     <h3>
-                        {links.map(link => {
-                            if(link.url === lastPath) return link.name
+                        {links.map((link) => {
+                            if (link.url === lastPath) return link.name;
                         })}
                     </h3>
                     <div className={cx('info')}>

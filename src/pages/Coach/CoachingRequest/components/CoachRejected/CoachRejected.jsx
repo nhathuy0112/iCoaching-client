@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 
 const CoachRejected = () => {
     const dispatch = useDispatch();
-    const { coachingRequests } = useSelector((state) => state.client);
+    const { coachingRequests } = useSelector((state) => state.coach);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isViewDetails, setIsViewDetails] = useState(false);
 
@@ -92,8 +92,8 @@ const CoachRejected = () => {
                         <h1>iCoaching</h1>
                     </div>
                     <div className={cx('body')}>
-                        <h2 className={cx('title')}>Lý do hủy gói tập !</h2>
-                        <textarea className={cx('reason')} defaultValue={selectedRequest.cancelReason} />
+                        <h2 className={cx('title')}>Lý do từ chối gói tập !</h2>
+                        <textarea className={cx('reason')} defaultValue={selectedRequest.rejectReason} readOnly />
                     </div>
                 </Modal>
             )}

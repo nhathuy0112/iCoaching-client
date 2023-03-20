@@ -14,6 +14,8 @@ import {
     deleteTrainingCourse,
     getTrainingCourseById,
     getCoachingRequests,
+    updateCoachingRequest,
+    getAllContracts,
 } from '~/services/coachService';
 
 //Certification
@@ -157,9 +159,29 @@ export const deleteTrainingCourseAsync = createAsyncThunk('/coach/deleteTraining
     }
 });
 
-export const getCoachingRequestsAsync = createAsyncThunk('client/getCoachingRequests', async (payload) => {
+//coaching request
+export const getCoachingRequestsAsync = createAsyncThunk('coach/getCoachingRequests', async (payload) => {
     try {
         const response = await getCoachingRequests(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+export const updateCoachingRequestAsync = createAsyncThunk('coach/updateCoachingRequest', async (payload) => {
+    try {
+        const response = await updateCoachingRequest(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+//contracts
+export const getAllContractsAsync = createAsyncThunk('coach/getAllContracts', async (payload) => {
+    try {
+        const response = await getAllContracts(payload);
         return response;
     } catch (error) {
         console.log(error);
@@ -171,6 +193,7 @@ const initialState = {
     portfolioImages: [],
     trainingCourses: [],
     coachingRequests: [],
+    contracts: [],
     currentTrainingCourse: {},
     pageSize: 6,
     pageIndex: 1,
@@ -398,6 +421,35 @@ export const coachSlice = createSlice({
                 state.coachingRequests = action.payload.data;
             })
             .addCase(getCoachingRequestsAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //update coaching request
+            .addCase(updateCoachingRequestAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(updateCoachingRequestAsync.fulfilled, (state) => {
+                state.loading = false;
+            })
+            .addCase(updateCoachingRequestAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //contract
+            .addCase(getAllContractsAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(getAllContractsAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.contracts = action.payload.data;
+            })
+            .addCase(getAllContractsAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             });
