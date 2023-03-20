@@ -1,0 +1,59 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 2%;
+    height: 100%;
+    label {
+        display: inline-block;
+        width: 130px;
+        color: #1a97cc;
+        vertical-align: top;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 10px;
+    justify-content: center;
+    margin-left: 15px;
+    .contract-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .f-col {
+            width: 280px;
+        }
+        span {
+            display: inline-block;
+            width: 150px;
+            margin: 3px 0;
+        }
+        .col {
+            width: 280px;
+            label {
+                width: 100px;
+                margin: 3px 0;
+            }
+            span {
+                width: 100px;
+            }
+        }
+        #sm {
+            width: 180px;
+            span {
+                width: 60px;
+            }
+        }
+    }
+    .description {
+        margin-top: 20px;
+        p {
+            width: calc(100% - 130px);
+            display: inline-block;
+            line-height: 30px;
+        }
+    }
+}
