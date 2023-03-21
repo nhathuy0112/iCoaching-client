@@ -6,6 +6,7 @@ import superAdminReducer from '~/features/superAdminSlice';
 import userReducer from '~/features/userSlice';
 import coachReducer from '~/features/coachSlice';
 import clientReducer from '~/features/clientSlice';
+import contractReducer from '~/features/contractSlice';
 
 const rootReducer = {
     user: userReducer,
@@ -14,6 +15,7 @@ const rootReducer = {
     coach: coachReducer,
     admin: adminReducer,
     superAdmin: superAdminReducer,
+    contract: contractReducer,
 };
 
 export const store = configureStore({

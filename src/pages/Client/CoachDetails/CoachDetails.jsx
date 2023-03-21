@@ -56,7 +56,7 @@ const CoachDetail = () => {
                                 <span>Quay lại</span>
                             </Link>
                         </div>
-                        <h1 className={cx('title')}>Hồ sơ Huấn luyện viên</h1>
+                        <h2 className={cx('title')}>Hồ sơ Huấn luyện viên</h2>
                     </div>
                     <div className={cx('main')}>
                         <div className={cx('profile')}>

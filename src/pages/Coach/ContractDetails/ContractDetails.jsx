@@ -34,21 +34,15 @@ const ContractDetails = () => {
 
     return (
         <div className={cx('wrapper')}>
+            <div className={cx('title-and-back')}>
+                <Link to={`/coach/${id}/my-clients`} className={cx('back-link')}>
+                    <IoIosArrowBack />
+                    <span>Quay lại</span>
+                </Link>
+                <h2 className={cx('title')}>Chi tiết hợp đồng</h2>
+            </div>
             <div className={cx('content')}>
-                <div className={cx('frame')}>
-                    <div className={cx('title-and-back')}>
-                        <div className={cx('back')}>
-                            <Link to={`/client/${id}/ongoing-course`} className={cx('back-link')}>
-                                <IoIosArrowBack />
-                                <span>Quay lại</span>
-                            </Link>
-                        </div>
-                        <h2 className={cx('title')}>Chi tiết hợp đồng</h2>
-                    </div>
-                    <div className={cx('main')}>
-                        <Tabs tabs={tabs} />
-                    </div>
-                </div>
+                <Tabs tabs={tabs} />
             </div>
         </div>
     );

@@ -1,0 +1,87 @@
+.wrapper {
+    height: 100%;
+    position: relative;
+
+    .content {
+        .contract-info {
+            display: flex;
+            flex-direction: column;
+            .row-info {
+                margin: 16px 0;
+                display: flex;
+                align-items: center;
+
+                .group-info {
+                    display: flex;
+                    label {
+                        color: #1a97cc;
+                    }
+
+                    &.first-column {
+                        flex: 0 0 30%;
+                        label {
+                            min-width: 130px;
+                        }
+                    }
+
+                    &.second-column {
+                        flex: 0 0 15%;
+                        label {
+                            min-width: 80px;
+                        }
+                    }
+                    &.third-column {
+                        flex: 0 0 15%;
+                        label {
+                            min-width: 90px;
+                        }
+                    }
+
+                    &.fourth-column {
+                        flex: 0 0 28%;
+                        label {
+                            min-width: 60px;
+                        }
+                    }
+
+                    &.fifth-column {
+                        label {
+                            min-width: 42px;
+                        }
+                    }
+
+                    &.description {
+                        flex: 1;
+                        label {
+                            min-width: 130px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .completed-btn {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px 16px;
+        width: 160px;
+        border-radius: var(--default-border-radius);
+        background-color: green;
+        text-align: center;
+        cursor: pointer;
+
+        button {
+            background-color: transparent;
+            color: var(--white-color);
+            font-size: 1.6rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+}

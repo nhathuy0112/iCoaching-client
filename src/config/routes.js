@@ -21,6 +21,7 @@ import Verify from '~/pages/Coach/Verify';
 import MyClient from '~/pages/Coach/MyClient';
 import CoachingRequest from '~/pages/Coach/CoachingRequest';
 import MyCourse from '~/pages/Coach/MyCourse';
+import CoachContractDetails from '~/pages/Coach/ContractDetails';
 import CoachAccountProfile from '~/pages/Coach/AccountProfile';
 import Portfolio from '~/pages/Coach/Portfolio';
 
@@ -68,6 +69,7 @@ const clientRoutes = [
 const coachRoutes = [
     { path: '/coach/:id/verify', component: Verify, layout: AuthLayout },
     { path: '/coach/:id/my-clients', component: MyClient, layout: AuthLayout },
+    { path: '/coach/:id/my-clients/view-details/:contractId', component: CoachContractDetails, layout: AuthLayout },
     { path: '/coach/:id/coaching-requests', component: CoachingRequest, layout: AuthLayout },
     { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout },
     { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout },

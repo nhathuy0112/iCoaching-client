@@ -1,0 +1,24 @@
+.wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .title-and-back {
+        .back-link {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .title {
+            text-align: center;
+            color: var(--primary-color);
+        }
+    }
+
+    .content {
+        flex: 1;
+    }
+}
