@@ -2,26 +2,37 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
+import { redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ErrorMessage from '~/components/ErrorMessage';
 import Modal from '~/components/Modal';
-import { cancelTrainingRequestAsync, getCoachingRequestsAsync } from '~/features/clientSlice';
+import { cancelTrainingRequestAsync, getCoachingRequestsAsync, getPaymentLinkAsync } from '~/features/clientSlice';
 import styles from './Init.module.scss';
 
 const cx = classNames.bind(styles);
 
 const Init = () => {
     const dispatch = useDispatch();
-    const { coachingRequests } = useSelector((state) => state.client);
+    const { coachingRequests, paymentLink } = useSelector((state) => state.client);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isCancel, setIsCancel] = useState(false);
     const [isOpenCancelMessage, setIsOpenCancelMessage] = useState(false);
     const [message, setMessage] = useState('');
     const [messageError, setMessageError] = useState('');
 
+    console.log(paymentLink);
+
     useEffect(() => {
         dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 6, clientRequestStatus: 'Init' }));
     }, [dispatch]);
+
+    useEffect(() => {
+        if (paymentLink) window.location.replace(paymentLink);
+    }, [paymentLink]);
+
+    const handlePayment = (request) => {
+        dispatch(getPaymentLinkAsync(request.id));
+    };
 
     const handleOnChangeMessage = (e) => {
         setMessage(e.target.value);
@@ -83,7 +94,9 @@ const Init = () => {
                                 </div>
                             </div>
                             <div className={cx('action')}>
-                                <button id={cx('payment-btn')}>Thanh toán</button>
+                                <button id={cx('payment-btn')} onClick={() => handlePayment(request)}>
+                                    Thanh toán
+                                </button>
                                 <button id={cx('canceled-btn')} onClick={() => handleOpenCancelModal(request)}>
                                     Hủy
                                 </button>

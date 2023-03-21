@@ -40,3 +40,5 @@ export const cancelTrainingRequest = ({ requestId, data }) =>
             'Content-Type': 'application/json',
         },
     });
+
+export const getPaymentLink = (requestId) => axios.get(`${END_POINTS.COACHING_REQUEST}/${requestId}/payment-url`);
