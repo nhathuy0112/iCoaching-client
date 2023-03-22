@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from './CoachesView.module.scss';
 
-import { BsCheckLg } from 'react-icons/bs';
-import { BsXLg } from 'react-icons/bs';
+import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import { AiOutlineSearch } from 'react-icons/ai';
+import { FaLockOpen, FaLock } from 'react-icons/fa';
 
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
@@ -16,11 +16,11 @@ const cx = classNames.bind(styles);
 
 const CoachesView = () => {
     const dispatch = useDispatch();
-    const { coaches, totalCount, pageSize, pageIndex, status } = useSelector((state) => state.admin);
-    const [currentPage, setCurrentPage] = useState(pageIndex);
+    const { coaches, totalCount, pageSize, status } = useSelector((state) => state.admin);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getAllCoachesAsync({ pageIndex: currentPage }));
+        dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: 8 }));
     }, [dispatch, currentPage, status]);
 
     const [lockOpen, setLockOpen] = useState(false);
@@ -47,7 +47,7 @@ const CoachesView = () => {
 
                 <table className={cx('tb-coaches')}>
                     <thead>
-                        <tr>
+                        <tr className={cx('header-row')}>
                             <th>Tên đăng nhập</th>
                             <th>Họ và tên</th>
                             <th>Giới tính</th>
@@ -59,19 +59,24 @@ const CoachesView = () => {
                     </thead>
                     <tbody>
                         {coaches.map((coach) => (
-                            <tr className="" key={coach.id}>
-                                <td>{coach.userName}</td>
+                            <tr className={cx('content-row')} key={coach.id}>
+                                <td className={cx('name')}>
+                                    <div className={cx('avatar')}>
+                                        <img src={require('~/assets/images/coach-avatar.png')} alt="" />
+                                    </div>
+                                    <span>{coach.userName}</span>
+                                </td>
                                 <td>{coach.fullname}</td>
                                 <td>{handleRenderGenders(coach.gender)}</td>
                                 <td>{coach.age}</td>
                                 <td>{coach.email}</td>
                                 <td>{coach.phoneNumber}</td>
-                                <td>
+                                <td className={cx('action-btn')}>
                                     <button
-                                        className={cx(`${coach.isLocked ? 'btn-confirm' : 'btn-warn'}`)}
+                                        id={cx(`${coach.isLocked ? 'btn-confirm' : 'btn-warn'}`)}
                                         onClick={() => handleLockOpen(coach)}
                                     >
-                                        {coach.isLocked ? 'Mở khoá tài khoản' : 'Khoá tài khoản'}
+                                        {coach.isLocked ? <FaLockOpen /> : <FaLock />}
                                     </button>
                                 </td>
                             </tr>

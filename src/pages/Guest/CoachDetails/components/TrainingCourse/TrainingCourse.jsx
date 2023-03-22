@@ -14,8 +14,6 @@ const TrainingCourse = () => {
     const dispatch = useDispatch();
     const { trainingCourses, totalCount, pageSize, pageIndex } = useSelector((state) => state.guest);
 
-    console.log(trainingCourses);
-
     useEffect(() => {
         dispatch(getCoachTrainingCourseAsync({ coachId: coachId, pageIndex: pageIndex, pageSize: 9 }));
     }, [dispatch, coachId, pageIndex]);

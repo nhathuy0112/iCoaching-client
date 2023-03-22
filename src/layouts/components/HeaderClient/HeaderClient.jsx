@@ -7,7 +7,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { IoMdSettings } from 'react-icons/io';
-import { logoutAsync } from '~/features/userSlice';
+import { logoutAsync, getUserAvatarAsync, getUserProfileAsync } from '~/features/userSlice';
 import { getLocalStorage } from '~/utils/localStorage';
 import { BiLogOut } from 'react-icons/bi';
 
@@ -16,12 +16,20 @@ const cx = classNames.bind(styles);
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { currentUser } = useSelector((state) => state.user);
+    const { currentUser, avatar } = useSelector((state) => state.user);
 
     const handleLogout = (e) => {
         e.preventDefault();
         dispatch(logoutAsync({ currentRefreshToken: getLocalStorage('auth').refreshToken }));
     };
+
+    useEffect(() => {
+        dispatch(getUserAvatarAsync());
+    }, [dispatch, avatar]);
+
+    useEffect(() => {
+        if (currentUser) dispatch(getUserProfileAsync());
+    }, [dispatch, currentUser]);
 
     useEffect(() => {
         if (!currentUser) {
@@ -85,9 +93,7 @@ const Header = () => {
                                             <div className={cx('avatar-link')}>
                                                 <Link
                                                     className={cx('avatar-link-item')}
-                                                    to={`/${currentUser?.role.toLowerCase()}/${
-                                                        currentUser?.Id
-                                                    }/account-information`}
+                                                    to={`/client/${currentUser?.Id}/account-information`}
                                                 >
                                                     <span className={cx('icon')}>
                                                         <IoMdSettings />
@@ -107,7 +113,11 @@ const Header = () => {
                                     <div className={cx('info')}>
                                         <span className={cx('name')}>{currentUser?.Fullname}</span>
                                         <div className={cx('avatar-wrapper')}>
-                                            <FaUserCircle className={cx('avatar')} />
+                                            {avatar ? (
+                                                <img className={cx('avatar')} src={avatar} alt="user-avatar" />
+                                            ) : (
+                                                <FaUserCircle className={cx('avatar')} />
+                                            )}
                                         </div>
                                     </div>
                                 </Tippy>

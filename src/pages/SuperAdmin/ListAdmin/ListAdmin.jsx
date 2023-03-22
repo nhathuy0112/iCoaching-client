@@ -71,8 +71,8 @@ const ListAdmin = () => {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <form className={cx('search')} onSubmit={handleSearchSubmit}>
-                    <div className={cx('search_box')} type="submit">
-                        <AiOutlineSearch className={cx('search_icon')} />
+                    <div className={cx('search-box')} type="submit">
+                        <AiOutlineSearch className={cx('search-icon')} />
                         <input
                             className={cx('search_input')}
                             type="text"
@@ -83,28 +83,34 @@ const ListAdmin = () => {
                     </div>
                 </form>
             </div>
-            <table>
+            <table className={cx('tb-admin')}>
                 <thead>
-                    <tr>
+                    <tr className={cx('header-row')}>
                         <th>Tên đăng nhập</th>
                         <th>Họ và tên</th>
                         <th>Giới tính</th>
                         <th>Email</th>
                         <th>SĐT</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {currentAdminPagination?.map((item) => {
                         return (
-                            <tr key={item.id}>
-                                <td>{item.userName}</td>
+                            <tr className={cx('content-row')} key={item.id}>
+                                <td className={cx('name')}>
+                                    <div className={cx('avatar')}>
+                                        <img src={require('~/assets/images/coach-avatar.png')} alt="" />
+                                    </div>
+                                    <span>{item.userName}</span>
+                                </td>
                                 <td>{item.fullname}</td>
                                 <td>{item.gender}</td>
                                 <td>{item.email}</td>
                                 <td>{item.phoneNumber}</td>
-                                <td>
+                                <td className={cx('action-btn')}>
                                     <button
-                                        className={cx({
+                                        id={cx({
                                             button_lock: !item.isLocked,
                                             button_active: item.isLocked,
                                         })}

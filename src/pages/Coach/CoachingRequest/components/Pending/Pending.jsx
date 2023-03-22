@@ -138,10 +138,10 @@ const Pending = () => {
                                             Lời nhắn
                                         </button>
                                         <button id={cx('btn-accept')} onClick={() => handleOpenAcceptModal(request)}>
-                                            Đồng ý
+                                            <BsCheckLg />
                                         </button>
                                         <button id={cx('btn-refuse')} onClick={() => handleOpenRejectModal(request)}>
-                                            Từ chối
+                                            <BsXLg />
                                         </button>
                                     </td>
                                 </tr>
