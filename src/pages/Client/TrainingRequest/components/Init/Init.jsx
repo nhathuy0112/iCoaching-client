@@ -2,7 +2,6 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
-import { redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ErrorMessage from '~/components/ErrorMessage';
 import Modal from '~/components/Modal';

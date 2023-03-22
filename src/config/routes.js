@@ -11,6 +11,7 @@ import TrainingRequest from '~/pages/Client/TrainingRequest';
 import ClientCoachesView from '~/pages/Client/CoachesView';
 import ClientCoachDetails from '~/pages/Client/CoachDetails';
 import OnGoingCourse from '~/pages/Client/OnGoingCourse';
+import PendingCourse from '~/pages/Client/PendingCourse';
 import ContractDetails from '~/pages/Client/ContractDetails';
 import AccountProfile from '~/pages/Client/AccountProfile';
 import TrainingHistory from '~/pages/Client/TrainingHistory';
@@ -61,6 +62,7 @@ const clientRoutes = [
     { path: '/client/:id/training-requests', component: TrainingRequest, layout: ClientLayout },
     { path: '/client/:id/ongoing-course', component: OnGoingCourse, layout: ClientLayout },
     { path: '/client/:id/ongoing-course/view-details/:contractId', component: ContractDetails, layout: ClientLayout },
+    { path: '/client/:id/pending-course', component: PendingCourse, layout: ClientLayout },
     { path: '/client/:id/training-history', component: TrainingHistory, layout: ClientLayout },
     { path: '/client/:id/account-information', component: AccountProfile, layout: ClientLayout },
     { path: '/client/:id/all-messages', component: Messages, layout: ClientLayout },

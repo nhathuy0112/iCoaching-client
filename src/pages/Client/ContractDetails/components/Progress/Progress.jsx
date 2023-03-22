@@ -1,10 +1,134 @@
 import classNames from 'classnames/bind';
+import { useEffect, useState } from 'react';
+import { AiFillCheckCircle } from 'react-icons/ai';
+import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
+import { GrDocumentTxt, GrDocumentExcel } from 'react-icons/gr';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getContractLogsAsync } from '~/features/contractSlice';
 import styles from './Progress.module.scss';
+import { handleRenderFileIcon } from '~/utils/file';
 
 const cx = classNames.bind(styles);
 
 const Progress = () => {
-    return <div>Progress</div>;
+    const dispatch = useDispatch();
+    const { logs } = useSelector((state) => state.contract);
+    const { contractId } = useParams();
+    const [expandedItems, setExpandedItems] = useState([]);
+
+    useEffect(() => {
+        dispatch(getContractLogsAsync(contractId));
+    }, [dispatch, contractId]);
+
+    const handleToggleShowItem = (log) => {
+        const index = expandedItems.indexOf(log.id);
+        if (index > -1) {
+            // If item expand, show less
+            setExpandedItems(expandedItems.filter((id) => id !== log.id));
+        } else {
+            // Nếu item is not expanded, show more
+            setExpandedItems([...expandedItems, log.id]);
+        }
+    };
+
+    const isItemExpanded = (log) => {
+        return expandedItems.includes(log.id);
+    };
+
+    return (
+        <div className={cx('wrapper')}>
+            <div className={cx('day-list')}>
+                {logs &&
+                    logs.map((log) => (
+                        <div className={cx('day-item')} key={log.id}>
+                            <div className={cx('day-number')}>
+                                <div className={cx('number')}>
+                                    <h3 className={cx('title')}>Ngày {log.dateNo}</h3>
+                                    {log.status === 'Complete' && (
+                                        <span className={cx('completed')}>
+                                            <AiFillCheckCircle />
+                                        </span>
+                                    )}
+                                </div>
+                                <div className={cx('action')}>
+                                    {isItemExpanded(log) ? (
+                                        <div className={cx('show-less')} onClick={() => handleToggleShowItem(log)}>
+                                            <MdOutlineKeyboardArrowUp />
+                                        </div>
+                                    ) : (
+                                        <div className={cx('show-more')} onClick={() => handleToggleShowItem(log)}>
+                                            <MdOutlineKeyboardArrowDown />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            {isItemExpanded(log) && (
+                                <div className={cx('day-content')}>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <th>Ngày tập luyện</th>
+                                                <td>{log.trainingDate ? log.trainingDate : 'Chưa cập nhật'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Lần cập nhật cuối</th>
+                                                <td>{log.lastUpdatingDate ? log.lastUpdatingDate : 'Chưa cập nhật'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Tệp đính kèm</th>
+                                                <td>
+                                                    {log.files.length > 0
+                                                        ? log.files.map((file) => (
+                                                              <p key={file.id}>
+                                                                  <span className={cx('file-icon')}>
+                                                                      {handleRenderFileIcon(file.fileName)}
+                                                                  </span>
+                                                                  <span>{file.fileName}</span>
+                                                              </p>
+                                                          ))
+                                                        : 'Chưa cập nhật'}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Ảnh</th>
+                                                <td className={cx('image-list')}>
+                                                    {log.images.length > 0
+                                                        ? log.images.map((image) => (
+                                                              <div className={cx('image-frame')} key={image.id}>
+                                                                  <img src={image.url} alt="person" />
+                                                              </div>
+                                                          ))
+                                                        : 'Chưa cập nhật'}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Video</th>
+                                                <td className={cx('video-list')}>
+                                                    {log.videos.length > 0
+                                                        ? log.videos.map((video) => (
+                                                              <div className={cx('video-frame')} key={video.id}>
+                                                                  <video>
+                                                                      <source src={video.url} />
+                                                                  </video>
+                                                              </div>
+                                                          ))
+                                                        : 'Chưa cập nhật'}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Ghi chú</th>
+                                                <td>{log.note ? log.note : 'Chưa cập nhật'}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+            </div>
+        </div>
+    );
 };
 
 export default Progress;
