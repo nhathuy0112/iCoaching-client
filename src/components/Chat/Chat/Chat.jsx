@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { BsCameraVideoFill } from 'react-icons/bs';
+import { IoChevronBackSharp } from 'react-icons/io5';
 import styles from '../Chat.module.scss';
 import classNames from 'classnames/bind';
 import Messages from '../Messages';
 import Input from '../Input';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import { ZIM } from 'zego-zim-web';
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from '~/firebase';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { changeUser } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 
@@ -18,16 +20,34 @@ const Chat = () => {
     const { currentUser } = useSelector((state) => state.user);
     const [currentCoach, setCurrentCoach] = useState([]);
     const { coachId } = useParams();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const chatId = useSelector((state) => state.chat.chatId);
-    const userID = currentUser?.Username;
-    const userName = 'userName' + userID;
-    const appID = 1980920521;
-    const serverSecret = '904c93a69f182068e7447a43b7350c1b';
-    const TOKEN = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, null, userID, userName);
-    const zp = ZegoUIKitPrebuilt.create(TOKEN);
-    zp.addPlugins({ ZIM });
+    let zp;
 
-    function invite() {
+    useEffect(() => {
+        init();
+    });
+    async function init() {
+        const userID = currentUser?.Username;
+        const userName = 'userName' + userID;
+        const { token } = await generateToken('https://node-express-vercel-master-one.vercel.app', userID);
+        // console.log(token);
+        // console.log(userID);
+        const KitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(1980920521, token, null, userID, userName);
+        zp = ZegoUIKitPrebuilt.create(KitToken);
+        zp.addPlugins({ ZIM });
+    }
+    function generateToken(tokenServerUrl, userID) {
+        return fetch(`${tokenServerUrl}/api/userID/${userID}`, {
+            method: 'GET',
+        }).then((res) => res.json());
+        // return fetch(`${tokenServerUrl}/api/get_access_token?userID=${userID}&expired_ts=7200`, {
+        //     method: 'GET',
+        // }).then((res) => res.json());
+    }
+
+    function handleSend(callType) {
         const targetUser = {
             userID: user?.username,
             userName: user?.username,
@@ -35,7 +55,7 @@ const Chat = () => {
 
         zp.sendCallInvitation({
             callees: [targetUser],
-            callType: ZegoUIKitPrebuilt.InvitationTypeVideoCall,
+            callType: callType,
             timeout: 60,
         })
             .then((res) => {
@@ -94,13 +114,40 @@ const Chat = () => {
             handleSelect();
         }
     });
-    return currentUser.role === 'COACH' ? (
+
+    const handleBack = () => {
+        navigate(`/coach/${currentUser.Id}/messages`);
+        dispatch(changeUser({ currentUser: '', payload: '' }));
+    };
+    return currentUser?.role === 'COACH' ? (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('chat')}>
                     <div className={cx('chatInfo')}>
-                        <span>{user.username}</span>
-                        <div className={cx('chatIcons')} onClick={invite}>
+                        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+                            <div
+                                className={cx('backHome')}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                }}
+                                onClick={() => handleBack()}
+                            >
+                                <IoChevronBackSharp />
+                                <span>Trở lại</span>
+                            </div>
+
+                            <span style={{ borderLeft: '2px solid lightgray', paddingLeft: '5px', color: 'white' }}>
+                                {user.username}
+                            </span>
+                        </span>
+
+                        <div
+                            className={cx('chatIcons')}
+                            onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}
+                        >
                             <BsCameraVideoFill />
                         </div>
                     </div>
@@ -110,10 +157,10 @@ const Chat = () => {
             </div>
         </div>
     ) : (
-        <div className={cx('chat')}>
-            <div className={cx('chatInfo')}>
+        <div className={cx('chat', { chatClient: currentUser.role !== 'COACH' && !coachId })}>
+            <div className={cx('chatInfo', { chatInfoClient: coachId })}>
                 <span>{user.username}</span>
-                <div className={cx('chatIcons')} onClick={invite}>
+                <div className={cx('chatIcons')} onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}>
                     <BsCameraVideoFill />
                 </div>
             </div>

@@ -36,7 +36,7 @@ const Navbar = () => {
     };
     return (
         <div className={cx('navbar')}>
-            <span className={cx('logo')}>Chat</span>
+            <span className={cx('logo')}></span>
             <div className={cx('user')}>
                 <img src={require('~/assets/images/Facebook.png')} alt="" />
                 <span>{currentUser?.Username}</span>

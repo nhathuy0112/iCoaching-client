@@ -4,12 +4,14 @@ import classNames from 'classnames/bind';
 import Search from '../Search';
 import Chats from '../Chats';
 import Navbar from '../Navbar';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 const SideBar = () => {
+    const { currentUser } = useSelector((state) => state.user);
     return (
-        <div className={cx('sidebar')}>
+        <div className={cx('sidebar', { sidebarCoach: currentUser?.role === 'COACH' })}>
             <Navbar />
             <Search />
             <Chats />

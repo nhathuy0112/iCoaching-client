@@ -38,9 +38,11 @@ const Chats = () => {
     const handleSelect = (u) => {
         dispatch(changeUser({ currentUser, payload: u }));
         if (currentUser.role === 'COACH') {
-            navigate(`/coach/${currentUser.Id}/messages/${user.uid}`);
+            navigate(`/coach/${currentUser.Id}/messages/${u.uid}`);
         }
     };
+    // console.log(user);
+    // console.log(Object.entries(chats));
     return (
         <div className={cx('chats')}>
             {chats &&

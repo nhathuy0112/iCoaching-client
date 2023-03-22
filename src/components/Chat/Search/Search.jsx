@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { collection, query, where, getDocs, setDoc, doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { db } from '~/firebase';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { FaSearch } from 'react-icons/fa';
 
 const cx = classNames.bind(styles);
 
@@ -13,10 +13,6 @@ const Search = () => {
     const [username, setUsername] = useState('');
     const [user, setUser] = useState(null);
     const [err, setErr] = useState(false);
-
-    // const location = useLocation();
-    // const dispatch = useDispatch();
-    // const { currentCoach } = useSelector((state) => state.guest);
 
     const handleSearch = async () => {
         const q = query(collection(db, 'users'), where('username', '==', username));
@@ -36,7 +32,6 @@ const Search = () => {
     };
 
     const handleSelect = async () => {
-        console.log(console.log(currentUser?.Id));
         const combinedId = currentUser?.Id > user.uid ? currentUser?.Id + user.uid : user.uid + currentUser?.Id;
         try {
             const res = await getDoc(doc(db, 'chats', combinedId));
@@ -67,12 +62,14 @@ const Search = () => {
         setUser(null);
         setUsername('');
     };
+
     return (
         <div className={cx('search')}>
             <div className={cx('searchForm')}>
+                <FaSearch />
                 <input
                     type="text"
-                    placeholder="Search"
+                    placeholder="Tìm kiếm người dùng..."
                     onKeyDown={handleKey}
                     onChange={(e) => setUsername(e.target.value)}
                     value={username}

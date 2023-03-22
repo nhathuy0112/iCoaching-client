@@ -16,7 +16,7 @@ const chatSlice = createSlice({
             } else if (payload) {
                 state.user = payload;
                 state.chatId = currentUser?.Id > payload ? currentUser?.Id + payload : payload + currentUser?.Id;
-            } else {
+            } else if (currentUser === '' && payload === '') {
                 state.user = '';
                 state.chatId = '';
             }

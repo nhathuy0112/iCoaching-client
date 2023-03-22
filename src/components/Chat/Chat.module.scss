@@ -3,9 +3,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    border-radius: 4px;
+    &.wrapperNavBar {
+        margin: 110px auto 20px auto;
+        width: 150vh;
+    }
+
     &.wrapperClient {
         height: 65vh;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        box-shadow: inset 0px 0px 0px rgba(0, 0, 0, 0.25);
         border-radius: 4px;
     }
     .container {
@@ -18,17 +26,19 @@
     }
     .sidebar {
         flex: 0.75;
-        background-color: #3e3c61;
+        background-color: white;
         position: relative;
-
+        &.sidebarCoach {
+            flex: 1;
+        }
         .navbar {
             display: flex;
             align-items: center;
-            background-color: #2f2d52;
+
             height: 50px;
             padding: 10px;
             justify-content: space-between;
-            color: #ddddf7;
+            color: var(--primary-color);
 
             .logo {
                 font-weight: bold;
@@ -49,19 +59,21 @@
         }
 
         .search {
-            border-bottom: 1px solid gray;
-
             .searchForm {
+                box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
                 padding: 10px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
 
                 input {
-                    background-color: transparent;
+                    font-size: 20px;
                     border: none;
-                    color: white;
+                    color: black;
                     outline: none;
 
                     &::placeholder {
-                        color: lightgray;
+                        color: black;
                     }
                 }
             }
@@ -71,11 +83,11 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: white;
+            color: black;
             cursor: pointer;
 
             &:hover {
-                background-color: #2f2d52;
+                background-color: #d9d9d9;
             }
 
             img {
@@ -87,18 +99,21 @@
 
             .userChatInfo {
                 span {
-                    font-size: 18px;
-                    font-weight: 500;
+                    font-size: 20px;
+                    font-weight: 400;
                 }
                 p {
                     font-size: 14px;
-                    color: lightgray;
+                    color: rgba(0, 0, 0, 0.422);
                 }
             }
         }
     }
     .chat {
         flex: 2;
+        &.chatClient {
+            border-left: 1px solid #d9d9d9;
+        }
         &.chatId {
             display: flex;
             justify-content: center;
@@ -106,12 +121,17 @@
         }
         .chatInfo {
             height: 50px;
-            background-color: #5d5b8d;
+            background-color: var(--primary-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px;
-            color: lightgray;
+            color: rgba(255, 255, 255, 0.697);
+            .backHome {
+                &:hover {
+                    color: white;
+                }
+            }
             &.chatInfoClient {
                 display: none;
             }
@@ -120,6 +140,9 @@
         .chatIcons {
             display: flex;
             gap: 10px;
+            &:hover {
+                color: white;
+            }
 
             img {
                 height: 24px;
@@ -132,6 +155,7 @@
             padding: 10px;
             height: calc(100% - 100px);
             overflow-y: scroll;
+            // border-left: 2.5px solid #d9d9d9;
             border-bottom: 2.5px solid #d9d9d9;
             &.messagesClient {
                 height: calc(100% - 50px);
@@ -239,7 +263,7 @@
                 button {
                     border: none;
                     padding: 10px 15px;
-                    color: white;
+                    color: rgba(255, 255, 255, 0.697);
                     background: #1e62af;
                     border-radius: 4px;
                     font-weight: bold;
@@ -247,7 +271,7 @@
                     cursor: pointer;
 
                     &:hover {
-                        color: lightgray;
+                        color: white;
                     }
                 }
             }
