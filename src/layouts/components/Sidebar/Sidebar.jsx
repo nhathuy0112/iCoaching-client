@@ -30,7 +30,7 @@ const Sidebar = ({ links }) => {
             const coachLinks = [...coachNavLinks];
             if (!isVerified) {
                 // Find the links you want to disable
-                const linksToDisable = ['my-clients', 'request-coaching', 'my-courses'];
+                const linksToDisable = ['my-clients', 'coaching-requests', 'my-courses'];
 
                 // Disable the links
                 const disabledLinks = coachLinks.filter((link) => linksToDisable.includes(link.url));

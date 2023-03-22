@@ -1,6 +1,7 @@
 import {
     GrDocumentCsv,
     GrDocumentExcel,
+    GrDocumentImage,
     GrDocumentPdf,
     GrDocumentTxt,
     GrDocumentWindows,
@@ -30,6 +31,12 @@ export const handleRenderFileIcon = (filename) => {
             return <GrDocumentZip />;
         case 'xlsx':
             return <GrDocumentExcel />;
+        case 'png':
+            return <GrDocumentImage />;
+        case 'jpg':
+            return <GrDocumentImage />;
+        case 'jpeg':
+            return <GrDocumentImage />;
         default:
             return;
     }

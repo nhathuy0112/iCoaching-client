@@ -2,10 +2,9 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { AiFillCheckCircle } from 'react-icons/ai';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
-import { GrDocumentTxt, GrDocumentExcel } from 'react-icons/gr';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getContractLogsAsync } from '~/features/contractSlice';
+import { getContractLogsAsync, getProgramFileDownloadAsync } from '~/features/contractSlice';
 import styles from './Progress.module.scss';
 import { handleRenderFileIcon } from '~/utils/file';
 
@@ -13,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const Progress = () => {
     const dispatch = useDispatch();
-    const { logs } = useSelector((state) => state.contract);
+    const { logs, linkDownload } = useSelector((state) => state.contract);
     const { contractId } = useParams();
     const [expandedItems, setExpandedItems] = useState([]);
 
@@ -34,6 +33,19 @@ const Progress = () => {
 
     const isItemExpanded = (log) => {
         return expandedItems.includes(log.id);
+    };
+
+    const handleDownloadFile = (file) => {
+        dispatch(getProgramFileDownloadAsync({ contractId: contractId, fileId: file.id }))
+            .unwrap()
+            .then(() => {
+                const url = window.URL.createObjectURL(new Blob([linkDownload]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', file.fileName);
+                document.body.appendChild(link);
+                link.click();
+            });
     };
 
     return (
@@ -80,11 +92,17 @@ const Progress = () => {
                                                 <td>
                                                     {log.files.length > 0
                                                         ? log.files.map((file) => (
-                                                              <p key={file.id}>
+                                                              <p
+                                                                  key={file.id}
+                                                                  className={cx('file')}
+                                                                  onClick={() => handleDownloadFile(file)}
+                                                              >
                                                                   <span className={cx('file-icon')}>
                                                                       {handleRenderFileIcon(file.fileName)}
                                                                   </span>
-                                                                  <span>{file.fileName}</span>
+                                                                  <span className={cx('file-name')}>
+                                                                      {file.fileName}
+                                                                  </span>
                                                               </p>
                                                           ))
                                                         : 'Chưa cập nhật'}

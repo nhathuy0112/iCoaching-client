@@ -20,22 +20,7 @@
 
                     .card-title {
                         min-width: 160px;
-
-                        &.coach {
-                            color: #0c21e0;
-                        }
-
-                        &.course-name {
-                            color: #1da032;
-                        }
-
-                        &.duration {
-                            color: #c33333;
-                        }
-
-                        &.price {
-                            color: #1a97cc;
-                        }
+                        color: var(--primary-color);
                     }
                 }
             }

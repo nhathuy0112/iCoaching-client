@@ -33,6 +33,10 @@
 
             .day-content {
                 padding: 0 64px;
+                table {
+                    width: 100%;
+                }
+
                 table,
                 th,
                 td {
@@ -51,8 +55,17 @@
                     text-align: left;
                 }
 
-                .file-icon {
-                    margin-right: 8px;
+                .file {
+                    cursor: pointer;
+
+                    .file-icon {
+                        margin-right: 8px;
+                    }
+                    &:hover {
+                        .file-name {
+                            text-decoration: underline;
+                        }
+                    }
                 }
 
                 .image-list {
