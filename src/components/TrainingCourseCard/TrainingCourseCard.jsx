@@ -37,6 +37,7 @@ const TrainingCourseCard = ({ course }) => {
     };
 
     const handleLogin = () => {
+        setIsViewDetails(false);
         setLoginOpen(true);
     };
 
@@ -125,7 +126,12 @@ const TrainingCourseCard = ({ course }) => {
                     </div>
                 </Modal>
             )}
-            <Login open={loginOpen} setLoginOpen={setLoginOpen}></Login>
+            <Login
+                open={loginOpen}
+                setLoginOpen={setLoginOpen}
+                setRegisterOpen={setRegisterOpen}
+                setForgotOpen={setForgotOpen}
+            ></Login>
             <Register open={registerOpen} setLoginOpen={setLoginOpen} setRegisterOpen={setRegisterOpen}></Register>
             <ForgotPassword open={forgotOpen} setForgotOpen={setForgotOpen} setLoginOpen={setLoginOpen} />
 

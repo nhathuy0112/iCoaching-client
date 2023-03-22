@@ -3,18 +3,24 @@ import styles from './AuthLayout.module.scss';
 import classNames from 'classnames/bind';
 import Sidebar from '~/layouts/components/Sidebar';
 import { clientNavLinks, coachNavLinks, adminNavLinks, superAdminNavLinks } from '~/config/navLink';
-import { useSelector } from 'react-redux';
+import { getUserAvatarAsync } from '~/features/userSlice';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 
 const cx = classNames.bind(styles);
 
 const AuthLayout = ({ children }) => {
-    const { currentUser } = useSelector((state) => state.user);
+    const { currentUser, avatar } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
     const [links, setLinks] = useState([]);
     const url = window.location.href;
     const path = url.split('/');
     const lastPath = path[path.length - 1];
+
+    useEffect(() => {
+        dispatch(getUserAvatarAsync());
+    }, [dispatch, avatar]);
 
     useEffect(() => {
         if (currentUser) {
@@ -53,7 +59,11 @@ const AuthLayout = ({ children }) => {
                     <div className={cx('info')}>
                         <span className={cx('name')}>{currentUser?.Fullname}</span>
                         <div className={cx('avatar-wrapper')}>
-                            <FaUserCircle className={cx('avatar')} />
+                            {avatar ? (
+                                <img className={cx('avatar')} src={avatar} alt="user-avatar" />
+                            ) : (
+                                <FaUserCircle className={cx('avatar')} />
+                            )}
                         </div>
                     </div>
                 </div>

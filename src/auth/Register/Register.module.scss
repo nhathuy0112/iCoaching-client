@@ -13,11 +13,6 @@
     }
 }
 
-.register-btn {
-    background-color: transparent;
-    border: 1px solid var(--white-color);
-}
-
 .img-wrapper {
     width: 40%;
     background-image: linear-gradient(var(--primary-color), rgba(143, 101, 154, 0.753));
@@ -77,20 +72,30 @@
         margin: 4px 4px 2px 0;
     }
     #submit-btn {
+        cursor: pointer;
+        color: white;
         font-size: 1.8rem;
         width: 35%;
         padding: 16px;
         background-color: var(--primary-color);
         margin: 18px auto 2px;
         border-radius: var(--default-border-radius);
+        &:hover {
+            opacity: 0.8;
+        }
     }
     #switch-btn {
+        margin-left: 8px;
         background: none;
         padding: 0;
         width: fit-content;
         color: var(--primary-color);
         font-size: 1.8rem;
         margin-bottom: 14px;
+        cursor: pointer;
+        &:hover {
+            opacity: 0.8;
+        }
     }
 }
 

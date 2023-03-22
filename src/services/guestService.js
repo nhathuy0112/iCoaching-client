@@ -17,7 +17,15 @@ export const getCoachProfile = (coachId) => axios.get(`${END_POINTS.GET_BY_ID}/$
 
 export const getCoachAbout = (coachId) => axios.get(`${END_POINTS.GET_BY_ID}/${coachId}/about-me`);
 
-export const getCoachPhotos = (coachId) => axios.get(`${END_POINTS.GET_BY_ID}/${coachId}/photos`);
+export const getCoachPhotos = ({ coachId, pageIndex, pageSize }) => {
+    const pageIndexParam = pageIndex ? `?PageIndex=${pageIndex}` : '';
+    const pageSizeParam = pageSize ? `&PageSize=${pageSize}` : '';
+    // const sortParam = sort ? `&Sort=${sort}` : '';
+    // const searchParam = search ? `&Search=${search}` : '';
+    return axios.get(
+        `${END_POINTS.GET_BY_ID}/${coachId}/photos${pageIndexParam}${pageSizeParam}`,
+    );
+}
 
 export const getCoachTrainingCourses = ({ coachId, pageIndex, pageSize, sort, search }) => {
     const pageIndexParam = pageIndex ? `?PageIndex=${pageIndex}` : '';

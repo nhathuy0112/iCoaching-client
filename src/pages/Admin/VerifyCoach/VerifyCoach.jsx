@@ -39,7 +39,7 @@ const VerifyCoach = () => {
                 {coaches.length > 0 ? (
                     <table className={cx('tb-coaches')}>
                         <thead>
-                            <tr>
+                            <tr className={cx('header-row')}>
                                 <th>Tên đăng nhập</th>
                                 <th>Họ và tên</th>
                                 <th>Giới tính</th>
@@ -51,16 +51,21 @@ const VerifyCoach = () => {
                         </thead>
                         <tbody>
                             {coaches.map((coach) => (
-                                <tr key={coach.id}>
-                                    <td>{coach.username}</td>
+                                <tr className={cx('content-row')} key={coach.id}>
+                                    <td className={cx('name')}>
+                                        <div className={cx('avatar')}>
+                                            <img src={require('~/assets/images/coach-avatar.png')} alt="" />
+                                        </div>
+                                        <span>{coach.username}</span>
+                                    </td>
                                     <td>{coach.fullname}</td>
                                     <td>{handleRenderGenders(coach.gender)}</td>
                                     <td>{coach.age}</td>
                                     <td>{coach.email}</td>
                                     <td>{coach.phoneNumber}</td>
-                                    <td>
+                                    <td className={cx('action-btn')}>
                                         <Link to={`${coach.certId}`}>
-                                            <button className={cx('btn-info')}>
+                                            <button id={cx('btn-detail')}>
                                                 Xem chi tiết <MdOutlineKeyboardArrowRight className={cx('icon')} />
                                             </button>
                                         </Link>

@@ -81,9 +81,9 @@
                 padding: 8px 16px;
                 cursor: pointer;
                 border-radius: var(--default-border-radius);
-                width: 100px;
                 font-size: 1.5rem;
                 color: white;
+                width: max-content;
 
                 &:hover {
                     opacity: 0.6;
@@ -93,15 +93,16 @@
             #btn-view-message {
                 background-color: #1a97cc;
                 margin-right: 8px;
+                width: 100px;
             }
 
             #btn-accept {
-                background-color: green;
+                background-color: #2c9e2a;
                 margin-right: 8px;
             }
 
             #btn-refuse {
-                background-color: red;
+                background-color: #df1b1b;
             }
         }
     }
@@ -164,11 +165,11 @@
             }
 
             #agree-btn {
-                background-color: green;
+                background-color: #2c9e2a;
             }
 
             #cancel-btn {
-                background-color: red;
+                background-color: #df1b1b;
             }
         }
     }

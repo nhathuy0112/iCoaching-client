@@ -12,12 +12,7 @@ import { dataURItoBlob } from '~/utils/blob';
 import ErrorMessage from '~/components/ErrorMessage';
 import SuccessMessage from '~/components/SuccessMessage';
 
-import {
-    getUserAvatarAsync,
-    getUserProfileAsync,
-    updateUserAvatarAsync,
-    updateUserProfileAsync,
-} from '~/features/userSlice';
+import { getUserAvatarAsync, updateUserAvatarAsync, updateUserProfileAsync } from '~/features/userSlice';
 
 import Modal from '~/components/Modal/Modal';
 import { BsCheckLg } from 'react-icons/bs';
@@ -55,7 +50,7 @@ const schema = yup.object({
 
 const AccountProfile = () => {
     const dispatch = useDispatch();
-    const { avatar, profile, error, status, message, currentUser } = useSelector((state) => state.user);
+    const { avatar, profile, error, message, currentUser } = useSelector((state) => state.user);
     const [currentAvatar, setCurrentAvatar] = useState(avatar);
     const [response, setResponse] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -66,10 +61,6 @@ const AccountProfile = () => {
         setCurrentAvatar(avatar);
         setLoading(false);
     }, [dispatch, avatar]);
-
-    useEffect(() => {
-        dispatch(getUserProfileAsync());
-    }, [dispatch, status]);
 
     const {
         register,
@@ -142,7 +133,7 @@ const AccountProfile = () => {
                     </div>
                     <div className={cx('container')}>
                         <div className={cx('left_container')}>
-                            <h3>Ảnh đại diện</h3>
+                            <h3>Ảnh đại diện client</h3>
 
                             {loading ? (
                                 <Spinner />
@@ -240,11 +231,11 @@ const AccountProfile = () => {
                         <h2 className={cx('text_modal')}>Bạn có đồng ý cập nhật ảnh đại diện?</h2>
                         <div className={cx('container_confirm')}>
                             <button className={cx('button_active')} onClick={handleSubmitAvatar}>
-                                <BsCheckLg className={cx('icon_modal')} />
+                                <BsCheckLg className={cx('icon')} />
                                 Đồng ý
                             </button>
                             <button className={cx('button_lock')} onClick={handleClose}>
-                                <HiOutlineXMark className={cx('icon_modal')} />
+                                <HiOutlineXMark className={cx('icon')} />
                                 Huỷ bỏ
                             </button>
                         </div>
