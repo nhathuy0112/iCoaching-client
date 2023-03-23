@@ -4,7 +4,6 @@ import Footer from '~/layouts/components/Footer/Footer';
 import styles from './ClientLayout.module.scss';
 import classNames from 'classnames/bind';
 
-
 const cx = classNames.bind(styles);
 
 const ClientLayout = ({ children }) => {

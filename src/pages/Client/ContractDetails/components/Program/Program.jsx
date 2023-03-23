@@ -32,16 +32,22 @@ const Program = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('file-list')}>
-                {programFiles &&
-                    programFiles.map((file) => (
+            {programFiles && programFiles.length > 0 ? (
+                <div className={cx('file-list')}>
+                    {programFiles.map((file) => (
                         <div className={cx('file-item')} key={file.id}>
                             <span className={cx('file-icon')}>{handleRenderFileIcon(file.fileName)}</span>
                             <span>{file.fileName}</span>
                             <button onClick={() => handleDownloadFile(file)}>Tải xuống</button>
                         </div>
                     ))}
-            </div>
+                </div>
+            ) : (
+                <div className={cx('file-empty')}>
+                    <h2>Chương trình tập luyện chưa được cập nhật!</h2>
+                    <span>Vui lòng đợi Huấn luyện viên cập nhật!</span>
+                </div>
+            )}
         </div>
     );
 };

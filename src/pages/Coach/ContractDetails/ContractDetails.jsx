@@ -5,7 +5,6 @@ import Tabs from '~/components/Tabs';
 import Information from './components/Information';
 import Program from './components/Program';
 import Progress from './components/Progress';
-import Report from './components/Report';
 import styles from './ContractDetails.module.scss';
 
 const cx = classNames.bind(styles);
@@ -25,10 +24,6 @@ const ContractDetails = () => {
         {
             label: 'Tiến độ',
             content: <Progress />,
-        },
-        {
-            label: 'Khiếu nại',
-            content: <Report />,
         },
     ];
 

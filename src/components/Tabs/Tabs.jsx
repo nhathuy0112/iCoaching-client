@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Tabs.module.scss';
+import { useLocation } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -9,7 +10,10 @@ const TabContent = ({ content }) => {
 };
 
 const Tabs = ({ tabs }) => {
-    const [activeTabIndex, setActiveTabIndex] = useState(0);
+    const location = useLocation();
+    const isAddedResources = location.state?.isAddedResources;
+
+    const [activeTabIndex, setActiveTabIndex] = useState(isAddedResources ? 1 : 0);
 
     const handleTabClick = (index) => {
         setActiveTabIndex(index);

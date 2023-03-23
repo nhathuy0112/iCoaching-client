@@ -1,9 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 import {
+    deleteContractProgramFile,
     getContractDetails,
     getContractLogs,
     getContractProgramFiles,
     getProgramFileDownload,
+    uploadContractProgramFiles,
 } from '~/services/contractService';
 
 //get contract details
@@ -16,6 +19,22 @@ export const getContractDetailsAsync = createAsyncThunk('contract/getContractDet
     }
 });
 
+//upload contract program files
+export const uploadContractProgramFilesAsync = createAsyncThunk(
+    'contract/uploadContractProgramFiles',
+    async (payload) => {
+        try {
+            const response = await uploadContractProgramFiles(payload);
+            if (response) {
+                toast.success('Thêm tài nguyên thành công!');
+                return response;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+);
+
 //get contract program files
 export const getContractProgramFilesAsync = createAsyncThunk('contract/getContractProgramFiles', async (id) => {
     try {
@@ -25,6 +44,22 @@ export const getContractProgramFilesAsync = createAsyncThunk('contract/getContra
         console.log(error);
     }
 });
+
+//delete contract program file
+export const deleteContractProgramFileAsync = createAsyncThunk(
+    'contract/deleteContractProgramFile',
+    async (payload) => {
+        try {
+            const response = await deleteContractProgramFile(payload);
+            if (response) {
+                toast.success('Xóa tài nguyên thành công!');
+                return response;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+);
 
 //get program file download
 export const getProgramFileDownloadAsync = createAsyncThunk('contract/getProgramFileDownload', async (payload) => {
@@ -77,6 +112,21 @@ export const contractSlice = createSlice({
                 state.error = action.error.message;
             })
 
+            //upload contract program files
+            .addCase(uploadContractProgramFilesAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(uploadContractProgramFilesAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(uploadContractProgramFilesAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
             //get contract program files
             .addCase(getContractProgramFilesAsync.pending, (state) => {
                 state.loading = true;
@@ -88,6 +138,21 @@ export const contractSlice = createSlice({
                 state.programFiles = action.payload;
             })
             .addCase(getContractProgramFilesAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //delete contract program files
+            .addCase(deleteContractProgramFileAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(deleteContractProgramFileAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(deleteContractProgramFileAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             })
