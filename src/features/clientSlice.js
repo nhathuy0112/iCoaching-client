@@ -114,6 +114,8 @@ export const clientSlice = createSlice({
             .addCase(getCoachingRequestsAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.coachingRequests = action.payload.data;
+                state.totalCount = action.payload.count;
+                state.pageSize = action.payload.pageSize;
             })
             .addCase(getCoachingRequestsAsync.rejected, (state, action) => {
                 state.loading = true;
@@ -129,6 +131,8 @@ export const clientSlice = createSlice({
             .addCase(getTrainingCoursesAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.trainingCourses = action.payload.data;
+                state.totalCount = action.payload.count;
+                state.pageSize = action.payload.pageSize;
             })
             .addCase(getTrainingCoursesAsync.rejected, (state, action) => {
                 state.loading = true;

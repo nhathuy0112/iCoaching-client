@@ -18,24 +18,12 @@ const CoachPhoto = () => {
 
     const { coachId } = useParams();
     const dispatch = useDispatch();
-    const { photos, totalCount, pageIndex } = useSelector((state) => state.guest);
+    const { photos, totalCount, pageSize } = useSelector((state) => state.guest);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getCoachPhotosAsync({ coachId: coachId, pageIndex: pageIndex, pageSize: 8 }));
-    }, [dispatch, coachId, pageIndex]);
-
-    //Pagination
-    const [pageChange, setPageChange] = useState(pageIndex);
-
-    const handlePageChange = (pageNumber) => {
-        setPageChange(pageNumber);
-        dispatch(setPage(pageNumber));
-        dispatch(getCoachPhotosAsync({ coachId: coachId, pageIndex: pageNumber, pageSize: 8 }));
-    };
-
-    const currentPhotoPagination = useMemo(() => {
-        return photos;
-    }, [photos]);
+        dispatch(getCoachPhotosAsync({ coachId: coachId, pageIndex: currentPage, pageSize: 8 }));
+    }, [dispatch, currentPage]);
 
     const handleOpen = (e) => {
         setOpen(true);
@@ -51,7 +39,7 @@ const CoachPhoto = () => {
             <div className={cx('content')}>
                 {photos.length !== 0 ? (
                     <div className={cx('image-list')}>
-                        {currentPhotoPagination.map((item, index) => (
+                        {photos.map((item, index) => (
                             <div className={cx('item')} key={index}>
                                 <img onClick={() => handleOpen(item.url)} src={item.url} alt="porfolio" />
                             </div>
@@ -65,11 +53,12 @@ const CoachPhoto = () => {
             </div>
             <Pagination
                 className={cx('pagination-bar')}
-                currentPage={pageChange}
+                currentPage={currentPage}
                 totalCount={totalCount}
-                pageSize={8}
-                onPageChange={(pageChange) => handlePageChange(pageChange)}
+                pageSize={pageSize}
+                onPageChange={(page) => setCurrentPage(page)}
             />
+
             {open && (
                 <Modal
                     open={open}

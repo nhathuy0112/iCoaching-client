@@ -3,20 +3,22 @@ import styles from './OngoingCourse.module.scss';
 import { IoIosArrowBack } from 'react-icons/io';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
 import { handleRenderGenders } from '~/utils/gender';
+import Pagination from '~/components/Pagination';
 
 const cx = classNames.bind(styles);
 
 const OnGoingCourse = () => {
     const dispatch = useDispatch();
-    const { trainingCourses } = useSelector((state) => state.client);
+    const { trainingCourses, totalCount, pageSize } = useSelector((state) => state.client);
     const { id } = useParams();
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getTrainingCoursesAsync({ pageIndex: 1, pageSize: 10, status: 'Active' }));
-    }, [dispatch]);
+        dispatch(getTrainingCoursesAsync({ pageIndex: currentPage, pageSize: 10, status: 'Active' }));
+    }, [dispatch, currentPage]);
 
     return (
         <div className={cx('wrapper')}>
@@ -64,6 +66,13 @@ const OnGoingCourse = () => {
                                 </div>
                             </div>
                         ))}
+                        <Pagination
+                            className={cx('pagination-bar')}
+                            currentPage={currentPage}
+                            totalCount={totalCount}
+                            pageSize={pageSize}
+                            onPageChange={(page) => setCurrentPage(page)}
+                        />
                     </div>
                 ) : (
                     <div className={cx('course-empty')}>

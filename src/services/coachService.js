@@ -38,7 +38,13 @@ export const postPortfolioPhotos = (payload) =>
         },
     });
 
-export const getPortfolioPhotos = () => axios.get(END_POINTS.PORTFOLIO_PHOTOS);
+export const getPortfolioPhotos = ({ pageIndex, pageSize, sort, search }) => {
+    const pageIndexParam = pageIndex ? `?PageIndex=${pageIndex}` : '';
+    const pageSizeParam = pageSize ? `&PageSize=${pageSize}` : '';
+    const sortParam = sort ? `&Sort=${sort}` : '';
+    const searchParam = search ? `&Search=${search}` : '';
+    return axios.get(`${END_POINTS.PORTFOLIO_PHOTOS}${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}`);
+}
 
 export const removePortfolioPhotos = (photoId) => axios.delete(`${END_POINTS.PHOTO_REMOVE}/${photoId}`);
 

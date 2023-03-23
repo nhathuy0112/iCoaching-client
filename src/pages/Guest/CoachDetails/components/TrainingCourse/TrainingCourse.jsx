@@ -12,41 +12,29 @@ const cx = classNames.bind(styles);
 const TrainingCourse = () => {
     const { coachId } = useParams();
     const dispatch = useDispatch();
-    const { trainingCourses, totalCount, pageSize, pageIndex } = useSelector((state) => state.guest);
+    const { trainingCourses, totalCount, pageSize } = useSelector((state) => state.guest);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getCoachTrainingCourseAsync({ coachId: coachId, pageIndex: pageIndex, pageSize: 9 }));
-    }, [dispatch, coachId, pageIndex]);
-
-    //Pagination
-    const [pageChange, setPageChange] = useState(pageIndex);
-
-    const handlePageChange = (pageNumber) => {
-        setPageChange(pageNumber);
-        dispatch(setPage(pageNumber));
-        dispatch(getCoachTrainingCourseAsync({ coachId: coachId, pageIndex: pageNumber, pageSize: 9 }));
-    };
-
-    const currentTrainingCoursesPagination = useMemo(() => {
-        return trainingCourses;
-    }, [trainingCourses]);
+        dispatch(getCoachTrainingCourseAsync({ coachId: coachId, pageIndex: currentPage, pageSize: 9 }));
+    }, [dispatch]);
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 {trainingCourses && trainingCourses.length > 0 ? (
                     <div className={cx('course-list')}>
-                        {currentTrainingCoursesPagination.map((course) => (
+                        {trainingCourses.map((course) => (
                             <div className={cx('course-item')} key={course.id}>
                                 <TrainingCourseCard course={course} />
                             </div>
                         ))}
                         <Pagination
                             className={cx('pagination-bar')}
-                            currentPage={pageChange}
+                            currentPage={currentPage}
                             totalCount={totalCount}
                             pageSize={pageSize}
-                            onPageChange={(pageChange) => handlePageChange(pageChange)}
+                            onPageChange={(page) => setCurrentPage(page)}
                         />
                     </div>
                 ) : (

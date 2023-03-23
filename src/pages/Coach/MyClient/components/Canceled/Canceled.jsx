@@ -1,21 +1,23 @@
 import classNames from 'classnames/bind';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getAllContractsAsync } from '~/features/coachSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Canceled.module.scss';
+import Pagination from '~/components/Pagination';
 
 const cx = classNames.bind(styles);
 
 const Canceled = () => {
     const dispatch = useDispatch();
-    const { contracts } = useSelector((state) => state.coach);
+    const { contracts, totalCount, pageSize } = useSelector((state) => state.coach);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getAllContractsAsync({ pageIndex: 1, pageSize: 12, status: 'Canceled' }));
-    }, [dispatch]);
+        dispatch(getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Canceled' }));
+    }, [dispatch, currentPage]);
 
     return (
         <div className={cx('wrapper')}>
@@ -63,6 +65,13 @@ const Canceled = () => {
                                 </div>
                             </div>
                         ))}
+                        <Pagination
+                            className={cx('pagination-bar')}
+                            currentPage={currentPage}
+                            totalCount={totalCount}
+                            pageSize={pageSize}
+                            onPageChange={(page) => setCurrentPage(page)}
+                        />
                     </div>
                 </>
             ) : (

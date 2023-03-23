@@ -5,19 +5,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from '~/components/Modal';
 import { getCoachingRequestsAsync } from '~/features/coachSlice';
 import { handleRenderGenders } from '~/utils/gender';
+import Pagination from '~/components/Pagination';
 import styles from './CoachRejected.module.scss';
 
 const cx = classNames.bind(styles);
 
 const CoachRejected = () => {
     const dispatch = useDispatch();
-    const { coachingRequests } = useSelector((state) => state.coach);
+    const { coachingRequests, totalCount, pageSize } = useSelector((state) => state.coach);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isViewDetails, setIsViewDetails] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 7, coachRequestStatus: 'CoachRejected' }));
-    }, [dispatch]);
+        dispatch(
+            getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 7, coachRequestStatus: 'CoachRejected' }),
+        );
+    }, [dispatch, currentPage]);
 
     const handleViewDetails = (request) => {
         setSelectedRequest(request);
@@ -80,6 +84,13 @@ const CoachRejected = () => {
                 </div>
             )}
 
+            <Pagination
+                className={cx('pagination-bar')}
+                currentPage={currentPage}
+                totalCount={totalCount}
+                pageSize={pageSize}
+                onPageChange={(page) => setCurrentPage(page)}
+            />
             {isViewDetails && (
                 <Modal
                     id={cx('view-detail-modal')}

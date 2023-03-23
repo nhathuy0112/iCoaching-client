@@ -108,7 +108,8 @@ export const guestSlice = createSlice({
             })
             .addCase(getCoachTrainingCourseAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                state.totalCount = action.payload.count
+                state.pageSize = action.payload.pageSize;
+                state.totalCount = action.payload.count;
                 state.trainingCourses = action.payload.data;
             })
             .addCase(getCoachTrainingCourseAsync.rejected, (state, action) => {
@@ -139,6 +140,7 @@ export const guestSlice = createSlice({
             .addCase(getCoachPhotosAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.photos = action.payload.data;
+                state.pageSize = action.payload.pageSize;
                 state.totalCount = action.payload.count;
 
             })

@@ -7,23 +7,25 @@ import ErrorMessage from '~/components/ErrorMessage';
 import Modal from '~/components/Modal';
 import { cancelTrainingRequestAsync, getCoachingRequestsAsync, getPaymentLinkAsync } from '~/features/clientSlice';
 import styles from './Init.module.scss';
+import Pagination from '~/components/Pagination';
 
 const cx = classNames.bind(styles);
 
 const Init = () => {
     const dispatch = useDispatch();
-    const { coachingRequests, paymentLink } = useSelector((state) => state.client);
+    const { coachingRequests, paymentLink, totalCount, pageSize } = useSelector((state) => state.client);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isCancel, setIsCancel] = useState(false);
     const [isOpenCancelMessage, setIsOpenCancelMessage] = useState(false);
     const [message, setMessage] = useState('');
     const [messageError, setMessageError] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
 
     console.log(paymentLink);
 
     useEffect(() => {
-        dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 6, clientRequestStatus: 'Init' }));
-    }, [dispatch]);
+        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 6, clientRequestStatus: 'Init' }));
+    }, [dispatch, currentPage]);
 
     useEffect(() => {
         if (paymentLink) window.location.replace(paymentLink);
@@ -102,6 +104,13 @@ const Init = () => {
                             </div>
                         </div>
                     ))}
+                    <Pagination
+                        className={cx('pagination-bar')}
+                        currentPage={currentPage}
+                        totalCount={totalCount}
+                        pageSize={pageSize}
+                        onPageChange={(page) => setCurrentPage(page)}
+                    />
                 </div>
             ) : (
                 <div className={cx('request-empty')}>
