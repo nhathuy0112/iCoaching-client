@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './CoachPhoto.module.scss';
 import classNames from 'classnames/bind';
@@ -8,7 +8,7 @@ import Pagination from '~/components/Pagination';
 import { AiOutlineClose } from 'react-icons/ai';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getCoachPhotosAsync, setPage } from '~/features/guestSlice';
+import { getCoachPhotosAsync } from '~/features/guestSlice';
 
 const cx = classNames.bind(styles);
 
@@ -23,7 +23,7 @@ const CoachPhoto = () => {
 
     useEffect(() => {
         dispatch(getCoachPhotosAsync({ coachId: coachId, pageIndex: currentPage, pageSize: 8 }));
-    }, [dispatch, currentPage]);
+    }, [dispatch, currentPage, coachId]);
 
     const handleOpen = (e) => {
         setOpen(true);

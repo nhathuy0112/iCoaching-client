@@ -1,9 +1,9 @@
 import styles from './TrainingCourse.module.scss';
 import classNames from 'classnames/bind';
 import { Link, useParams } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCoachTrainingCourseAsync, setPage } from '~/features/guestSlice';
+import { getCoachTrainingCourseAsync } from '~/features/guestSlice';
 import TrainingCourseCard from '~/components/TrainingCourseCard';
 import Pagination from '~/components/Pagination';
 
@@ -17,7 +17,7 @@ const TrainingCourse = () => {
 
     useEffect(() => {
         dispatch(getCoachTrainingCourseAsync({ coachId: coachId, pageIndex: currentPage, pageSize: 9 }));
-    }, [dispatch]);
+    }, [dispatch, currentPage, coachId]);
 
     return (
         <div className={cx('wrapper')}>

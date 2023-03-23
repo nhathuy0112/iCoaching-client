@@ -17,7 +17,7 @@ const TrainingCourse = () => {
 
     useEffect(() => {
         dispatch(getCoachTrainingCourseAsync({ coachId: coachId, pageIndex: currentPage, pageSize: 9 }));
-    }, [dispatch, currentPage]);
+    }, [dispatch, currentPage, coachId]);
 
     return (
         <div className={cx('wrapper')}>
