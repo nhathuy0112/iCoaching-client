@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TrainingCourseCard from '~/components/TrainingCourseCard';
 import {
@@ -7,7 +7,6 @@ import {
     deleteTrainingCourseAsync,
     editTrainingCourseAsync,
     getTrainingCourseAsync,
-    setPage,
 } from '~/features/coachSlice';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
@@ -38,7 +37,7 @@ const schema = yup.object({
 });
 
 const MyCourse = () => {
-    const { trainingCourses, pageIndex, pageSize, totalCount } = useSelector((state) => state.coach);
+    const { trainingCourses, pageSize, totalCount } = useSelector((state) => state.coach);
     const dispatch = useDispatch();
     const [isAdd, setIsAdd] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -51,23 +50,11 @@ const MyCourse = () => {
     const [durationEdit, setDurationEdit] = useState('');
     const [durationEditError, setDurationEditError] = useState(null);
     const [descriptionEdit, setDescriptionEdit] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getTrainingCourseAsync({ pageIndex: pageIndex, pageSize: 20 }));
-    }, [dispatch, pageIndex]);
-
-    //Pagination
-    const [pageChange, setPageChange] = useState(pageIndex);
-
-    const handlePageChange = (pageNumber) => {
-        setPageChange(pageNumber);
-        dispatch(setPage(pageNumber));
-        dispatch(getTrainingCourseAsync({ pageIndex: pageNumber, pageSize: 20 }));
-    };
-
-    const currentTrainingCoursesPagination = useMemo(() => {
-        return trainingCourses;
-    }, [trainingCourses]);
+        dispatch(getTrainingCourseAsync({ pageIndex: currentPage, pageSize: 20 }));
+    }, [dispatch, currentPage]);
 
     const {
         register,
@@ -182,7 +169,7 @@ const MyCourse = () => {
                         </div>
                     </div>
                     <div className={cx('course-list')}>
-                        {currentTrainingCoursesPagination.map((course) => (
+                        {trainingCourses.map((course) => (
                             <div className={cx('course-item')} key={course.id}>
                                 <TrainingCourseCard course={course} />
                                 <div className={cx('item-action')}>
@@ -197,10 +184,10 @@ const MyCourse = () => {
                         ))}
                         <Pagination
                             className={cx('pagination-bar')}
-                            currentPage={pageChange}
+                            currentPage={currentPage}
                             totalCount={totalCount}
                             pageSize={pageSize}
-                            onPageChange={(pageChange) => handlePageChange(pageChange)}
+                            onPageChange={(page) => setCurrentPage(page)}
                         />
                     </div>
                 </>

@@ -1,22 +1,24 @@
 import classNames from 'classnames/bind';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { getAllContractsAsync } from '~/features/coachSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Active.module.scss';
+import Pagination from '~/components/Pagination';
 
 const cx = classNames.bind(styles);
 
 const Active = () => {
     const dispatch = useDispatch();
-    const { contracts } = useSelector((state) => state.coach);
+    const { contracts, totalCount, pageSize } = useSelector((state) => state.coach);
     const { id } = useParams();
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getAllContractsAsync({ pageIndex: 1, pageSize: 12, status: 'Active' }));
-    }, [dispatch]);
+        dispatch(getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Active' }));
+    }, [dispatch, currentPage]);
 
     return (
         <div className={cx('wrapper')}>
@@ -67,6 +69,13 @@ const Active = () => {
                                 </div>
                             </div>
                         ))}
+                        <Pagination
+                            className={cx('pagination-bar')}
+                            currentPage={currentPage}
+                            totalCount={totalCount}
+                            pageSize={pageSize}
+                            onPageChange={(page) => setCurrentPage(page)}
+                        />
                     </div>
                 </>
             ) : (

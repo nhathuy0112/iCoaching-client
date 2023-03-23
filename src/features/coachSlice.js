@@ -73,9 +73,9 @@ export const postPortfolioPhotosAsync = createAsyncThunk('/coach/postPortfolioPh
     }
 });
 
-export const getPortfolioPhotosAsync = createAsyncThunk('/coach/getPortfolioPhotos', async () => {
+export const getPortfolioPhotosAsync = createAsyncThunk('/coach/getPortfolioPhotos', async (payload) => {
     try {
-        const response = await getPortfolioPhotos();
+        const response = await getPortfolioPhotos(payload);
         return response;
     } catch (error) {
         console.log(error);
@@ -307,6 +307,9 @@ export const coachSlice = createSlice({
             .addCase(getPortfolioPhotosAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.portfolioImages = action.payload.data;
+                state.totalCount = action.payload.count;
+                state.pageSize = action.payload.pageSize;
+
             })
             .addCase(getPortfolioPhotosAsync.rejected, (state, action) => {
                 state.loading = true;
@@ -419,6 +422,8 @@ export const coachSlice = createSlice({
             .addCase(getCoachingRequestsAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.coachingRequests = action.payload.data;
+                state.pageSize = action.payload.pageSize;
+                state.totalCount = action.payload.count;
             })
             .addCase(getCoachingRequestsAsync.rejected, (state, action) => {
                 state.loading = true;
@@ -433,6 +438,7 @@ export const coachSlice = createSlice({
             })
             .addCase(updateCoachingRequestAsync.fulfilled, (state) => {
                 state.loading = false;
+                state.status = !state.status
             })
             .addCase(updateCoachingRequestAsync.rejected, (state, action) => {
                 state.loading = true;
@@ -448,6 +454,8 @@ export const coachSlice = createSlice({
             .addCase(getAllContractsAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.contracts = action.payload.data;
+                state.totalCount = action.payload.count;
+                state.pageSize = action.payload.pageSize;
             })
             .addCase(getAllContractsAsync.rejected, (state, action) => {
                 state.loading = true;

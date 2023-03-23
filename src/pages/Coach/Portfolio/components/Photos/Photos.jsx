@@ -16,15 +16,16 @@ import {
     resetEditor,
     resetPortfolioImages,
 } from '~/features/coachSlice';
-
+import Pagination from '~/components/Pagination';
 const cx = classNames.bind(styles);
 
 const Photos = () => {
     const dispatch = useDispatch();
-    const { portfolioImages } = useSelector((state) => state.coach);
+    const { portfolioImages, totalCount, pageSize } = useSelector((state) => state.coach);
     const { currentUser } = useSelector((state) => state.user);
     const [isAddingImage, setIsAddingImage] = useState(false);
     const [images, setImages] = useState(portfolioImages);
+    const [currentPage, setCurrentPage] = useState(1);
     const maxNumber = 69;
 
     const onChange = (imageList) => {
@@ -33,8 +34,8 @@ const Photos = () => {
     };
 
     useEffect(() => {
-        dispatch(getPortfolioPhotosAsync());
-    }, [dispatch]);
+        dispatch(getPortfolioPhotosAsync({ pageIndex: currentPage, pageSize: 15 }));
+    }, [dispatch, currentPage]);
 
     useEffect(() => {
         if (portfolioImages) setImages(portfolioImages);
@@ -141,6 +142,13 @@ const Photos = () => {
                         </div>
                     )}
                 </ImageUploading>
+                <Pagination
+                    className={cx('pagination-bar')}
+                    currentPage={currentPage}
+                    totalCount={totalCount}
+                    pageSize={pageSize}
+                    onPageChange={(page) => setCurrentPage(page)}
+                />
             </div>
             {isAddingImage && (
                 <div className={cx('action-btn')}>

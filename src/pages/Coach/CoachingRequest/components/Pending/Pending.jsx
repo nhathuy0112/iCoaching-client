@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ErrorMessage from '~/components/ErrorMessage';
 import Modal from '~/components/Modal';
+import Pagination from '~/components/Pagination';
 import { getCoachingRequestsAsync, updateCoachingRequestAsync } from '~/features/coachSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Pending.module.scss';
@@ -17,7 +18,7 @@ const Pending = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { coachingRequests } = useSelector((state) => state.coach);
+    const { coachingRequests, status, totalCount, pageSize } = useSelector((state) => state.coach);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isViewMessage, setIsViewMessage] = useState(false);
     const [isAccept, setIsAccept] = useState(false);
@@ -25,10 +26,11 @@ const Pending = () => {
     const [isOpenRejectMessage, setIsOpenRejectMessage] = useState(false);
     const [message, setMessage] = useState('');
     const [messageError, setMessageError] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 7, coachRequestStatus: 'Pending' }));
-    }, [dispatch]);
+        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 7, coachRequestStatus: 'Pending' }));
+    }, [dispatch, currentPage, status]);
 
     const handleViewRequestMessage = (request) => {
         setSelectedRequest(request);
@@ -148,6 +150,13 @@ const Pending = () => {
                             ))}
                         </tbody>
                     </table>
+                    <Pagination
+                        className={cx('pagination-bar')}
+                        currentPage={currentPage}
+                        totalCount={totalCount}
+                        pageSize={pageSize}
+                        onPageChange={(page) => setCurrentPage(page)}
+                    />
                 </>
             ) : (
                 <div className={cx('request-empty')}>

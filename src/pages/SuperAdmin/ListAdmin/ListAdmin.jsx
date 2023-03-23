@@ -100,7 +100,7 @@ const ListAdmin = () => {
                             <tr className={cx('content-row')} key={item.id}>
                                 <td className={cx('name')}>
                                     <div className={cx('avatar')}>
-                                        <img src={require('~/assets/images/coach-avatar.png')} alt="" />
+                                        <img src={item.avatarUrl} alt="" />
                                     </div>
                                     <span>{item.userName}</span>
                                 </td>

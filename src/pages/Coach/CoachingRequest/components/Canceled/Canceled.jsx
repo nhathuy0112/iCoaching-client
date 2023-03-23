@@ -6,18 +6,20 @@ import Modal from '~/components/Modal';
 import { getCoachingRequestsAsync } from '~/features/coachSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Canceled.module.scss';
+import Pagination from '~/components/Pagination';
 
 const cx = classNames.bind(styles);
 
 const Canceled = () => {
     const dispatch = useDispatch();
-    const { coachingRequests } = useSelector((state) => state.coach);
+    const { coachingRequests, totalCount, pageSize } = useSelector((state) => state.coach);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isViewDetails, setIsViewDetails] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 7, coachRequestStatus: 'Canceled' }));
-    }, [dispatch]);
+        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 7, coachRequestStatus: 'Canceled' }));
+    }, [dispatch, currentPage]);
 
     const handleViewDetails = (request) => {
         setSelectedRequest(request);
@@ -79,6 +81,13 @@ const Canceled = () => {
                     <h2>Hiện chưa có yêu cầu nào!</h2>
                 </div>
             )}
+            <Pagination
+                className={cx('pagination-bar')}
+                currentPage={currentPage}
+                totalCount={totalCount}
+                pageSize={pageSize}
+                onPageChange={(page) => setCurrentPage(page)}
+            />
 
             {isViewDetails && (
                 <Modal
