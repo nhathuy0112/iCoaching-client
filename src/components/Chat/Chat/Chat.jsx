@@ -157,7 +157,7 @@ const Chat = () => {
             </div>
         </div>
     ) : (
-        <div className={cx('chat', { chatClient: currentUser.role !== 'COACH' && !coachId })}>
+        <div className={cx('chat', { chatClient: currentUser?.role !== 'COACH' && !coachId })}>
             <div className={cx('chatInfo', { chatInfoClient: coachId })}>
                 <span>{user.username}</span>
                 <div className={cx('chatIcons')} onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}>

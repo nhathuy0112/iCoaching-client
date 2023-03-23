@@ -25,7 +25,6 @@
         overflow: hidden;
     }
     .sidebar {
-        flex: 0.75;
         background-color: white;
         position: relative;
         &.sidebarCoach {
@@ -59,6 +58,7 @@
         }
 
         .search {
+            border-bottom: 1px solid #d9d9d9;
             .searchForm {
                 box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
                 padding: 10px;
@@ -98,10 +98,22 @@
             }
 
             .userChatInfo {
+                width: 100%;
+                &.usserChatInfoSearch {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    .iconChat {
+                        font-size: 20px;
+                        color: lightgray;
+                    }
+                }
+
                 span {
                     font-size: 20px;
                     font-weight: 400;
                 }
+
                 p {
                     font-size: 14px;
                     color: rgba(0, 0, 0, 0.422);

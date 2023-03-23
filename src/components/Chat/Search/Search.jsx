@@ -5,6 +5,7 @@ import { collection, query, where, getDocs, setDoc, doc, updateDoc, serverTimest
 import { db } from '~/firebase';
 import { useSelector } from 'react-redux';
 import { FaSearch } from 'react-icons/fa';
+import { BsArrowLeftSquareFill } from 'react-icons/bs';
 
 const cx = classNames.bind(styles);
 
@@ -71,7 +72,14 @@ const Search = () => {
                     type="text"
                     placeholder="Tìm kiếm người dùng..."
                     onKeyDown={handleKey}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        setUsername(value);
+                        if (value === '') {
+                            setUser(null);
+                            setUsername('');
+                        }
+                    }}
                     value={username}
                 />
             </div>
@@ -79,8 +87,9 @@ const Search = () => {
             {user && (
                 <div className={cx('userChat')} onClick={handleSelect}>
                     <img src={require('~/assets/images/Facebook.png')} alt="" />
-                    <div className={cx('userChatInfo')}>
+                    <div className={cx('userChatInfo', { usserChatInfoSearch: user })}>
                         <span>{user.username}</span>
+                        <FaSearch className={cx('iconChat')} />
                     </div>
                 </div>
             )}

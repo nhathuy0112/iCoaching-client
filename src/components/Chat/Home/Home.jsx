@@ -16,7 +16,7 @@ const Home = () => {
             className={cx(
                 'wrapper',
                 { wrapperClient: coachId },
-                { wrapperNavBar: currentUser.role !== 'COACH' && !coachId },
+                { wrapperNavBar: currentUser?.role !== 'COACH' && !coachId },
             )}
         >
             <div className={cx('container')}>
