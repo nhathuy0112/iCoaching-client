@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from '~/utils/localStorage';
 
 const instance = axios.create({
-    baseURL: process.env.REACT_APP_API_URL_LOCAL,
+    baseURL: process.env.REACT_APP_API_URL,
     timeout: 300000,
 });
 
