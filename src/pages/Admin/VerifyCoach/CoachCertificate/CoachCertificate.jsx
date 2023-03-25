@@ -33,8 +33,7 @@ const CoachCertificate = () => {
         modal(true);
         setFile(img);
     };
-    const handleClose = (e) => {
-        e.preventDefault();
+    const handleClose = () => {
         setViewDetail(false);
         setDenied(false);
     };
