@@ -20,7 +20,7 @@ const CoachesView = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: 8 }));
+        dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: 7 }));
     }, [dispatch, currentPage, status]);
 
     const [lockOpen, setLockOpen] = useState(false);

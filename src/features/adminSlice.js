@@ -121,6 +121,7 @@ export const adminSlice = createSlice({
             .addCase(getCertRequestDetailAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.certRequest = action.payload;
+                state.status = null;
             })
 
             //update certificate verification request detail

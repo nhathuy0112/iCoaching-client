@@ -33,12 +33,14 @@ const CoachCertificate = () => {
         modal(true);
         setFile(img);
     };
-    const handleClose = () => {
+    const handleClose = (e) => {
+        e.preventDefault();
         setViewDetail(false);
         setDenied(false);
     };
 
     const handleUpdateStatus = (option, reason) => {
+        handleClose();
         dispatch(updateCertStatusAsync({ certId: id, option: option, reason }));
     };
     return (
