@@ -1,0 +1,95 @@
+.wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .title-and-back {
+        .back-link {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .title {
+            text-align: center;
+            color: var(--primary-color);
+        }
+    }
+
+    .content {
+        margin-top: 16px;
+        flex: 1 1;
+        display: flex;
+        flex-direction: column;
+
+        .day {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 500;
+            color: red;
+        }
+
+        #edit-form {
+            padding: 0 64px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: 390px;
+
+            .input-group {
+                display: flex;
+                margin: 16px 0;
+
+                &.training-date {
+                    align-items: center;
+                }
+
+                label {
+                    min-width: 160px;
+                }
+
+                input {
+                    padding: 8px 16px;
+                    border: 1px solid var(--primary-color);
+                    border-radius: var(--default-border-radius);
+                    flex: 1;
+                }
+
+                textarea {
+                    width: 100%;
+                    resize: none;
+                    height: 150px;
+                    padding: 8px 16px;
+                }
+            }
+
+            .error {
+                margin-left: 160px;
+            }
+        }
+        .save-btn {
+            padding: 8px 16px;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            background-color: green;
+            color: white;
+            border-radius: var(--default-border-radius);
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.6;
+            }
+
+            &.disabled {
+                background-color: #ccc;
+                pointer-events: none;
+            }
+        }
+    }
+}

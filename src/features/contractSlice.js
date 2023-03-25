@@ -3,9 +3,11 @@ import { toast } from 'react-toastify';
 import {
     deleteContractProgramFile,
     getContractDetails,
+    getContractLogDetails,
     getContractLogs,
     getContractProgramFiles,
     getProgramFileDownload,
+    updateContractLog,
     uploadContractProgramFiles,
 } from '~/services/contractService';
 
@@ -71,6 +73,19 @@ export const getProgramFileDownloadAsync = createAsyncThunk('contract/getProgram
     }
 });
 
+//update contract log
+export const updateContractLogAsync = createAsyncThunk('contract/updateContractLog', async (payload) => {
+    try {
+        const response = await updateContractLog(payload);
+        if (response) {
+            toast.success('Cập nhật tiến độ thành công!');
+            return response;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 //get contract logs
 export const getContractLogsAsync = createAsyncThunk('contract/getContractLogs', async (id) => {
     try {
@@ -81,11 +96,22 @@ export const getContractLogsAsync = createAsyncThunk('contract/getContractLogs',
     }
 });
 
+//get contract logs
+export const getContractLogDetailsAsync = createAsyncThunk('contract/getContractLogDetails', async (payload) => {
+    try {
+        const response = await getContractLogDetails(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 const initialState = {
     currentContract: {},
     programFiles: [],
-    linkDownload: '',
+    downloadLink: '',
     logs: [],
+    currentLog: {},
     loading: false,
     error: null,
     message: '',
@@ -165,9 +191,24 @@ export const contractSlice = createSlice({
             })
             .addCase(getProgramFileDownloadAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                state.linkDownload = action.payload;
+                state.downloadLink = action.payload;
             })
             .addCase(getProgramFileDownloadAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //update contract log
+            .addCase(updateContractLogAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(updateContractLogAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(updateContractLogAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             })
@@ -183,6 +224,21 @@ export const contractSlice = createSlice({
                 state.logs = action.payload;
             })
             .addCase(getContractLogsAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //get contract log details
+            .addCase(getContractLogDetailsAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(getContractLogDetailsAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentLog = action.payload;
+            })
+            .addCase(getContractLogDetailsAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             });

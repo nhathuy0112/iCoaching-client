@@ -12,8 +12,15 @@ const TabContent = ({ content }) => {
 const Tabs = ({ tabs }) => {
     const location = useLocation();
     const isAddedResources = location.state?.isAddedResources;
+    const isEditTrainingLog = location.state?.isEditTrainingLog;
 
-    const [activeTabIndex, setActiveTabIndex] = useState(isAddedResources ? 1 : 0);
+    const renderTabNavigate = () => {
+        if (isAddedResources) return 1;
+        else if (isEditTrainingLog) return 2;
+        else return 0;
+    };
+
+    const [activeTabIndex, setActiveTabIndex] = useState(() => renderTabNavigate());
 
     const handleTabClick = (index) => {
         setActiveTabIndex(index);
