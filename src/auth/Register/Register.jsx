@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registerAsync, resetAuth } from '~/features/userSlice';
 import ErrorMessage from '~/components/ErrorMessage';
 import SuccessMessage from '~/components/SuccessMessage';
+import { convertDateFormat } from '~/utils/dateFormat';
 
 const cx = classNames.bind(styles);
 
@@ -75,14 +76,6 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
         formState: { errors },
         reset,
     } = useForm({ resolver: yupResolver(schema) });
-
-    const convertDateFormat = (dateString) => {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        return `${day}-${month}-${year}`;
-    };
 
     const handleRegister = (data) => {
         if (data.isAgreed) {

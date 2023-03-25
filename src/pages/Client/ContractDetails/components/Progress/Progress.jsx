@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const Progress = () => {
     const dispatch = useDispatch();
-    const { logs, linkDownload } = useSelector((state) => state.contract);
+    const { logs, downloadLink } = useSelector((state) => state.contract);
     const { contractId } = useParams();
     const [expandedItems, setExpandedItems] = useState([]);
 
@@ -26,7 +26,7 @@ const Progress = () => {
             // If item expand, show less
             setExpandedItems(expandedItems.filter((id) => id !== log.id));
         } else {
-            // Nếu item is not expanded, show more
+            // If item is not expanded, show more
             setExpandedItems([...expandedItems, log.id]);
         }
     };
@@ -39,7 +39,7 @@ const Progress = () => {
         dispatch(getProgramFileDownloadAsync({ contractId: contractId, fileId: file.id }))
             .unwrap()
             .then(() => {
-                const url = window.URL.createObjectURL(new Blob([linkDownload]));
+                const url = window.URL.createObjectURL(new Blob([downloadLink]));
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', file.fileName);
@@ -126,7 +126,7 @@ const Progress = () => {
                                                     {log.videos.length > 0
                                                         ? log.videos.map((video) => (
                                                               <div className={cx('video-frame')} key={video.id}>
-                                                                  <video>
+                                                                  <video controls>
                                                                       <source src={video.url} />
                                                                   </video>
                                                               </div>

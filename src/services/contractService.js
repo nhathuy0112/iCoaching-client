@@ -21,4 +21,14 @@ export const deleteContractProgramFile = ({ contractId, fileId }) =>
 export const getProgramFileDownload = ({ contractId, fileId }) =>
     axios.get(`${END_POINTS.CONTRACT}/${contractId}/file/downloading/${fileId}`);
 
+export const updateContractLog = ({ contractId, logId, payload }) =>
+    axios.put(`${END_POINTS.CONTRACT}/${contractId}/log/${logId}`, payload, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+
 export const getContractLogs = (contractId) => axios.get(`${END_POINTS.CONTRACT}/${contractId}/logs`);
+
+export const getContractLogDetails = ({ contractId, logId }) =>
+    axios.get(`${END_POINTS.CONTRACT}/${contractId}/log/${logId}`);

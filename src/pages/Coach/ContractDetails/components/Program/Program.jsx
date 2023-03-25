@@ -16,7 +16,7 @@ const cx = classNames.bind(styles);
 
 const Program = () => {
     const dispatch = useDispatch();
-    const { programFiles, linkDownload } = useSelector((state) => state.contract);
+    const { programFiles, downloadLink } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
     const [isOpenDeteleModal, setIsOpenDeteleModal] = useState(false);
     const [selectedFile, setSeletectedFile] = useState({});
@@ -29,7 +29,7 @@ const Program = () => {
         dispatch(getProgramFileDownloadAsync({ contractId: contractId, fileId: file.id }))
             .unwrap()
             .then(() => {
-                const url = window.URL.createObjectURL(new Blob([linkDownload]));
+                const url = window.URL.createObjectURL(new Blob([downloadLink]));
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', file.fileName);
