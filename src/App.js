@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { routes } from '~/config/routes';
-import GuestLayout from '~/layouts/GuestLayout';
 import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,7 +12,7 @@ function App() {
                 <Routes>
                     {routes.map((route, index) => {
                         const Page = route.component;
-                        let Layout = GuestLayout;
+                        let Layout = Fragment;
 
                         if (route.layout) {
                             Layout = route.layout;

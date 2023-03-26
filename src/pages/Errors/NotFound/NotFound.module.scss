@@ -1,0 +1,41 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    align-items: center;
+    justify-content: center;
+
+    .error {
+        font-size: 20rem;
+        color: var(--primary-color);
+        text-shadow: 1px 1px 1px var(--primary-active-color), 2px 2px 1px var(--primary-active-color),
+            3px 3px 1px var(--primary-active-color), 4px 4px 1px var(--primary-active-color),
+            5px 5px 1px var(--primary-active-color), 6px 6px 1px var(--primary-active-color),
+            7px 7px 1px var(--primary-active-color), 8px 8px 1px var(--primary-active-color),
+            25px 25px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .page {
+        margin: 2rem 0;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #444;
+    }
+
+    #back-home {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        text-transform: uppercase;
+        font-weight: 500;
+        padding: 8px 16px;
+        transition: all 0.2s linear;
+        box-shadow: var(--default-box-shadow);
+        border-radius: var(--default-border-radius);
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+}

@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getAllCoachesAsync } from '~/features/guestSlice';
 import { useEffect } from 'react';
 import UserCard from '~/components/UserCard';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -42,7 +42,7 @@ const Home = () => {
 
     const dispatch = useDispatch();
     const { coaches } = useSelector((state) => state.guest);
-    const {currentUser} = useSelector((state) => state.user);
+    const { currentUser } = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));

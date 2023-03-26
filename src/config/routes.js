@@ -41,15 +41,20 @@ import ListAdmin from '~/pages/SuperAdmin/ListAdmin';
 import SuperAdminCreateAccount from '~/pages/SuperAdmin/CreateAccount/CreateAccount';
 import SuperAdminAccountProfile from '~/pages/SuperAdmin/AccountProfile/AccountProfile';
 
+//Error
+import NotFound from '~/pages/Errors/NotFound';
+
 /*-----layouts-----*/
+import GuestLayout from '~/layouts/GuestLayout';
 import AuthLayout from '~/layouts/AuthLayout';
 import ClientLayout from '~/layouts/ClientLayout';
 
 const guestRoutes = [
-    { path: '/', component: Home },
-    { path: '/all-coaches', component: CoachesView },
-    { path: '/all-coaches/view-details/coach/:coachId', component: CoachDetail },
-    { path: '/view-details/coach/:coachId', component: CoachDetail },
+    { path: '/', component: Home, layout: GuestLayout },
+    { path: '/all-coaches', component: CoachesView, layout: GuestLayout },
+    { path: '/all-coaches/view-details/coach/:coachId', component: CoachDetail, layout: GuestLayout },
+    { path: '/view-details/coach/:coachId', component: CoachDetail, layout: GuestLayout },
+    { path: '/*', component: NotFound },
 ];
 
 const clientRoutes = [
@@ -68,6 +73,7 @@ const clientRoutes = [
     { path: '/client/:id/training-history', component: TrainingHistory, layout: ClientLayout },
     { path: '/client/:id/account-information', component: AccountProfile, layout: ClientLayout },
     { path: '/client/:id/all-messages', component: Messages, layout: ClientLayout },
+    { path: '/client/*', component: NotFound },
 ];
 
 const coachRoutes = [
@@ -85,6 +91,7 @@ const coachRoutes = [
     { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout },
     { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout },
     { path: '/coach/:id/messages', component: Messages, layout: AuthLayout },
+    { path: '/coach/*', component: NotFound },
 ];
 
 const adminRoutes = [
@@ -94,19 +101,21 @@ const adminRoutes = [
     { path: '/admin/:id/reports', component: Reports, layout: AuthLayout },
     { path: '/admin/:id/reports/:userId', component: ReportDetails, layout: AuthLayout },
     { path: '/admin/:id/profile', component: AdminAccountProfile, layout: AuthLayout },
+    { path: '/admin/*', component: NotFound },
 ];
 
 const superAdminRoutes = [
     {
-        path: '/super_admin/:id/create_account/',
+        path: '/super_admin/:id/create-account/',
         component: SuperAdminCreateAccount,
         layout: AuthLayout,
     },
     {
-        path: '/super_admin/:id/account_profile/',
+        path: '/super_admin/:id/account-profile/',
         component: SuperAdminAccountProfile,
         layout: AuthLayout,
     },
-    { path: '/super_admin/:id/list_admin/', component: ListAdmin, layout: AuthLayout },
+    { path: '/super_admin/:id/list-admin/', component: ListAdmin, layout: AuthLayout },
+    { path: 'super_admin/*', component: NotFound },
 ];
 export const routes = [...guestRoutes, ...clientRoutes, ...coachRoutes, ...adminRoutes, ...superAdminRoutes];

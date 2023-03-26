@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import styles from './AuthLayout.module.scss';
 import classNames from 'classnames/bind';
 import Sidebar from '~/layouts/components/Sidebar';
-import { clientNavLinks, coachNavLinks, adminNavLinks, superAdminNavLinks } from '~/config/navLink';
+import { coachNavLinks, adminNavLinks, superAdminNavLinks } from '~/config/navLink';
 import { getUserAvatarAsync } from '~/features/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -32,8 +32,6 @@ const AuthLayout = ({ children }) => {
 
     const handleRenderNavLinks = (role) => {
         switch (role) {
-            case 'CLIENT':
-                return clientNavLinks;
             case 'COACH':
                 return coachNavLinks;
             case 'ADMIN':

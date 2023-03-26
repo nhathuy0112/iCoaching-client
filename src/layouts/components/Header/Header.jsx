@@ -8,7 +8,6 @@ import ForgotPassword from '~/auth/ForgotPassword';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-
 const cx = classNames.bind(styles);
 
 const Header = () => {
@@ -16,7 +15,7 @@ const Header = () => {
     const [registerOpen, setRegisterOpen] = useState(false);
     const [forgotOpen, setForgotOpen] = useState(false);
     const navigate = useNavigate();
-    const { currentUser, isLoggedIn} = useSelector((state) => state.user);
+    const { currentUser, isLoggedIn } = useSelector((state) => state.user);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -41,7 +40,7 @@ const Header = () => {
                     navigate(`/admin/${currentUser.Id}/all-coaches`);
                     break;
                 case 'SUPER_ADMIN':
-                    navigate(`/super_admin/${currentUser.Id}/list_admin`);
+                    navigate(`/super_admin/${currentUser.Id}/list-admin`);
                     break;
                 default:
                     navigate('/');
@@ -59,29 +58,29 @@ const Header = () => {
                             <span className={cx('name')}>iCoaching</span>
                         </div>
                         <div className={cx('auth-btn')}>
-                                <button onClick={handleLogin} id={cx('login')}>
-                                    Đăng nhập
-                                </button>
-                                <Login
-                                    open={loginOpen}
-                                    setLoginOpen={setLoginOpen}
-                                    setRegisterOpen={setRegisterOpen}
-                                    setForgotOpen={setForgotOpen}
-                                ></Login>
-                                <button onClick={handleRegister} id={cx('register')}>
-                                    Đăng ký
-                                </button>
-                                <Register
-                                    open={registerOpen}
-                                    setLoginOpen={setLoginOpen}
-                                    setRegisterOpen={setRegisterOpen}
-                                ></Register>
-                                <ForgotPassword
-                                    open={forgotOpen}
-                                    setForgotOpen={setForgotOpen}
-                                    setLoginOpen={setLoginOpen}
-                                />
-                            </div>                        
+                            <button onClick={handleLogin} id={cx('login')}>
+                                Đăng nhập
+                            </button>
+                            <Login
+                                open={loginOpen}
+                                setLoginOpen={setLoginOpen}
+                                setRegisterOpen={setRegisterOpen}
+                                setForgotOpen={setForgotOpen}
+                            ></Login>
+                            <button onClick={handleRegister} id={cx('register')}>
+                                Đăng ký
+                            </button>
+                            <Register
+                                open={registerOpen}
+                                setLoginOpen={setLoginOpen}
+                                setRegisterOpen={setRegisterOpen}
+                            ></Register>
+                            <ForgotPassword
+                                open={forgotOpen}
+                                setForgotOpen={setForgotOpen}
+                                setLoginOpen={setLoginOpen}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
