@@ -19,14 +19,25 @@ import Spinner from '~/layouts/components/Spinner';
 import SuccessMessage from '~/components/SuccessMessage';
 import { dataURItoBlob } from '~/utils/blob';
 import ErrorMessage from '~/components/ErrorMessage';
+import { useNavigate, useParams } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 const Verify = () => {
     const dispatch = useDispatch();
     const { certificationImages, status } = useSelector((state) => state.coach);
     const { currentUser } = useSelector((state) => state.user);
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [images, setImages] = useState(certificationImages);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/coach/${currentUser.Id}/verify`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     const maxNumber = 69;
 

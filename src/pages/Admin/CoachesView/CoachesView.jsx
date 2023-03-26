@@ -11,6 +11,7 @@ import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
 import { getAllCoachesAsync, updateStatusAsync } from '~/features/adminSlice';
 import { handleRenderGenders } from '~/utils/gender';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +19,18 @@ const CoachesView = () => {
     const dispatch = useDispatch();
     const { coaches, totalCount, pageSize, status } = useSelector((state) => state.admin);
     const [currentPage, setCurrentPage] = useState(1);
+
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/admin/${currentUser.Id}/all-coaches`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: 8 }));

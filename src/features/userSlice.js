@@ -1,5 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { forgot, getUserProfile, login, logout, refresh, register, getUserAvatar, updateUserProfile, updateUserAvatar } from '~/services/userService';
+import {
+    forgot,
+    getUserProfile,
+    login,
+    logout,
+    refresh,
+    register,
+    getUserAvatar,
+    updateUserProfile,
+    updateUserAvatar,
+} from '~/services/userService';
 import { parseJwt } from '~/utils/jwt';
 import { setLocalStorage, getLocalStorage, removeLocalStorage } from '~/utils/localStorage';
 
@@ -48,10 +58,13 @@ export const refreshAsync = createAsyncThunk('user/refresh', async (payload) => 
 export const logoutAsync = createAsyncThunk('user/logout', async (payload) => {
     try {
         await logout({ currentRefreshToken: payload.currentRefreshToken });
+        removeLocalStorage('auth');
+        const { successCallback } = payload;
+        console.log(payload);
+        successCallback && successCallback();
     } catch (error) {
         console.log(error);
     }
-    removeLocalStorage('auth');
 });
 
 export const forgotAsync = createAsyncThunk('user/forgot', async (payload) => {
@@ -73,15 +86,18 @@ export const getUserProfileAsync = createAsyncThunk('user/getUserProfile', async
     }
 });
 
-export const updateUserProfileAsync = createAsyncThunk('user/updateUserProfile', async (payload, { rejectWithValue }) => {
-    try {
-        const response = await updateUserProfile(payload);
-        return response;
-    } catch (error) {
-        console.log(error);
-        return rejectWithValue(error)
-    }
-})
+export const updateUserProfileAsync = createAsyncThunk(
+    'user/updateUserProfile',
+    async (payload, { rejectWithValue }) => {
+        try {
+            const response = await updateUserProfile(payload);
+            return response;
+        } catch (error) {
+            console.log(error);
+            return rejectWithValue(error);
+        }
+    },
+);
 
 export const getUserAvatarAsync = createAsyncThunk('user/getUserAvatar', async () => {
     try {
@@ -98,9 +114,9 @@ export const updateUserAvatarAsync = createAsyncThunk('user/updateUserAvatar', a
         return response;
     } catch (error) {
         console.log(error);
-        console.log(payload.value('file'))
+        console.log(payload.value('file'));
     }
-})
+});
 
 const initialState = {
     isLoggedIn: getLocalStorage('auth') ? true : false,
@@ -112,7 +128,7 @@ const initialState = {
     message: '',
     profile: {},
     avatar: '',
-    status: false
+    status: false,
 };
 
 export const userSlice = createSlice({
@@ -200,31 +216,31 @@ export const userSlice = createSlice({
             })
             .addCase(getUserProfileAsync.fulfilled, (state, action) => {
                 state.isVerified = action.payload.isVerified;
-                state.profile = action.payload
+                state.profile = action.payload;
             })
             .addCase(getUserProfileAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             })
 
-            //update profile 
+            //update profile
             .addCase(updateUserProfileAsync.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(updateUserProfileAsync.fulfilled, (state, action) => {
-                state.message = action.payload
-                state.status = !state.status
+                state.message = action.payload;
+                state.status = !state.status;
             })
             .addCase(updateUserProfileAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                state.message = null
+                state.message = null;
             })
 
             //get avatar
             .addCase(getUserAvatarAsync.fulfilled, (state, action) => {
-                state.avatar = action.payload
+                state.avatar = action.payload;
             })
 
             //update avatar
@@ -233,14 +249,12 @@ export const userSlice = createSlice({
                 state.error = null;
             })
             .addCase(updateUserAvatarAsync.fulfilled, (state, action) => {
-                state.avatar = action.payload
+                state.avatar = action.payload;
             })
             .addCase(updateUserAvatarAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
-            })
-
-
+            });
     },
 });
 

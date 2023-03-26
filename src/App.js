@@ -13,6 +13,7 @@ function App() {
                     {routes.map((route, index) => {
                         const Page = route.component;
                         let Layout = Fragment;
+                        const Guard = route.guard ?? Fragment;
 
                         if (route.layout) {
                             Layout = route.layout;
@@ -25,9 +26,11 @@ function App() {
                                 key={index}
                                 path={route.path}
                                 element={
-                                    <Layout>
-                                        <Page />
-                                    </Layout>
+                                    <Guard>
+                                        <Layout>
+                                            <Page />
+                                        </Layout>
+                                    </Guard>
                                 }
                             />
                         );

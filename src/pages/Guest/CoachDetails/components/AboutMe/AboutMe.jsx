@@ -12,7 +12,7 @@ const AboutMe = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getCoachAboutAsync(currentCoach.id));
+        dispatch(getCoachAboutAsync(currentCoach?.id));
     }, [dispatch, currentCoach]);
 
     return (

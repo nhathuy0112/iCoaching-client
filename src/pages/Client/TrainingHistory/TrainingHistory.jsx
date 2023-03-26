@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './TrainingHistory.module.scss';
 import { IoIosArrowBack } from 'react-icons/io';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
 import { useEffect } from 'react';
@@ -12,6 +12,16 @@ const TrainingHistory = () => {
     const dispatch = useDispatch();
     const { trainingCourses } = useSelector((state) => state.client);
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/client/${currentUser.Id}/training-history`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     useEffect(() => {
         dispatch(getTrainingCoursesAsync({ pageIndex: 1, pageSize: 10, status: 'Complete' }));

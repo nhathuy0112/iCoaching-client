@@ -4,6 +4,9 @@ import Active from './components/Active';
 import Completed from './components/Completed';
 import Canceled from './components/Canceled';
 import styles from './MyClient.module.scss';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -22,6 +25,18 @@ const MyClient = () => {
             content: <Canceled />,
         },
     ];
+
+    const { currentUser } = useSelector((state) => state.user);
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/coach/${currentUser.Id}/my-clients`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     return (
         <div className={cx('wrapper')}>

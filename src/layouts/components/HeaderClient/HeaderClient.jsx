@@ -20,7 +20,16 @@ const Header = () => {
 
     const handleLogout = (e) => {
         e.preventDefault();
-        dispatch(logoutAsync({ currentRefreshToken: getLocalStorage('auth').refreshToken }));
+        dispatch(
+            logoutAsync({
+                currentRefreshToken: getLocalStorage('auth').refreshToken,
+                successCallback: () => {
+                    console.log('navigate /');
+                    // navigate('/');
+                    window.location.href = '/';
+                },
+            }),
+        );
     };
 
     useEffect(() => {

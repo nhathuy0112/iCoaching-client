@@ -1,6 +1,8 @@
 import classNames from 'classnames/bind';
+import { useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
-import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Tabs from '~/components/Tabs';
 import Information from './components/Information';
 import Program from './components/Program';
@@ -10,7 +12,7 @@ import styles from './ContractDetails.module.scss';
 const cx = classNames.bind(styles);
 
 const ContractDetails = () => {
-    const { id } = useParams();
+    const { id, contractId } = useParams();
 
     const tabs = [
         {
@@ -26,6 +28,17 @@ const ContractDetails = () => {
             content: <Progress />,
         },
     ];
+
+    const { currentUser } = useSelector((state) => state.user);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/coach/${currentUser.Id}/my-clients/view-details/${contractId}`);
+            }
+        }
+    }, [id, currentUser, navigate, contractId]);
 
     return (
         <div className={cx('wrapper')}>

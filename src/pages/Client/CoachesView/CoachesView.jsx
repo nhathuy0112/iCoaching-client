@@ -5,7 +5,7 @@ import styles from './CoachesView.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCoachesAsync } from '~/features/guestSlice';
 import UserCard from '~/components/UserCard';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 const cx = classNames.bind(styles);
 
@@ -13,11 +13,21 @@ const CoachesView = () => {
     const dispatch = useDispatch();
     const { coaches, totalCount } = useSelector((state) => state.guest);
     const [coachesDisplay, setCoachesDisplay] = useState(15);
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
 
     useEffect(() => {
         window.scrollTo(0, 0);
-      }, []);
+    }, []);
 
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/client/${currentUser.Id}/all-coaches`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));

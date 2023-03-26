@@ -12,14 +12,18 @@ import {
 } from '~/services/contractService';
 
 //get contract details
-export const getContractDetailsAsync = createAsyncThunk('contract/getContractDetails', async (id) => {
-    try {
-        const response = await getContractDetails(id);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-});
+export const getContractDetailsAsync = createAsyncThunk(
+    'contract/getContractDetails',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await getContractDetails(id);
+            return response;
+        } catch (error) {
+            console.log(error);
+            return rejectWithValue(error);
+        }
+    },
+);
 
 //upload contract program files
 export const uploadContractProgramFilesAsync = createAsyncThunk(
@@ -135,7 +139,7 @@ export const contractSlice = createSlice({
             })
             .addCase(getContractDetailsAsync.rejected, (state, action) => {
                 state.loading = true;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
 
             //upload contract program files

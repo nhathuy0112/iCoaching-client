@@ -1,6 +1,8 @@
 import classNames from 'classnames/bind';
+import { useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
-import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Tabs from '~/components/Tabs';
 import Canceled from './components/Canceled';
 import CoachRejected from './components/CoachRejected';
@@ -12,6 +14,16 @@ const cx = classNames.bind(styles);
 
 const TrainingRequest = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/client/${currentUser.Id}/training-requests`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     const tabs = [
         {

@@ -3,12 +3,13 @@ import classNames from 'classnames/bind';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAdmin } from '~/features/superAdminSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ErrorMessage from '~/components/ErrorMessage';
 import SuccessMessage from '~/components/SuccessMessage';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -33,6 +34,18 @@ const CreateAccount = () => {
     const dispatch = useDispatch();
     const { error, message } = useSelector((state) => state.superAdmin);
     const [response, setResponse] = useState(false);
+
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/super_admin/${currentUser.Id}/create-account`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     const {
         register,

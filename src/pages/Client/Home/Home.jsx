@@ -41,8 +41,18 @@ const Home = () => {
     ];
 
     const dispatch = useDispatch();
+    const { id } = useParams();
+    const navigate = useNavigate();
     const { coaches } = useSelector((state) => state.guest);
     const { currentUser } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/client/${currentUser.Id}`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));

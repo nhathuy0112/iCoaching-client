@@ -19,6 +19,7 @@ import ErrorMessage from '~/components/ErrorMessage';
 import Pagination from '~/components/Pagination';
 import { MdOutlineEdit } from 'react-icons/md';
 import { BiTrash } from 'react-icons/bi';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -51,6 +52,18 @@ const MyCourse = () => {
     const [durationEditError, setDurationEditError] = useState(null);
     const [descriptionEdit, setDescriptionEdit] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+
+    const { currentUser } = useSelector((state) => state.user);
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/coach/${currentUser.Id}/my-courses`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     useEffect(() => {
         dispatch(getTrainingCourseAsync({ pageIndex: currentPage, pageSize: 20 }));

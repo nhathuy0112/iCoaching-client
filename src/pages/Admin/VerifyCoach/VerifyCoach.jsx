@@ -9,7 +9,7 @@ import { getAllCertRequestsAsync } from '~/features/adminSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -17,6 +17,18 @@ const VerifyCoach = () => {
     const dispatch = useDispatch();
     const { coaches, totalCount, pageSize } = useSelector((state) => state.admin);
     const [currentPage, setCurrentPage] = useState(1);
+
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/admin/${currentUser.Id}/verify-coach`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     useEffect(() => {
         dispatch(getAllCertRequestsAsync({ pageIndex: currentPage }));

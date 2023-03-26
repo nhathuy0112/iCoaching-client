@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAllCoaches, getCoachProfile, getCoachTrainingCourses, getCoachAbout, getCoachPhotos } from '~/services/guestService';
+import {
+    getAllCoaches,
+    getCoachProfile,
+    getCoachTrainingCourses,
+    getCoachAbout,
+    getCoachPhotos,
+} from '~/services/guestService';
 
 export const getAllCoachesAsync = createAsyncThunk('/guest/getAllCoaches', async (payload) => {
     try {
@@ -10,12 +16,13 @@ export const getAllCoachesAsync = createAsyncThunk('/guest/getAllCoaches', async
     }
 });
 
-export const getCoachProfileAsync = createAsyncThunk('/guest/getCoachProfile', async (payload) => {
+export const getCoachProfileAsync = createAsyncThunk('/guest/getCoachProfile', async (payload, { rejectWithValue }) => {
     try {
         const response = await getCoachProfile(payload);
         return response;
     } catch (error) {
         console.log(error);
+        return rejectWithValue(error);
     }
 });
 
@@ -57,7 +64,7 @@ const initialState = {
     error: null,
     message: '',
     photos: [],
-    about: null
+    about: null,
 };
 
 export const guestSlice = createSlice({
@@ -98,7 +105,7 @@ export const guestSlice = createSlice({
             })
             .addCase(getCoachProfileAsync.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
 
             //get coach training course
@@ -125,7 +132,6 @@ export const guestSlice = createSlice({
             .addCase(getCoachAboutAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.about = action.payload;
-
             })
             .addCase(getCoachAboutAsync.rejected, (state, action) => {
                 state.loading = false;
@@ -142,7 +148,6 @@ export const guestSlice = createSlice({
                 state.photos = action.payload.data;
                 state.pageSize = action.payload.pageSize;
                 state.totalCount = action.payload.count;
-
             })
             .addCase(getCoachPhotosAsync.rejected, (state, action) => {
                 state.loading = false;

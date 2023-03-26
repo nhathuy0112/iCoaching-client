@@ -16,7 +16,7 @@ export const coachNavLinks = [
 
 export const adminNavLinks = [
     { url: 'all-coaches', icon: <FaUserTie />, name: 'Huấn luyện viên' },
-    { url: 'verify-coach', icon: <RiShieldCheckFill />, name: 'Xác minh tài khoản' },
+    { url: 'verify-coach', icon: <RiShieldCheckFill />, name: 'Xác minh Huấn luyện viên' },
     { url: 'reports', icon: <MdReport />, name: 'Giải quyết khiếu nại' },
     { url: 'profile', icon: <IoMdSettings />, name: 'Thông tin tài khoản' },
 ];

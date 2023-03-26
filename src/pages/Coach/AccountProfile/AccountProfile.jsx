@@ -21,6 +21,7 @@ import {
 import Modal from '~/components/Modal/Modal';
 import { BsCheckLg } from 'react-icons/bs';
 import { HiXMark } from 'react-icons/hi2';
+import { useNavigate, useParams } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 const schema = yup.object({
@@ -58,6 +59,18 @@ const AccountProfile = () => {
     const [response, setResponse] = useState(false);
     const [loading, setLoading] = useState(true);
     const [confirmAvatar, setConfirmAvatar] = useState(false);
+
+    const { currentUser } = useSelector((state) => state.user);
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/coach/${currentUser.Id}/account-information`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     useEffect(() => {
         dispatch(getUserAvatarAsync());

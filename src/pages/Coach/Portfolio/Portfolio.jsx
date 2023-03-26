@@ -4,6 +4,9 @@ import styles from './Portfolio.module.scss';
 import Tabs from '~/components/Tabs';
 import About from './components/About';
 import Photos from './components/Photos';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -19,6 +22,18 @@ const tabs = [
 ];
 
 const Portfolio = () => {
+    const { currentUser } = useSelector((state) => state.user);
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/coach/${currentUser.Id}/portfolio`);
+            }
+        }
+    }, [id, currentUser, navigate]);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>

@@ -1,4 +1,27 @@
 .wrapper {
+    .no-available {
+        margin: auto;
+        max-width: var(--default-layout-max-width);
+        min-height: var(--default-content-min-height);
+        margin-top: var(--default-navbar-height);
+        padding: 32px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        h2 {
+            color: red;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+    }
+
     .content {
         position: relative;
         margin: auto;

@@ -1,10 +1,10 @@
 import classNames from 'classnames/bind';
 import styles from './Reports.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import Modal from '~/components/Modal';
 import photo1 from '~/assets/images/cccd-mt.jpeg';
@@ -12,11 +12,24 @@ import photo2 from '~/assets/images/cccd-ms.jpeg';
 import photo3 from '~/assets/images/coach-cert.png';
 
 import { AiOutlineClose } from 'react-icons/ai';
+import { useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
 const Reports = () => {
     const [viewDetail, setViewDetail] = useState(false);
     const [file, setFile] = useState('');
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/admin/${currentUser.Id}/reports`);
+            }
+        }
+    }, [id, currentUser, navigate]);
+
     const users = [
         {
             id: 1,

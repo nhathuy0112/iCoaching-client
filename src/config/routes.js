@@ -49,6 +49,9 @@ import GuestLayout from '~/layouts/GuestLayout';
 import AuthLayout from '~/layouts/AuthLayout';
 import ClientLayout from '~/layouts/ClientLayout';
 
+//Guard
+import RoleGuard from '~/components/Guards/RoleGuard';
+
 const guestRoutes = [
     { path: '/', component: Home, layout: GuestLayout },
     { path: '/all-coaches', component: CoachesView, layout: GuestLayout },
@@ -58,49 +61,71 @@ const guestRoutes = [
 ];
 
 const clientRoutes = [
-    { path: '/client/:id', component: ClientHome, layout: ClientLayout },
-    { path: '/client/:id/all-coaches', component: ClientCoachesView, layout: ClientLayout },
+    { path: '/client/:id', component: ClientHome, layout: ClientLayout, guard: RoleGuard },
+    { path: '/client/:id/all-coaches', component: ClientCoachesView, layout: ClientLayout, guard: RoleGuard },
     {
         path: '/client/:id/all-coaches/view-details/coach/:coachId',
         component: ClientCoachDetails,
         layout: ClientLayout,
+        guard: RoleGuard,
     },
-    { path: '/client/:id/view-details/coach/:coachId', component: ClientCoachDetails, layout: ClientLayout },
-    { path: '/client/:id/training-requests', component: TrainingRequest, layout: ClientLayout },
-    { path: '/client/:id/ongoing-course', component: OnGoingCourse, layout: ClientLayout },
-    { path: '/client/:id/ongoing-course/view-details/:contractId', component: ContractDetails, layout: ClientLayout },
-    { path: '/client/:id/pending-course', component: PendingCourse, layout: ClientLayout },
-    { path: '/client/:id/training-history', component: TrainingHistory, layout: ClientLayout },
-    { path: '/client/:id/account-information', component: AccountProfile, layout: ClientLayout },
-    { path: '/client/:id/all-messages', component: Messages, layout: ClientLayout },
+    {
+        path: '/client/:id/view-details/coach/:coachId',
+        component: ClientCoachDetails,
+        layout: ClientLayout,
+        guard: RoleGuard,
+    },
+    { path: '/client/:id/training-requests', component: TrainingRequest, layout: ClientLayout, guard: RoleGuard },
+    { path: '/client/:id/ongoing-course', component: OnGoingCourse, layout: ClientLayout, guard: RoleGuard },
+    {
+        path: '/client/:id/ongoing-course/view-details/:contractId',
+        component: ContractDetails,
+        layout: ClientLayout,
+        guard: RoleGuard,
+    },
+    { path: '/client/:id/pending-course', component: PendingCourse, layout: ClientLayout, guard: RoleGuard },
+    { path: '/client/:id/training-history', component: TrainingHistory, layout: ClientLayout, guard: RoleGuard },
+    { path: '/client/:id/account-information', component: AccountProfile, layout: ClientLayout, guard: RoleGuard },
+    { path: '/client/:id/all-messages', component: Messages, layout: ClientLayout, guard: RoleGuard },
     { path: '/client/*', component: NotFound },
 ];
 
 const coachRoutes = [
-    { path: '/coach/:id/verify', component: Verify, layout: AuthLayout },
-    { path: '/coach/:id/my-clients', component: MyClient, layout: AuthLayout },
-    { path: '/coach/:id/my-clients/view-details/:contractId', component: CoachContractDetails, layout: AuthLayout },
-    { path: '/coach/:id/my-clients/view-details/:contractId/add-resource', component: AddResource, layout: AuthLayout },
+    { path: '/coach/:id/verify', component: Verify, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/my-clients', component: MyClient, layout: AuthLayout, guard: RoleGuard },
+    {
+        path: '/coach/:id/my-clients/view-details/:contractId',
+        component: CoachContractDetails,
+        layout: AuthLayout,
+        guard: RoleGuard,
+    },
+    {
+        path: '/coach/:id/my-clients/view-details/:contractId/add-resource',
+        component: AddResource,
+        layout: AuthLayout,
+        guard: RoleGuard,
+    },
     {
         path: '/coach/:id/my-clients/view-details/:contractId/edit/:logId',
         component: EditTrainingLog,
         layout: AuthLayout,
+        guard: RoleGuard,
     },
-    { path: '/coach/:id/coaching-requests', component: CoachingRequest, layout: AuthLayout },
-    { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout },
-    { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout },
-    { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout },
-    { path: '/coach/:id/messages', component: Messages, layout: AuthLayout },
+    { path: '/coach/:id/coaching-requests', component: CoachingRequest, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/messages', component: Messages, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/*', component: NotFound },
 ];
 
 const adminRoutes = [
-    { path: '/admin/:id/all-coaches', component: AdminCoachesView, layout: AuthLayout },
-    { path: '/admin/:id/verify-coach', component: VerifyCoach, layout: AuthLayout },
-    { path: '/admin/:id/verify-coach/:certId', component: CoachCertificate, layout: AuthLayout },
-    { path: '/admin/:id/reports', component: Reports, layout: AuthLayout },
-    { path: '/admin/:id/reports/:userId', component: ReportDetails, layout: AuthLayout },
-    { path: '/admin/:id/profile', component: AdminAccountProfile, layout: AuthLayout },
+    { path: '/admin/:id/all-coaches', component: AdminCoachesView, layout: AuthLayout, guard: RoleGuard },
+    { path: '/admin/:id/verify-coach', component: VerifyCoach, layout: AuthLayout, guard: RoleGuard },
+    { path: '/admin/:id/verify-coach/:certId', component: CoachCertificate, layout: AuthLayout, guard: RoleGuard },
+    { path: '/admin/:id/reports', component: Reports, layout: AuthLayout, guard: RoleGuard },
+    { path: '/admin/:id/reports/:userId', component: ReportDetails, layout: AuthLayout, guard: RoleGuard },
+    { path: '/admin/:id/profile', component: AdminAccountProfile, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/*', component: NotFound },
 ];
 
@@ -109,13 +134,15 @@ const superAdminRoutes = [
         path: '/super_admin/:id/create-account/',
         component: SuperAdminCreateAccount,
         layout: AuthLayout,
+        guard: RoleGuard,
     },
     {
         path: '/super_admin/:id/account-profile/',
         component: SuperAdminAccountProfile,
         layout: AuthLayout,
+        guard: RoleGuard,
     },
-    { path: '/super_admin/:id/list-admin/', component: ListAdmin, layout: AuthLayout },
+    { path: '/super_admin/:id/list-admin/', component: ListAdmin, layout: AuthLayout, guard: RoleGuard },
     { path: 'super_admin/*', component: NotFound },
 ];
 export const routes = [...guestRoutes, ...clientRoutes, ...coachRoutes, ...adminRoutes, ...superAdminRoutes];

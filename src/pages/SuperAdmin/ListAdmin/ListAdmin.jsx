@@ -8,6 +8,7 @@ import { HiOutlineXMark } from 'react-icons/hi2';
 import { setPage, setSearch, setLock, updateAdminStatus, getAdminData } from '~/features/superAdminSlice';
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +18,19 @@ const ListAdmin = () => {
     const [page, setPageChanged] = useState(currentPage);
     const [searchValue, setSearchValue] = useState('');
     const [open, setOpen] = useState(false);
-    const [id, setId] = useState(null);
+    const [adminId, setAdminId] = useState(null);
+
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/super_admin/${currentUser.Id}/list-admin`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     useEffect(() => {
         dispatch(
@@ -46,15 +59,15 @@ const ListAdmin = () => {
         };
     }, [searchValue, dispatch]);
 
-    const LockedAdmin = (id) => {
-        dispatch(updateAdminStatus(id));
-        dispatch(setLock(id));
+    const LockedAdmin = (adminId) => {
+        dispatch(updateAdminStatus(adminId));
+        dispatch(setLock(adminId));
         setOpen(false);
     };
 
     const handleOpen = (item) => {
         setOpen(true);
-        setId(item);
+        setAdminId(item);
     };
 
     const currentAdminPagination = useMemo(() => {
@@ -97,7 +110,7 @@ const ListAdmin = () => {
                 <tbody>
                     {currentAdminPagination?.map((item) => {
                         return (
-                            <tr className={cx('content-row')} key={item.id}>
+                            <tr className={cx('content-row')} key={item.adminId}>
                                 <td className={cx('name')}>
                                     <div className={cx('avatar')}>
                                         <img src={item.avatarUrl} alt="" />
@@ -110,11 +123,11 @@ const ListAdmin = () => {
                                 <td>{item.phoneNumber}</td>
                                 <td className={cx('action-btn')}>
                                     <button
-                                        id={cx({
+                                        adminId={cx({
                                             button_lock: !item.isLocked,
                                             button_active: item.isLocked,
                                         })}
-                                        onClick={() => handleOpen(item.id)}
+                                        onClick={() => handleOpen(item.adminId)}
                                     >
                                         {item.isLocked ? 'Mở khoá tài khoản' : 'Khoá tài khoản'}
                                     </button>
@@ -132,13 +145,13 @@ const ListAdmin = () => {
                                                 <h2 className={cx('text_modal')}>
                                                     Bạn có đồng ý khoá tài khoản{' '}
                                                     <span style={{ color: '#DF1B1B' }}>
-                                                        {data.find((item) => item.id === id).userName}
+                                                        {data.find((item) => item.adminId === adminId).userName}
                                                     </span>
                                                 </h2>
                                                 <div className={cx('container_confirm')}>
                                                     <button
                                                         className={cx('button_active')}
-                                                        onClick={() => LockedAdmin(id)}
+                                                        onClick={() => LockedAdmin(adminId)}
                                                     >
                                                         <BsCheckLg className={cx('icon_modal')} />
                                                         Đồng ý

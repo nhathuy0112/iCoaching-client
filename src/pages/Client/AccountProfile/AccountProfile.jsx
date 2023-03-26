@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Spinner from '~/layouts/components/Spinner';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -55,6 +55,16 @@ const AccountProfile = () => {
     const [response, setResponse] = useState(false);
     const [loading, setLoading] = useState(true);
     const [confirmAvatar, setConfirmAvatar] = useState(false);
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/client/${currentUser.Id}/account-information`);
+            }
+        }
+    }, [id, currentUser, navigate]);
 
     useEffect(() => {
         dispatch(getUserAvatarAsync());

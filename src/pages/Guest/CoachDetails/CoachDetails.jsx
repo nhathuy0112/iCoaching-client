@@ -32,7 +32,7 @@ const CoachDetail = () => {
     const { coachId } = useParams();
     const location = useLocation();
     const dispatch = useDispatch();
-    const { currentCoach } = useSelector((state) => state.guest);
+    const { currentCoach, error } = useSelector((state) => state.guest);
 
     useEffect(() => {
         dispatch(getCoachProfileAsync(coachId));
@@ -40,41 +40,54 @@ const CoachDetail = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('content')}>
-                <div className={cx('frame')}>
-                    <div className={cx('title-and-back')}>
-                        <div className={cx('back')}>
-                            <Link
-                                to={location.pathname.startsWith('/all-coaches') ? '/all-coaches' : '/'}
-                                className={cx('back-link')}
-                            >
-                                <IoIosArrowBack />
-                                <span>Quay lại</span>
-                            </Link>
-                        </div>
-                        <h1 className={cx('title')}>Hồ sơ Huấn luyện viên</h1>
-                    </div>
-                    <div className={cx('main')}>
-                        <div className={cx('profile')}>
-                            <div className={cx('avatar')}>
-                                {currentCoach.avatarUrl ? (
-                                    <img src={currentCoach.avatarUrl} className={cx('image')} alt={'coach'} />
-                                ) : (
-                                    <FaUserCircle className={cx('default')} />
-                                )}
+            {error ? (
+                <div className={cx('no-available')}>
+                    <h2>Huấn luyện viên này không tồn tại</h2>
+                    <Link
+                        to={location.pathname.startsWith('/all-coaches') ? '/all-coaches' : '/'}
+                        className={cx('back-link')}
+                    >
+                        <IoIosArrowBack />
+                        <span>Quay lại</span>
+                    </Link>
+                </div>
+            ) : (
+                <div className={cx('content')}>
+                    <div className={cx('frame')}>
+                        <div className={cx('title-and-back')}>
+                            <div className={cx('back')}>
+                                <Link
+                                    to={location.pathname.startsWith('/all-coaches') ? '/all-coaches' : '/'}
+                                    className={cx('back-link')}
+                                >
+                                    <IoIosArrowBack />
+                                    <span>Quay lại</span>
+                                </Link>
                             </div>
-                            <h2 className={cx('name')}>{currentCoach.fullname}</h2>
-                            <span className={cx(handleRenderGenderClassNames(currentCoach.gender))}>
-                                {handleRenderGenders(currentCoach.gender)}
-                            </span>
-                            <span className={cx('age')}>{currentCoach.age} tuổi</span>
+                            <h1 className={cx('title')}>Hồ sơ Huấn luyện viên</h1>
                         </div>
-                        <div className={cx('tabs')}>
-                            <Tabs tabs={tabs}></Tabs>
+                        <div className={cx('main')}>
+                            <div className={cx('profile')}>
+                                <div className={cx('avatar')}>
+                                    {currentCoach.avatarUrl ? (
+                                        <img src={currentCoach.avatarUrl} className={cx('image')} alt={'coach'} />
+                                    ) : (
+                                        <FaUserCircle className={cx('default')} />
+                                    )}
+                                </div>
+                                <h2 className={cx('name')}>{currentCoach.fullname}</h2>
+                                <span className={cx(handleRenderGenderClassNames(currentCoach.gender))}>
+                                    {handleRenderGenders(currentCoach.gender)}
+                                </span>
+                                <span className={cx('age')}>{currentCoach.age} tuổi</span>
+                            </div>
+                            <div className={cx('tabs')}>
+                                <Tabs tabs={tabs}></Tabs>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

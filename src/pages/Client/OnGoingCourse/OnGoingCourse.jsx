@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './OngoingCourse.module.scss';
 import { IoIosArrowBack } from 'react-icons/io';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
@@ -14,6 +14,17 @@ const OnGoingCourse = () => {
     const dispatch = useDispatch();
     const { trainingCourses, totalCount, pageSize } = useSelector((state) => state.client);
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (id !== currentUser.Id) {
+                navigate(`/client/${currentUser.Id}/ongoing-course`);
+            }
+        }
+    }, [id, currentUser, navigate]);
+
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
