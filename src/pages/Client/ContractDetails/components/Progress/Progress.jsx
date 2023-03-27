@@ -38,8 +38,8 @@ const Progress = () => {
     const handleDownloadFile = (file) => {
         dispatch(getProgramFileDownloadAsync({ contractId: contractId, fileId: file.id }))
             .unwrap()
-            .then(() => {
-                const url = window.URL.createObjectURL(new Blob([downloadLink]));
+            .then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response]));
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', file.fileName);

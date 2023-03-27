@@ -11,6 +11,7 @@ import {
 import { handleRenderFileIcon } from '~/utils/file';
 import styles from './Program.module.scss';
 import Modal from '~/components/Modal';
+import { AiOutlineDelete, AiOutlineDownload } from 'react-icons/ai';
 
 const cx = classNames.bind(styles);
 
@@ -28,8 +29,8 @@ const Program = () => {
     const handleDownloadFile = (file) => {
         dispatch(getProgramFileDownloadAsync({ contractId: contractId, fileId: file.id }))
             .unwrap()
-            .then(() => {
-                const url = window.URL.createObjectURL(new Blob([downloadLink]));
+            .then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response]));
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', file.fileName);
@@ -70,14 +71,34 @@ const Program = () => {
                         </div>
                     </div>
                     <div className={cx('file-list')}>
-                        {programFiles.map((file) => (
-                            <div className={cx('file-item')} key={file.id}>
-                                <span className={cx('file-icon')}>{handleRenderFileIcon(file.fileName)}</span>
-                                <span>{file.fileName}</span>
-                                <button onClick={() => handleDownloadFile(file)}>Tải xuống</button>
-                                <button onClick={() => handleOpenDeleteModal(file)}>Xóa</button>
-                            </div>
-                        ))}
+                        <table id={cx('file-table')}>
+                            <tr>
+                                <th>Tệp</th>
+                                <th>Ngày cập nhật</th>
+                                <th>Kích thước</th>
+                                <th></th>
+                            </tr>
+                            {programFiles.map((file) => (
+                                <tr key={file.id}>
+                                    <td>
+                                        <span className={cx('file-icon')}>{handleRenderFileIcon(file.fileName)}</span>
+                                        <span>{file.fileName}</span>
+                                    </td>
+                                    <td>{file.date}</td>
+                                    <td>{file.size}</td>
+                                    <td>
+                                        <div className={cx('action-btn')}>
+                                            <button id={cx('download-btn')} onClick={() => handleDownloadFile(file)}>
+                                                <AiOutlineDownload />
+                                            </button>
+                                            <button id={cx('delete-btn')} onClick={() => handleOpenDeleteModal(file)}>
+                                                <AiOutlineDelete />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </table>
                     </div>
                 </>
             ) : (

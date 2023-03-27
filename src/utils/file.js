@@ -1,4 +1,5 @@
 import {
+    GrDocument,
     GrDocumentCsv,
     GrDocumentExcel,
     GrDocumentImage,
@@ -38,6 +39,6 @@ export const handleRenderFileIcon = (filename) => {
         case 'jpeg':
             return <GrDocumentImage />;
         default:
-            return;
+            return <GrDocument />;
     }
 };
