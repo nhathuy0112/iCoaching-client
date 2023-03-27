@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const Progress = () => {
     const dispatch = useDispatch();
-    const { logs, downloadLink } = useSelector((state) => state.contract);
+    const { logs } = useSelector((state) => state.contract);
     const { contractId } = useParams();
     const [expandedItems, setExpandedItems] = useState([]);
 
@@ -36,7 +36,7 @@ const Progress = () => {
     };
 
     const handleDownloadFile = (file) => {
-        dispatch(getProgramFileDownloadAsync({ contractId: contractId, fileId: file.id }))
+        dispatch(getProgramFileDownloadAsync({ contractId: contractId, fileId: file.id, responseType: 'blob' }))
             .unwrap()
             .then((response) => {
                 const url = window.URL.createObjectURL(new Blob([response]));
