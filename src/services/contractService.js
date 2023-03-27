@@ -22,3 +22,10 @@ export const getProgramFileDownload = ({ contractId, fileId }) =>
     axios.get(`${END_POINTS.CONTRACT}/${contractId}/file/downloading/${fileId}`);
 
 export const getContractLogs = (contractId) => axios.get(`${END_POINTS.CONTRACT}/${contractId}/logs`);
+
+export const sendReport = ({ contractId, data }) =>
+    axios.post(`${END_POINTS.CONTRACT}/${contractId}/report`, data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
