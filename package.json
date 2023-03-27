@@ -9,7 +9,7 @@
         "@testing-library/react": "^13.0.0",
         "@testing-library/user-event": "^13.2.1",
         "@tippyjs/react": "^4.2.6",
-        "@zegocloud/zego-uikit-prebuilt": "^1.7.3",
+        "@zegocloud/zego-uikit-prebuilt": "^1.7.4",
         "axios": "^1.2.6",
         "classnames": "^2.3.2",
         "firebase": "^9.18.0",
@@ -26,6 +26,7 @@
         "react-router-dom": "^6.8.0",
         "react-scripts": "5.0.1",
         "react-toastify": "^9.1.1",
+        "source-map-loader": "^4.0.1",
         "web-vitals": "^2.1.0",
         "yup": "^1.0.0",
         "zego-zim-web": "^2.7.0"

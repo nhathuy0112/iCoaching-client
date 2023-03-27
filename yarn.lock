@@ -2932,12 +2932,12 @@
   "resolved" "https://registry.npmjs.org/@xtuc/long/-/long-4.2.2.tgz"
   "version" "4.2.2"
 
-"@zegocloud/zego-uikit-prebuilt@^1.7.3":
-  "integrity" "sha512-O0TDWj26PwENmuDWRcp2j1g55t7QMCWpuT56HMTt4O/qpKjUGSjwY0rg2OUyy7EYCF03JfpU2XIjUZPEhvKTkQ=="
-  "resolved" "https://registry.npmjs.org/@zegocloud/zego-uikit-prebuilt/-/zego-uikit-prebuilt-1.7.3.tgz"
-  "version" "1.7.3"
+"@zegocloud/zego-uikit-prebuilt@^1.7.4":
+  "integrity" "sha512-0QjPr0+2ddxD2ufNhqxhS8/95rsONp3fJ2UYYnOM2A+wdZuHuOKsydqK06W+x0ijfxHMnFX1Ij/kCSTj8WPm9g=="
+  "resolved" "https://registry.npmjs.org/@zegocloud/zego-uikit-prebuilt/-/zego-uikit-prebuilt-1.7.4.tgz"
+  "version" "1.7.4"
 
-"abab@^2.0.3", "abab@^2.0.5":
+"abab@^2.0.3", "abab@^2.0.5", "abab@^2.0.6":
   "integrity" "sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA=="
   "resolved" "https://registry.npmjs.org/abab/-/abab-2.0.6.tgz"
   "version" "2.0.6"
@@ -9262,6 +9262,15 @@
     "iconv-lite" "^0.6.3"
     "source-map-js" "^1.0.1"
 
+"source-map-loader@^4.0.1":
+  "integrity" "sha512-oqXpzDIByKONVY8g1NUPOTQhe0UTU5bWUl32GSkqK2LjJj0HmwTMVKxcUip0RgAYhY1mqgOxjbQM48a0mmeNfA=="
+  "resolved" "https://registry.npmjs.org/source-map-loader/-/source-map-loader-4.0.1.tgz"
+  "version" "4.0.1"
+  dependencies:
+    "abab" "^2.0.6"
+    "iconv-lite" "^0.6.3"
+    "source-map-js" "^1.0.2"
+
 "source-map-support@^0.5.6", "source-map-support@~0.5.20":
   "integrity" "sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w=="
   "resolved" "https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.21.tgz"
@@ -10142,7 +10151,7 @@
   "resolved" "https://registry.npmjs.org/webpack-sources/-/webpack-sources-3.2.3.tgz"
   "version" "3.2.3"
 
-"webpack@^4.0.0 || ^5.0.0", "webpack@^4.37.0 || ^5.0.0", "webpack@^4.4.0 || ^5.9.0", "webpack@^4.44.2 || ^5.47.0", "webpack@^5.0.0", "webpack@^5.1.0", "webpack@^5.20.0", "webpack@^5.64.4", "webpack@>= 4", "webpack@>=2", "webpack@>=4.43.0 <6.0.0":
+"webpack@^4.0.0 || ^5.0.0", "webpack@^4.37.0 || ^5.0.0", "webpack@^4.4.0 || ^5.9.0", "webpack@^4.44.2 || ^5.47.0", "webpack@^5.0.0", "webpack@^5.1.0", "webpack@^5.20.0", "webpack@^5.64.4", "webpack@^5.72.1", "webpack@>= 4", "webpack@>=2", "webpack@>=4.43.0 <6.0.0":
   "integrity" "sha512-piaIaoVJlqMsPtX/+3KTTO6jfvrSYgauFVdt8cr9LTHKmcq/AMd4mhzsiP7ZF/PGRNPGA8336jldh9l2Kt2ogQ=="
   "resolved" "https://registry.npmjs.org/webpack/-/webpack-5.75.0.tgz"
   "version" "5.75.0"

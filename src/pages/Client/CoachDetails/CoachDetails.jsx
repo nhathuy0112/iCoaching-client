@@ -12,8 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCoachProfileAsync } from '~/features/guestSlice';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
-import Chat from '~/components/Chat/Chat';
-import Chats from '~/components/Chat/Chats';
 import Home from '~/components/Chat/Home';
 import { changeUser } from '~/features/chatSlice';
 

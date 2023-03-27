@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { IoMdAttach } from 'react-icons/io';
 import { BsCardImage } from 'react-icons/bs';
 import styles from '../Chat.module.scss';
 import classNames from 'classnames/bind';
@@ -20,6 +19,7 @@ const Input = () => {
     const [text, setText] = useState('');
     const [imgPreview, setImgPreview] = useState(null);
     const [img, setImg] = useState(null);
+    const [video, setVideo] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleSend = async () => {
@@ -75,6 +75,58 @@ const Input = () => {
                 },
             );
             setText('');
+        } else if (video) {
+            setLoading(true);
+            const storageRef = ref(storage, uuid());
+
+            const uploadTask = uploadBytesResumable(storageRef, video);
+
+            uploadTask.on(
+                'state_changed',
+                () => {},
+                (error) => {
+                    console.log(error);
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                        await updateDoc(doc(db, 'chats', chatId), {
+                            messages: arrayUnion({
+                                id: uuid(),
+                                text: text,
+                                senderId: currentUser.Id,
+                                date: Timestamp.now(),
+                                video: downloadURL,
+                            }),
+                        });
+                        setLoading(false);
+                        await updateDoc(doc(db, 'userChats', currentUser.Id), {
+                            [chatId + '.lastMessage']: {
+                                text,
+                                video: downloadURL,
+                            },
+                            [chatId + '.date']: serverTimestamp(),
+                        });
+                        if (!user.uid) {
+                            await updateDoc(doc(db, 'userChats', user), {
+                                [chatId + '.lastMessage']: {
+                                    text,
+                                    video: downloadURL,
+                                },
+                                [chatId + '.date']: serverTimestamp(),
+                            });
+                        } else {
+                            await updateDoc(doc(db, 'userChats', user.uid), {
+                                [chatId + '.lastMessage']: {
+                                    text,
+                                    video: downloadURL,
+                                },
+                                [chatId + '.date']: serverTimestamp(),
+                            });
+                        }
+                    });
+                },
+            );
+            setText('');
         } else {
             updateDoc(doc(db, 'chats', chatId), {
                 messages: arrayUnion({
@@ -109,6 +161,7 @@ const Input = () => {
         }
 
         setImg(null);
+        setVideo(null);
         handleFileChange();
     };
 
@@ -120,24 +173,37 @@ const Input = () => {
     };
     const handleCloseImgPreview = () => {
         setImg(null);
+        setVideo(null);
         setImgPreview(null);
         handleFileChange();
     };
     const handleSelectImg = (e) => {
-        setImg(e.target.files[0]);
-        setImgPreview(URL.createObjectURL(e.target.files[0]));
+        const file = e.target.files[0];
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        const mimeType = file.type;
+        const isPhoto = mimeType.startsWith('image/');
+        const isVideo = mimeType.startsWith('video/');
+        if (isPhoto) {
+            setImg(file);
+            setImgPreview(URL.createObjectURL(file));
+        } else if (isVideo) {
+            setVideo(file);
+            setImgPreview(URL.createObjectURL(file));
+        }
     };
     const handleKey = (e) => {
         e.code === 'Enter' && handleSend();
     };
-
     return (
         <div className={cx('input')}>
             {imgPreview && (
                 <div
                     className={cx('preview-container')}
                     style={{
-                        display: img ? 'flex' : 'none',
+                        display: img || video ? 'flex' : 'none',
                         position: 'absolute',
                         transform: 'translateY(-85%)',
                     }}
@@ -145,22 +211,38 @@ const Input = () => {
                     <button
                         className={cx('close-preview')}
                         onClick={handleCloseImgPreview}
-                        style={{ position: 'absolute', top: 0, right: 0, backgroundColor: 'transparent' }}
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            right: 0,
+                            backgroundColor: 'transparent',
+                            zIndex: '999999',
+                        }}
                     >
                         <GrFormClose style={{ fontSize: '24px' }} />
                     </button>
-                    <img
-                        className={cx('preview')}
-                        src={imgPreview}
-                        alt="Preview"
-                        style={{ maxWidth: '200px', maxHeight: '200px' }}
-                    />
+                    {video ? (
+                        <video
+                            className={cx('preview')}
+                            src={imgPreview}
+                            alt="Preview"
+                            style={{ maxWidth: '200px', maxHeight: '200px' }}
+                            controls
+                        />
+                    ) : (
+                        <img
+                            className={cx('preview')}
+                            src={imgPreview}
+                            alt="Preview"
+                            style={{ maxWidth: '200px', maxHeight: '200px' }}
+                        />
+                    )}
                 </div>
             )}
 
             <input
                 type="text"
-                placeholder="Type something..."
+                placeholder="Tin nhắn"
                 onKeyDown={handleKey}
                 onChange={(e) => setText(e.target.value)}
                 value={text}
@@ -170,8 +252,8 @@ const Input = () => {
                 <label htmlFor="file">
                     <BsCardImage className={cx('icon')} />
                 </label>
-                <button onClick={handleSend} disabled={!text && !img}>
-                    {loading ? <Spinner /> : 'Send'}
+                <button onClick={handleSend} disabled={!text && !img && !video}>
+                    {loading ? <Spinner /> : 'Gửi'}
                 </button>
             </div>
         </div>

@@ -5,10 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { getUserProfileAsync, logoutAsync } from '~/features/userSlice';
 import { getLocalStorage } from '~/utils/localStorage';
-
 import { BiLogOut } from 'react-icons/bi';
 import { coachNavLinks } from '~/config/navLink';
-import { changeUser } from '~/features/chatSlice';
+import { changeUser, updateUserOnlineStatus } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 
@@ -46,6 +45,7 @@ const Sidebar = ({ links }) => {
         e.preventDefault();
         dispatch(logoutAsync({ currentRefreshToken: getLocalStorage('auth').refreshToken }));
         dispatch(changeUser({ currentUser: '', payload: '' }));
+        dispatch(updateUserOnlineStatus(currentUser?.Id));
     };
 
     return (

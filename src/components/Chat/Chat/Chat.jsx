@@ -8,7 +8,18 @@ import Input from '../Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import { ZIM } from 'zego-zim-web';
-import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    onSnapshot,
+    query,
+    serverTimestamp,
+    setDoc,
+    updateDoc,
+    where,
+} from 'firebase/firestore';
 import { db } from '~/firebase';
 import { useNavigate, useParams } from 'react-router-dom';
 import { changeUser } from '~/features/chatSlice';
@@ -25,15 +36,14 @@ const Chat = () => {
     const chatId = useSelector((state) => state.chat.chatId);
     let zp;
 
-    useEffect(() => {
-        init();
-    });
+    // useEffect(() => {
+    //     init();
+    // });
+
     async function init() {
         const userID = currentUser?.Username;
         const userName = 'userName' + userID;
         const { token } = await generateToken('https://node-express-vercel-master-one.vercel.app', userID);
-        // console.log(token);
-        // console.log(userID);
         const KitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(1980920521, token, null, userID, userName);
         zp = ZegoUIKitPrebuilt.create(KitToken);
         zp.addPlugins({ ZIM });
@@ -84,6 +94,21 @@ const Chat = () => {
         }
     }, [coachId]);
 
+    const [status, setStatus] = useState('');
+    useEffect(() => {
+        if (user.uid) {
+            const q = query(collection(db, 'users'), where('uid', '==', user.uid));
+
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    setStatus(doc.data());
+                });
+            });
+
+            return () => unsubscribe();
+        }
+    }, [user.uid]);
+
     useEffect(() => {
         if (currentCoach.uid && chatId) {
             const handleSelect = async () => {
@@ -97,6 +122,7 @@ const Chat = () => {
                             uid: currentCoach?.uid,
                             username: currentCoach?.username,
                             email: currentCoach?.email,
+                            avatar: currentCoach?.avatar,
                         },
                         [chatId + '.date']: serverTimestamp(),
                     });
@@ -106,12 +132,19 @@ const Chat = () => {
                             uid: currentUser?.Id,
                             username: currentUser?.Username,
                             email: currentUser?.email,
+                            avatar: currentUser?.Avatar,
                         },
                         [chatId + '.date']: serverTimestamp(),
                     });
                 }
             };
             handleSelect();
+        }
+    });
+
+    useEffect(() => {
+        if (!chatId && currentUser?.role === 'COACH') {
+            navigate(`/coach/${currentUser.Id}/messages`);
         }
     });
 
@@ -144,12 +177,16 @@ const Chat = () => {
                             </span>
                         </span>
 
-                        <div
-                            className={cx('chatIcons')}
-                            onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}
-                        >
-                            <BsCameraVideoFill />
-                        </div>
+                        {status.isOnline ? (
+                            <div
+                                className={cx('chatIcons')}
+                                onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}
+                            >
+                                <BsCameraVideoFill />
+                            </div>
+                        ) : (
+                            <div>Người dùng hiện chưa online</div>
+                        )}
                     </div>
                     <Messages />
                     <Input />
@@ -160,9 +197,16 @@ const Chat = () => {
         <div className={cx('chat', { chatClient: currentUser?.role !== 'COACH' && !coachId })}>
             <div className={cx('chatInfo', { chatInfoClient: coachId })}>
                 <span>{user.username}</span>
-                <div className={cx('chatIcons')} onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}>
-                    <BsCameraVideoFill />
-                </div>
+                {status.isOnline ? (
+                    <div
+                        className={cx('chatIcons')}
+                        onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}
+                    >
+                        <BsCameraVideoFill />
+                    </div>
+                ) : (
+                    <div>Người dùng hiện chưa online</div>
+                )}
             </div>
             <Messages />
             <Input />

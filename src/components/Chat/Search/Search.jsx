@@ -5,7 +5,6 @@ import { collection, query, where, getDocs, setDoc, doc, updateDoc, serverTimest
 import { db } from '~/firebase';
 import { useSelector } from 'react-redux';
 import { FaSearch } from 'react-icons/fa';
-import { BsArrowLeftSquareFill } from 'react-icons/bs';
 
 const cx = classNames.bind(styles);
 
@@ -45,6 +44,7 @@ const Search = () => {
                         uid: user.uid,
                         username: user.username,
                         email: user.email,
+                        avatar: user.avatar,
                     },
                     [combinedId + '.date']: serverTimestamp(),
                 });
@@ -54,6 +54,7 @@ const Search = () => {
                         uid: currentUser?.Id,
                         username: currentUser?.Username,
                         email: currentUser?.email,
+                        avatar: currentUser?.Avatar,
                     },
                     [combinedId + '.date']: serverTimestamp(),
                 });
@@ -86,7 +87,7 @@ const Search = () => {
             {err && <span>User not found!</span>}
             {user && (
                 <div className={cx('userChat')} onClick={handleSelect}>
-                    <img src={require('~/assets/images/Facebook.png')} alt="" />
+                    <img src={user.avatar ? user.avatar : require('~/assets/images/Facebook.png')} alt="" />
                     <div className={cx('userChatInfo', { usserChatInfoSearch: user })}>
                         <span>{user.username}</span>
                         <FaSearch className={cx('iconChat')} />

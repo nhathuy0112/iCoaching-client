@@ -10,7 +10,7 @@ import { IoMdSettings } from 'react-icons/io';
 import { logoutAsync } from '~/features/userSlice';
 import { getLocalStorage } from '~/utils/localStorage';
 import { BiLogOut } from 'react-icons/bi';
-import { changeUser } from '~/features/chatSlice';
+import { changeUser, updateUserOnlineStatus } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 
@@ -22,6 +22,8 @@ const Header = () => {
     const handleLogout = (e) => {
         e.preventDefault();
         dispatch(logoutAsync({ currentRefreshToken: getLocalStorage('auth').refreshToken }));
+        dispatch(changeUser({ currentUser: '', payload: '' }));
+        dispatch(updateUserOnlineStatus(currentUser?.Id));
     };
 
     useEffect(() => {
