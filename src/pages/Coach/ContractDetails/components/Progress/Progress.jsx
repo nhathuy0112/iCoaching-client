@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const Progress = () => {
     const dispatch = useDispatch();
-    const { logs, downloadLink } = useSelector((state) => state.contract);
+    const { logs } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
     const navigate = useNavigate();
     const [expandedItems, setExpandedItems] = useState([]);

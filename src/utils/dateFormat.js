@@ -7,9 +7,10 @@ export const convertDateFormat = (dateString) => {
 };
 
 export const convertDateFormatToInput = (dateString) => {
+    if (!dateString) {
+        return '';
+    }
     const dateParts = dateString.split('/');
-    const month = dateParts[0].length === 1 ? '0' + dateParts[0] : dateParts[0];
-    const day = dateParts[1].length === 1 ? '0' + dateParts[1] : dateParts[1];
-    const year = dateParts[2];
-    return year + '-' + month + '-' + day;
+    const formattedDate = dateParts[2] + '-' + dateParts[1] + '-' + dateParts[0];
+    return formattedDate;
 };
