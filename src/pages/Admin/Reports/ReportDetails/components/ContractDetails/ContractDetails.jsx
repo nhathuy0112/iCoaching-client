@@ -1,55 +1,62 @@
 import classNames from 'classnames/bind';
 import styles from './ContractDetails.module.scss';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getContractDetailsAsync } from '~/features/contractSlice';
 
 const cx = classNames.bind(styles);
 
 const ContractDetails = () => {
+    const { currentContract } = useSelector((state) => state.contract);
+    const { client, coach, ...contract } = currentContract;
+    const dispatch = useDispatch();
+    const { contractId } = useParams();
+
+    useEffect(() => {
+        dispatch(getContractDetailsAsync(contractId));
+    }, [dispatch, contractId]);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <div className={cx('contract-info')}>
                     <div className={cx('f-col')}>
                         <label>Khách hàng</label>
-                        <span>Hoang Trần</span>
+                        <span>{client?.fullname}</span>
                         <label>Huấn luyện viên</label>
-                        <span>Huy Trần</span>
+                        <span>{coach?.fullname}</span>
                         <label>Gói tập</label>
-                        <span>Gói luxury premium</span>
+                        <span>{contract?.courseName}</span>
                     </div>
                     <div className={cx('col')} id={cx('sm')}>
                         <label>Giới tính</label>
-                        <span>Nam</span>
+                        <span>{client?.gender}</span>
                         <label>Giới tính</label>
-                        <span>Nữ</span>
+                        <span>{coach?.gender}</span>
                         <label>Số buổi tập</label>
-                        <span>60</span>
+                        <span>{contract?.duration}</span>
                     </div>
                     <div className={cx('col')}>
                         <label>Email</label>
-                        <span>client@gmail.com</span>
+                        <span>{client?.email}</span>
                         <label>Email</label>
-                        <span>coach@gmail.com</span>
+                        <span>{coach?.email}</span>
                         <label>Trạng thái</label>
                         <span>Đang tập</span>
                     </div>
-                    <div className={cx('col')}>
+                    <div className={cx('col')} id={cx('last')}>
                         <label>SĐT</label>
-                        <span>0918171615</span>
+                        <span>{client?.phoneNumber}</span>
                         <label>SĐT</label>
-                        <span>0987654321</span>
+                        <span>{coach?.phoneNumber}</span>
                         <label>Giá</label>
-                        <span>30.000.000VNĐ</span>
+                        <span>{contract?.price}</span>
                     </div>
                 </div>
                 <div className={cx('description')}>
                     <label>Mô tả gói tập</label>
-                    <p>
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                        printer took a galley of type and scrambled it to make a type specimen book. It has survived not
-                        only five centuries, but also the leap into electronic typesetting, remaining essentially
-                        unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
-                        Ipsum passages, and more recently with desktop public...
-                    </p>
+                    <p>{contract?.courseDescription}</p>
                 </div>
             </div>
         </div>

@@ -150,7 +150,12 @@ const Information = () => {
                     <div className={cx('body')}>
                         <h2 className={cx('title')}>Vui lòng thêm thông tin khiếu nại ở dưới!</h2>
                         <div className={cx('message-frame')}>
-                            <textarea name="message" id="message" onChange={(e) => setDescription(e.target.value)} />
+                            <textarea
+                                name="message"
+                                id="message"
+                                onChange={(e) => setDescription(e.target.value)}
+                                required
+                            />
                         </div>
                         {false && (
                             <div className={cx('error')}>

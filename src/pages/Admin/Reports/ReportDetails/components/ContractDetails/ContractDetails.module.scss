@@ -13,12 +13,11 @@
 }
 
 .content {
+    margin: 20px 0 10px 15px;
     display: flex;
     flex-direction: column;
     position: relative;
-    margin-bottom: 10px;
     justify-content: center;
-    margin-left: 15px;
     .contract-info {
         display: flex;
         flex-direction: row;
@@ -47,9 +46,17 @@
                 width: 60px;
             }
         }
+        #last {
+            label {
+                width: 70px;
+            }
+            span {
+                width: 150px;
+            }
+        }
     }
     .description {
-        margin-top: 20px;
+        margin-top: 40px;
         p {
             width: calc(100% - 130px);
             display: inline-block;

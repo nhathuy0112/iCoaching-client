@@ -92,7 +92,7 @@ export const sendReportAsync = createAsyncThunk(
                 data: payload.formData,
             });
             if (response) {
-                toast.success('Gửi yêu cầu khiếu nại thành công!');
+                toast.success('Khiếu nại thành công!');
                 return response;
             }
             // return response;
