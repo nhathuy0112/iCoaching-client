@@ -39,6 +39,7 @@ const CoachCertificate = () => {
     };
 
     const handleUpdateStatus = (option, reason) => {
+        handleClose();
         dispatch(updateCertStatusAsync({ certId: id, option: option, reason }));
     };
     return (

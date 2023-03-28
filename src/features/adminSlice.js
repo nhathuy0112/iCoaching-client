@@ -1,5 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { getAllCoaches, updateStatus, getAllCertRequests, getCertRequestDetail, updateCertStatus } from '~/services/adminService';
+import {
+    getAllCoaches,
+    updateStatus,
+    getAllCertRequests,
+    getCertRequestDetail,
+    updateCertStatus,
+    getAllReports,
+    updateReport
+} from '~/services/adminService';
 
 export const getAllCoachesAsync = createAsyncThunk('/admin/getAllCoaches', async (payload) => {
     try {
@@ -47,11 +55,32 @@ export const updateCertStatusAsync = createAsyncThunk('/admin/updateCertStatus',
     }
 })
 
+export const getAllReportsAsync = createAsyncThunk('/admin/getAllReports', async (payload) => {
+    try {
+        const response = await getAllReports(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+export const updateReportAsync = createAsyncThunk('/admin/updateReport', async (payload) => {
+    try {
+        const response = await updateReport({ reportId: payload.reportId, option: payload.option, data: payload.reason });
+        console.log(response)
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+
+})
 
 const initialState = {
     coaches: [],
     certRequest: {},
     certId: null,
+    reports: [],
+    reportId: '',
     pageSize: 6,
     pageIndex: 1,
     totalCount: null,
@@ -121,6 +150,7 @@ export const adminSlice = createSlice({
             .addCase(getCertRequestDetailAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.certRequest = action.payload;
+                state.status = null;
             })
 
             //update certificate verification request detail
@@ -138,6 +168,38 @@ export const adminSlice = createSlice({
                 state.error = action.error.message;
             })
 
+            //get all reports pending
+            .addCase(getAllReportsAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getAllReportsAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.reports = action.payload.data;
+                state.pageSize = action.payload.pageSize;
+                state.pageIndex = action.payload.pageIndex;
+                state.totalCount = action.payload.count;
+            })
+            .addCase(getAllReportsAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+
+            //update report status
+            .addCase(updateReportAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(updateReportAsync.fulfilled, (state, action) => {
+                state.message = action.payload;
+                state.status = action.payload.status
+            })
+            .addCase(updateReportAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
     }
 });
 

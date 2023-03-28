@@ -1,15 +1,21 @@
-.container {
-    display: flex;
-    justify-content: space-evenly;
-    padding-top: 8%;
-    position: relative;
-    button {
-        &:hover {
-            opacity: 0.8;
+.wrapper {
+    display: inline-block;
+    width: 100%;
+
+    .container {
+        display: flex;
+        justify-content: space-evenly;
+        padding-top: 8%;
+        position: relative;
+        .container {
+            button {
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
         }
     }
 }
-
 .left_container {
     position: relative;
     width: 200px;
@@ -71,39 +77,47 @@
 }
 
 .right_container {
-    display: flex;
+    display: block;
     margin-left: 8%;
-    label {
-        font-size: 1.8rem;
-        font-weight: 500;
-    }
-    input {
+    #update_form {
         width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0 20px;
-        border: 1px solid rgba(0, 0, 0, 0.3);
-        border-radius: var(--default-border-radius);
-        text-align: start;
-        font-size: 1.4rem;
-        background-color: rgba(173, 173, 173, 0.1);
-    }
-    .column {
-        display: flex;
-        justify-content: space-between;
-    }
-    select {
-        display: block;
-        padding: 10px;
-        margin-top: 10px;
-    }
-    #submit_btn {
-        cursor: pointer;
-        margin: 12px auto;
-        display: block;
-        width: 150px;
-        padding: 12px 26px;
-        background-color: #2c9e2a;
-        color: white;
+        display: inline-block;
+        margin: 1%;
+        label {
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0 20px;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            border-radius: var(--default-border-radius);
+            text-align: start;
+            font-size: 1.4rem;
+            background-color: rgba(173, 173, 173, 0.1);
+        }
+        .column {
+            display: flex;
+            justify-content: space-between;
+        }
+        select {
+            display: block;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        #submit_btn {
+            cursor: pointer;
+            margin: 12px auto;
+            display: block;
+            width: 150px;
+            padding: 12px 26px;
+            background-color: #2c9e2a;
+            color: white;
+        }
+        div {
+            width: 100%;
+        }
     }
 }
 

@@ -33,7 +33,7 @@ const CoachesView = () => {
     }, [id, currentUser, navigate]);
 
     useEffect(() => {
-        dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: 8 }));
+        dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: 7 }));
     }, [dispatch, currentPage, status]);
 
     const [lockOpen, setLockOpen] = useState(false);

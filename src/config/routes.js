@@ -34,6 +34,8 @@ import VerifyCoach from '~/pages/Admin/VerifyCoach';
 import CoachCertificate from '~/pages/Admin/VerifyCoach/CoachCertificate';
 import Reports from '~/pages/Admin/Reports';
 import ReportDetails from '~/pages/Admin/Reports/ReportDetails';
+import CreateContract from '~/pages/Admin/Reports/ReportDetails/components/CreateContract';
+import Voucher from '~/pages/Admin/Reports/ReportDetails/components/Voucher';
 import AdminAccountProfile from '~/pages/Admin/AccountProfile';
 
 //SuperAdmin
@@ -124,7 +126,9 @@ const adminRoutes = [
     { path: '/admin/:id/verify-coach', component: VerifyCoach, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/:id/verify-coach/:certId', component: CoachCertificate, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/:id/reports', component: Reports, layout: AuthLayout, guard: RoleGuard },
-    { path: '/admin/:id/reports/:userId', component: ReportDetails, layout: AuthLayout, guard: RoleGuard },
+    { path: '/admin/:id/reports/:contractId', component: ReportDetails, layout: AuthLayout, guard: RoleGuard },
+    { path: '/admin/:id/reports/:contractId/createContract', component: CreateContract, layout: AuthLayout },
+    { path: '/admin/:id/reports/:contractId/voucher', component: Voucher, layout: AuthLayout },
     { path: '/admin/:id/profile', component: AdminAccountProfile, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/*', component: NotFound },
 ];

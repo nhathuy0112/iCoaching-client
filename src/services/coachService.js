@@ -90,7 +90,7 @@ export const getAllContracts = ({ pageIndex, pageSize, sort, search, status }) =
     const pageSizeParam = pageSize ? `&PageSize=${pageSize}` : '';
     const sortParam = sort ? `&Sort=${sort}` : '';
     const searchParam = search ? `&Search=${search}` : '';
-    const statusParam = status ? `&status=${status}` : '';
+    const statusParam = status ? `&statusDto=${status}` : '';
     return axios.get(
         `${END_POINTS.CONTRACT}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}${statusParam}`,
     );

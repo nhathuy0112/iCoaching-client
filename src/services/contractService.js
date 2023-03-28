@@ -32,3 +32,10 @@ export const getContractLogs = (contractId) => axios.get(`${END_POINTS.CONTRACT}
 
 export const getContractLogDetails = ({ contractId, logId }) =>
     axios.get(`${END_POINTS.CONTRACT}/${contractId}/log/${logId}`);
+
+export const sendReport = ({ contractId, data }) =>
+    axios.post(`${END_POINTS.CONTRACT}/${contractId}/report`, data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })

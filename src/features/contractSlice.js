@@ -110,6 +110,26 @@ export const getContractLogDetailsAsync = createAsyncThunk('contract/getContract
     }
 });
 
+//send report
+export const sendReportAsync = createAsyncThunk(
+    'contract/sendReport',
+    async (payload, { rejectWithValue }) => {
+        try {
+            const response = await sendReport({
+                contractId: payload.contractId,
+                data: payload.formData,
+            });
+            if (response) {
+                toast.success('Khiếu nại thành công!');
+                return response;
+            }
+            // return response;
+        } catch (error) {
+            console.log(error);
+            return rejectWithValue(error);
+        }
+    },
+);
 const initialState = {
     currentContract: {},
     programFiles: [],
@@ -228,6 +248,21 @@ export const contractSlice = createSlice({
                 state.logs = action.payload;
             })
             .addCase(getContractLogsAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //send report
+            .addCase(sendReportAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(sendReportAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(sendReportAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             })
