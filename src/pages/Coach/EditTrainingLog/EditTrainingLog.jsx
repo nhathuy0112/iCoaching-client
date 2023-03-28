@@ -3,28 +3,14 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './EditTrainingLog.module.scss';
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, message, Upload } from 'antd';
 import { useEffect, useState } from 'react';
 import { getContractLogDetailsAsync, getContractLogsAsync, updateContractLogAsync } from '~/features/contractSlice';
 import { convertDateFormat, convertDateFormatToInput } from '~/utils/dateFormat';
 import moment from 'moment';
 import ErrorMessage from '~/components/ErrorMessage';
-
-const props = {
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    multiple: true,
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-        }
-    },
-};
+import { AiOutlineUpload } from 'react-icons/ai';
+import { FaTrashAlt } from 'react-icons/fa';
+import { handleRenderFileIcon } from '~/utils/file';
 
 const cx = classNames.bind(styles);
 
@@ -42,6 +28,8 @@ const EditTrainingLog = () => {
     const [fileError, setFileError] = useState('');
     const [imageError, setImageError] = useState('');
     const [videoError, setVideoError] = useState('');
+    const [invalidImage, setInvalidImage] = useState(false);
+    const [invalidVideo, setInvalidVideo] = useState(false);
 
     useEffect(() => {
         dispatch(getContractLogsAsync(contractId));
@@ -50,6 +38,16 @@ const EditTrainingLog = () => {
     useEffect(() => {
         dispatch(getContractLogDetailsAsync({ contractId: contractId, logId: logId }));
     }, [dispatch, contractId, logId]);
+
+    useEffect(() => {
+        if (currentLog) {
+            setTrainingDateInput(convertDateFormatToInput(currentLog.trainingDate));
+            setFileList(currentLog.files);
+            setImageList(currentLog.images);
+            setVideoList(currentLog.videos);
+            setNoteInput(currentLog.note);
+        }
+    }, [currentLog]);
 
     const handleTrainingDateChange = (e) => {
         const newTrainingDateInput = e.target.value;
@@ -69,9 +67,15 @@ const EditTrainingLog = () => {
 
             if (trainingDate.isBefore(today, 'day')) {
                 setTrainingDateError('Ngày tập luyện không được chọn trong quá khứ');
-            } else if (prevTrainingDate !== null && trainingDate.isBefore(prevTrainingDate, 'day')) {
+            } else if (
+                prevTrainingDate !== null &&
+                trainingDate.isBefore(moment(convertDateFormatToInput(prevTrainingDate)), 'day')
+            ) {
                 setTrainingDateError(`Ngày tập luyện không được nhỏ hơn ngày tập luyện trước đó (${prevTrainingDate})`);
-            } else if (prevTrainingDate !== null && trainingDate.isSame(prevTrainingDate, 'day')) {
+            } else if (
+                prevTrainingDate !== null &&
+                trainingDate.isSame(moment(convertDateFormatToInput(prevTrainingDate)), 'day')
+            ) {
                 setTrainingDateError(
                     `Ngày tập luyện không được trùng với ngày tập luyện trước đó (${prevTrainingDate})`,
                 );
@@ -81,66 +85,70 @@ const EditTrainingLog = () => {
         }
     };
 
-    const handleFileListChange = (info) => {
-        const { status, fileList } = info;
-        if (status === 'done') {
-            message.success(`Tệp ${info.file.name} được tải lên thành công.`);
-            setFileError('');
-        } else if (status === 'error') {
-            message.error(`Tệp ${info.file.name} tải lên thất bại.`);
-        }
-        if (fileList.length > 0) {
-            setFileList(fileList);
-            setFileError('');
+    const handleFileListChange = (event) => {
+        const file = event.target.files[0];
+        file.id = Date.now();
+        file.fileName = file.name;
+        setFileList([...fileList, file]);
+        if (fileList) setFileError('');
+    };
+
+    const handleDeleteFile = (fileId) => {
+        const newFileList = fileList.filter((file) => file.id !== fileId);
+        setFileList(newFileList);
+    };
+
+    const handleImageListChange = (event) => {
+        const image = event.target.files[0];
+        image.id = Date.now();
+        image.url = URL.createObjectURL(image);
+        setImageList([...imageList, image]);
+        //check type of image
+        if (image.type === 'image/jpeg' || image.type === 'image/avif' || image.type === 'image/png') {
+            setInvalidImage(false);
         } else {
-            setFileError('Tệp phải được tải lên ít nhất 1');
+            setInvalidImage(true);
         }
     };
 
-    const handleImageListChange = (info) => {
-        const { status, fileList } = info;
-        if (status === 'done') {
-            message.success(`Ảnh ${info.file.name} được tải lên thành công.`);
-        } else if (status === 'error') {
-            message.error(`Ảnh ${info.file.name} tải thất bại.`);
-        }
-
-        const acceptedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-        const validFileList = fileList.filter((file) => acceptedImageTypes.includes(file.type));
-        if (validFileList.length > 0) {
-            setImageList(validFileList);
-            setImageError('');
-        } else {
-            setImageList([]);
-            setImageError('Hình ảnh phải có định dạng png hoặc jpeg/jpg');
+    const handleDeleteImage = (imageId) => {
+        const newImageList = imageList.filter((image) => image.id !== imageId);
+        setImageList(newImageList);
+        // If image invalid and deleted all => setInvalid = false
+        if (invalidImage && newImageList.length === 0) {
+            setInvalidImage(false);
         }
     };
 
-    const handleVideoListChange = (info) => {
-        const { status, fileList } = info;
-        if (status === 'done') {
-            message.success(`Video ${info.file.name} đã được tải lên thành công.`);
-        } else if (status === 'error') {
-            message.error(`Tải lên video ${info.file.name} thất bại.`);
-        }
-
-        const acceptedVideoTypes = ['video/mp4', 'video/quicktime'];
-        const validFileList = fileList.filter((file) => acceptedVideoTypes.includes(file.type));
-        if (validFileList.length > 0) {
-            setVideoList(validFileList);
-            setVideoError('');
+    const handleVideoListChange = (event) => {
+        const video = event.target.files[0];
+        video.id = Date.now();
+        video.url = URL.createObjectURL(video);
+        setVideoList([...videoList, video]);
+        if (videoList) setVideoError('');
+        // check type of video
+        if (video.type === 'video/mp4' || video.type === 'video/avi') {
+            setInvalidVideo(false);
         } else {
-            setVideoList([]);
-            setVideoError('Video phải có định dạng mp4 hoặc quicktime');
+            setInvalidVideo(true);
         }
     };
+
+    const handleDeleteVideo = (videoId) => {
+        const newVideoList = videoList.filter((video) => video.id !== videoId);
+        setVideoList(newVideoList);
+        // If video invalid and deleted all => setInvalid = false
+        if (invalidVideo && newVideoList.length === 0) {
+            setInvalidVideo(false);
+        }
+    };
+
+    console.log(fileList);
 
     const handleUpdateTrainingLog = () => {
         const today = moment();
         const trainingDate = moment(trainingDateInput);
-
         let errorFlag = false;
-
         if (!trainingDateInput) {
             setTrainingDateError('Ngày tập luyện phải được chọn');
             errorFlag = true;
@@ -148,12 +156,10 @@ const EditTrainingLog = () => {
             setTrainingDateError('Ngày tập luyện không được chọn trong quá khứ');
             errorFlag = true;
         }
-
         if (fileList.length === 0) {
             setFileError('Tệp phải được tải lên ít nhất 1');
             errorFlag = true;
         }
-
         if (imageList.length === 0) {
             setImageError('Ảnh phải được tải lên ít nhất 1');
             errorFlag = true;
@@ -162,28 +168,23 @@ const EditTrainingLog = () => {
             setVideoError('Video phải được tải lên ít nhất 1');
             errorFlag = true;
         }
-
         if (errorFlag) {
             return;
         }
-
         const formData = new FormData();
         formData.append('TrainingDate', convertDateFormat(trainingDateInput));
         formData.append('Note', noteInput);
-
         for (let i = 0; i < fileList.length; i++) {
             const file = fileList[i];
-            formData.append('Files', file.originFileObj);
+            formData.append('Files', file);
         }
-
         for (let i = 0; i < imageList.length; i++) {
-            const file = imageList[i];
-            formData.append('Images', file.originFileObj);
+            const image = imageList[i];
+            formData.append('Images', image);
         }
-
         for (let i = 0; i < videoList.length; i++) {
-            const file = videoList[i];
-            formData.append('Videos', file.originFileObj);
+            const video = videoList[i];
+            formData.append('Videos', video);
         }
 
         dispatch(updateContractLogAsync({ contractId: contractId, logId: logId, payload: formData }))
@@ -222,11 +223,9 @@ const EditTrainingLog = () => {
                         <label htmlFor="training-date">Ngày tập luyện</label>
                         <input
                             type="date"
-                            value={
-                                currentLog.trainingDate
-                                    ? convertDateFormatToInput(currentLog.trainingDate)
-                                    : trainingDateInput
-                            }
+                            placeholder="dd/mm/yyyy"
+                            className={cx('date-input')}
+                            value={trainingDateInput}
                             onChange={handleTrainingDateChange}
                         />
                     </div>
@@ -237,25 +236,31 @@ const EditTrainingLog = () => {
                     )}
                     <div className={cx('input-group')}>
                         <label htmlFor="file">Tệp đính kèm</label>
-                        <div>
-                            <Upload
-                                {...props}
-                                defaultFileList={
-                                    currentLog.files
-                                        ? currentLog.files.map((file) => {
-                                              return {
-                                                  uid: file.id,
-                                                  name: file.fileName,
-                                              };
-                                          })
-                                        : fileList
-                                }
-                                onChange={handleFileListChange}
-                            >
-                                <Button icon={<UploadOutlined />}>Click để thêm</Button>
-                            </Upload>
+                        <div className={cx('file-inputs')}>
+                            <input type="file" onChange={handleFileListChange} />
+                            <button>
+                                <i>
+                                    <AiOutlineUpload />
+                                </i>
+                                Click để thêm
+                            </button>
                         </div>
                     </div>
+                    {fileList && fileList.length > 0 && (
+                        <ul className={cx('file-list')}>
+                            {fileList.map((file) => (
+                                <li className={cx('file-item')} key={file.id}>
+                                    <span>{handleRenderFileIcon(file.fileName)}</span>
+                                    <p>{file.fileName}</p>
+                                    <div className={cx('action')} onClick={() => handleDeleteFile(file.id)}>
+                                        <div className={cx('loading')}></div>
+                                        <FaTrashAlt />
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+
                     {fileError && (
                         <div className={cx('error')}>
                             <ErrorMessage message={fileError} />
@@ -263,16 +268,34 @@ const EditTrainingLog = () => {
                     )}
                     <div className={cx('input-group')}>
                         <label htmlFor="file">Ảnh</label>
-                        <div>
-                            <Upload
-                                {...props}
-                                defaultFileList={currentLog.images ? currentLog.images : imageList}
-                                onChange={handleImageListChange}
-                            >
-                                <Button icon={<UploadOutlined />}>Click để thêm</Button>
-                            </Upload>
+                        <div className={cx('file-inputs')}>
+                            <input type="file" onChange={handleImageListChange} />
+                            <button>
+                                <i>
+                                    <AiOutlineUpload />
+                                </i>
+                                Click để thêm
+                            </button>
                         </div>
                     </div>
+
+                    {imageList && imageList.length > 0 && (
+                        <ul className={cx('image-list')}>
+                            {imageList.map((image) => (
+                                <li className={cx('image-item')} key={image.id}>
+                                    <img src={image.url} alt="log" />
+                                    <button className={cx('delete-btn')} onClick={() => handleDeleteImage(image.id)}>
+                                        <FaTrashAlt />
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                    {invalidImage && (
+                        <div className={cx('error')}>
+                            <ErrorMessage message="Ảnh phải có định dạng .jpeg/jpg, .png hoặc .avif" />
+                        </div>
+                    )}
                     {imageError && (
                         <div className={cx('error')}>
                             <ErrorMessage message={imageError} />
@@ -280,16 +303,35 @@ const EditTrainingLog = () => {
                     )}
                     <div className={cx('input-group')}>
                         <label htmlFor="file">Video</label>
-                        <div>
-                            <Upload
-                                {...props}
-                                defaultFileList={currentLog.videos ? currentLog.videos : videoList}
-                                onChange={handleVideoListChange}
-                            >
-                                <Button icon={<UploadOutlined />}>Click để thêm</Button>
-                            </Upload>
+                        <div className={cx('file-inputs')}>
+                            <input type="file" onChange={handleVideoListChange} />
+                            <button>
+                                <i>
+                                    <AiOutlineUpload />
+                                </i>
+                                Click để thêm
+                            </button>
                         </div>
                     </div>
+                    {videoList && videoList.length > 0 && (
+                        <ul className={cx('video-list')}>
+                            {videoList.map((video) => (
+                                <li className={cx('video-item')} key={video.id}>
+                                    <video controls>
+                                        <source src={video.url} />
+                                    </video>
+                                    <button className={cx('delete-btn')} onClick={() => handleDeleteVideo(video.id)}>
+                                        <FaTrashAlt />
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                    {invalidVideo && (
+                        <div className={cx('error')}>
+                            <ErrorMessage message="Video phải có định dạng .mp4 hoặc .avi" />
+                        </div>
+                    )}
                     {videoError && (
                         <div className={cx('error')}>
                             <ErrorMessage message={videoError} />
@@ -299,14 +341,14 @@ const EditTrainingLog = () => {
                         <label htmlFor="note">Ghi chú</label>
                         <textarea
                             name="note"
-                            value={currentLog.note ? currentLog.note : noteInput}
+                            value={noteInput ? noteInput : ''}
                             onChange={(e) => setNoteInput(e.target.value)}
                         />
                     </div>
                 </div>
                 <button
                     className={
-                        trainingDateError || fileError || imageError || videoError
+                        trainingDateError || fileError || imageError || videoError || invalidImage || invalidVideo
                             ? cx('save-btn', 'disabled')
                             : cx('save-btn')
                     }
