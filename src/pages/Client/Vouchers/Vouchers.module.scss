@@ -1,0 +1,114 @@
+.wrapper {
+    margin-top: var(--default-navbar-height);
+
+    .title-and-back {
+        margin: 16px auto;
+        max-width: var(--default-layout-max-width);
+        display: flex;
+        .back-link {
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            color: var(--primary-color);
+            width: fit-content;
+            z-index: 2;
+            margin-top: 16px;
+        }
+        .header {
+            margin-top: 16px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: var(--primary-color);
+            display: inline-block;
+        }
+    }
+
+    .content {
+        max-width: var(--default-layout-max-width);
+        margin: auto;
+
+        .voucher-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 80px;
+
+            .voucher-item {
+                padding: 8px 16px;
+                display: flex;
+                box-shadow: var(--default-box-shadow);
+                border-radius: var(--default-border-radius);
+
+                .logo {
+                    padding: 8px;
+                    width: 120px;
+                    height: 120px;
+                    background-color: var(--primary-color);
+                    border-radius: var(--default-border-radius);
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                .voucher-content {
+                    flex: 1;
+                    margin-left: 16px;
+                    position: relative;
+
+                    .discount {
+                        font-size: 2.4rem;
+                        color: #333;
+                        font-weight: 500;
+                    }
+
+                    .code {
+                        color: #1a97cc;
+                        margin-bottom: 4px;
+                    }
+
+                    .description {
+                        font-size: 1.4rem;
+                        font-weight: 500;
+                        color: var(--text-color);
+                        text-align: justify;
+                    }
+
+                    .status {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        font-size: 1.2rem;
+                        font-weight: 500;
+                        border-radius: var(--default-border-radius);
+
+                        &.valid {
+                            color: green;
+                        }
+
+                        &.invalid {
+                            color: red;
+                        }
+                    }
+                }
+            }
+        }
+
+        .voucher-empty {
+            margin-top: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            .message {
+                color: red;
+            }
+        }
+    }
+}

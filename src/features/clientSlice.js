@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import {
     cancelTrainingRequest,
     completedContract,
+    getAllVouchers,
     getCoachingRequests,
     getPaymentLink,
     getTrainingCourses,
@@ -77,9 +78,20 @@ export const completedContractAsync = createAsyncThunk('coach/completedContract'
     }
 });
 
+//get all vouchers
+export const getAllVouchersAsync = createAsyncThunk('coach/getAllVouchers', async () => {
+    try {
+        const response = await getAllVouchers();
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 const initialState = {
     coachingRequests: [],
     trainingCourses: [],
+    vouchers: [],
     paymentLink: '',
     pageSize: 6,
     pageIndex: 1,
@@ -190,6 +202,21 @@ export const clientSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(completedContractAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //get all vouchers
+            .addCase(getAllVouchersAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(getAllVouchersAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.vouchers = action.payload;
+            })
+            .addCase(getAllVouchersAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             });

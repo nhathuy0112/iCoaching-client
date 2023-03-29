@@ -6,7 +6,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-import { IoMdSettings } from 'react-icons/io';
+import { IoMdGift, IoMdSettings } from 'react-icons/io';
 import { logoutAsync, getUserAvatarAsync, getUserProfileAsync } from '~/features/userSlice';
 import { getLocalStorage } from '~/utils/localStorage';
 import { BiLogOut } from 'react-icons/bi';
@@ -116,6 +116,15 @@ const Header = () => {
                                                         <IoMdSettings />
                                                     </span>
                                                     <span className={cx('title')}>Thông tin tài khoản</span>
+                                                </Link>
+                                                <Link
+                                                    className={cx('avatar-link-item')}
+                                                    to={`/client/${currentUser?.Id}/vouchers`}
+                                                >
+                                                    <span className={cx('icon')}>
+                                                        <IoMdGift />
+                                                    </span>
+                                                    <span className={cx('title')}>Mã giảm giá</span>
                                                 </Link>
                                                 <div className={cx('avatar-link-item')} onClick={handleLogout}>
                                                     <span className={cx('icon')}>

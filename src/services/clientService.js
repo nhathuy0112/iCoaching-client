@@ -3,6 +3,7 @@ import axios from '~/api/axios';
 const END_POINTS = {
     COACHING_REQUEST: 'Client/coaching-request',
     CONTRACT: '/Client/contract',
+    VOUCHER: '/Client/voucher',
 };
 
 export const sendCoachingRequest = ({ coachId, courseId, data }) =>
@@ -45,3 +46,6 @@ export const getPaymentLink = (requestId) => axios.get(`${END_POINTS.COACHING_RE
 
 //completed contract
 export const completedContract = (contractId) => axios.put(`${END_POINTS.CONTRACT}/${contractId}/completion`);
+
+//get vouchers
+export const getAllVouchers = () => axios.get(`${END_POINTS.VOUCHER}s`);

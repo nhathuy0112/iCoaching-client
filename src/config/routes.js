@@ -17,6 +17,7 @@ import PendingCourseDetails from '~/pages/Client/PendingCourseDetails';
 import AccountProfile from '~/pages/Client/AccountProfile';
 import TrainingHistory from '~/pages/Client/TrainingHistory';
 import TrainingHistoryDetails from '~/pages/Client/TrainingHistoryDetails';
+import Vouchers from '~/pages/Client/Vouchers';
 import Messages from '~/pages/Client/Messages';
 
 //Coach
@@ -103,6 +104,7 @@ const clientRoutes = [
     },
     { path: '/client/:id/account-information', component: AccountProfile, layout: ClientLayout, guard: RoleGuard },
     { path: '/client/:id/all-messages', component: Messages, layout: ClientLayout, guard: RoleGuard },
+    { path: '/client/:id/vouchers', component: Vouchers, layout: ClientLayout, guard: RoleGuard },
     { path: '/client/*', component: NotFound },
 ];
 
