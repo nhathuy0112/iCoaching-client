@@ -28,7 +28,7 @@ export const getTrainingCourses = ({ pageIndex, pageSize, sort, search, status }
     const pageSizeParam = pageSize ? `&PageSize=${pageSize}` : '';
     const sortParam = sort ? `&Sort=${sort}` : '';
     const searchParam = search ? `&Search=${search}` : '';
-    const statusParam = status ? `&status=${status}` : '';
+    const statusParam = status ? `&statusDto=${status}` : '';
     return axios.get(
         `${END_POINTS.CONTRACT}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}${statusParam}`,
     );
@@ -42,3 +42,6 @@ export const cancelTrainingRequest = ({ requestId, data }) =>
     });
 
 export const getPaymentLink = (requestId) => axios.get(`${END_POINTS.COACHING_REQUEST}/${requestId}/payment-url`);
+
+//completed contract
+export const completedContract = (contractId) => axios.put(`${END_POINTS.CONTRACT}/${contractId}/completion`);

@@ -1,10 +1,7 @@
 import classNames from 'classnames/bind';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import ErrorMessage from '~/components/ErrorMessage';
-import { completedContractAsync } from '~/features/coachSlice';
+import { useParams } from 'react-router-dom';
 import { getContractDetailsAsync } from '~/features/contractSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Information.module.scss';
@@ -13,25 +10,12 @@ const cx = classNames.bind(styles);
 
 const Information = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { error } = useSelector((state) => state.coach);
     const { currentContract } = useSelector((state) => state.contract);
-    const { id, contractId } = useParams();
-
-    console.log(error);
+    const { contractId } = useParams();
 
     useEffect(() => {
         dispatch(getContractDetailsAsync(contractId));
     }, [dispatch, contractId]);
-
-    const handleCompletedContract = () => {
-        dispatch(completedContractAsync(contractId))
-            .unwrap()
-            .then(() => {
-                toast.success('Hoàn thành hợp đồng thành công!');
-                navigate(`/coach/${id}/my-clients`, { state: { isPendingClient: true } });
-            });
-    };
 
     return (
         <div className={cx('wrapper')}>
@@ -92,7 +76,7 @@ const Information = () => {
                         </div>
                         <div className={cx('group-info', 'third-column')}>
                             <label htmlFor="">Trạng thái</label>
-                            <span>Đang tập</span>
+                            <span>Hoàn thành</span>
                         </div>
                         <div className={cx('group-info', 'fourth-column')}>
                             <label htmlFor="">Giá</label>
@@ -107,15 +91,6 @@ const Information = () => {
                     </div>
                 </div>
             </div>
-            {error && <ErrorMessage message={error} />}
-            {currentContract?.status === 'Active' && (
-                <div
-                    className={error ? cx('completed-btn', 'disabled') : cx('completed-btn')}
-                    onClick={handleCompletedContract}
-                >
-                    <button>Hoàn thành</button>
-                </div>
-            )}
         </div>
     );
 };

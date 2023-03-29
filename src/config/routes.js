@@ -11,10 +11,12 @@ import TrainingRequest from '~/pages/Client/TrainingRequest';
 import ClientCoachesView from '~/pages/Client/CoachesView';
 import ClientCoachDetails from '~/pages/Client/CoachDetails';
 import OnGoingCourse from '~/pages/Client/OnGoingCourse';
-import PendingCourse from '~/pages/Client/PendingCourse';
 import ContractDetails from '~/pages/Client/ContractDetails';
+import PendingCourse from '~/pages/Client/PendingCourse';
+import PendingCourseDetails from '~/pages/Client/PendingCourseDetails';
 import AccountProfile from '~/pages/Client/AccountProfile';
 import TrainingHistory from '~/pages/Client/TrainingHistory';
+import TrainingHistoryDetails from '~/pages/Client/TrainingHistoryDetails';
 import Messages from '~/pages/Client/Messages';
 
 //Coach
@@ -76,15 +78,27 @@ const clientRoutes = [
         guard: RoleGuard,
     },
     { path: '/client/:id/training-requests', component: TrainingRequest, layout: ClientLayout, guard: RoleGuard },
-    { path: '/client/:id/ongoing-course', component: OnGoingCourse, layout: ClientLayout, guard: RoleGuard },
+    { path: '/client/:id/ongoing-courses', component: OnGoingCourse, layout: ClientLayout, guard: RoleGuard },
     {
-        path: '/client/:id/ongoing-course/view-details/:contractId',
+        path: '/client/:id/ongoing-courses/view-details/:contractId',
         component: ContractDetails,
         layout: ClientLayout,
         guard: RoleGuard,
     },
-    { path: '/client/:id/pending-course', component: PendingCourse, layout: ClientLayout, guard: RoleGuard },
+    { path: '/client/:id/pending-courses', component: PendingCourse, layout: ClientLayout, guard: RoleGuard },
+    {
+        path: '/client/:id/pending-courses/view-details/:contractId',
+        component: PendingCourseDetails,
+        layout: ClientLayout,
+        guard: RoleGuard,
+    },
     { path: '/client/:id/training-history', component: TrainingHistory, layout: ClientLayout, guard: RoleGuard },
+    {
+        path: '/client/:id/training-history/view-details/:contractId',
+        component: TrainingHistoryDetails,
+        layout: ClientLayout,
+        guard: RoleGuard,
+    },
     { path: '/client/:id/account-information', component: AccountProfile, layout: ClientLayout, guard: RoleGuard },
     { path: '/client/:id/all-messages', component: Messages, layout: ClientLayout, guard: RoleGuard },
     { path: '/client/*', component: NotFound },

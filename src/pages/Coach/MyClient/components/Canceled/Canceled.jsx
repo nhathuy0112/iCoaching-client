@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getAllContractsAsync } from '~/features/coachSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Canceled.module.scss';
@@ -12,6 +12,7 @@ const cx = classNames.bind(styles);
 
 const Canceled = () => {
     const dispatch = useDispatch();
+    const { id } = useParams();
     const { contracts, totalCount, pageSize } = useSelector((state) => state.coach);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -59,7 +60,10 @@ const Canceled = () => {
                                     </div>
                                 </div>
                                 <div className={cx('action')}>
-                                    <Link to={``} id={cx('view-detail-link')}>
+                                    <Link
+                                        to={`/coach/${id}/my-clients/view-details/${contract.id}`}
+                                        id={cx('view-detail-link')}
+                                    >
                                         Xem chi tiết
                                     </Link>
                                 </div>

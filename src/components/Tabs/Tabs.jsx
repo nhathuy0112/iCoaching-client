@@ -13,9 +13,10 @@ const Tabs = ({ tabs }) => {
     const location = useLocation();
     const isAddedResources = location.state?.isAddedResources;
     const isEditTrainingLog = location.state?.isEditTrainingLog;
+    const isPendingClient = location.state?.isPendingClient;
 
     const renderTabNavigate = () => {
-        if (isAddedResources) return 1;
+        if (isAddedResources || isPendingClient) return 1;
         else if (isEditTrainingLog) return 2;
         else return 0;
     };

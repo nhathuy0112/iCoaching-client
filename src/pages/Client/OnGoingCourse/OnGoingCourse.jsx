@@ -20,7 +20,7 @@ const OnGoingCourse = () => {
     useEffect(() => {
         if (currentUser) {
             if (id !== currentUser.Id) {
-                navigate(`/client/${currentUser.Id}/ongoing-course`);
+                navigate(`/client/${currentUser.Id}/ongoing-courses`);
             }
         }
     }, [id, currentUser, navigate]);
@@ -69,7 +69,7 @@ const OnGoingCourse = () => {
                                 </div>
                                 <div className={cx('action')}>
                                     <Link
-                                        to={`/client/${id}/ongoing-course/view-details/${course.id}`}
+                                        to={`/client/${id}/ongoing-courses/view-details/${course.id}`}
                                         id={cx('view-detail-link')}
                                     >
                                         Xem chi tiết

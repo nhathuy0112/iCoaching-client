@@ -16,6 +16,7 @@ import {
     getCoachingRequests,
     updateCoachingRequest,
     getAllContracts,
+    completedContract,
 } from '~/services/coachService';
 
 //Certification
@@ -188,6 +189,19 @@ export const getAllContractsAsync = createAsyncThunk('coach/getAllContracts', as
     }
 });
 
+export const completedContractAsync = createAsyncThunk(
+    'coach/completedContract',
+    async (contractId, { rejectWithValue }) => {
+        try {
+            const response = await completedContract(contractId);
+            return response;
+        } catch (error) {
+            console.log(error);
+            return rejectWithValue(error);
+        }
+    },
+);
+
 const initialState = {
     certificationImages: [],
     portfolioImages: [],
@@ -309,7 +323,6 @@ export const coachSlice = createSlice({
                 state.portfolioImages = action.payload.data;
                 state.totalCount = action.payload.count;
                 state.pageSize = action.payload.pageSize;
-
             })
             .addCase(getPortfolioPhotosAsync.rejected, (state, action) => {
                 state.loading = true;
@@ -438,14 +451,14 @@ export const coachSlice = createSlice({
             })
             .addCase(updateCoachingRequestAsync.fulfilled, (state) => {
                 state.loading = false;
-                state.status = !state.status
+                state.status = !state.status;
             })
             .addCase(updateCoachingRequestAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             })
 
-            //contract
+            //get all contracts
             .addCase(getAllContractsAsync.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -460,6 +473,21 @@ export const coachSlice = createSlice({
             .addCase(getAllContractsAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
+            })
+
+            //complete contract
+            .addCase(completedContractAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(completedContractAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(completedContractAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.payload;
             });
     },
 });

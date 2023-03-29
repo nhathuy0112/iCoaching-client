@@ -1,0 +1,63 @@
+.wrapper {
+    .file-list {
+        #file-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 16px;
+
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            td {
+                .action-btn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    #download-btn,
+                    #delete-btn {
+                        background-color: transparent;
+                        cursor: pointer;
+                        margin: 0 16px;
+                        border: none;
+                        font-size: 2rem;
+
+                        &:hover {
+                            opacity: 0.6;
+                        }
+                    }
+                }
+            }
+
+            tr {
+                &:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+
+                .file-icon {
+                    margin-right: 8px;
+                }
+            }
+
+            th {
+                padding: 8px;
+                text-align: left;
+                background-color: var(--primary-color);
+                color: white;
+            }
+        }
+    }
+
+    .file-empty {
+        text-align: center;
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: red;
+        }
+    }
+}
