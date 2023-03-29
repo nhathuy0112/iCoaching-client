@@ -9,6 +9,7 @@ import {
     getProgramFileDownload,
     updateContractLog,
     uploadContractProgramFiles,
+    sendReport
 } from '~/services/contractService';
 
 //get contract details

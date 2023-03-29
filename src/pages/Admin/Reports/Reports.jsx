@@ -9,7 +9,6 @@ import { getAllReportsAsync } from '~/features/adminSlice';
 import Modal from '~/components/Modal';
 
 import { AiOutlineClose } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
 const Reports = () => {
@@ -61,7 +60,7 @@ const Reports = () => {
                                 ))}
                             </div>
                             <p>{report.detail}</p>
-                            <Link to={`${report.contractId}`}>
+                            <Link to={`${report.contractId}/${report.id}`}>
                                 <button className={cx('btn-info')}>
                                     Xem chi tiết <MdOutlineKeyboardArrowRight className={cx('icon')} />
                                 </button>
