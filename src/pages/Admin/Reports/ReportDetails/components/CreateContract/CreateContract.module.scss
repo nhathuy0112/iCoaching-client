@@ -3,15 +3,74 @@
     flex-direction: column;
     position: relative;
     height: 100%;
-    .title-and-back {
-        margin: 16px 0;
-        .back-link {
-            display: flex;
-            align-items: center;
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            width: fit-content;
+    .content {
+        .title-and-back {
+            margin: 16px 0;
+            .back-link {
+                display: flex;
+                align-items: center;
+                font-size: 2rem;
+                font-weight: 600;
+                color: var(--primary-color);
+                width: fit-content;
+            }
+        }
+
+        .contract {
+            margin: 0 auto;
+            width: 80%;
+            font-size: 1.8rem;
+            textarea {
+                resize: none;
+                background-color: #eaeaea;
+                border: none;
+            }
+            label {
+                color: #1a97cc;
+            }
+            .client {
+                display: flex;
+                justify-content: space-between;
+            }
+            .cancel {
+                display: flex;
+                flex-direction: column;
+            }
+            hr {
+                margin: 2% 0 1%;
+            }
+            .coach {
+                display: flex;
+                flex-direction: column;
+                .title {
+                    color: var(--primary-color);
+                    text-align: center;
+                }
+                input {
+                    background-color: #eaeaea;
+                    padding: 8px;
+                    border-radius: var(--default-border-radius);
+                    margin-bottom: 8px;
+                }
+            }
+
+            button {
+                cursor: pointer;
+                display: block;
+                justify-self: center;
+                margin: 28px auto 0;
+                padding: 12px 30px;
+                background-color: #2c9e2a;
+                color: white;
+                font-size: 1.6rem;
+                &:hover {
+                    opacity: 0.8;
+                }
+                .icon {
+                    margin-right: 5px;
+                    vertical-align: bottom;
+                }
+            }
         }
     }
 }

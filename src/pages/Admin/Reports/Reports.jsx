@@ -44,30 +44,38 @@ const Reports = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <form className={cx('search')}>
-                    <div className={cx('search-box')} type="submit">
-                        <AiOutlineSearch className={cx('search-icon')} />
-                        <input type="text" placeholder="Tìm kiếm" />
-                    </div>
-                </form>
-                <div className={cx('list-reports')}>
-                    {reports?.map((report) => (
-                        <div className={cx('rp')}>
-                            <label>{report.clientFullName}</label>
-                            <div className={cx('photos')}>
-                                {report.images?.map((photo) => (
-                                    <img src={photo} alt="report" onClick={() => handleViewDetail(photo)} />
-                                ))}
+                {reports.length !== 0 ? (
+                    <>
+                        <form className={cx('search')}>
+                            <div className={cx('search-box')} type="submit">
+                                <AiOutlineSearch className={cx('search-icon')} />
+                                <input type="text" placeholder="Tìm kiếm" />
                             </div>
-                            <p>{report.detail}</p>
-                            <Link to={`${report.contractId}/${report.id}`}>
-                                <button className={cx('btn-info')}>
-                                    Xem chi tiết <MdOutlineKeyboardArrowRight className={cx('icon')} />
-                                </button>
-                            </Link>
+                        </form>
+                        <div className={cx('list-reports')}>
+                            {reports?.map((report) => (
+                                <div className={cx('rp')}>
+                                    <label>{report.clientFullName}</label>
+                                    <div className={cx('photos')}>
+                                        {report.images?.map((photo) => (
+                                            <img src={photo} alt="report" onClick={() => handleViewDetail(photo)} />
+                                        ))}
+                                    </div>
+                                    <p>{report.detail}</p>
+                                    <Link to={`${report.contractId}/${report.id}`}>
+                                        <button className={cx('btn-info')}>
+                                            Xem chi tiết <MdOutlineKeyboardArrowRight className={cx('icon')} />
+                                        </button>
+                                    </Link>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    </>
+                ) : (
+                    <div className={cx('message')}>
+                        <h1>Hiện chưa có khiếu nại nào!</h1>
+                    </div>
+                )}
             </div>
             {viewDetail && (
                 <Modal
