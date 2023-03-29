@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { toast } from 'react-toastify';
 import {
     getAllCoaches,
     updateStatus,
@@ -6,9 +7,13 @@ import {
     getCertRequestDetail,
     updateCertStatus,
     getAllReports,
-    updateReport
+    updateReport,
+    createContract,
+    createVoucher,
+    updateContractStatus
 } from '~/services/adminService';
 
+//get list coaches
 export const getAllCoachesAsync = createAsyncThunk('/admin/getAllCoaches', async (payload) => {
     try {
         const response = await getAllCoaches(payload);
@@ -18,6 +23,7 @@ export const getAllCoachesAsync = createAsyncThunk('/admin/getAllCoaches', async
     }
 })
 
+//update coach account status
 export const updateStatusAsync = createAsyncThunk('/admin/updateStatus', async (coachId) => {
     try {
         const response = await updateStatus(coachId);
@@ -27,6 +33,7 @@ export const updateStatusAsync = createAsyncThunk('/admin/updateStatus', async (
     }
 });
 
+//get list certificate request
 export const getAllCertRequestsAsync = createAsyncThunk('/admin/getAllCertRequests', async (payload) => {
     try {
         const response = await getAllCertRequests(payload);
@@ -36,6 +43,7 @@ export const getAllCertRequestsAsync = createAsyncThunk('/admin/getAllCertReques
     }
 })
 
+//get certificate detail
 export const getCertRequestDetailAsync = createAsyncThunk('/admin/getCertRequestDetail', async (payload) => {
     try {
         const response = await getCertRequestDetail(payload);
@@ -45,16 +53,17 @@ export const getCertRequestDetailAsync = createAsyncThunk('/admin/getCertRequest
     }
 });
 
+//update certificate status
 export const updateCertStatusAsync = createAsyncThunk('/admin/updateCertStatus', async (payload) => {
     try {
         const response = await updateCertStatus({ certId: payload.certId, option: payload.option, data: payload.reason });
-        console.log(response)
         return response;
     } catch (error) {
         console.log(error);
     }
 })
 
+//get list reports
 export const getAllReportsAsync = createAsyncThunk('/admin/getAllReports', async (payload) => {
     try {
         const response = await getAllReports(payload);
@@ -64,11 +73,54 @@ export const getAllReportsAsync = createAsyncThunk('/admin/getAllReports', async
     }
 })
 
+//update report status
 export const updateReportAsync = createAsyncThunk('/admin/updateReport', async (payload) => {
     try {
-        const response = await updateReport({ reportId: payload.reportId, option: payload.option, data: payload.reason });
-        console.log(response)
-        return response;
+        const response = await updateReport({ reportId: payload.reportId, option: payload.option, data: payload.message });
+        if (response) {
+            toast.success('Đã cập nhật trạng thái khiếu nại');
+            return response;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+})
+
+//create contract
+export const createContractAsync = createAsyncThunk('/admin/createContract', async (payload) => {
+    try {
+        const response = await createContract({ reportId: payload.reportId, data: payload.contract });
+        if (response) {
+            toast.success('Tạo hợp đồng thành công');
+            return response;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+//create voucher
+export const createVoucherAsync = createAsyncThunk('/admin/createVoucher', async (payload) => {
+    try {
+        const response = await createVoucher({ clientId: payload.clientId, discount: payload.discount, data: payload.data });
+        if (response) {
+            toast.success('Tạo mã giảm giá thành công');
+            return response;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+//update contract status
+export const updateContractStatusAsync = createAsyncThunk('/admin/updateContractStatus', async (payload) => {
+    try {
+        const response = await updateContractStatus({ reportId: payload.reportId, option: payload.option, data: payload.message });
+        if (response) {
+            toast.success('Đã cập nhật trạng thái hợp đồng');
+            return response;
+        }
     } catch (error) {
         console.log(error);
     }
@@ -194,9 +246,50 @@ export const adminSlice = createSlice({
 
             .addCase(updateReportAsync.fulfilled, (state, action) => {
                 state.message = action.payload;
-                state.status = action.payload.status
             })
             .addCase(updateReportAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //create new contract
+            .addCase(createContractAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(createContractAsync.fulfilled, (state, action) => {
+                state.message = action.payload;
+            })
+            .addCase(createContractAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //create voucher
+            .addCase(createVoucherAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(createVoucherAsync.fulfilled, (state, action) => {
+                state.message = action.payload;
+            })
+            .addCase(createVoucherAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //update contract status
+            .addCase(updateContractStatusAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(updateContractStatusAsync.fulfilled, (state, action) => {
+                state.message = action.payload;
+            })
+            .addCase(updateContractStatusAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             })

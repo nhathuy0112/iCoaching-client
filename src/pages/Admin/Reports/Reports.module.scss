@@ -3,6 +3,18 @@
     position: relative;
     .content {
         padding-top: 3%;
+        .message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            color: #d01515;
+            text-align: center;
+        }
     }
     button {
         &:hover {

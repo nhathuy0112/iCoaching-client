@@ -142,9 +142,9 @@ const adminRoutes = [
     { path: '/admin/:id/verify-coach', component: VerifyCoach, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/:id/verify-coach/:certId', component: CoachCertificate, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/:id/reports', component: Reports, layout: AuthLayout, guard: RoleGuard },
-    { path: '/admin/:id/reports/:contractId', component: ReportDetails, layout: AuthLayout, guard: RoleGuard },
-    { path: '/admin/:id/reports/:contractId/createContract', component: CreateContract, layout: AuthLayout },
-    { path: '/admin/:id/reports/:contractId/voucher', component: Voucher, layout: AuthLayout },
+    { path: '/admin/:id/reports/:contractId/:reportId', component: ReportDetails, layout: AuthLayout, guard: RoleGuard },
+    { path: '/admin/:id/reports/:contractId/:reportId/createContract', component: CreateContract, layout: AuthLayout },
+    { path: '/admin/:id/reports/:contractId/:reportId/voucher', component: Voucher, layout: AuthLayout },
     { path: '/admin/:id/profile', component: AdminAccountProfile, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/*', component: NotFound },
 ];
