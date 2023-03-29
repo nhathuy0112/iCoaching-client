@@ -3,8 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import ErrorMessage from '~/components/ErrorMessage';
-import { completedContractAsync } from '~/features/coachSlice';
+import { completedContractAsync } from '~/features/clientSlice';
 import { getContractDetailsAsync } from '~/features/contractSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Information.module.scss';
@@ -13,12 +12,9 @@ const cx = classNames.bind(styles);
 
 const Information = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { error } = useSelector((state) => state.coach);
     const { currentContract } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
-
-    console.log(error);
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getContractDetailsAsync(contractId));
@@ -28,8 +24,8 @@ const Information = () => {
         dispatch(completedContractAsync(contractId))
             .unwrap()
             .then(() => {
-                toast.success('Hoàn thành hợp đồng thành công!');
-                navigate(`/coach/${id}/my-clients`, { state: { isPendingClient: true } });
+                toast.success('Hợp đồng đã được hoàn thành!');
+                navigate(`/client/${id}/training-history`);
             });
     };
 
@@ -92,7 +88,7 @@ const Information = () => {
                         </div>
                         <div className={cx('group-info', 'third-column')}>
                             <label htmlFor="">Trạng thái</label>
-                            <span>Đang tập</span>
+                            <span>Đợi hoàn thành</span>
                         </div>
                         <div className={cx('group-info', 'fourth-column')}>
                             <label htmlFor="">Giá</label>
@@ -107,15 +103,12 @@ const Information = () => {
                     </div>
                 </div>
             </div>
-            {error && <ErrorMessage message={error} />}
-            {currentContract?.status === 'Active' && (
-                <div
-                    className={error ? cx('completed-btn', 'disabled') : cx('completed-btn')}
-                    onClick={handleCompletedContract}
-                >
-                    <button>Hoàn thành</button>
-                </div>
-            )}
+            <div className={cx('action-btn')}>
+                <button id={cx('completed')} onClick={handleCompletedContract}>
+                    Hoàn thành
+                </button>
+                <button id={cx('rejected')}>Từ chối</button>
+            </div>
         </div>
     );
 };

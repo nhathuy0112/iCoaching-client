@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 
 const Program = () => {
     const dispatch = useDispatch();
-    const { programFiles } = useSelector((state) => state.contract);
+    const { programFiles, currentContract } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
     const [isOpenDeteleModal, setIsOpenDeteleModal] = useState(false);
     const [selectedFile, setSeletectedFile] = useState({});
@@ -57,19 +57,21 @@ const Program = () => {
         <div className={cx('wrapper')}>
             {programFiles && programFiles.length > 0 ? (
                 <>
-                    <div className={cx('action')}>
-                        <div className={cx('add')}>
-                            <Link
-                                className={cx('add-link')}
-                                to={`/coach/${id}/my-clients/view-details/${contractId}/add-resource`}
-                            >
-                                Thêm tài nguyên
-                            </Link>
+                    {currentContract?.status === 'Active' && (
+                        <div className={cx('action')}>
+                            <div className={cx('add')}>
+                                <Link
+                                    className={cx('add-link')}
+                                    to={`/coach/${id}/my-clients/view-details/${contractId}/add-resource`}
+                                >
+                                    Thêm tài nguyên
+                                </Link>
+                            </div>
+                            <div className={cx('filter-and-search')}>
+                                <input type="text" placeholder="Tìm kiếm" />
+                            </div>
                         </div>
-                        <div className={cx('filter-and-search')}>
-                            <input type="text" placeholder="Tìm kiếm" />
-                        </div>
-                    </div>
+                    )}
                     <div className={cx('file-list')}>
                         <table id={cx('file-table')}>
                             <tr>

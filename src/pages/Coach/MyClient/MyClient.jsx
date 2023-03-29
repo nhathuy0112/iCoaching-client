@@ -7,6 +7,7 @@ import styles from './MyClient.module.scss';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import Pending from './components/Pending';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +16,10 @@ const MyClient = () => {
         {
             label: 'Đang tập',
             content: <Active />,
+        },
+        {
+            label: 'Đợi hoàn thành',
+            content: <Pending />,
         },
         {
             label: 'Đã hoàn thành',

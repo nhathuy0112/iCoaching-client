@@ -44,7 +44,7 @@ export const getPortfolioPhotos = ({ pageIndex, pageSize, sort, search }) => {
     const sortParam = sort ? `&Sort=${sort}` : '';
     const searchParam = search ? `&Search=${search}` : '';
     return axios.get(`${END_POINTS.PORTFOLIO_PHOTOS}${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}`);
-}
+};
 
 export const removePortfolioPhotos = (photoId) => axios.delete(`${END_POINTS.PHOTO_REMOVE}/${photoId}`);
 
@@ -95,3 +95,5 @@ export const getAllContracts = ({ pageIndex, pageSize, sort, search, status }) =
         `${END_POINTS.CONTRACT}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}${statusParam}`,
     );
 };
+
+export const completedContract = (contractId) => axios.put(`${END_POINTS.CONTRACT}/${contractId}/completion`);

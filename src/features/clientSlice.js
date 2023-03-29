@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import {
     cancelTrainingRequest,
+    completedContract,
     getCoachingRequests,
     getPaymentLink,
     getTrainingCourses,
@@ -60,6 +61,16 @@ export const cancelTrainingRequestAsync = createAsyncThunk('client/cancelRequest
 export const getPaymentLinkAsync = createAsyncThunk('client/getPaymentLink', async (requestId) => {
     try {
         const response = await getPaymentLink(requestId);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+//complete contract
+export const completedContractAsync = createAsyncThunk('coach/completedContract', async (contractId) => {
+    try {
+        const response = await completedContract(contractId);
         return response;
     } catch (error) {
         console.log(error);
@@ -164,6 +175,21 @@ export const clientSlice = createSlice({
                 state.paymentLink = action.payload;
             })
             .addCase(getPaymentLinkAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //complete contract
+            .addCase(completedContractAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(completedContractAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(completedContractAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             });

@@ -42,3 +42,6 @@ export const cancelTrainingRequest = ({ requestId, data }) =>
     });
 
 export const getPaymentLink = (requestId) => axios.get(`${END_POINTS.COACHING_REQUEST}/${requestId}/payment-url`);
+
+//completed contract
+export const completedContract = (contractId) => axios.put(`${END_POINTS.CONTRACT}/${contractId}/completion`);

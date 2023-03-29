@@ -5,18 +5,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { getAllContractsAsync } from '~/features/coachSlice';
 import { handleRenderGenders } from '~/utils/gender';
-import styles from './Completed.module.scss';
+import styles from './Pending.module.scss';
 import Pagination from '~/components/Pagination';
 
 const cx = classNames.bind(styles);
 
-const Completed = () => {
+const Pending = () => {
     const dispatch = useDispatch();
-    const { id } = useParams();
     const { contracts, totalCount, pageSize } = useSelector((state) => state.coach);
+    const { id } = useParams();
     const [currentPage, setCurrentPage] = useState(1);
+
     useEffect(() => {
-        dispatch(getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Complete' }));
+        dispatch(getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Pending' }));
     }, [dispatch, currentPage]);
 
     return (
@@ -86,4 +87,4 @@ const Completed = () => {
     );
 };
 
-export default Completed;
+export default Pending;

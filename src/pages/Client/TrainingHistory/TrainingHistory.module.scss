@@ -52,26 +52,7 @@
 
                         .card-title {
                             min-width: 160px;
-
-                            &.coach {
-                                color: #0c21e0;
-                            }
-
-                            &.course-name {
-                                color: #1da032;
-                            }
-
-                            &.gender {
-                                color: #c33333;
-                            }
-
-                            &.email {
-                                color: #1a97cc;
-                            }
-
-                            &.phone {
-                                color: #fc2323;
-                            }
+                            color: var(--primary-color);
                         }
                     }
                 }

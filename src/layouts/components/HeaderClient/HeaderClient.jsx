@@ -67,7 +67,7 @@ const Header = () => {
                                         Yêu cầu tập luyện
                                     </NavLink>
                                     <NavLink
-                                        to={`/${currentUser?.role.toLowerCase()}/${currentUser?.Id}/ongoing-course`}
+                                        to={`/${currentUser?.role.toLowerCase()}/${currentUser?.Id}/ongoing-courses`}
                                         className={({ isActive }) =>
                                             isActive ? cx('nav-link-item', 'active') : cx('nav-link-item')
                                         }
@@ -75,7 +75,7 @@ const Header = () => {
                                         Đang tập luyện
                                     </NavLink>
                                     <NavLink
-                                        to={`/${currentUser?.role.toLowerCase()}/${currentUser?.Id}/pending-course`}
+                                        to={`/${currentUser?.role.toLowerCase()}/${currentUser?.Id}/pending-courses`}
                                         className={({ isActive }) =>
                                             isActive ? cx('nav-link-item', 'active') : cx('nav-link-item')
                                         }

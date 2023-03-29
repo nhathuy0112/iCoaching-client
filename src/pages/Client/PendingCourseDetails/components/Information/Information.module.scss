@@ -60,33 +60,31 @@
             }
         }
     }
-    .completed-btn {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 8px 16px;
-        width: 160px;
-        border-radius: var(--default-border-radius);
-        background-color: green;
-        text-align: center;
-        cursor: pointer;
-
+    .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         button {
-            background-color: transparent;
+            padding: 8px 16px;
+            margin: 0 4px;
             color: var(--white-color);
             font-size: 1.6rem;
             font-weight: 500;
             cursor: pointer;
-        }
+            width: 160px;
+            border-radius: var(--default-border-radius);
 
-        &:hover {
-            opacity: 0.6;
-        }
+            &#completed {
+                background-color: green;
+            }
 
-        &.disabled {
-            background-color: #ccc;
-            pointer-events: none;
+            &#rejected {
+                background-color: red;
+            }
+
+            &:hover {
+                opacity: 0.6;
+            }
         }
     }
 }

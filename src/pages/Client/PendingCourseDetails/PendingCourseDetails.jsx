@@ -6,11 +6,11 @@ import Information from './components/Information';
 import Program from './components/Program';
 import Progress from './components/Progress';
 import Report from './components/Report';
-import styles from './ContractDetails.module.scss';
+import styles from './PendingCourseDetails.module.scss';
 
 const cx = classNames.bind(styles);
 
-const ContractDetails = () => {
+const PendingCourseDetails = () => {
     const { id } = useParams();
 
     const tabs = [
@@ -38,7 +38,7 @@ const ContractDetails = () => {
                 <div className={cx('frame')}>
                     <div className={cx('title-and-back')}>
                         <div className={cx('back')}>
-                            <Link to={`/client/${id}/ongoing-courses`} className={cx('back-link')}>
+                            <Link to={`/client/${id}/pending-courses`} className={cx('back-link')}>
                                 <IoIosArrowBack />
                                 <span>Quay lại</span>
                             </Link>
@@ -54,4 +54,4 @@ const ContractDetails = () => {
     );
 };
 
-export default ContractDetails;
+export default PendingCourseDetails;
