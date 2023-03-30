@@ -36,9 +36,9 @@ const Chat = () => {
     const chatId = useSelector((state) => state.chat.chatId);
     let zp;
 
-    // useEffect(() => {
-    //     init();
-    // });
+    useEffect(() => {
+        init();
+    });
 
     async function init() {
         const userID = currentUser?.Username;
