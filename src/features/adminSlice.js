@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import {
     getAllCoaches,
@@ -10,7 +10,7 @@ import {
     updateReport,
     createContract,
     createVoucher,
-    updateContractStatus
+    updateContractStatus,
 } from '~/services/adminService';
 
 //get list coaches
@@ -21,7 +21,7 @@ export const getAllCoachesAsync = createAsyncThunk('/admin/getAllCoaches', async
     } catch (error) {
         console.log(error);
     }
-})
+});
 
 //update coach account status
 export const updateStatusAsync = createAsyncThunk('/admin/updateStatus', async (coachId) => {
@@ -41,7 +41,7 @@ export const getAllCertRequestsAsync = createAsyncThunk('/admin/getAllCertReques
     } catch (error) {
         console.log(error);
     }
-})
+});
 
 //get certificate detail
 export const getCertRequestDetailAsync = createAsyncThunk('/admin/getCertRequestDetail', async (payload) => {
@@ -56,12 +56,16 @@ export const getCertRequestDetailAsync = createAsyncThunk('/admin/getCertRequest
 //update certificate status
 export const updateCertStatusAsync = createAsyncThunk('/admin/updateCertStatus', async (payload) => {
     try {
-        const response = await updateCertStatus({ certId: payload.certId, option: payload.option, data: payload.reason });
+        const response = await updateCertStatus({
+            certId: payload.certId,
+            option: payload.option,
+            data: payload.reason,
+        });
         return response;
     } catch (error) {
         console.log(error);
     }
-})
+});
 
 //get list reports
 export const getAllReportsAsync = createAsyncThunk('/admin/getAllReports', async (payload) => {
@@ -71,12 +75,16 @@ export const getAllReportsAsync = createAsyncThunk('/admin/getAllReports', async
     } catch (error) {
         console.log(error);
     }
-})
+});
 
 //update report status
 export const updateReportAsync = createAsyncThunk('/admin/updateReport', async (payload) => {
     try {
-        const response = await updateReport({ reportId: payload.reportId, option: payload.option, data: payload.message });
+        const response = await updateReport({
+            reportId: payload.reportId,
+            option: payload.option,
+            data: payload.message,
+        });
         if (response) {
             toast.success('Đã cập nhật trạng thái khiếu nại');
             return response;
@@ -84,8 +92,7 @@ export const updateReportAsync = createAsyncThunk('/admin/updateReport', async (
     } catch (error) {
         console.log(error);
     }
-
-})
+});
 
 //create contract
 export const createContractAsync = createAsyncThunk('/admin/createContract', async (payload) => {
@@ -98,12 +105,16 @@ export const createContractAsync = createAsyncThunk('/admin/createContract', asy
     } catch (error) {
         console.log(error);
     }
-})
+});
 
 //create voucher
 export const createVoucherAsync = createAsyncThunk('/admin/createVoucher', async (payload) => {
     try {
-        const response = await createVoucher({ clientId: payload.clientId, discount: payload.discount, data: payload.data });
+        const response = await createVoucher({
+            clientId: payload.clientId,
+            discount: payload.discount,
+            data: payload.data,
+        });
         if (response) {
             toast.success('Tạo mã giảm giá thành công');
             return response;
@@ -111,12 +122,16 @@ export const createVoucherAsync = createAsyncThunk('/admin/createVoucher', async
     } catch (error) {
         console.log(error);
     }
-})
+});
 
 //update contract status
 export const updateContractStatusAsync = createAsyncThunk('/admin/updateContractStatus', async (payload) => {
     try {
-        const response = await updateContractStatus({ reportId: payload.reportId, option: payload.option, data: payload.message });
+        const response = await updateContractStatus({
+            reportId: payload.reportId,
+            option: payload.option,
+            data: payload.message,
+        });
         if (response) {
             toast.success('Đã cập nhật trạng thái hợp đồng');
             return response;
@@ -124,8 +139,7 @@ export const updateContractStatusAsync = createAsyncThunk('/admin/updateContract
     } catch (error) {
         console.log(error);
     }
-
-})
+});
 
 const initialState = {
     coaches: [],
@@ -139,8 +153,8 @@ const initialState = {
     loading: false,
     error: null,
     message: '',
-    status: false
-}
+    status: false,
+};
 
 export const adminSlice = createSlice({
     name: 'admin',
@@ -213,7 +227,7 @@ export const adminSlice = createSlice({
 
             .addCase(updateCertStatusAsync.fulfilled, (state, action) => {
                 state.message = action.payload;
-                state.status = action.payload.status
+                state.status = action.payload.status;
             })
             .addCase(updateCertStatusAsync.rejected, (state, action) => {
                 state.loading = false;
@@ -236,7 +250,6 @@ export const adminSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             })
-
 
             //update report status
             .addCase(updateReportAsync.pending, (state) => {
@@ -292,8 +305,8 @@ export const adminSlice = createSlice({
             .addCase(updateContractStatusAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
-            })
-    }
+            });
+    },
 });
 
 export const { setPage, setStatus } = adminSlice.actions;
