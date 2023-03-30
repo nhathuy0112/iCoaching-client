@@ -16,12 +16,14 @@ const Voucher = () => {
     const { contractId, reportId } = useParams();
     const { client } = currentContract;
 
+    console.log(client);
+
     const [voucher, setVoucher] = useState('');
     const [description, setDescription] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createVoucherAsync({ clientId: currentUser.Id, discount: voucher, data: description }));
+        dispatch(createVoucherAsync({ clientId: client.id, discount: voucher, data: description }));
     };
     return (
         <div className={cx('wrapper')}>
