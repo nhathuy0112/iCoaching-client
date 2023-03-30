@@ -58,22 +58,24 @@ const Chat = () => {
     }
 
     function handleSend(callType) {
-        const targetUser = {
-            userID: user?.username,
-            userName: user?.username,
-        };
+        if (zp) {
+            const targetUser = {
+                userID: user?.username,
+                userName: user?.username,
+            };
 
-        zp.sendCallInvitation({
-            callees: [targetUser],
-            callType: callType,
-            timeout: 60,
-        })
-            .then((res) => {
-                console.warn(res);
+            zp.sendCallInvitation({
+                callees: [targetUser],
+                callType: callType,
+                timeout: 60,
             })
-            .catch((err) => {
-                console.warn(err);
-            });
+                .then((res) => {
+                    console.warn(res);
+                })
+                .catch((err) => {
+                    console.warn(err);
+                });
+        }
     }
 
     useEffect(() => {
@@ -147,7 +149,6 @@ const Chat = () => {
             navigate(`/coach/${currentUser.Id}/messages`);
         }
     });
-
     const handleBack = () => {
         navigate(`/coach/${currentUser.Id}/messages`);
         dispatch(changeUser({ currentUser: '', payload: '' }));
