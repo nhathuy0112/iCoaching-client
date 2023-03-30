@@ -52,6 +52,31 @@
                     border-radius: var(--default-border-radius);
                     margin-bottom: 8px;
                 }
+                .drop-search {
+                    background-color: var(--white-color);
+                    box-shadow: var(--default-box-shadow);
+                    border-radius: var(--default-border-radius);
+                    position: relative;
+                    .wrapper {
+                        background-color: white;
+                        box-shadow: rbg(0 0 0 /12%) 0px 2px 12px;
+                        border-radius: var(--default-border-radius);
+                        max-height: 200px;
+                        overflow-y: scroll;
+                        .item {
+                            color: black;
+                            margin: 0 8px;
+                            padding: 8px 0;
+                            &:hover {
+                                background-color: var(--primary-color);
+                                color: var(--white-color);
+                            }
+                            &.active {
+                                border-bottom: 1px solid var(--white-color);
+                            }
+                        }
+                    }
+                }
             }
 
             button {
