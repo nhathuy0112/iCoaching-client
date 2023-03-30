@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCoachProfileAsync } from '~/features/guestSlice';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
+import Home from '~/components/Chat/Home';
+import { changeUser } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 const CoachDetail = () => {
@@ -27,6 +29,11 @@ const CoachDetail = () => {
         {
             label: 'Gói tập',
             content: <TrainingCourse />,
+        },
+        {
+            label: 'Trò chuyện',
+            content: <Home />,
+            onClick: () => handleSelect(),
         },
     ];
     const { id, coachId } = useParams();

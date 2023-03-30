@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import Home from '~/components/Chat/Home';
 
 const Messages = () => {
     const { id } = useParams();
@@ -14,7 +15,7 @@ const Messages = () => {
             }
         }
     }, [id, currentUser, navigate]);
-    return <div>Messages</div>;
+    return <Home />;
 };
 
 export default Messages;

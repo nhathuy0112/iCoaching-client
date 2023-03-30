@@ -7,6 +7,7 @@ import userReducer from '~/features/userSlice';
 import coachReducer from '~/features/coachSlice';
 import clientReducer from '~/features/clientSlice';
 import contractReducer from '~/features/contractSlice';
+import chatSlice from '~/features/chatSlice';
 
 const rootReducer = {
     user: userReducer,
@@ -14,6 +15,7 @@ const rootReducer = {
     client: clientReducer,
     coach: coachReducer,
     admin: adminReducer,
+    chat: chatSlice,
     superAdmin: superAdminReducer,
     contract: contractReducer,
 };

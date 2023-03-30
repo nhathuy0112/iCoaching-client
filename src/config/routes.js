@@ -53,6 +53,7 @@ import NotFound from '~/pages/Errors/NotFound';
 import GuestLayout from '~/layouts/GuestLayout';
 import AuthLayout from '~/layouts/AuthLayout';
 import ClientLayout from '~/layouts/ClientLayout';
+import Chat from '~/components/Chat/Chat';
 
 //Guard
 import RoleGuard from '~/components/Guards/RoleGuard';
@@ -135,6 +136,7 @@ const coachRoutes = [
     { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/messages', component: Messages, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/*', component: NotFound },
+    { path: '/coach/:id/messages/:userId', component: Chat, layout: AuthLayout }
 ];
 
 const adminRoutes = [
