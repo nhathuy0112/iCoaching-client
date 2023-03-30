@@ -10,9 +10,11 @@ import {
 } from '~/features/coachSlice';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import styles from './MyCourse.module.scss';
 import Modal from '~/components/Modal';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import ErrorMessage from '~/components/ErrorMessage';
@@ -37,6 +39,35 @@ const schema = yup.object({
         .moreThan(0, 'Số buổi tập phải lớn hơn 0'),
 });
 
+const modules = {
+    toolbar: [
+        [{ header: '1' }, { header: '2' }, { font: [] }],
+        [{ size: [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link', 'image', 'video'],
+        ['clean'],
+        ['code-block'],
+    ],
+};
+
+const formats = [
+    'header',
+    'font',
+    'size',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'link',
+    'image',
+    'video',
+    'code-block',
+];
+
 const MyCourse = () => {
     const { trainingCourses, pageSize, totalCount } = useSelector((state) => state.coach);
     const dispatch = useDispatch();
@@ -52,7 +83,7 @@ const MyCourse = () => {
     const [durationEditError, setDurationEditError] = useState(null);
     const [descriptionEdit, setDescriptionEdit] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-
+    const [editorValue, setEditorValue] = useState('');
     const { currentUser } = useSelector((state) => state.user);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -73,12 +104,17 @@ const MyCourse = () => {
         register,
         handleSubmit,
         formState: { errors },
+        control,
         reset,
     } = useForm({ resolver: yupResolver(schema) });
 
     const handleCloseAndResetAddForm = () => {
         setIsAdd(false);
         reset({ name: '', price: '', duration: '', description: '' });
+    };
+
+    const handleEditorChange = (value) => {
+        setEditorValue(value);
     };
 
     const handleAddCourse = (data) => {
@@ -172,7 +208,7 @@ const MyCourse = () => {
                 <>
                     <div className={cx('action')}>
                         <div className={cx('add')}>
-                            <button id={cx('add-btn')} onClick={() => setIsAdd(true)}>
+                            <button id={cx('add-btn')} onClick={() => navigate(`/coach/${id}/my-courses/add`)}>
                                 <AiOutlinePlus className={cx('icon')} />
                                 <span>Thêm gói tập</span>
                             </button>
@@ -256,7 +292,22 @@ const MyCourse = () => {
                             )}
                             <div className={cx('input-group', 'description')}>
                                 <label htmlFor="description">Mô tả</label>
-                                <textarea {...register('description')}></textarea>
+                                <Controller
+                                    name="about"
+                                    control={control}
+                                    // defaultValue={aboutMe !== '' ? aboutMe : ''}
+                                    render={({ field: { onChange, value } }) => (
+                                        <ReactQuill
+                                            value={editorValue}
+                                            onChange={handleEditorChange}
+                                            modules={modules}
+                                            formats={formats}
+                                            bounds={'.app'}
+                                            className={cx('editor')}
+                                            placeholder="Viết gì đó về bản thân bạn..."
+                                        />
+                                    )}
+                                />
                             </div>
                             <div className={cx('modal-action')}>
                                 <button id={cx('agree-btn')} type="submit">

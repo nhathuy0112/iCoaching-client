@@ -39,8 +39,6 @@ const TrainingCourseCard = ({ course }) => {
         dispatch(getAllVouchersAsync());
     }, [dispatch]);
 
-    console.log(vouchers);
-
     const handleViewDetailsClick = () => {
         setIsViewDetails(true);
     };

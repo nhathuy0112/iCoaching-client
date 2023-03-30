@@ -25,6 +25,7 @@ import Verify from '~/pages/Coach/Verify';
 import MyClient from '~/pages/Coach/MyClient';
 import CoachingRequest from '~/pages/Coach/CoachingRequest';
 import MyCourse from '~/pages/Coach/MyCourse';
+import AddCourse from '~/pages/Coach/AddCourse';
 import CoachContractDetails from '~/pages/Coach/ContractDetails';
 import AddResource from '~/pages/Coach/AddResource';
 import EditTrainingLog from '~/pages/Coach/EditTrainingLog';
@@ -131,6 +132,7 @@ const coachRoutes = [
     },
     { path: '/coach/:id/coaching-requests', component: CoachingRequest, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/my-courses/add', component: AddCourse, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/messages', component: Messages, layout: AuthLayout, guard: RoleGuard },
@@ -142,7 +144,12 @@ const adminRoutes = [
     { path: '/admin/:id/verify-coach', component: VerifyCoach, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/:id/verify-coach/:certId', component: CoachCertificate, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/:id/reports', component: Reports, layout: AuthLayout, guard: RoleGuard },
-    { path: '/admin/:id/reports/:contractId/:reportId', component: ReportDetails, layout: AuthLayout, guard: RoleGuard },
+    {
+        path: '/admin/:id/reports/:contractId/:reportId',
+        component: ReportDetails,
+        layout: AuthLayout,
+        guard: RoleGuard,
+    },
     { path: '/admin/:id/reports/:contractId/:reportId/createContract', component: CreateContract, layout: AuthLayout },
     { path: '/admin/:id/reports/:contractId/:reportId/voucher', component: Voucher, layout: AuthLayout },
     { path: '/admin/:id/profile', component: AdminAccountProfile, layout: AuthLayout, guard: RoleGuard },
