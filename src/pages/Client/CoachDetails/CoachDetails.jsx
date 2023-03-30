@@ -43,6 +43,9 @@ const CoachDetail = () => {
     const { currentCoach, error } = useSelector((state) => state.guest);
     const { currentUser } = useSelector((state) => state.user);
 
+    const handleSelect = () => {
+        dispatch(changeUser({ currentUser: currentUser, payload: coachId }));
+    };
     useEffect(() => {
         if (currentUser) {
             if (id !== currentUser.Id) {
