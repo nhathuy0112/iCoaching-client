@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
     getAllCoaches,
     getCoachProfile,
-    getCoachTrainingCourses,
     getCoachAbout,
     getCoachPhotos,
+    getCoachTrainingCourseDetails,
+    getCoachTrainingCourses,
 } from '~/services/guestService';
 
 export const getAllCoachesAsync = createAsyncThunk('/guest/getAllCoaches', async (payload) => {
@@ -53,10 +54,23 @@ export const getCoachTrainingCourseAsync = createAsyncThunk('/guest/getCoachTrai
     }
 });
 
+export const getCoachTrainingCourseDetailsAsync = createAsyncThunk(
+    '/guest/getCoachTrainingCourseDetails',
+    async (payload) => {
+        try {
+            const response = await getCoachTrainingCourseDetails(payload);
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+);
+
 const initialState = {
     coaches: [],
     currentCoach: {},
     trainingCourses: [],
+    currentTrainingCourse: {},
     pageSize: 6,
     pageIndex: 1,
     totalCount: null,
@@ -150,6 +164,20 @@ export const guestSlice = createSlice({
                 state.totalCount = action.payload.count;
             })
             .addCase(getCoachPhotosAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //get coach training course detailss
+            .addCase(getCoachTrainingCourseDetailsAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getCoachTrainingCourseDetailsAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentTrainingCourse = action.payload;
+            })
+            .addCase(getCoachTrainingCourseDetailsAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

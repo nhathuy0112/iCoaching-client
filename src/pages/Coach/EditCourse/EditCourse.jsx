@@ -1,14 +1,15 @@
 import classNames from 'classnames/bind';
-import styles from './AddCourse.module.scss';
+import styles from './EditCourse.module.scss';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { IoIosArrowBack } from 'react-icons/io';
 import ReactQuill from 'react-quill';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { addTrainingCourseAsync } from '~/features/coachSlice';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ErrorMessage from '~/components/ErrorMessage';
+import { editTrainingCourseAsync, getTrainingCourseByIdAsync } from '~/features/coachSlice';
 
 const modules = {
     toolbar: [
@@ -55,8 +56,8 @@ const schema = yup.object({
 
 const cx = classNames.bind(styles);
 
-const AddCourse = () => {
-    const { id } = useParams();
+const EditCourse = () => {
+    const { id, courseId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -65,25 +66,32 @@ const AddCourse = () => {
         handleSubmit,
         formState: { errors },
         control,
+        setValue,
     } = useForm({ resolver: yupResolver(schema) });
 
-    const handleAddCourse = (data) => {
+    useEffect(() => {
+        dispatch(getTrainingCourseByIdAsync(courseId))
+            .unwrap()
+            .then((response) => {
+                setValue('name', response.name);
+                setValue('duration', response.duration);
+                setValue('price', response.price);
+                setValue('description', response.description);
+            });
+    }, [dispatch, courseId, setValue]);
+
+    const handleEditCourse = (data) => {
         try {
             dispatch(
-                addTrainingCourseAsync({
+                editTrainingCourseAsync({
+                    id: courseId,
                     name: data.name,
                     price: data.price,
                     duration: data.duration,
                     description: data.description,
                 }),
-            )
-                .unwrap()
-                .then(() => {
-                    navigate(`/coach/${id}/my-courses`);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            );
+            navigate(`/coach/${id}/my-courses`);
         } catch (error) {
             console.log(error);
         }
@@ -99,7 +107,7 @@ const AddCourse = () => {
                 <h2 className={cx('title')}>Thông tin gói tập</h2>
             </div>
             <div className={cx('content')}>
-                <form id={cx('add-form')} onSubmit={handleSubmit(handleAddCourse)}>
+                <form id={cx('edit-form')} onSubmit={handleSubmit(handleEditCourse)}>
                     <div className={cx('input-group')}>
                         <label htmlFor="name">Tên gói tập</label>
                         <input type="text" {...register('name')} />
@@ -147,7 +155,7 @@ const AddCourse = () => {
                         />
                     </div>
                     <button id={cx('agree-btn')} type="submit">
-                        <span>Thêm mới</span>
+                        <span>Cập nhật</span>
                     </button>
                 </form>
             </div>
@@ -155,4 +163,4 @@ const AddCourse = () => {
     );
 };
 
-export default AddCourse;
+export default EditCourse;

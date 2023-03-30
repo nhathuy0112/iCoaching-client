@@ -16,7 +16,7 @@ const AuthLayout = ({ children }) => {
     const [links, setLinks] = useState([]);
     const url = window.location.href;
     const path = url.split('/');
-    const lastPath = path[path.length - 1];
+    const headerPath = path[5];
 
     useEffect(() => {
         dispatch(getUserAvatarAsync());
@@ -50,7 +50,7 @@ const AuthLayout = ({ children }) => {
                 <div className={cx('header')}>
                     <h3>
                         {links.map((link) => {
-                            if (link.url === lastPath) return link.name;
+                            if (link.url === headerPath) return link.name;
                             return '';
                         })}
                     </h3>

@@ -1,0 +1,98 @@
+.wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .title-and-back {
+        .back-link {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 600;
+            width: 100px;
+            color: var(--primary-color);
+        }
+
+        .title {
+            text-align: center;
+            color: var(--primary-color);
+        }
+    }
+
+    .content {
+        flex: 1;
+
+        #edit-form {
+            padding: 16px 0;
+            height: 100%;
+            position: relative;
+
+            .input-group {
+                display: flex;
+                margin: 8px 0;
+
+                &.price {
+                    position: relative;
+                }
+
+                .unit {
+                    position: absolute;
+                    right: 16px;
+                }
+
+                &:not(.description) {
+                    align-items: center;
+                }
+
+                label {
+                    min-width: 160px;
+                }
+
+                input {
+                    padding: 12px 16px;
+                    border: 1px solid var(--primary-color);
+                    border-radius: var(--default-border-radius);
+                    flex: 1;
+                }
+
+                &.description {
+                    height: 120px;
+
+                    div {
+                        flex: 1;
+                        border-radius: var(--default-border-radius);
+
+                        div {
+                            &:first-child {
+                                border: 1px solid var(--primary-color);
+                            }
+                        }
+                    }
+                }
+            }
+
+            #agree-btn {
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 8px 16px;
+                width: 160px;
+                background-color: green;
+                color: var(--white-color);
+                font-size: 1.6rem;
+                font-weight: 500;
+                border-radius: var(--default-border-radius);
+                cursor: pointer;
+
+                &:hover {
+                    opacity: 0.6;
+                }
+            }
+
+            .error {
+                margin-left: 160px;
+            }
+        }
+    }
+}

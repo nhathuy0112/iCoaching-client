@@ -26,6 +26,7 @@ import MyClient from '~/pages/Coach/MyClient';
 import CoachingRequest from '~/pages/Coach/CoachingRequest';
 import MyCourse from '~/pages/Coach/MyCourse';
 import AddCourse from '~/pages/Coach/AddCourse';
+import EditCourse from '~/pages/Coach/EditCourse';
 import CoachContractDetails from '~/pages/Coach/ContractDetails';
 import AddResource from '~/pages/Coach/AddResource';
 import EditTrainingLog from '~/pages/Coach/EditTrainingLog';
@@ -133,6 +134,7 @@ const coachRoutes = [
     { path: '/coach/:id/coaching-requests', component: CoachingRequest, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/my-courses', component: MyCourse, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/my-courses/add', component: AddCourse, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/my-courses/edit/:courseId', component: EditCourse, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/messages', component: Messages, layout: AuthLayout, guard: RoleGuard },
