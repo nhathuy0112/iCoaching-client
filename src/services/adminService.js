@@ -49,8 +49,8 @@ export const getAllReports = ({ pageIndex, pageSize, sort, search }) => {
     return axios.get(`${END_POINTS.REPORT}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}&status=Pending`);
 };
 
-export const createVoucher = ({ clientId, discount, data }) =>
-    axios.post(`${END_POINTS.VOUCHER}/${clientId}?discount=${discount}`, data, {
+export const createVoucher = ({ reportId, discount, clientId, data }) =>
+    axios.post(`${END_POINTS.VOUCHER}/${clientId}?reportId=${reportId}&discount=${discount}`, data, {
         headers: {
             'Content-Type': 'application/json',
         },
@@ -65,7 +65,7 @@ export const updateReport = ({ reportId, option, data }) => {
 };
 
 export const updateContractStatus = ({ reportId, option, data }) =>
-    axios.put(`${END_POINTS.REPORT}/${reportId}?option=${option}`, data, {
+    axios.put(`${END_POINTS.REPORT}/${reportId}/contract-status?option=${option}`, data, {
         headers: {
             'Content-Type': 'application/json',
         },

@@ -111,8 +111,9 @@ export const createContractAsync = createAsyncThunk('/admin/createContract', asy
 export const createVoucherAsync = createAsyncThunk('/admin/createVoucher', async (payload) => {
     try {
         const response = await createVoucher({
-            clientId: payload.clientId,
+            reportId: payload.reportId,
             discount: payload.discount,
+            clientId: payload.clientId,
             data: payload.data,
         });
         if (response) {
