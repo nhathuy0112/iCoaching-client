@@ -48,6 +48,14 @@ const Canceled = () => {
                                         <span className={cx('card-title', 'price')}>Giá</span>
                                         <span>{request.price}</span>
                                     </div>
+                                    <div className={cx('card-content')}>
+                                        <span className={cx('card-title', 'discount')}>Giảm giá</span>
+                                        <span>{request.discount ? request.discount : 0}%</span>
+                                    </div>
+                                    <div className={cx('card-content')}>
+                                        <span className={cx('card-title', 'pay')}>Thành tiền</span>
+                                        <span>{request.priceToPay}</span>
+                                    </div>
                                 </div>
                                 <div className={cx('action')}>
                                     <button id={cx('view-detail-btn')} onClick={() => handleViewDetails(request)}>

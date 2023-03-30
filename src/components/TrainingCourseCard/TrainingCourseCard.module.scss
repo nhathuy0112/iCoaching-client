@@ -28,6 +28,9 @@
 }
 .body {
     padding-bottom: 2%;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+
     h1,
     h2 {
         align-content: center;
@@ -39,6 +42,29 @@
         color: rgba(255, 255, 255, 0.6);
         padding: 14px;
     }
+
+    .input-group {
+        padding: 0 120px;
+        margin-bottom: 16px;
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: var(--default-border-radius);
+            width: 100%;
+
+            option {
+                font-size: 1.6rem;
+                font-weight: 500;
+                color: #000;
+            }
+        }
+    }
+
     .course-detail {
         border: 1px solid rgba(0, 0, 0, 0.25);
         width: 90%;
@@ -98,7 +124,6 @@
         }
     }
     .message-frame {
-        padding: 0 120px;
         height: 200px;
         margin-bottom: 16px;
 
@@ -110,6 +135,7 @@
             font-size: 16px;
             padding: 10px;
             box-sizing: border-box;
+            border-radius: var(--default-border-radius);
         }
     }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './TrainingCourseCard.module.scss';
 import Modal from '~/components/Modal';
@@ -9,7 +9,12 @@ import Login from '~/auth/Login';
 import Register from '~/auth/Register';
 import ForgotPassword from '~/auth/ForgotPassword';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCoachingRequestsAsync, resetError, sendCoachingRequestAsync } from '~/features/clientSlice';
+import {
+    getAllVouchersAsync,
+    getCoachingRequestsAsync,
+    resetError,
+    sendCoachingRequestAsync,
+} from '~/features/clientSlice';
 import ErrorMessage from '../ErrorMessage';
 
 const cx = classNames.bind(styles);
@@ -19,6 +24,7 @@ const TrainingCourseCard = ({ course }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { currentUser } = useSelector((state) => state.user);
+    const { vouchers } = useSelector((state) => state.client);
     const [isViewDetails, setIsViewDetails] = useState(false);
     const [loginOpen, setLoginOpen] = useState(false);
     const [registerOpen, setRegisterOpen] = useState(false);
@@ -26,7 +32,14 @@ const TrainingCourseCard = ({ course }) => {
     const [isSendMessage, setIsSendMessage] = useState(false);
     const [message, setMessage] = useState('');
     const [messageError, setMessageError] = useState('');
+    const [voucherCode, setVoucherCode] = useState('');
     const { coachId } = useParams();
+
+    useEffect(() => {
+        dispatch(getAllVouchersAsync());
+    }, [dispatch]);
+
+    console.log(vouchers);
 
     const handleViewDetailsClick = () => {
         setIsViewDetails(true);
@@ -61,7 +74,9 @@ const TrainingCourseCard = ({ course }) => {
         if (!message) {
             setMessageError('Lời nhắn không được để trống');
         } else {
-            dispatch(sendCoachingRequestAsync({ coachId: coachId, courseId: id, data: message }))
+            dispatch(
+                sendCoachingRequestAsync({ coachId: coachId, courseId: id, voucherCode: voucherCode, data: message }),
+            )
                 .unwrap()
                 .then(() => {
                     setIsSendMessage(false);
@@ -139,15 +154,39 @@ const TrainingCourseCard = ({ course }) => {
                 <Modal open={isSendMessage} onClose={handleClose} modalStyle={{}} closeBtnStyle={{ display: 'none' }}>
                     <div className={cx('body')}>
                         <h1>iCoaching</h1>
-                        <h2>Vui lòng gửi lời nhắn cho huấn luyện viên !</h2>
-                        <div className={cx('message-frame')}>
-                            <textarea name="message" id="message" value={message} onChange={handleOnChangeMessage} />
+                        <h2>Vui lòng chọn Mã giảm giá (nếu có) và gửi lời nhắn cho Huấn luyện viên!</h2>
+                        <div className={cx('input-group')}>
+                            <label htmlFor="">Mã giảm giá</label>
+                            <select name="" id="" defaultValue="" onChange={(e) => setVoucherCode(e.target.value)}>
+                                <option value="">-- Chọn mã giảm giá -- </option>
+                                {vouchers.map((voucher) => {
+                                    if (!voucher.isUsed) {
+                                        return (
+                                            <option key={voucher.id} value={voucher.code}>
+                                                {voucher.code} - {voucher.discount}
+                                            </option>
+                                        );
+                                    }
+                                    return null;
+                                })}
+                            </select>
                         </div>
-                        {messageError && (
-                            <div className={cx('error')}>
-                                <ErrorMessage message={messageError} />
+                        <div className={cx('input-group')}>
+                            <label htmlFor="">Lời nhắn cho HLV</label>
+                            <div className={cx('message-frame')}>
+                                <textarea
+                                    name="message"
+                                    id="message"
+                                    value={message}
+                                    onChange={handleOnChangeMessage}
+                                />
                             </div>
-                        )}
+                            {messageError && (
+                                <div className={cx('error')}>
+                                    <ErrorMessage message={messageError} />
+                                </div>
+                            )}
+                        </div>
                         <div className={cx('button')}>
                             <button className={cx('btn-confirm')} onClick={handleSendRequestCoaching}>
                                 <BsCheckLg className={cx('icon')} />

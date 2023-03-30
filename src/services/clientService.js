@@ -6,12 +6,18 @@ const END_POINTS = {
     VOUCHER: '/Client/voucher',
 };
 
-export const sendCoachingRequest = ({ coachId, courseId, data }) =>
-    axios.post(`${END_POINTS.COACHING_REQUEST}?coachId=${coachId}&courseId=${courseId}`, data, {
-        headers: {
-            'Content-Type': 'application/json',
+export const sendCoachingRequest = ({ coachId, courseId, voucherCode, data }) => {
+    const voucherCodeParam = voucherCode ? `&voucherCode=${voucherCode}` : '';
+    return axios.post(
+        `${END_POINTS.COACHING_REQUEST}?coachId=${coachId}&courseId=${courseId}${voucherCodeParam}`,
+        data,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
         },
-    });
+    );
+};
 
 export const getCoachingRequests = ({ pageIndex, pageSize, sort, search, clientRequestStatus }) => {
     const pageIndexParam = pageIndex ? `?PageIndex=${pageIndex}` : '';

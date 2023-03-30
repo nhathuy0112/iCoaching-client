@@ -8,11 +8,14 @@ import Modal from '~/components/Modal';
 import { cancelTrainingRequestAsync, getCoachingRequestsAsync, getPaymentLinkAsync } from '~/features/clientSlice';
 import styles from './Init.module.scss';
 import Pagination from '~/components/Pagination';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 const Init = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { id } = useParams();
     const { coachingRequests, paymentLink, totalCount, pageSize } = useSelector((state) => state.client);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isCancel, setIsCancel] = useState(false);
@@ -92,6 +95,14 @@ const Init = () => {
                                 <div className={cx('card-content')}>
                                     <span className={cx('card-title', 'price')}>Giá</span>
                                     <span>{request.price}</span>
+                                </div>
+                                <div className={cx('card-content')}>
+                                    <span className={cx('card-title', 'discount')}>Giảm giá</span>
+                                    <span>{request.discount ? request.discount : 0}%</span>
+                                </div>
+                                <div className={cx('card-content')}>
+                                    <span className={cx('card-title', 'pay')}>Thành tiền</span>
+                                    <span>{request.priceToPay}</span>
                                 </div>
                             </div>
                             <div className={cx('action')}>

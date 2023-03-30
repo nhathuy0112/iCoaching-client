@@ -14,11 +14,7 @@ export const sendCoachingRequestAsync = createAsyncThunk(
     'client/sendCoachingRequest',
     async (payload, { rejectWithValue }) => {
         try {
-            const response = await sendCoachingRequest({
-                coachId: payload.coachId,
-                courseId: payload.courseId,
-                data: payload.data,
-            });
+            const response = await sendCoachingRequest(payload);
             if (response) {
                 toast.success('Yêu cầu tập luyện thành công!');
                 return response;
