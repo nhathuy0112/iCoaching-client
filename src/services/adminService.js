@@ -3,6 +3,7 @@ import axios from '~/api/axios';
 const END_POINTS = {
     COACHES: 'Admin/coaches',
     UPDATE_STATUS: 'Admin/coach-account-status',
+    WARNING: 'Admin/coach-warning',
     CERT_REQUEST: 'Admin/cert-request',
     REPORT: 'Admin/report',
     VOUCHER: '/Admin/voucher',
@@ -17,6 +18,8 @@ export const getAllCoaches = ({ pageIndex, pageSize, sort, search }) => {
 };
 
 export const updateStatus = (coachId) => axios.put(`${END_POINTS.UPDATE_STATUS}/${coachId}`);
+
+export const warnCoach = (coachId) => axios.put(`${END_POINTS.WARNING}/${coachId}`);
 
 export const getAllCertRequests = ({ pageIndex, pageSize, sort, search }) => {
     const pageIndexParam = pageIndex ? `?PageIndex=${pageIndex}` : '';
@@ -70,3 +73,4 @@ export const updateContractStatus = ({ reportId, option, data }) =>
             'Content-Type': 'application/json',
         },
     });
+

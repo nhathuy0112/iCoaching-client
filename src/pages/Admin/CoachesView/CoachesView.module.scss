@@ -104,6 +104,14 @@
         #btn-warn {
             background-color: #df1b1b;
         }
+        #warning {
+            background-color: rgb(255, 140, 0);
+            margin-right: 12px;
+            .icon {
+                vertical-align: text-top;
+                margin-left: 4px;
+            }
+        }
     }
 }
 
@@ -127,11 +135,11 @@
     color: white;
 }
 
-.lock-modal {
+.modal {
     align-items: center;
     margin-bottom: 15px;
     text-align: center;
-    h2 {
+    .header {
         background-color: var(--primary-color);
         color: rgba(255, 255, 255, 0.6);
         padding: 14px;
