@@ -10,6 +10,7 @@ import { IoMdGift, IoMdSettings } from 'react-icons/io';
 import { logoutAsync, getUserAvatarAsync, getUserProfileAsync } from '~/features/userSlice';
 import { getLocalStorage } from '~/utils/localStorage';
 import { BiLogOut } from 'react-icons/bi';
+import { changeUser, updateUserOnlineStatus } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 
@@ -30,6 +31,8 @@ const Header = () => {
                 },
             }),
         );
+        dispatch(changeUser({ currentUser: '', payload: '' }));
+        dispatch(updateUserOnlineStatus(currentUser?.Id));
     };
 
     useEffect(() => {
@@ -46,6 +49,9 @@ const Header = () => {
         }
     }, [currentUser, navigate]);
 
+    const handleSetNull = () => {
+        dispatch(changeUser({ currentUser: '', payload: '' }));
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -95,6 +101,7 @@ const Header = () => {
                                         className={({ isActive }) =>
                                             isActive ? cx('nav-link-item', 'active') : cx('nav-link-item')
                                         }
+                                        onClick={handleSetNull}
                                     >
                                         Tin nhắn
                                     </NavLink>
