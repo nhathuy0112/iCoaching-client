@@ -47,7 +47,10 @@ const ContractDetails = () => {
                 </div>
                 <div className={cx('description')}>
                     <label>Mô tả gói tập</label>
-                    {/* <p>{contract?.courseDescription}</p> */}
+                    <div
+                        className={cx('detail')}
+                        dangerouslySetInnerHTML={{ __html: contract?.courseDescription }}
+                    ></div>
                 </div>
             </div>
         </div>
