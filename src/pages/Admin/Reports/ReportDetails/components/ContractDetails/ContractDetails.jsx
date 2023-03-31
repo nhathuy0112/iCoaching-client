@@ -17,6 +17,8 @@ const ContractDetails = () => {
         dispatch(getContractDetailsAsync(contractId));
     }, [dispatch, contractId]);
 
+    console.log(client);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -56,7 +58,7 @@ const ContractDetails = () => {
                 </div>
                 <div className={cx('description')}>
                     <label>Mô tả gói tập</label>
-                    <p>{contract?.courseDescription}</p>
+                    {/* <p>{contract?.courseDescription}</p> */}
                 </div>
             </div>
         </div>

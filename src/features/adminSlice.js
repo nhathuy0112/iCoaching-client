@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import {
     getAllCoaches,
     updateStatus,
+    warnCoach,
     getAllCertRequests,
     getCertRequestDetail,
     updateCertStatus,
@@ -28,6 +29,19 @@ export const updateStatusAsync = createAsyncThunk('/admin/updateStatus', async (
     try {
         const response = await updateStatus(coachId);
         return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+//warning coach
+export const warnCoachAsync = createAsyncThunk('/admin/warnCoach', async (coachId) => {
+    try {
+        const response = await warnCoach(coachId);
+        if (response) {
+            toast.success('Cảnh báo thành công');
+            return response;
+        }
     } catch (error) {
         console.log(error);
     }
@@ -111,8 +125,9 @@ export const createContractAsync = createAsyncThunk('/admin/createContract', asy
 export const createVoucherAsync = createAsyncThunk('/admin/createVoucher', async (payload) => {
     try {
         const response = await createVoucher({
-            clientId: payload.clientId,
+            reportId: payload.reportId,
             discount: payload.discount,
+            clientId: payload.clientId,
             data: payload.data,
         });
         if (response) {
@@ -193,6 +208,13 @@ export const adminSlice = createSlice({
             //update coach status
             .addCase(updateStatusAsync.fulfilled, (state, action) => {
                 state.status = !state.status;
+                state.message = action.payload
+            })
+
+            //warn coach
+            .addCase(warnCoachAsync.fulfilled, (state, action) => {
+                state.status = !state.status;
+                state.message = action.payload
             })
 
             //get all certificate verification requests

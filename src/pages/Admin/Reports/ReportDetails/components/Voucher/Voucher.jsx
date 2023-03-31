@@ -1,30 +1,52 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import styles from './Voucher.module.scss';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { IoIosArrowBack } from 'react-icons/io';
 import { AiOutlineCheck } from 'react-icons/ai';
-import { createVoucherAsync } from '~/features/adminSlice';
+import { BsCheckLg, BsXLg } from 'react-icons/bs';
+
+import { createVoucherAsync, updateContractStatusAsync, updateReportAsync } from '~/features/adminSlice';
+import Modal from '~/components/Modal';
 
 const cx = classNames.bind(styles);
 
 const Voucher = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const { currentUser } = useSelector((state) => state.user);
     const { currentContract } = useSelector((state) => state.contract);
     const { contractId, reportId } = useParams();
     const { client } = currentContract;
 
-    console.log(client);
-
     const [voucher, setVoucher] = useState('');
     const [description, setDescription] = useState('');
+    const [message, setMessage] = useState('');
+    const [cancelOpen, setCancelOpen] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createVoucherAsync({ clientId: client.id, discount: voucher, data: description }));
+        dispatch(createVoucherAsync({ reportId: reportId, discount: voucher, clientId: client.id, data: description }));
+        dispatch(updateReportAsync({ reportId: reportId, option: 'Solve', message: 'Đã tặng voucher cho khách hàng' }));
+        setCancelOpen(true);
     };
+
+    //update contract status
+    const handleCancelContract = (e) => {
+        e.preventDefault();
+        dispatch(updateContractStatusAsync({ reportId: reportId, option: 'Cancel', message: message }));
+        navigate(`/admin/${currentUser.id}/reports`);
+    };
+
+    const handleCloseCancel = (e) => {
+        e.preventDefault();
+        setCancelOpen(false);
+        navigate(`/admin/${currentUser.id}/reports`);
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -61,6 +83,36 @@ const Voucher = () => {
                         Gửi
                     </button>
                 </form>
+                {/* cancel contract modal */}
+                {cancelOpen && (
+                    <Modal
+                        open={cancelOpen}
+                        onClose={() => setCancelOpen(false)}
+                        closeBtnStyle={{ display: 'none' }}
+                        modalStyle={{ width: '60%' }}
+                    >
+                        <div className={cx('modal')}>
+                            <h2 className={cx('header')}>iCoaching</h2>
+                            <h2 className={cx('title')}>Bạn có muốn huỷ hợp đồng này? Hãy nhập lý do: </h2>
+                            <textarea
+                                name="cancel"
+                                id=""
+                                cols="30"
+                                rows="10"
+                                onChange={(e) => setMessage(e.target.value)}
+                            ></textarea>
+                            <div className={cx('button')}>
+                                <button className={cx('btn-confirm')} onClick={handleCancelContract} type="submit">
+                                    <BsCheckLg className={cx('icon')} />
+                                    Xác nhận
+                                </button>
+                                <button className={cx('btn-warn')} onClick={handleCloseCancel}>
+                                    <BsXLg className={cx('icon')} /> Từ chối
+                                </button>
+                            </div>
+                        </div>
+                    </Modal>
+                )}
             </div>
         </div>
     );

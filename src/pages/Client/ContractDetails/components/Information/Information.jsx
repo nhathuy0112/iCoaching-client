@@ -129,7 +129,8 @@ const Information = () => {
                     <div className={cx('row-info')}>
                         <div className={cx('group-info', 'description')}>
                             <label htmlFor="">Mô tả</label>
-                            <span>{currentContract?.courseDescription}</span>
+                            <div dangerouslySetInnerHTML={{ __html: currentContract?.courseDescription }}></div>
+                            {/* <span>{currentContract?.courseDescription}</span> */}
                         </div>
                     </div>
                 </div>
