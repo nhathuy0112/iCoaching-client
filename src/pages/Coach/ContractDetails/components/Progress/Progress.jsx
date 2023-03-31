@@ -1,12 +1,13 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { AiFillCheckCircle } from 'react-icons/ai';
+import { AiFillCheckCircle, AiOutlineClose } from 'react-icons/ai';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getContractLogsAsync, getProgramFileDownloadAsync } from '~/features/contractSlice';
 import styles from './Progress.module.scss';
 import { handleRenderFileIcon } from '~/utils/file';
+import Modal from '~/components/Modal';
 
 const cx = classNames.bind(styles);
 
@@ -16,6 +17,9 @@ const Progress = () => {
     const { id, contractId } = useParams();
     const navigate = useNavigate();
     const [expandedItems, setExpandedItems] = useState([]);
+
+    const [open, setOpen] = useState(false);
+    const [file, setFile] = useState('');
 
     useEffect(() => {
         dispatch(getContractLogsAsync(contractId));
@@ -47,6 +51,11 @@ const Progress = () => {
                 document.body.appendChild(link);
                 link.click();
             });
+    };
+
+    const handleOpenImage = (e) => {
+        setOpen(true);
+        setFile(e);
     };
 
     return (
@@ -115,7 +124,11 @@ const Progress = () => {
                                                     {log.images.length > 0
                                                         ? log.images.map((image) => (
                                                               <div className={cx('image-frame')} key={image.id}>
-                                                                  <img src={image.url} alt="person" />
+                                                                  <img
+                                                                      src={image.url}
+                                                                      alt="person"
+                                                                      onClick={() => handleOpenImage(image.url)}
+                                                                  />
                                                               </div>
                                                           ))
                                                         : 'Chưa cập nhật'}
@@ -158,6 +171,21 @@ const Progress = () => {
                         </div>
                     ))}
             </div>
+            {open && (
+                <div className={cx('modal')}>
+                    <Modal
+                        open={open}
+                        onClose={() => setOpen(false)}
+                        modalStyle={{ background: 'none' }}
+                        closeBtnStyle={{ display: 'none' }}
+                    >
+                        <button className={cx('closeBtn')} onClick={() => setOpen(false)}>
+                            <AiOutlineClose />
+                        </button>
+                        <img id={cx('photo')} src={file} alt="expand" />
+                    </Modal>
+                </div>
+            )}
         </div>
     );
 };
