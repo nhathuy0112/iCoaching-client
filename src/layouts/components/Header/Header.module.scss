@@ -30,6 +30,7 @@
                 align-items: center;
                 height: var(--default-navbar-height);
                 padding: 24px 0;
+                cursor: pointer;
 
                 img {
                     height: 100%;
@@ -43,30 +44,30 @@
                 }
             }
 
-            .nav-link{
-                .nav-link-item{
+            .nav-link {
+                .nav-link-item {
                     color: var(--white-color);
                     margin: 0 8px;
                     padding: 8px 0;
 
-                    &.active{
+                    &.active {
                         border-bottom: 1px solid var(--white-color);
                     }
                 }
             }
 
-            .info{
+            .info {
                 display: flex;
                 align-items: center;
                 cursor: pointer;
 
-                .name{
-                    color: var(--white-color)
+                .name {
+                    color: var(--white-color);
                 }
 
-                .avatar-wrapper{
+                .avatar-wrapper {
                     margin-left: 8px;
-                    .avatar{
+                    .avatar {
                         color: var(--primary-color);
                         height: 28px;
                         width: 28px;

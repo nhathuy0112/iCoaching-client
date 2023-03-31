@@ -51,7 +51,7 @@ const Header = () => {
             <div className={cx('content')}>
                 <div className={cx('navbar')}>
                     <div className={cx('navbar-content')}>
-                        <div className={cx('logo')}>
+                        <div className={cx('logo')} onClick={() => navigate(`/client/${currentUser?.Id}`)}>
                             <img src={require('../../../assets/images/Logo.png')} alt="logo" />
                             <span className={cx('name')}>iCoaching</span>
                         </div>
