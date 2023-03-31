@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { BsCheckLg, BsXLg } from 'react-icons/bs';
+import { BsCheckLg, BsXLg, BsFillEnvelopeFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -137,7 +137,7 @@ const Pending = () => {
                                             id={cx('btn-view-message')}
                                             onClick={() => handleViewRequestMessage(request)}
                                         >
-                                            Lời nhắn
+                                            <BsFillEnvelopeFill />
                                         </button>
                                         <button id={cx('btn-accept')} onClick={() => handleOpenAcceptModal(request)}>
                                             <BsCheckLg />
