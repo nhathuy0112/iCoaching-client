@@ -151,7 +151,9 @@ const CreateContract = () => {
                         </Tippy>
                         <label>Khoá tập</label>
                         <select defaultValue="0" {...register('courseId')}>
-                            <option value="0">{'--Chọn huấn luyện viên để lấy gói tập--'}</option>
+                            <option value="0" disabled>
+                                {'--Chọn huấn luyện viên để lấy gói tập--'}
+                            </option>
                             {initialCourse &&
                                 trainingCourses?.map((course) => (
                                     <option value={course.id}>
