@@ -1,11 +1,23 @@
 import classNames from 'classnames/bind';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
 import { completedContractAsync } from '~/features/clientSlice';
-import { getContractDetailsAsync } from '~/features/contractSlice';
+import { getContractDetailsAsync, sendReportAsync } from '~/features/contractSlice';
 import { handleRenderGenders } from '~/utils/gender';
+import { dataURItoBlob } from '~/utils/blob';
+
+import Modal from '~/components/Modal';
+import ErrorMessage from '~/components/ErrorMessage';
+import ImageUploading from 'react-images-uploading';
+
+import { AiOutlinePlus } from 'react-icons/ai';
+import { MdOutlineEdit } from 'react-icons/md';
+import { BiTrash } from 'react-icons/bi';
+import { BsCheckLg, BsXLg } from 'react-icons/bs';
+
 import styles from './Information.module.scss';
 
 const cx = classNames.bind(styles);
@@ -15,6 +27,11 @@ const Information = () => {
     const { currentContract } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
     const navigate = useNavigate();
+
+    const [reportOpen, setReportOpen] = useState(false);
+    const [images, setImages] = useState([]);
+    const [isAddingImage, setIsAddingImage] = useState(false);
+    const [description, setDescription] = useState('');
 
     useEffect(() => {
         dispatch(getContractDetailsAsync(contractId));
@@ -27,6 +44,35 @@ const Information = () => {
                 toast.success('Hợp đồng đã được hoàn thành!');
                 navigate(`/client/${id}/training-history`);
             });
+    };
+
+    const handleReportOpen = (e) => {
+        e.preventDefault();
+        setReportOpen(true);
+    };
+
+    const onChange = (imageList) => {
+        setImages(imageList);
+    };
+
+    const handlePostReport = () => {
+        const formData = new FormData();
+        formData.append('Desc', description);
+        images.forEach((image) => {
+            if (image.hasOwnProperty('data_url')) {
+                const blob = dataURItoBlob(image.data_url);
+                formData.append('Files', blob);
+            } else {
+                formData.append('Files', image);
+            }
+        });
+        dispatch(sendReportAsync({ contractId, formData }));
+        setIsAddingImage(false);
+        setReportOpen(false);
+    };
+
+    const handleCancelAdding = () => {
+        setIsAddingImage(false);
     };
 
     return (
@@ -107,8 +153,122 @@ const Information = () => {
                 <button id={cx('completed')} onClick={handleCompletedContract}>
                     Hoàn thành
                 </button>
-                <button id={cx('rejected')}>Từ chối</button>
+                <button id={cx('rejected')} onClick={handleReportOpen}>
+                    Từ chối
+                </button>
             </div>
+            {reportOpen && (
+                <Modal
+                    show={reportOpen}
+                    onClose={() => setReportOpen(false)}
+                    closeBtnStyle={{ display: 'none' }}
+                    modalStyle={{ width: '65%', 'overflow-y': 'initial !important' }}
+                >
+                    <div className={cx('header')}>
+                        <h1>iCoaching</h1>
+                    </div>
+                    <div className={cx('body')}>
+                        <h2 className={cx('title')}>Vui lòng ghi rõ lý do từ chối hoàn thành</h2>
+                        <div className={cx('message-frame')}>
+                            <textarea
+                                name="message"
+                                id="message"
+                                onChange={(e) => setDescription(e.target.value)}
+                                required
+                            />
+                        </div>
+                        {false && (
+                            <div className={cx('error')}>
+                                <ErrorMessage />
+                            </div>
+                        )}
+                        <div className={cx('image-wrapper')}>
+                            <ImageUploading
+                                multiple
+                                value={images}
+                                onChange={onChange}
+                                maxNumber={20}
+                                dataURLKey="data_url"
+                                onClose={handleCancelAdding}
+                            >
+                                {({
+                                    imageList,
+                                    onImageUpload,
+                                    onImageUpdate,
+                                    onImageRemove,
+                                    isDragging,
+                                    dragProps,
+                                }) => (
+                                    // write your building UI
+                                    <div className={cx('image-upload')}>
+                                        <div className={cx('action')}>
+                                            <button
+                                                id={cx('add-btn')}
+                                                style={isDragging ? { color: 'red' } : undefined}
+                                                onClick={() => {
+                                                    setIsAddingImage(true);
+                                                    onImageUpload();
+                                                }}
+                                                {...dragProps}
+                                            >
+                                                <AiOutlinePlus className={cx('icon')} />
+                                                <span>Thêm ảnh</span>
+                                            </button>
+                                        </div>
+                                        <div className={cx('image-list')}>
+                                            {imageList &&
+                                                imageList.map((image, index) => {
+                                                    const handleRenderImage = (image) => {
+                                                        if (image.hasOwnProperty('data_url')) {
+                                                            return image['data_url'];
+                                                        } else {
+                                                            return image.url;
+                                                        }
+                                                    };
+                                                    return (
+                                                        <div
+                                                            key={image.id ? image.id : index}
+                                                            className={cx('image-item')}
+                                                        >
+                                                            <img src={handleRenderImage(image)} alt="" width="100" />
+                                                            <div className={cx('image-action')}>
+                                                                {isAddingImage && (
+                                                                    <button
+                                                                        id={cx('update-btn')}
+                                                                        onClick={() => onImageUpdate(index)}
+                                                                    >
+                                                                        <MdOutlineEdit />
+                                                                    </button>
+                                                                )}
+                                                                <button
+                                                                    id={cx('remove-btn')}
+                                                                    onClick={() => onImageRemove(index)}
+                                                                >
+                                                                    <BiTrash />
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                        </div>
+                                    </div>
+                                )}
+                            </ImageUploading>
+                        </div>
+
+                        <div className={cx('modal-action')}>
+                            <button id={cx('agree-btn')} type="submit" onClick={handlePostReport}>
+                                <BsCheckLg />
+                                <span>Gửi</span>
+                            </button>
+                            <button id={cx('cancel-btn')} onClick={() => setReportOpen(false)}>
+                                <BsXLg />
+                                <span>Hủy bỏ</span>
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 };

@@ -1,23 +1,12 @@
 import classNames from 'classnames/bind';
 import styles from './ContractDetails.module.scss';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getContractDetailsAsync } from '~/features/contractSlice';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 const ContractDetails = () => {
     const { currentContract } = useSelector((state) => state.contract);
     const { client, coach, ...contract } = currentContract;
-    const dispatch = useDispatch();
-    const { contractId } = useParams();
-
-    useEffect(() => {
-        dispatch(getContractDetailsAsync(contractId));
-    }, [dispatch, contractId]);
-
-    console.log(client);
 
     return (
         <div className={cx('wrapper')}>
