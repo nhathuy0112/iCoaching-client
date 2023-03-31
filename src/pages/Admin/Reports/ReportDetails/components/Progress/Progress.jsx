@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const Progress = () => {
     const dispatch = useDispatch();
-    const { logs, linkDownload } = useSelector((state) => state.contract);
+    const { logs } = useSelector((state) => state.contract);
     const { contractId } = useParams();
     const [expandedItems, setExpandedItems] = useState([]);
 
@@ -26,7 +26,7 @@ const Progress = () => {
             // If item expand, show less
             setExpandedItems(expandedItems.filter((id) => id !== log.id));
         } else {
-            // Nếu item is not expanded, show more
+            // If item is not expanded, show more
             setExpandedItems([...expandedItems, log.id]);
         }
     };
@@ -36,10 +36,10 @@ const Progress = () => {
     };
 
     const handleDownloadFile = (file) => {
-        dispatch(getProgramFileDownloadAsync({ contractId: contractId, fileId: file.id }))
+        dispatch(getProgramFileDownloadAsync({ contractId: contractId, fileId: file.id, responseType: 'blob' }))
             .unwrap()
-            .then(() => {
-                const url = window.URL.createObjectURL(new Blob([linkDownload]));
+            .then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response]));
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', file.fileName);
@@ -126,7 +126,7 @@ const Progress = () => {
                                                     {log.videos.length > 0
                                                         ? log.videos.map((video) => (
                                                               <div className={cx('video-frame')} key={video.id}>
-                                                                  <video>
+                                                                  <video controls>
                                                                       <source src={video.url} />
                                                                   </video>
                                                               </div>
