@@ -71,13 +71,14 @@ const CreateContract = () => {
                         cancelReason: data.reason,
                     },
                 }),
-            );
+            )
+                .unwrap()
+                .then(() => {
+                    navigate(`/admin/${currentUser.id}/ `);
+                });
         } catch (error) {
             console.log(error);
         }
-        setTimeout(() => {
-            navigate(`/admin/${currentUser.id}/reports`);
-        }, 3000);
     };
 
     const handleHideResult = () => {
