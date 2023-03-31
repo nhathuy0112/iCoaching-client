@@ -54,11 +54,16 @@ const Reports = () => {
                         </form>
                         <div className={cx('list-reports')}>
                             {reports?.map((report) => (
-                                <div className={cx('rp')}>
+                                <div className={cx('rp')} key={report.id}>
                                     <label>{report.clientFullName}</label>
                                     <div className={cx('photos')}>
                                         {report.images?.map((photo) => (
-                                            <img src={photo} alt="report" onClick={() => handleViewDetail(photo)} />
+                                            <img
+                                                key={photo.id}
+                                                src={photo}
+                                                alt="report"
+                                                onClick={() => handleViewDetail(photo)}
+                                            />
                                         ))}
                                     </div>
                                     <p>{report.detail}</p>

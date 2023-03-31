@@ -34,19 +34,19 @@ const CreateContract = () => {
     const { currentContract } = useSelector((state) => state.contract);
     const { coaches } = useSelector((state) => state.admin);
 
-    const { contractId, reportId } = useParams();
+    const { id, contractId, reportId } = useParams();
     const { client } = currentContract;
 
     const [search, setSearch] = useState('');
     const [coachId, setCoachId] = useState('');
 
-    const [initalCourse, setInitalCourse] = useState(false);
+    const [initialCourse, setInitialCourse] = useState(false);
     const [showResult, setShowResult] = useState(true);
     const debounced = useDebounce(search, 500);
 
     useEffect(() => {
         if (!debounced.trim()) {
-            setInitalCourse(false);
+            setInitialCourse(false);
             return;
         }
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 20, search: encodeURIComponent(debounced) }));
@@ -55,9 +55,10 @@ const CreateContract = () => {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm();
-    // { resolver: yupResolver(schema) }
+    // { resolver: yupResolver(schema)
 
     const handleContract = (data) => {
         try {
@@ -74,7 +75,7 @@ const CreateContract = () => {
             )
                 .unwrap()
                 .then(() => {
-                    navigate(`/admin/${currentUser.id}/ `);
+                    navigate(`/admin/${id}/reports `);
                 });
         } catch (error) {
             console.log(error);
@@ -89,7 +90,8 @@ const CreateContract = () => {
         setSearch(`${coach.userName} - ${coach.fullname}`);
         setCoachId(coach.id);
         dispatch(getCoachTrainingCourseAsync({ coachId: coach.id }));
-        setInitalCourse(true);
+        setValue('courseId', 0);
+        setInitialCourse(true);
     };
     return (
         <div className={cx('wrapper')}>
@@ -149,10 +151,8 @@ const CreateContract = () => {
                         </Tippy>
                         <label>Khoá tập</label>
                         <select defaultValue="0" {...register('courseId')}>
-                            <option value="0" disabled>
-                                {'--Chọn huấn luyện viên để lấy gói tập--'}
-                            </option>
-                            {initalCourse &&
+                            <option value="0">{'--Chọn huấn luyện viên để lấy gói tập--'}</option>
+                            {initialCourse &&
                                 trainingCourses?.map((course) => (
                                     <option value={course.id}>
                                         {course.id}: {course.name}
