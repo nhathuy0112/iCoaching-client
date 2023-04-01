@@ -44,8 +44,10 @@
                     align-items: center;
                 }
 
-                label {
+                .input-label {
                     min-width: 160px;
+                    font-size: 1.6rem;
+                    font-weight: 500;
                 }
 
                 input {

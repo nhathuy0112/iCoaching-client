@@ -20,7 +20,7 @@ function App() {
             init();
         }
     });
-    console.log(currentUser?.Username);
+
     async function init() {
         let zp;
         const userID = currentUser?.Username;
