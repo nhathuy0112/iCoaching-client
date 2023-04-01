@@ -4,12 +4,14 @@
 import Home from '~/pages/Guest/Home';
 import CoachesView from '~/pages/Guest/CoachesView';
 import CoachDetail from '~/pages/Guest/CoachDetails';
+import CourseDetails from '~/pages/Guest/CourseDetails';
 
 //Client
 import ClientHome from '~/pages/Client/Home';
 import TrainingRequest from '~/pages/Client/TrainingRequest';
 import ClientCoachesView from '~/pages/Client/CoachesView';
 import ClientCoachDetails from '~/pages/Client/CoachDetails';
+import ClientCourseDetails from '~/pages/Client/CourseDetails';
 import OnGoingCourse from '~/pages/Client/OnGoingCourse';
 import ContractDetails from '~/pages/Client/ContractDetails';
 import PendingCourse from '~/pages/Client/PendingCourse';
@@ -64,7 +66,13 @@ const guestRoutes = [
     { path: '/', component: Home, layout: GuestLayout },
     { path: '/all-coaches', component: CoachesView, layout: GuestLayout },
     { path: '/all-coaches/view-details/coach/:coachId', component: CoachDetail, layout: GuestLayout },
+    {
+        path: '/all-coaches/view-details/coach/:coachId/course/:courseId',
+        component: CourseDetails,
+        layout: GuestLayout,
+    },
     { path: '/view-details/coach/:coachId', component: CoachDetail, layout: GuestLayout },
+    { path: '/view-details/coach/:coachId/course/:courseId', component: CourseDetails, layout: GuestLayout },
     { path: '/*', component: NotFound },
 ];
 
@@ -78,8 +86,20 @@ const clientRoutes = [
         guard: RoleGuard,
     },
     {
+        path: '/client/:id/all-coaches/view-details/coach/:coachId/course/:courseId',
+        component: ClientCourseDetails,
+        layout: ClientLayout,
+        guard: RoleGuard,
+    },
+    {
         path: '/client/:id/view-details/coach/:coachId',
         component: ClientCoachDetails,
+        layout: ClientLayout,
+        guard: RoleGuard,
+    },
+    {
+        path: '/client/:id/view-details/coach/:coachId/course/:courseId',
+        component: ClientCourseDetails,
         layout: ClientLayout,
         guard: RoleGuard,
     },
@@ -140,7 +160,7 @@ const coachRoutes = [
     { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/messages', component: Messages, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/*', component: NotFound },
-    { path: '/coach/:id/messages/:userId', component: Chat, layout: AuthLayout }
+    { path: '/coach/:id/messages/:userId', component: Chat, layout: AuthLayout },
 ];
 
 const adminRoutes = [
