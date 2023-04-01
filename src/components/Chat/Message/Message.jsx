@@ -37,11 +37,20 @@ const Message = ({ message }) => {
     return (
         <div ref={ref} className={cx('message', { owner: message.senderId === currentUser?.Id })}>
             {coachId ? (
-                <img
-                    className={cx('imgInfo')}
-                    src={message.senderId === currentUser?.Id ? currentUser?.Avatar : coachAvatar.avatar}
-                    alt=""
-                />
+                <div className={cx('onlineInfo')}>
+                    <img
+                        className={cx('imgInfo')}
+                        src={message.senderId === currentUser?.Id ? currentUser?.Avatar : coachAvatar.avatar}
+                        alt=""
+                    />
+
+                    <div
+                        className={cx({
+                            onlineStatus: coachAvatar.isOnline && message.senderId !== currentUser?.Id,
+                            offlineStatus: !coachAvatar.isOnline && message.senderId !== currentUser?.Id,
+                        })}
+                    ></div>
+                </div>
             ) : (
                 <img
                     className={cx('imgInfo')}

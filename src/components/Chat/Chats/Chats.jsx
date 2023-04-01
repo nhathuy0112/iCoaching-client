@@ -84,7 +84,7 @@ const Chats = () => {
                         <div className={cx('userChat')} key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
                             <img src={chat[1].userInfo?.avatar} alt="" />
                             <div className={cx('userChatInfo')}>
-                                <span>{chat[1].userInfo?.username}</span>
+                                <span>{chat[1].userInfo?.fullname}</span>
                                 {chat[1].lastMessage?.img ? (
                                     <p style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                         <BsCardImage /> Đã gửi một ảnh.
