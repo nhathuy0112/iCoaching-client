@@ -166,7 +166,9 @@ const CourseDetails = () => {
                         <div className={cx('input-group')}>
                             <label htmlFor="">Mã giảm giá</label>
                             <select name="" id="" defaultValue="" onChange={(e) => setVoucherCode(e.target.value)}>
-                                <option value="">-- Chọn mã giảm giá -- </option>
+                                <option value="" disabled>
+                                    -- Chọn mã giảm giá --{' '}
+                                </option>
                                 {vouchers.map((voucher) => {
                                     if (!voucher.isUsed) {
                                         return (

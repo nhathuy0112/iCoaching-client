@@ -4,22 +4,27 @@ import { AiFillCheckCircle, AiOutlineClose } from 'react-icons/ai';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getContractLogsAsync, getProgramFileDownloadAsync } from '~/features/contractSlice';
+import { getContractDetailsAsync, getContractLogsAsync, getProgramFileDownloadAsync } from '~/features/contractSlice';
 import styles from './Progress.module.scss';
 import { handleRenderFileIcon } from '~/utils/file';
 import Modal from '~/components/Modal';
+import ErrorMessage from '~/components/ErrorMessage';
+import { current } from '@reduxjs/toolkit';
 
 const cx = classNames.bind(styles);
 
 const Progress = () => {
     const dispatch = useDispatch();
-    const { logs } = useSelector((state) => state.contract);
+    const { logs, currentContract } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
     const navigate = useNavigate();
     const [expandedItems, setExpandedItems] = useState([]);
-
     const [open, setOpen] = useState(false);
     const [file, setFile] = useState('');
+
+    useEffect(() => {
+        dispatch(getContractDetailsAsync(contractId));
+    }, [dispatch, contractId]);
 
     useEffect(() => {
         dispatch(getContractLogsAsync(contractId));
@@ -154,9 +159,18 @@ const Progress = () => {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    {log.status !== 'Complete' && (
+                                    {currentContract?.isReported && (
+                                        <div className={cx('error')}>
+                                            <ErrorMessage message={'Hợp đồng đang bị khiếu nại từ khách hàng'} />
+                                        </div>
+                                    )}
+                                    {currentContract?.status === 'Active' && (
                                         <button
-                                            id={cx('edit-btn')}
+                                            className={
+                                                currentContract?.isReported
+                                                    ? cx('edit-btn', 'disabled')
+                                                    : cx('edit-btn')
+                                            }
                                             onClick={() => {
                                                 navigate(
                                                     `/coach/${id}/my-clients/view-details/${contractId}/edit/${log.id}`,

@@ -49,6 +49,8 @@
 
                 label {
                     min-width: 160px;
+                    font-size: 1.6rem;
+                    font-weight: 500;
                 }
 
                 .date-input {
@@ -240,26 +242,28 @@
             .error {
                 margin-left: 160px;
             }
-        }
-        .save-btn {
-            padding: 8px 16px;
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            background-color: green;
-            color: white;
-            border-radius: var(--default-border-radius);
-            cursor: pointer;
 
-            &:hover {
-                opacity: 0.6;
-            }
+            .action-btn {
+                display: flex;
+                justify-content: center;
 
-            &.disabled {
-                background-color: #ccc;
-                pointer-events: none;
+                .save-btn {
+                    padding: 8px 16px;
+                    width: 120px;
+                    background-color: green;
+                    color: white;
+                    border-radius: var(--default-border-radius);
+                    cursor: pointer;
+
+                    &:hover {
+                        opacity: 0.6;
+                    }
+
+                    &.disabled {
+                        background-color: #ccc;
+                        pointer-events: none;
+                    }
+                }
             }
         }
     }

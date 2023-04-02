@@ -18,8 +18,6 @@ const Information = () => {
     const { currentContract } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
 
-    console.log(error);
-
     useEffect(() => {
         dispatch(getContractDetailsAsync(contractId));
     }, [dispatch, contractId]);
@@ -102,15 +100,28 @@ const Information = () => {
                     <div className={cx('row-info')}>
                         <div className={cx('group-info', 'description')}>
                             <label htmlFor="">Mô tả</label>
-                            <span>{currentContract?.courseDescription}</span>
+                            <div dangerouslySetInnerHTML={{ __html: currentContract?.courseDescription }}></div>
                         </div>
                     </div>
                 </div>
             </div>
-            {error && <ErrorMessage message={error} />}
+            {!currentContract?.isComplete && (
+                <div className={cx('error')}>
+                    <ErrorMessage message={'Hợp đồng chưa hoàn thành hết tiến độ'} />
+                </div>
+            )}
+            {currentContract?.isReported && (
+                <div className={cx('error')}>
+                    <ErrorMessage message={'Hợp đồng đang bị khiếu nại từ khách hàng'} />
+                </div>
+            )}
             {currentContract?.status === 'Active' && (
                 <div
-                    className={error ? cx('completed-btn', 'disabled') : cx('completed-btn')}
+                    className={
+                        !currentContract?.isComplete || currentContract?.isReported
+                            ? cx('completed-btn', 'disabled')
+                            : cx('completed-btn')
+                    }
                     onClick={handleCompletedContract}
                 >
                     <button>Hoàn thành</button>

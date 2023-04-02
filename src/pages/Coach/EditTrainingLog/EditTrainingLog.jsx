@@ -28,6 +28,7 @@ const EditTrainingLog = () => {
     const [fileError, setFileError] = useState('');
     const [imageError, setImageError] = useState('');
     const [videoError, setVideoError] = useState('');
+    const [noteError, setNoteError] = useState('');
     const [invalidImage, setInvalidImage] = useState(false);
     const [invalidVideo, setInvalidVideo] = useState(false);
 
@@ -65,8 +66,8 @@ const EditTrainingLog = () => {
                 }
             }
 
-            if (trainingDate.isBefore(today, 'day')) {
-                setTrainingDateError('Ngày tập luyện không được chọn trong quá khứ');
+            if (trainingDate.isAfter(today, 'day')) {
+                setTrainingDateError('Ngày tập luyện không được chọn trong tương lai');
             } else if (
                 prevTrainingDate !== null &&
                 trainingDate.isBefore(moment(convertDateFormatToInput(prevTrainingDate)), 'day')
@@ -85,6 +86,15 @@ const EditTrainingLog = () => {
         }
     };
 
+    const handleNoteChange = (e) => {
+        setNoteInput(e.target.value);
+        if (e.target.value.trim() === '') {
+            setNoteError('Ghi chú không được để trống');
+        } else {
+            setNoteError('');
+        }
+    };
+
     const handleFileListChange = (event) => {
         const file = event.target.files[0];
         file.id = Date.now();
@@ -98,26 +108,32 @@ const EditTrainingLog = () => {
         setFileList(newFileList);
     };
 
+    const isValidImageType = (type) => {
+        const validTypes = ['image/jpeg', 'image/png', 'image/avif'];
+        return validTypes.includes(type);
+    };
+
     const handleImageListChange = (event) => {
         const image = event.target.files[0];
         image.id = Date.now();
         image.url = URL.createObjectURL(image);
         setImageList([...imageList, image]);
-        //check type of image
-        if (image.type === 'image/jpeg' || image.type === 'image/avif' || image.type === 'image/png') {
-            setInvalidImage(false);
-        } else {
-            setInvalidImage(true);
-        }
+
+        const isInvalidImage = !isValidImageType(image.type);
+        setInvalidImage(isInvalidImage);
     };
 
     const handleDeleteImage = (imageId) => {
         const newImageList = imageList.filter((image) => image.id !== imageId);
         setImageList(newImageList);
-        // If image invalid and deleted all => setInvalid = false
-        if (invalidImage && newImageList.length === 0) {
-            setInvalidImage(false);
-        }
+
+        const isInvalidImage = newImageList.some((image) => !isValidImageType(image.type));
+        setInvalidImage(isInvalidImage);
+    };
+
+    const isValidVideoType = (type) => {
+        const validTypes = ['video/mp4', 'video/avi'];
+        return validTypes.includes(type);
     };
 
     const handleVideoListChange = (event) => {
@@ -125,79 +141,60 @@ const EditTrainingLog = () => {
         video.id = Date.now();
         video.url = URL.createObjectURL(video);
         setVideoList([...videoList, video]);
-        if (videoList) setVideoError('');
-        // check type of video
-        if (video.type === 'video/mp4' || video.type === 'video/avi') {
-            setInvalidVideo(false);
-        } else {
-            setInvalidVideo(true);
-        }
+
+        const isInvalidVideo = !isValidVideoType(video.type);
+        setInvalidVideo(isInvalidVideo);
     };
 
     const handleDeleteVideo = (videoId) => {
         const newVideoList = videoList.filter((video) => video.id !== videoId);
         setVideoList(newVideoList);
-        // If video invalid and deleted all => setInvalid = false
-        if (invalidVideo && newVideoList.length === 0) {
-            setInvalidVideo(false);
-        }
+
+        const isInvalidVideo = newVideoList.some((video) => !isValidVideoType(video.type));
+        setInvalidVideo(isInvalidVideo);
     };
 
-    console.log(fileList);
-
     const handleUpdateTrainingLog = () => {
-        const today = moment();
-        const trainingDate = moment(trainingDateInput);
-        let errorFlag = false;
-        if (!trainingDateInput) {
+        if (!trainingDateInput && !noteInput) {
             setTrainingDateError('Ngày tập luyện phải được chọn');
-            errorFlag = true;
-        } else if (trainingDate.isBefore(today, 'day')) {
-            setTrainingDateError('Ngày tập luyện không được chọn trong quá khứ');
-            errorFlag = true;
-        }
-        if (fileList.length === 0) {
-            setFileError('Tệp phải được tải lên ít nhất 1');
-            errorFlag = true;
-        }
-        if (imageList.length === 0) {
-            setImageError('Ảnh phải được tải lên ít nhất 1');
-            errorFlag = true;
-        }
-        if (videoList.length === 0) {
-            setVideoError('Video phải được tải lên ít nhất 1');
-            errorFlag = true;
-        }
-        if (errorFlag) {
-            return;
-        }
-        const formData = new FormData();
-        formData.append('TrainingDate', convertDateFormat(trainingDateInput));
-        formData.append('Note', noteInput);
-        for (let i = 0; i < fileList.length; i++) {
-            const file = fileList[i];
-            formData.append('Files', file);
-        }
-        for (let i = 0; i < imageList.length; i++) {
-            const image = imageList[i];
-            formData.append('Images', image);
-        }
-        for (let i = 0; i < videoList.length; i++) {
-            const video = videoList[i];
-            formData.append('Videos', video);
-        }
+            setNoteError('Ghi chú phải được thêm');
+        } else {
+            if (!trainingDateInput) {
+                setTrainingDateError('Ngày tập luyện phải được chọn');
+            } else if (!noteInput) {
+                setNoteError('Ghi chú phải được thêm');
+            } else {
+                if (!invalidImage) {
+                    const formData = new FormData();
+                    formData.append('TrainingDate', convertDateFormat(trainingDateInput));
+                    formData.append('Note', noteInput);
+                    for (let i = 0; i < fileList.length; i++) {
+                        const file = fileList[i];
+                        formData.append('Files', file);
+                    }
+                    for (let i = 0; i < imageList.length; i++) {
+                        const image = imageList[i];
+                        formData.append('Images', image);
+                    }
+                    for (let i = 0; i < videoList.length; i++) {
+                        const video = videoList[i];
+                        formData.append('Videos', video);
+                    }
 
-        dispatch(updateContractLogAsync({ contractId: contractId, logId: logId, payload: formData }))
-            .unwrap()
-            .then(() => {
-                setTrainingDateError('');
-                setFileError('');
-                setVideoError('');
-                setImageError('');
-                navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
-                    state: { isEditTrainingLog: true },
-                });
-            });
+                    dispatch(updateContractLogAsync({ contractId: contractId, logId: logId, payload: formData }))
+                        .unwrap()
+                        .then(() => {
+                            setTrainingDateError('');
+                            setFileError('');
+                            setVideoError('');
+                            setImageError('');
+                            navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
+                                state: { isEditTrainingLog: true },
+                            });
+                        });
+                }
+            }
+        }
     };
 
     return (
@@ -339,23 +336,19 @@ const EditTrainingLog = () => {
                     )}
                     <div className={cx('input-group', 'note')}>
                         <label htmlFor="note">Ghi chú</label>
-                        <textarea
-                            name="note"
-                            value={noteInput ? noteInput : ''}
-                            onChange={(e) => setNoteInput(e.target.value)}
-                        />
+                        <textarea name="note" value={noteInput ? noteInput : ''} onChange={handleNoteChange} />
+                    </div>
+                    {noteError && (
+                        <div className={cx('error')}>
+                            <ErrorMessage message={noteError} />
+                        </div>
+                    )}
+                    <div className={cx('action-btn')}>
+                        <button className={cx('save-btn')} onClick={handleUpdateTrainingLog}>
+                            Lưu
+                        </button>
                     </div>
                 </div>
-                <button
-                    className={
-                        trainingDateError || fileError || imageError || videoError || invalidImage || invalidVideo
-                            ? cx('save-btn', 'disabled')
-                            : cx('save-btn')
-                    }
-                    onClick={handleUpdateTrainingLog}
-                >
-                    Lưu
-                </button>
             </div>
         </div>
     );

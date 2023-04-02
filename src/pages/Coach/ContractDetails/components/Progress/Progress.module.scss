@@ -111,7 +111,13 @@
                     }
                 }
 
-                #edit-btn {
+                .error {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 16px;
+                }
+
+                .edit-btn {
                     display: block;
                     margin: 16px auto 0 auto;
                     padding: 8px 16px;
@@ -123,6 +129,12 @@
 
                     &:hover {
                         opacity: 0.6;
+                    }
+
+                    &.disabled {
+                        pointer-events: none;
+                        background-color: #ccc;
+                        margin-top: 8px;
                     }
                 }
             }

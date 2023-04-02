@@ -2,6 +2,12 @@
     .add-link {
         color: var(--primary-color);
         text-decoration: underline;
+
+        &.disabled {
+            color: #ccc;
+            // text-decoration: none;
+            pointer-events: none;
+        }
     }
 
     .action {
@@ -28,8 +34,8 @@
                     align-items: center;
                     justify-content: center;
 
-                    #download-btn,
-                    #delete-btn {
+                    .download-btn,
+                    .delete-btn {
                         background-color: transparent;
                         cursor: pointer;
                         margin: 0 16px;
@@ -38,6 +44,11 @@
 
                         &:hover {
                             opacity: 0.6;
+                        }
+
+                        &.disabled {
+                            color: #ccc;
+                            pointer-events: none;
                         }
                     }
                 }
@@ -69,6 +80,11 @@
             font-size: 2rem;
             font-weight: 600;
             color: red;
+        }
+
+        .error {
+            display: flex;
+            justify-content: center;
         }
     }
 

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import {
     deleteContractProgramFileAsync,
+    getContractDetailsAsync,
     getContractProgramFilesAsync,
     getProgramFileDownloadAsync,
 } from '~/features/contractSlice';
@@ -12,6 +13,7 @@ import { handleRenderFileIcon } from '~/utils/file';
 import styles from './Program.module.scss';
 import Modal from '~/components/Modal';
 import { AiOutlineDelete, AiOutlineDownload } from 'react-icons/ai';
+import ErrorMessage from '~/components/ErrorMessage/ErrorMessage';
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +23,10 @@ const Program = () => {
     const { id, contractId } = useParams();
     const [isOpenDeteleModal, setIsOpenDeteleModal] = useState(false);
     const [selectedFile, setSeletectedFile] = useState({});
+
+    useEffect(() => {
+        dispatch(getContractDetailsAsync(contractId));
+    }, [dispatch, contractId]);
 
     useEffect(() => {
         dispatch(getContractProgramFilesAsync(contractId));
@@ -73,6 +79,11 @@ const Program = () => {
                         </div>
                     )}
                     <div className={cx('file-list')}>
+                        {currentContract?.isReported && (
+                            <div className={cx('error')}>
+                                <ErrorMessage message={'Hợp đồng đang bị khiếu nại từ khách hàng'} />
+                            </div>
+                        )}
                         <table id={cx('file-table')}>
                             <tr>
                                 <th>Tệp</th>
@@ -90,10 +101,24 @@ const Program = () => {
                                     <td>{file.size}</td>
                                     <td>
                                         <div className={cx('action-btn')}>
-                                            <button id={cx('download-btn')} onClick={() => handleDownloadFile(file)}>
+                                            <button
+                                                className={
+                                                    currentContract?.isReported || currentContract?.status !== 'Active'
+                                                        ? cx('download-btn', 'disabled')
+                                                        : cx('download-btn')
+                                                }
+                                                onClick={() => handleDownloadFile(file)}
+                                            >
                                                 <AiOutlineDownload />
                                             </button>
-                                            <button id={cx('delete-btn')} onClick={() => handleOpenDeleteModal(file)}>
+                                            <button
+                                                className={
+                                                    currentContract?.isReported || currentContract?.status !== 'Active'
+                                                        ? cx('delete-btn', 'disabled')
+                                                        : cx('delete-btn')
+                                                }
+                                                onClick={() => handleOpenDeleteModal(file)}
+                                            >
                                                 <AiOutlineDelete />
                                             </button>
                                         </div>
@@ -106,8 +131,13 @@ const Program = () => {
             ) : (
                 <div className={cx('file-empty')}>
                     <h2>Chương trình tập luyện đang trống!</h2>
+                    {currentContract?.isReported && (
+                        <div className={cx('error')}>
+                            <ErrorMessage message={'Hợp đồng đang bị khiếu nại từ khách hàng'} />
+                        </div>
+                    )}
                     <Link
-                        className={cx('add-link')}
+                        className={currentContract?.isReported ? cx('add-link', 'disabled') : cx('add-link')}
                         to={`/coach/${id}/my-clients/view-details/${contractId}/add-resource`}
                     >
                         Thêm tài nguyên
