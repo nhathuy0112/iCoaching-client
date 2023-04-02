@@ -83,6 +83,11 @@
         &:hover {
             opacity: 0.6;
         }
+
+        &.disabled {
+            background-color: #ccc;
+            pointer-events: none;
+        }
     }
 
     //modal
@@ -261,6 +266,5 @@
 
     .error {
         margin-bottom: 16px;
-        margin-left: 120px;
     }
 }

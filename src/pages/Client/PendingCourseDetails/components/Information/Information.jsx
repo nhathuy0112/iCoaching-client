@@ -32,6 +32,8 @@ const Information = () => {
     const [images, setImages] = useState([]);
     const [isAddingImage, setIsAddingImage] = useState(false);
     const [description, setDescription] = useState('');
+    const [descriptionError, setDescriptionError] = useState('');
+    const [imagesError, setImagesError] = useState('');
 
     useEffect(() => {
         dispatch(getContractDetailsAsync(contractId));
@@ -51,24 +53,49 @@ const Information = () => {
         setReportOpen(true);
     };
 
+    const handleDescriptionChange = (e) => {
+        setDescription(e.target.value);
+        if (e.target.value.trim() === '') {
+            setDescriptionError('Thông tin khiếu nại không được để trống');
+        } else {
+            setDescriptionError('');
+        }
+    };
+
     const onChange = (imageList) => {
         setImages(imageList);
+        if (imageList.length === 0) {
+            setImagesError('Ảnh phải được cập nhật ít nhất 1');
+        } else {
+            setImagesError('');
+        }
     };
 
     const handlePostReport = () => {
-        const formData = new FormData();
-        formData.append('Desc', description);
-        images.forEach((image) => {
-            if (image.hasOwnProperty('data_url')) {
-                const blob = dataURItoBlob(image.data_url);
-                formData.append('Files', blob);
+        if (description === '' && images.length === 0) {
+            setDescriptionError('Thông tin khiếu nại không được để trống');
+            setImagesError('Ảnh phải được cập nhật ít nhất 1');
+        } else {
+            if (description === '') {
+                setDescriptionError('Thông tin khiếu nại không được để trống');
+            } else if (images.length === 0) {
+                setImagesError('Ảnh phải được cập nhật ít nhất 1');
             } else {
-                formData.append('Files', image);
+                const formData = new FormData();
+                formData.append('Desc', description);
+                images.forEach((image) => {
+                    if (image.hasOwnProperty('data_url')) {
+                        const blob = dataURItoBlob(image.data_url);
+                        formData.append('Files', blob);
+                    } else {
+                        formData.append('Files', image);
+                    }
+                });
+                dispatch(sendReportAsync({ contractId, formData }));
+                setIsAddingImage(false);
+                setReportOpen(false);
             }
-        });
-        dispatch(sendReportAsync({ contractId, formData }));
-        setIsAddingImage(false);
-        setReportOpen(false);
+        }
     };
 
     const handleCancelAdding = () => {
@@ -170,16 +197,11 @@ const Information = () => {
                     <div className={cx('body')}>
                         <h2 className={cx('title')}>Vui lòng ghi rõ lý do từ chối hoàn thành</h2>
                         <div className={cx('message-frame')}>
-                            <textarea
-                                name="message"
-                                id="message"
-                                onChange={(e) => setDescription(e.target.value)}
-                                required
-                            />
+                            <textarea name="message" id="message" onChange={handleDescriptionChange} required />
                         </div>
-                        {false && (
+                        {descriptionError && (
                             <div className={cx('error')}>
-                                <ErrorMessage />
+                                <ErrorMessage message={descriptionError} />
                             </div>
                         )}
                         <div className={cx('image-wrapper')}>
@@ -255,7 +277,11 @@ const Information = () => {
                                 )}
                             </ImageUploading>
                         </div>
-
+                        {imagesError && (
+                            <div className={cx('error')}>
+                                <ErrorMessage message={imagesError} />
+                            </div>
+                        )}
                         <div className={cx('modal-action')}>
                             <button id={cx('agree-btn')} type="submit" onClick={handlePostReport}>
                                 <BsCheckLg />
