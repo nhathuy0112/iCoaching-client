@@ -111,6 +111,8 @@ const Chat = () => {
         }
     }, [user.uid]);
 
+    console.log(currentCoach);
+    console.log(coachId);
     useEffect(() => {
         if (currentCoach.uid && chatId) {
             const handleSelect = async () => {
@@ -125,7 +127,7 @@ const Chat = () => {
                             username: currentCoach?.username,
                             email: currentCoach?.email,
                             avatar: currentCoach?.avatar,
-                            fullname: currentCoach?.Fullname,
+                            fullname: currentCoach?.fullname,
                         },
                         [chatId + '.date']: serverTimestamp(),
                     });
