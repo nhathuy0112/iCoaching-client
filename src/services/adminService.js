@@ -52,15 +52,15 @@ export const getAllReports = ({ pageIndex, pageSize, sort, search }) => {
     return axios.get(`${END_POINTS.REPORT}s${pageIndexParam}${pageSizeParam}${sortParam}${searchParam}&status=Pending`);
 };
 
-export const createVoucher = ({ reportId, discount, clientId, data }) =>
-    axios.post(`${END_POINTS.VOUCHER}/${clientId}?reportId=${reportId}&discount=${discount}`, data, {
+export const createVoucher = ({ reportId, discount, data }) =>
+    axios.post(`${END_POINTS.VOUCHER}/${reportId}?discount=${discount}`, data, {
         headers: {
             'Content-Type': 'application/json',
         },
     });
 
-export const updateReport = ({ reportId, option, data }) => {
-    return axios.put(`${END_POINTS.REPORT}/${reportId}?optionForAdmin=${option}`, data, {
+export const updateReport = ({ reportId, option, message }) => {
+    return axios.put(`${END_POINTS.REPORT}/${reportId}?optionForAdmin=${option}`, message, {
         headers: {
             'Content-Type': 'application/json',
         },

@@ -29,7 +29,7 @@ const Voucher = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createVoucherAsync({ reportId: reportId, discount: voucher, clientId: client.id, data: description }));
+        dispatch(createVoucherAsync({ reportId: reportId, discount: voucher, data: description }));
         dispatch(updateReportAsync({ reportId: reportId, option: 'Solve', message: 'Đã tặng voucher cho khách hàng' }));
         setCancelOpen(true);
     };

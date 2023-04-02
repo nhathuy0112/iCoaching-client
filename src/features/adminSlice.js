@@ -97,7 +97,7 @@ export const updateReportAsync = createAsyncThunk('/admin/updateReport', async (
         const response = await updateReport({
             reportId: payload.reportId,
             option: payload.option,
-            data: payload.message,
+            message: payload.message,
         });
         if (response) {
             toast.success('Đã cập nhật trạng thái khiếu nại');
@@ -127,7 +127,6 @@ export const createVoucherAsync = createAsyncThunk('/admin/createVoucher', async
         const response = await createVoucher({
             reportId: payload.reportId,
             discount: payload.discount,
-            clientId: payload.clientId,
             data: payload.data,
         });
         if (response) {
