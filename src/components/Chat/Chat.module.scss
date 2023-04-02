@@ -5,6 +5,9 @@
     justify-content: center;
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     border-radius: 4px;
+    &.wrapperCoach {
+        box-shadow: none;
+    }
     &.wrapperNavBar {
         margin: calc(var(--default-navbar-height) + 32px) auto 32px auto;
         width: var(--default-layout-max-width);
