@@ -124,7 +124,7 @@ const CreateContract = () => {
                         <label>Huấn luyện viên</label>
                         <Tippy
                             className={cx('drop-search')}
-                            placement="bottom"
+                            placement="bottom-start"
                             arrow={false}
                             interactive={true}
                             visible={showResult && search !== '' && coaches.length > 0}
@@ -142,7 +142,7 @@ const CreateContract = () => {
                             <input
                                 type="text"
                                 name="coach"
-                                id=""
+                                id={cx('coach-name')}
                                 {...register('coachId')}
                                 value={search}
                                 onFocus={() => setShowResult(true)}
