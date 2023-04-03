@@ -9,7 +9,8 @@ import {
     getProgramFileDownload,
     updateContractLog,
     uploadContractProgramFiles,
-    sendReport
+    sendReport,
+    deleteContractLogMedia,
 } from '~/services/contractService';
 
 //get contract details
@@ -58,10 +59,7 @@ export const deleteContractProgramFileAsync = createAsyncThunk(
     async (payload) => {
         try {
             const response = await deleteContractProgramFile(payload);
-            if (response) {
-                toast.success('Xóa tài nguyên thành công!');
-                return response;
-            }
+            return response;
         } catch (error) {
             console.log(error);
         }
@@ -112,25 +110,33 @@ export const getContractLogDetailsAsync = createAsyncThunk('contract/getContract
 });
 
 //send report
-export const sendReportAsync = createAsyncThunk(
-    'contract/sendReport',
-    async (payload, { rejectWithValue }) => {
-        try {
-            const response = await sendReport({
-                contractId: payload.contractId,
-                data: payload.formData,
-            });
-            if (response) {
-                toast.success('Khiếu nại thành công!');
-                return response;
-            }
-            // return response;
-        } catch (error) {
-            console.log(error);
-            return rejectWithValue(error);
+export const sendReportAsync = createAsyncThunk('contract/sendReport', async (payload, { rejectWithValue }) => {
+    try {
+        const response = await sendReport({
+            contractId: payload.contractId,
+            data: payload.formData,
+        });
+        if (response) {
+            toast.success('Khiếu nại thành công!');
+            return response;
         }
-    },
-);
+        // return response;
+    } catch (error) {
+        console.log(error);
+        return rejectWithValue(error);
+    }
+});
+
+//delete media in log
+export const deleteContractLogMediaAsync = createAsyncThunk('contract/deleteContractLogMedia', async (payload) => {
+    try {
+        const response = await deleteContractLogMedia(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 const initialState = {
     currentContract: {},
     programFiles: [],
@@ -279,6 +285,21 @@ export const contractSlice = createSlice({
                 state.currentLog = action.payload;
             })
             .addCase(getContractLogDetailsAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
+
+            //delete media in contract log
+            .addCase(deleteContractLogMediaAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(deleteContractLogMediaAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(deleteContractLogMediaAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
             });

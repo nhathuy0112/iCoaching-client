@@ -14,6 +14,7 @@ import styles from './Program.module.scss';
 import Modal from '~/components/Modal';
 import { AiOutlineDelete, AiOutlineDownload } from 'react-icons/ai';
 import ErrorMessage from '~/components/ErrorMessage/ErrorMessage';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -56,6 +57,7 @@ const Program = () => {
             .then(() => {
                 setIsOpenDeteleModal(false);
                 dispatch(getContractProgramFilesAsync(contractId));
+                toast.success('Xóa tài nguyên thành công');
             });
     };
 
@@ -85,46 +87,54 @@ const Program = () => {
                             </div>
                         )}
                         <table id={cx('file-table')}>
-                            <tr>
-                                <th>Tệp</th>
-                                <th>Ngày cập nhật</th>
-                                <th>Kích thước</th>
-                                <th></th>
-                            </tr>
-                            {programFiles.map((file) => (
-                                <tr key={file.id}>
-                                    <td>
-                                        <span className={cx('file-icon')}>{handleRenderFileIcon(file.fileName)}</span>
-                                        <span>{file.fileName}</span>
-                                    </td>
-                                    <td>{file.date}</td>
-                                    <td>{file.size}</td>
-                                    <td>
-                                        <div className={cx('action-btn')}>
-                                            <button
-                                                className={
-                                                    currentContract?.isReported || currentContract?.status !== 'Active'
-                                                        ? cx('download-btn', 'disabled')
-                                                        : cx('download-btn')
-                                                }
-                                                onClick={() => handleDownloadFile(file)}
-                                            >
-                                                <AiOutlineDownload />
-                                            </button>
-                                            <button
-                                                className={
-                                                    currentContract?.isReported || currentContract?.status !== 'Active'
-                                                        ? cx('delete-btn', 'disabled')
-                                                        : cx('delete-btn')
-                                                }
-                                                onClick={() => handleOpenDeleteModal(file)}
-                                            >
-                                                <AiOutlineDelete />
-                                            </button>
-                                        </div>
-                                    </td>
+                            <thead>
+                                <tr>
+                                    <th>Tệp</th>
+                                    <th>Ngày cập nhật</th>
+                                    <th>Kích thước</th>
+                                    <th></th>
                                 </tr>
-                            ))}
+                            </thead>
+                            <tbody>
+                                {programFiles.map((file) => (
+                                    <tr key={file.id}>
+                                        <td>
+                                            <span className={cx('file-icon')}>
+                                                {handleRenderFileIcon(file.fileName)}
+                                            </span>
+                                            <span>{file.fileName}</span>
+                                        </td>
+                                        <td>{file.date}</td>
+                                        <td>{file.size}</td>
+                                        <td>
+                                            <div className={cx('action-btn')}>
+                                                <button
+                                                    className={
+                                                        currentContract?.isReported ||
+                                                        currentContract?.status !== 'Active'
+                                                            ? cx('download-btn', 'disabled')
+                                                            : cx('download-btn')
+                                                    }
+                                                    onClick={() => handleDownloadFile(file)}
+                                                >
+                                                    <AiOutlineDownload />
+                                                </button>
+                                                <button
+                                                    className={
+                                                        currentContract?.isReported ||
+                                                        currentContract?.status !== 'Active'
+                                                            ? cx('delete-btn', 'disabled')
+                                                            : cx('delete-btn')
+                                                    }
+                                                    onClick={() => handleOpenDeleteModal(file)}
+                                                >
+                                                    <AiOutlineDelete />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
                         </table>
                     </div>
                 </>
@@ -137,7 +147,11 @@ const Program = () => {
                         </div>
                     )}
                     <Link
-                        className={currentContract?.isReported ? cx('add-link', 'disabled') : cx('add-link')}
+                        className={
+                            currentContract?.status === 'Canceled' || currentContract?.isReported
+                                ? cx('add-link', 'disabled')
+                                : cx('add-link')
+                        }
                         to={`/coach/${id}/my-clients/view-details/${contractId}/add-resource`}
                     >
                         Thêm tài nguyên

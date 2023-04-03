@@ -33,9 +33,12 @@ export const getContractLogs = (contractId) => axios.get(`${END_POINTS.CONTRACT}
 export const getContractLogDetails = ({ contractId, logId }) =>
     axios.get(`${END_POINTS.CONTRACT}/${contractId}/log/${logId}`);
 
+export const deleteContractLogMedia = ({ contractId, logId, mediaId }) =>
+    axios.delete(`${END_POINTS.CONTRACT}/${contractId}/log/${logId}/media/${mediaId}`);
+
 export const sendReport = ({ contractId, data }) =>
     axios.post(`${END_POINTS.CONTRACT}/${contractId}/report`, data, {
         headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
         },
-    })
+    });

@@ -105,7 +105,7 @@ const Information = () => {
                     </div>
                 </div>
             </div>
-            {!currentContract?.isComplete && (
+            {currentContract?.status !== 'Complete' && !currentContract?.isComplete && (
                 <div className={cx('error')}>
                     <ErrorMessage message={'Hợp đồng chưa hoàn thành hết tiến độ'} />
                 </div>

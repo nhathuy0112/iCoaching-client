@@ -4,7 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './EditTrainingLog.module.scss';
 import { useEffect, useState } from 'react';
-import { getContractLogDetailsAsync, getContractLogsAsync, updateContractLogAsync } from '~/features/contractSlice';
+import {
+    deleteContractLogMediaAsync,
+    deleteContractProgramFileAsync,
+    getContractLogDetailsAsync,
+    getContractLogsAsync,
+    updateContractLogAsync,
+} from '~/features/contractSlice';
 import { convertDateFormat, convertDateFormatToInput } from '~/utils/dateFormat';
 import moment from 'moment';
 import ErrorMessage from '~/components/ErrorMessage';
@@ -25,12 +31,7 @@ const EditTrainingLog = () => {
     const [videoList, setVideoList] = useState([]);
     const [noteInput, setNoteInput] = useState('');
     const [trainingDateError, setTrainingDateError] = useState('');
-    const [fileError, setFileError] = useState('');
-    const [imageError, setImageError] = useState('');
-    const [videoError, setVideoError] = useState('');
     const [noteError, setNoteError] = useState('');
-    const [invalidImage, setInvalidImage] = useState(false);
-    const [invalidVideo, setInvalidVideo] = useState(false);
 
     useEffect(() => {
         dispatch(getContractLogsAsync(contractId));
@@ -59,10 +60,12 @@ const EditTrainingLog = () => {
             const today = moment();
             const trainingDate = moment(newTrainingDateInput);
             let prevTrainingDate = null;
+            let nextTrainingDate = null;
             for (let i = 0; i < logs.length; i++) {
                 if (logs[i].id === currentLog.id - 1) {
                     prevTrainingDate = logs[i].trainingDate;
-                    break;
+                } else if (logs[i].id === currentLog.id + 1) {
+                    nextTrainingDate = logs[i].trainingDate;
                 }
             }
 
@@ -79,6 +82,18 @@ const EditTrainingLog = () => {
             ) {
                 setTrainingDateError(
                     `Ngày tập luyện không được trùng với ngày tập luyện trước đó (${prevTrainingDate})`,
+                );
+            } else if (
+                nextTrainingDate !== null &&
+                trainingDate.isAfter(moment(convertDateFormatToInput(nextTrainingDate)), 'day')
+            ) {
+                setTrainingDateError(`Ngày tập luyện không được lớn hơn ngày tập luyện kế tiếp (${nextTrainingDate})`);
+            } else if (
+                nextTrainingDate !== null &&
+                trainingDate.isSame(moment(convertDateFormatToInput(nextTrainingDate)), 'day')
+            ) {
+                setTrainingDateError(
+                    `Ngày tập luyện không được trùng với ngày tập luyện kế tiếp (${nextTrainingDate})`,
                 );
             } else {
                 setTrainingDateError('');
@@ -100,17 +115,27 @@ const EditTrainingLog = () => {
         file.id = Date.now();
         file.fileName = file.name;
         setFileList([...fileList, file]);
-        if (fileList) setFileError('');
     };
 
     const handleDeleteFile = (fileId) => {
-        const newFileList = fileList.filter((file) => file.id !== fileId);
-        setFileList(newFileList);
-    };
-
-    const isValidImageType = (type) => {
-        const validTypes = ['image/jpeg', 'image/png', 'image/avif'];
-        return validTypes.includes(type);
+        let found = false;
+        for (let i = 0; i < currentLog.files.length; i++) {
+            if (currentLog.files[i].id === fileId) {
+                found = true;
+                dispatch(deleteContractProgramFileAsync({ contractId: contractId, fileId: fileId }))
+                    .unwrap()
+                    .then(() => {
+                        dispatch(getContractLogDetailsAsync({ contractId: contractId, logId: logId }));
+                    });
+                break;
+            }
+        }
+        if (!found) {
+            const newFileList = fileList.filter((file) => file.id !== fileId);
+            setTimeout(() => {
+                setFileList(newFileList);
+            }, [3000]);
+        }
     };
 
     const handleImageListChange = (event) => {
@@ -118,22 +143,27 @@ const EditTrainingLog = () => {
         image.id = Date.now();
         image.url = URL.createObjectURL(image);
         setImageList([...imageList, image]);
-
-        const isInvalidImage = !isValidImageType(image.type);
-        setInvalidImage(isInvalidImage);
     };
 
     const handleDeleteImage = (imageId) => {
-        const newImageList = imageList.filter((image) => image.id !== imageId);
-        setImageList(newImageList);
-
-        const isInvalidImage = newImageList.some((image) => !isValidImageType(image.type));
-        setInvalidImage(isInvalidImage);
-    };
-
-    const isValidVideoType = (type) => {
-        const validTypes = ['video/mp4', 'video/avi'];
-        return validTypes.includes(type);
+        let found = false;
+        for (let i = 0; i < currentLog.images.length; i++) {
+            if (currentLog.images[i].id === imageId) {
+                found = true;
+                dispatch(deleteContractLogMediaAsync({ contractId: contractId, logId: logId, mediaId: imageId }))
+                    .unwrap()
+                    .then(() => {
+                        dispatch(getContractLogDetailsAsync({ contractId: contractId, logId: logId }));
+                    });
+                break;
+            }
+        }
+        if (!found) {
+            const newImageList = imageList.filter((image) => image.id !== imageId);
+            setTimeout(() => {
+                setImageList(newImageList);
+            }, [3000]);
+        }
     };
 
     const handleVideoListChange = (event) => {
@@ -141,17 +171,27 @@ const EditTrainingLog = () => {
         video.id = Date.now();
         video.url = URL.createObjectURL(video);
         setVideoList([...videoList, video]);
-
-        const isInvalidVideo = !isValidVideoType(video.type);
-        setInvalidVideo(isInvalidVideo);
     };
 
     const handleDeleteVideo = (videoId) => {
-        const newVideoList = videoList.filter((video) => video.id !== videoId);
-        setVideoList(newVideoList);
-
-        const isInvalidVideo = newVideoList.some((video) => !isValidVideoType(video.type));
-        setInvalidVideo(isInvalidVideo);
+        let found = false;
+        for (let i = 0; i < currentLog.videos.length; i++) {
+            if (currentLog.videos[i].id === videoId) {
+                found = true;
+                dispatch(deleteContractLogMediaAsync({ contractId: contractId, logId: logId, mediaId: videoId }))
+                    .unwrap()
+                    .then(() => {
+                        dispatch(getContractLogDetailsAsync({ contractId: contractId, logId: logId }));
+                    });
+                break;
+            }
+        }
+        if (!found) {
+            const newVideoList = videoList.filter((video) => video.id !== videoId);
+            setTimeout(() => {
+                setVideoList(newVideoList);
+            }, [3000]);
+        }
     };
 
     const handleUpdateTrainingLog = () => {
@@ -164,35 +204,30 @@ const EditTrainingLog = () => {
             } else if (!noteInput) {
                 setNoteError('Ghi chú phải được thêm');
             } else {
-                if (!invalidImage) {
-                    const formData = new FormData();
-                    formData.append('TrainingDate', convertDateFormat(trainingDateInput));
-                    formData.append('Note', noteInput);
-                    for (let i = 0; i < fileList.length; i++) {
-                        const file = fileList[i];
-                        formData.append('Files', file);
-                    }
-                    for (let i = 0; i < imageList.length; i++) {
-                        const image = imageList[i];
-                        formData.append('Images', image);
-                    }
-                    for (let i = 0; i < videoList.length; i++) {
-                        const video = videoList[i];
-                        formData.append('Videos', video);
-                    }
-
-                    dispatch(updateContractLogAsync({ contractId: contractId, logId: logId, payload: formData }))
-                        .unwrap()
-                        .then(() => {
-                            setTrainingDateError('');
-                            setFileError('');
-                            setVideoError('');
-                            setImageError('');
-                            navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
-                                state: { isEditTrainingLog: true },
-                            });
-                        });
+                const formData = new FormData();
+                formData.append('TrainingDate', convertDateFormat(trainingDateInput));
+                formData.append('Note', noteInput);
+                for (let i = 0; i < fileList.length; i++) {
+                    const file = fileList[i];
+                    formData.append('Files', file);
                 }
+                for (let i = 0; i < imageList.length; i++) {
+                    const image = imageList[i];
+                    formData.append('Images', image);
+                }
+                for (let i = 0; i < videoList.length; i++) {
+                    const video = videoList[i];
+                    formData.append('Videos', video);
+                }
+
+                dispatch(updateContractLogAsync({ contractId: contractId, logId: logId, payload: formData }))
+                    .unwrap()
+                    .then(() => {
+                        setTrainingDateError('');
+                        navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
+                            state: { isEditTrainingLog: true },
+                        });
+                    });
             }
         }
     };
@@ -257,16 +292,10 @@ const EditTrainingLog = () => {
                             ))}
                         </ul>
                     )}
-
-                    {fileError && (
-                        <div className={cx('error')}>
-                            <ErrorMessage message={fileError} />
-                        </div>
-                    )}
                     <div className={cx('input-group')}>
                         <label htmlFor="file">Ảnh</label>
                         <div className={cx('file-inputs')}>
-                            <input type="file" onChange={handleImageListChange} />
+                            <input type="file" accept="image/*" onChange={handleImageListChange} />
                             <button>
                                 <i>
                                     <AiOutlineUpload />
@@ -288,20 +317,10 @@ const EditTrainingLog = () => {
                             ))}
                         </ul>
                     )}
-                    {invalidImage && (
-                        <div className={cx('error')}>
-                            <ErrorMessage message="Ảnh phải có định dạng .jpeg/jpg, .png hoặc .avif" />
-                        </div>
-                    )}
-                    {imageError && (
-                        <div className={cx('error')}>
-                            <ErrorMessage message={imageError} />
-                        </div>
-                    )}
                     <div className={cx('input-group')}>
                         <label htmlFor="file">Video</label>
                         <div className={cx('file-inputs')}>
-                            <input type="file" onChange={handleVideoListChange} />
+                            <input type="file" accept="video/*" onChange={handleVideoListChange} />
                             <button>
                                 <i>
                                     <AiOutlineUpload />
@@ -323,16 +342,6 @@ const EditTrainingLog = () => {
                                 </li>
                             ))}
                         </ul>
-                    )}
-                    {invalidVideo && (
-                        <div className={cx('error')}>
-                            <ErrorMessage message="Video phải có định dạng .mp4 hoặc .avi" />
-                        </div>
-                    )}
-                    {videoError && (
-                        <div className={cx('error')}>
-                            <ErrorMessage message={videoError} />
-                        </div>
                     )}
                     <div className={cx('input-group', 'note')}>
                         <label htmlFor="note">Ghi chú</label>
