@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from './ListAdmin.module.scss';
 
-import { BsCheckLg, BsXLg } from 'react-icons/bs';
+import { BsCheckLg, BsXLg, BsFillInfoCircleFill } from 'react-icons/bs';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaLockOpen, FaLock } from 'react-icons/fa';
 
@@ -22,6 +22,8 @@ const ListAdmin = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
+    const [isViewMessage, setIsViewMessage] = useState(false);
+    const [note, setNote] = useState('');
 
     useEffect(() => {
         if (currentUser) {
@@ -48,6 +50,10 @@ const ListAdmin = () => {
         setLockOpen(false);
     };
 
+    const handleNoteOpen = (note) => {
+        setIsViewMessage(true);
+        setNote(note);
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -85,6 +91,14 @@ const ListAdmin = () => {
                                 <td>{admin.email}</td>
                                 <td>{admin.phoneNumber}</td>
                                 <td className={cx('action-btn')}>
+                                    {admin.note ? (
+                                        <button id={cx('btn-info')} onClick={() => handleNoteOpen(admin.note)}>
+                                            <BsFillInfoCircleFill />
+                                        </button>
+                                    ) : (
+                                        ''
+                                    )}
+
                                     <button
                                         id={cx(`${admin.isLocked ? 'btn-confirm' : 'btn-warn'}`)}
                                         onClick={() => handleLockOpen(admin)}
@@ -126,6 +140,26 @@ const ListAdmin = () => {
                             <button className={cx('btn-warn')} onClick={() => setLockOpen(false)}>
                                 <BsXLg className={cx('icon')} /> Huỷ bỏ
                             </button>
+                        </div>
+                    </div>
+                </Modal>
+            )}
+
+            {/* view admin's note */}
+            {isViewMessage && (
+                <Modal
+                    id={cx('view-message-modal')}
+                    show={isViewMessage}
+                    onClose={() => setIsViewMessage(false)}
+                    modalStyle={{ width: '60%' }}
+                    closeBtnStyle={{ color: 'var(--white-color)', cursor: 'pointer' }}
+                >
+                    <div className={cx('modal')}>
+                        <div className={cx('header')}>
+                            <h1>iCoaching</h1>
+                        </div>
+                        <div className={cx('body')}>
+                            <textarea className={cx('note')} defaultValue={note} readOnly />
                         </div>
                     </div>
                 </Modal>

@@ -30,9 +30,11 @@ export const createAdmin = createAsyncThunk('superadmin/createAdmin', async (pay
         const response = await register({
             email: payload.email,
             fullname: payload.fullname,
+            phoneNumber: payload.phoneNumber,
             username: payload.username,
             password: payload.password,
             confirmPassword: payload.confirmPassword,
+            note: payload.note
         });
         return response;
     } catch (error) {
