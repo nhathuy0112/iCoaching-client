@@ -11,14 +11,14 @@ const cx = classNames.bind(styles);
 
 const Report = () => {
     const dispatch = useDispatch();
-    const { reports, currentContract } = useSelector((state) => state.contract);
+    const { reports } = useSelector((state) => state.contract);
     const { contractId } = useParams();
     const [viewDetail, setViewDetail] = useState(false);
     const [file, setFile] = useState('');
 
     useEffect(() => {
         dispatch(getContractReportsAsync(contractId));
-    }, [dispatch]);
+    }, [dispatch, contractId]);
 
     const handleViewDetail = (img) => {
         setFile(img);
