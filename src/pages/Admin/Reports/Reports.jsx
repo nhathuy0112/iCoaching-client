@@ -7,13 +7,14 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getAllReportsAsync } from '~/features/adminSlice';
 import Modal from '~/components/Modal';
+import Pagination from '~/components/Pagination';
 
 import { AiOutlineClose } from 'react-icons/ai';
 const cx = classNames.bind(styles);
 
 const Reports = () => {
     const dispatch = useDispatch();
-    const { reports } = useSelector((state) => state.admin);
+    const { reports, totalCount, pageSize } = useSelector((state) => state.admin);
     const [viewDetail, setViewDetail] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [file, setFile] = useState('');
@@ -30,7 +31,7 @@ const Reports = () => {
     }, [id, currentUser, navigate]);
 
     useEffect(() => {
-        dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 2 }));
+        dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3 }));
     }, [dispatch, currentPage]);
 
     const handleViewDetail = (img) => {
@@ -82,6 +83,13 @@ const Reports = () => {
                     </div>
                 )}
             </div>
+            <Pagination
+                className={cx('pagination-bar')}
+                currentPage={currentPage}
+                totalCount={totalCount}
+                pageSize={pageSize}
+                onPageChange={(page) => setCurrentPage(page)}
+            />
             {viewDetail && (
                 <Modal
                     open={viewDetail}
