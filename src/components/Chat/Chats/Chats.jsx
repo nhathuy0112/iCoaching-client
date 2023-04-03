@@ -38,7 +38,7 @@ const Chats = () => {
     }, [currentUser?.Id]);
 
     const handleSelect = (u) => {
-        dispatch(changeUser({ currentUser: currentUser, payload: u }));
+        dispatch(changeUser({ currentUser, payload: u }));
         if (currentUser.role === 'COACH') {
             navigate(`/coach/${currentUser.Id}/messages/${u.uid}`);
         }
@@ -56,7 +56,7 @@ const Chats = () => {
 
             return () => unsubscribe();
         }
-    }, [user.uid]);
+    }, []);
 
     useEffect(() => {
         if (currentUser?.Id) {
@@ -73,7 +73,7 @@ const Chats = () => {
                 return () => unsubscribe();
             }
         }
-    }, [currentUser?.Id, chatId, userAvatar]);
+    }, []);
 
     return (
         <div className={cx('chats')}>
