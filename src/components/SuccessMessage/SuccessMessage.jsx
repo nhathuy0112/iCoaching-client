@@ -9,7 +9,7 @@ const SuccessMessage = ({ message }) => {
     return (
         <div className={cx('wrapper')}>
             <HiCheckCircle />
-            <p className={cx('message')}>{message}!</p>
+            <p className={cx('message')}>{message}</p>
         </div>
     );
 };
