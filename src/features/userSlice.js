@@ -150,6 +150,7 @@ export const userSlice = createSlice({
             })
             .addCase(registerAsync.fulfilled, (state, action) => {
                 state.users.push(action.payload);
+                state.loading = false;
                 state.message = 'Đăng ký thành công. Vui lòng kiểm tra email để xác thực tài khoản';
                 state.error = null;
             })
@@ -203,9 +204,10 @@ export const userSlice = createSlice({
             })
             .addCase(forgotAsync.fulfilled, (state, action) => {
                 state.message = action.payload;
+                state.loading = false;
             })
             .addCase(forgotAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -215,11 +217,12 @@ export const userSlice = createSlice({
                 state.error = null;
             })
             .addCase(getUserProfileAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.isVerified = action.payload.isVerified;
                 state.profile = action.payload;
             })
             .addCase(getUserProfileAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -229,6 +232,7 @@ export const userSlice = createSlice({
                 state.error = null;
             })
             .addCase(updateUserProfileAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
                 state.status = !state.status;
             })
@@ -239,20 +243,24 @@ export const userSlice = createSlice({
             })
 
             //get avatar
+            .addCase(getUserAvatarAsync.pending, (state, action) => {
+                state.error = null;
+            })
             .addCase(getUserAvatarAsync.fulfilled, (state, action) => {
                 state.avatar = action.payload;
+            })
+            .addCase(getUserAvatarAsync.rejected, (state, action) => {
+                state.error = action.payload;
             })
 
             //update avatar
             .addCase(updateUserAvatarAsync.pending, (state) => {
-                state.loading = true;
                 state.error = null;
             })
             .addCase(updateUserAvatarAsync.fulfilled, (state, action) => {
                 state.avatar = action.payload;
             })
             .addCase(updateUserAvatarAsync.rejected, (state, action) => {
-                state.loading = true;
                 state.error = action.error.message;
             });
     },

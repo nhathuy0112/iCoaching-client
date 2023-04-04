@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { forgotAsync, resetAuth } from './../../features/userSlice';
 import ErrorMessage from '~/components/ErrorMessage';
 import SuccessMessage from '~/components/SuccessMessage';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
@@ -27,7 +28,7 @@ const ForgotPassword = ({ open, setForgotOpen, setLoginOpen }) => {
         setLoginOpen(true);
     };
 
-    const { error, message } = useSelector((state) => state.user);
+    const { error, message, loading } = useSelector((state) => state.user);
 
     const {
         register,
@@ -71,8 +72,13 @@ const ForgotPassword = ({ open, setForgotOpen, setLoginOpen }) => {
                                 {error && <ErrorMessage message={error} />}
                                 {message && <SuccessMessage message={message} />}
                                 <div>
-                                    <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
-                                        Gửi
+                                    <button
+                                        type="submit"
+                                        id={cx('submit-btn')}
+                                        className={cx('align-center')}
+                                        disabled={loading}
+                                    >
+                                        {loading ? <Spinner /> : 'Gửi'}
                                     </button>
                                     <p className={cx('align-center')}>
                                         Chưa nhận được mail?

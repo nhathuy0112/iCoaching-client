@@ -10,6 +10,7 @@ import Modal from '~/components/Modal/Modal';
 import { getAllVouchersAsync, resetError, sendCoachingRequestAsync } from '~/features/clientSlice';
 import { getCoachingRequestsAsync } from '~/features/coachSlice';
 import ErrorMessage from '~/components/ErrorMessage/ErrorMessage';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
@@ -19,15 +20,18 @@ const CourseDetails = () => {
     const location = useLocation();
     const { id, coachId, courseId } = useParams();
     const { currentTrainingCourse } = useSelector((state) => state.guest);
-    const { vouchers } = useSelector((state) => state.client);
+    const { vouchers, loading } = useSelector((state) => state.client);
     const [isViewDetails, setIsViewDetails] = useState(false);
     const [isSendMessage, setIsSendMessage] = useState(false);
     const [message, setMessage] = useState('');
     const [messageError, setMessageError] = useState('');
     const [voucherCode, setVoucherCode] = useState('');
+    const [detailLoading, setDetailLoading] = useState(true);
 
     useEffect(() => {
-        dispatch(getCoachTrainingCourseDetailsAsync({ coachId: coachId, courseId: courseId }));
+        dispatch(getCoachTrainingCourseDetailsAsync({ coachId: coachId, courseId: courseId }))
+            .unwrap()
+            .then(() => setDetailLoading(false));
     }, [dispatch, coachId, courseId]);
 
     useEffect(() => {
@@ -101,26 +105,31 @@ const CourseDetails = () => {
                         </div>
                         <h1 className={cx('title')}>Thông tin gói tập</h1>
                     </div>
-                    <div className={cx('main')}>
-                        <div className={cx('info-frame')}>
-                            <div className={cx('info-group')}>
-                                <label htmlFor="">Tên gói tập</label>
-                                <span>{currentTrainingCourse.name}</span>
-                            </div>
-                            <div className={cx('info-group')}>
-                                <label htmlFor="">Số buổi</label>
-                                <span>{currentTrainingCourse.duration}</span>
-                            </div>
-                            <div className={cx('info-group')}>
-                                <label htmlFor="">Giá</label>
-                                <span>{currentTrainingCourse.price}</span>
-                            </div>
-                            <div className={cx('info-group', 'description')}>
-                                <label htmlFor="">Mô tả</label>
-                                <div dangerouslySetInnerHTML={{ __html: currentTrainingCourse.description }}></div>
+                    {detailLoading ? (
+                        <Spinner />
+                    ) : (
+                        <div className={cx('main')}>
+                            <div className={cx('info-frame')}>
+                                <div className={cx('info-group')}>
+                                    <label htmlFor="">Tên gói tập</label>
+                                    <span>{currentTrainingCourse.name}</span>
+                                </div>
+                                <div className={cx('info-group')}>
+                                    <label htmlFor="">Số buổi</label>
+                                    <span>{currentTrainingCourse.duration}</span>
+                                </div>
+                                <div className={cx('info-group')}>
+                                    <label htmlFor="">Giá</label>
+                                    <span>{currentTrainingCourse.price}</span>
+                                </div>
+                                <div className={cx('info-group', 'description')}>
+                                    <label htmlFor="">Mô tả</label>
+                                    <div dangerouslySetInnerHTML={{ __html: currentTrainingCourse.description }}></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
+
                     <button id={cx('register-btn')} onClick={handleViewDetailsModal}>
                         Đăng ký
                     </button>
@@ -198,13 +207,19 @@ const CourseDetails = () => {
                             )}
                         </div>
                         <div className={cx('button')}>
-                            <button className={cx('btn-confirm')} onClick={handleSendRequestCoaching}>
-                                <BsCheckLg className={cx('icon')} />
-                                Gửi
-                            </button>
-                            <button className={cx('btn-warn')} onClick={handleCloseRequestCoaching}>
-                                <BsXLg className={cx('icon')} /> Huỷ bỏ
-                            </button>
+                            {loading ? (
+                                <Spinner />
+                            ) : (
+                                <>
+                                    <button className={cx('btn-confirm')} onClick={handleSendRequestCoaching}>
+                                        <BsCheckLg className={cx('icon')} />
+                                        Gửi
+                                    </button>
+                                    <button className={cx('btn-warn')} onClick={handleCloseRequestCoaching}>
+                                        <BsXLg className={cx('icon')} /> Huỷ bỏ
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Modal>

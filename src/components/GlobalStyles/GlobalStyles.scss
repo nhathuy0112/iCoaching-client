@@ -68,6 +68,11 @@ input,
     outline: none;
 }
 
+button:disabled,
+button[disabled] {
+    pointer-events: none;
+}
+
 li {
     list-style-type: none;
 }

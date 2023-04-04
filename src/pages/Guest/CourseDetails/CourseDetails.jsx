@@ -8,6 +8,7 @@ import { getCoachTrainingCourseDetailsAsync } from '~/features/guestSlice';
 import Login from '~/auth/Login/Login';
 import Register from '~/auth/Register/Register';
 import ForgotPassword from '~/auth/ForgotPassword/ForgotPassword';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
@@ -15,7 +16,7 @@ const CourseDetails = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const { coachId, courseId } = useParams();
-    const { currentTrainingCourse } = useSelector((state) => state.guest);
+    const { currentTrainingCourse, loading } = useSelector((state) => state.guest);
     const [loginOpen, setLoginOpen] = useState(false);
     const [registerOpen, setRegisterOpen] = useState(false);
     const [forgotOpen, setForgotOpen] = useState(false);
@@ -48,26 +49,30 @@ const CourseDetails = () => {
                         </div>
                         <h1 className={cx('title')}>Thông tin gói tập</h1>
                     </div>
-                    <div className={cx('main')}>
-                        <div className={cx('info-frame')}>
-                            <div className={cx('info-group')}>
-                                <label htmlFor="">Tên gói tập</label>
-                                <span>{currentTrainingCourse.name}</span>
-                            </div>
-                            <div className={cx('info-group')}>
-                                <label htmlFor="">Số buổi</label>
-                                <span>{currentTrainingCourse.duration}</span>
-                            </div>
-                            <div className={cx('info-group')}>
-                                <label htmlFor="">Giá</label>
-                                <span>{currentTrainingCourse.price}</span>
-                            </div>
-                            <div className={cx('info-group', 'description')}>
-                                <label htmlFor="">Mô tả</label>
-                                <div dangerouslySetInnerHTML={{ __html: currentTrainingCourse.description }}></div>
+                    {loading ? (
+                        <Spinner />
+                    ) : (
+                        <div className={cx('main')}>
+                            <div className={cx('info-frame')}>
+                                <div className={cx('info-group')}>
+                                    <label htmlFor="">Tên gói tập</label>
+                                    <span>{currentTrainingCourse.name}</span>
+                                </div>
+                                <div className={cx('info-group')}>
+                                    <label htmlFor="">Số buổi</label>
+                                    <span>{currentTrainingCourse.duration}</span>
+                                </div>
+                                <div className={cx('info-group')}>
+                                    <label htmlFor="">Giá</label>
+                                    <span>{currentTrainingCourse.price}</span>
+                                </div>
+                                <div className={cx('info-group', 'description')}>
+                                    <label htmlFor="">Mô tả</label>
+                                    <div dangerouslySetInnerHTML={{ __html: currentTrainingCourse.description }}></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                     <button id={cx('register-btn')} onClick={handleLogin}>
                         Đăng ký
                     </button>

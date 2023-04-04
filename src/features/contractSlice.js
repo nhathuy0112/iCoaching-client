@@ -178,7 +178,7 @@ export const contractSlice = createSlice({
                 state.currentContract = action.payload;
             })
             .addCase(getContractDetailsAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.payload;
             })
 
@@ -193,7 +193,7 @@ export const contractSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(uploadContractProgramFilesAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -208,7 +208,7 @@ export const contractSlice = createSlice({
                 state.programFiles = action.payload;
             })
             .addCase(getContractProgramFilesAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -223,7 +223,7 @@ export const contractSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(deleteContractProgramFileAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -238,7 +238,7 @@ export const contractSlice = createSlice({
                 state.downloadLink = action.payload;
             })
             .addCase(getProgramFileDownloadAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -253,7 +253,7 @@ export const contractSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(updateContractLogAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -268,7 +268,7 @@ export const contractSlice = createSlice({
                 state.logs = action.payload;
             })
             .addCase(getContractLogsAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -283,7 +283,7 @@ export const contractSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(sendReportAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -298,7 +298,7 @@ export const contractSlice = createSlice({
                 state.currentLog = action.payload;
             })
             .addCase(getContractLogDetailsAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -315,7 +315,7 @@ export const contractSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(deleteContractLogMediaAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -330,7 +330,7 @@ export const contractSlice = createSlice({
                 state.reports = action.payload;
             })
             .addCase(getContractReportsAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
     },

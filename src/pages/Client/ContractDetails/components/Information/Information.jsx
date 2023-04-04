@@ -12,6 +12,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { MdOutlineEdit } from 'react-icons/md';
 import { BiTrash } from 'react-icons/bi';
 
+import Spinner from '~/layouts/components/Spinner';
 import ErrorMessage from '~/components/ErrorMessage';
 import ImageUploading from 'react-images-uploading';
 import { dataURItoBlob } from '~/utils/blob';
@@ -20,7 +21,7 @@ const cx = classNames.bind(styles);
 
 const Information = () => {
     const dispatch = useDispatch();
-    const { currentContract } = useSelector((state) => state.contract);
+    const { currentContract, loading } = useSelector((state) => state.contract);
     const { contractId } = useParams();
     const [reportOpen, setReportOpen] = useState(false);
     const [images, setImages] = useState([]);
@@ -28,9 +29,12 @@ const Information = () => {
     const [description, setDescription] = useState('');
     const [descriptionError, setDescriptionError] = useState('');
     const [imagesError, setImagesError] = useState('');
+    const [contractLoading, setContractLoading] = useState(true);
 
     useEffect(() => {
-        dispatch(getContractDetailsAsync(contractId));
+        dispatch(getContractDetailsAsync(contractId))
+            .unwrap()
+            .then(() => setContractLoading(false));
     }, [dispatch, contractId]);
 
     const handleReportOpen = (e) => {
@@ -101,110 +105,118 @@ const Information = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('content')}>
-                <div className={cx('contract-info')}>
-                    <div className={cx('info-container')}>
-                        <h4 className={cx('title')}>Khách hàng</h4>
-                        <div className={cx('info-frame')}>
-                            <div className={cx('row-info')}>
-                                <div className={cx('info-group', 'first-column')}>
-                                    <label htmlFor="">Họ và tên</label>
-                                    <span>{currentContract?.client?.fullname}</span>
+            {contractLoading ? (
+                <Spinner />
+            ) : (
+                <div className={cx('content')}>
+                    <div className={cx('contract-info')}>
+                        <div className={cx('info-container')}>
+                            <h4 className={cx('title')}>Khách hàng</h4>
+                            <div className={cx('info-frame')}>
+                                <div className={cx('row-info')}>
+                                    <div className={cx('info-group', 'first-column')}>
+                                        <label htmlFor="">Họ và tên</label>
+                                        <span>{currentContract?.client?.fullname}</span>
+                                    </div>
+                                    <div className={cx('info-group', 'second-column')}>
+                                        <label htmlFor="">Giới tính</label>
+                                        <span>{handleRenderGenders(currentContract?.client?.gender)}</span>
+                                    </div>
+                                    <div className={cx('info-group', 'third-column')}>
+                                        <label htmlFor="">Tuổi</label>
+                                        <span>{currentContract?.client?.age}</span>
+                                    </div>
                                 </div>
-                                <div className={cx('info-group', 'second-column')}>
-                                    <label htmlFor="">Giới tính</label>
-                                    <span>{handleRenderGenders(currentContract?.client?.gender)}</span>
-                                </div>
-                                <div className={cx('info-group', 'third-column')}>
-                                    <label htmlFor="">Tuổi</label>
-                                    <span>{currentContract?.client?.age}</span>
-                                </div>
-                            </div>
-                            <div className={cx('row-info')}>
-                                <div className={cx('info-group', 'first-column')}>
-                                    <label htmlFor="">Số điện thoại</label>
-                                    <span>{currentContract?.client?.phoneNumber}</span>
-                                </div>
-                                <div className={cx('info-group', 'second-column')}>
-                                    <label htmlFor="">Email</label>
-                                    <span>{currentContract?.client?.email}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={cx('info-container')}>
-                        <h4 className={cx('title')}>Huấn luyện viên</h4>
-                        <div className={cx('info-frame')}>
-                            <div className={cx('row-info')}>
-                                <div className={cx('info-group', 'first-column')}>
-                                    <label htmlFor="">Họ và tên</label>
-                                    <span>{currentContract?.coach?.fullname}</span>
-                                </div>
-                                <div className={cx('info-group', 'second-column')}>
-                                    <label htmlFor="">Giới tính</label>
-                                    <span>{handleRenderGenders(currentContract?.coach?.gender)}</span>
-                                </div>
-                                <div className={cx('info-group', 'third-column')}>
-                                    <label htmlFor="">Tuổi</label>
-                                    <span>{currentContract?.coach?.age}</span>
-                                </div>
-                            </div>
-                            <div className={cx('row-info')}>
-                                <div className={cx('info-group', 'first-column')}>
-                                    <label htmlFor="">Số điện thoại</label>
-                                    <span>{currentContract?.coach?.phoneNumber}</span>
-                                </div>
-                                <div className={cx('info-group', 'second-column')}>
-                                    <label htmlFor="">Email</label>
-                                    <span>{currentContract?.coach?.email}</span>
+                                <div className={cx('row-info')}>
+                                    <div className={cx('info-group', 'first-column')}>
+                                        <label htmlFor="">Số điện thoại</label>
+                                        <span>{currentContract?.client?.phoneNumber}</span>
+                                    </div>
+                                    <div className={cx('info-group', 'second-column')}>
+                                        <label htmlFor="">Email</label>
+                                        <span>{currentContract?.client?.email}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className={cx('info-container')}>
-                        <h4 className={cx('title')}>Gói tập</h4>
-                        <div className={cx('info-frame')}>
-                            <div className={cx('row-info')}>
-                                <div className={cx('info-group', 'first-column')}>
-                                    <label htmlFor="">Tên gói tập</label>
-                                    <span>{currentContract?.courseName}</span>
+                        <div className={cx('info-container')}>
+                            <h4 className={cx('title')}>Huấn luyện viên</h4>
+                            <div className={cx('info-frame')}>
+                                <div className={cx('row-info')}>
+                                    <div className={cx('info-group', 'first-column')}>
+                                        <label htmlFor="">Họ và tên</label>
+                                        <span>{currentContract?.coach?.fullname}</span>
+                                    </div>
+                                    <div className={cx('info-group', 'second-column')}>
+                                        <label htmlFor="">Giới tính</label>
+                                        <span>{handleRenderGenders(currentContract?.coach?.gender)}</span>
+                                    </div>
+                                    <div className={cx('info-group', 'third-column')}>
+                                        <label htmlFor="">Tuổi</label>
+                                        <span>{currentContract?.coach?.age}</span>
+                                    </div>
                                 </div>
-                                <div className={cx('info-group', 'second-column')}>
-                                    <label htmlFor="">Giá</label>
-                                    <span>{currentContract?.price}</span>
-                                </div>
-                                <div className={cx('info-group', 'third-column')}>
-                                    <label htmlFor="">Số buổi</label>
-                                    <span>{currentContract?.duration}</span>
-                                </div>
-                            </div>
-                            <div className={cx('row-info')}>
-                                <div className={cx('info-group', 'first-column')}>
-                                    <label htmlFor="">Trạng thái</label>
-                                    <span>Đang tập luyện</span>
-                                </div>
-                            </div>
-                            <div className={cx('row-info')}>
-                                <div className={cx('info-group', 'first-column', 'description')}>
-                                    <label htmlFor="">Mô tả</label>
-                                    <div dangerouslySetInnerHTML={{ __html: currentContract?.courseDescription }}></div>
+                                <div className={cx('row-info')}>
+                                    <div className={cx('info-group', 'first-column')}>
+                                        <label htmlFor="">Số điện thoại</label>
+                                        <span>{currentContract?.coach?.phoneNumber}</span>
+                                    </div>
+                                    <div className={cx('info-group', 'second-column')}>
+                                        <label htmlFor="">Email</label>
+                                        <span>{currentContract?.coach?.email}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {currentContract?.isReported && (
-                        <div className={cx('error')}>
-                            <ErrorMessage message="Bạn đã gửi khiếu nại cho quản lý" />
+                        <div className={cx('info-container')}>
+                            <h4 className={cx('title')}>Gói tập</h4>
+                            <div className={cx('info-frame')}>
+                                <div className={cx('row-info')}>
+                                    <div className={cx('info-group', 'first-column')}>
+                                        <label htmlFor="">Tên gói tập</label>
+                                        <span>{currentContract?.courseName}</span>
+                                    </div>
+                                    <div className={cx('info-group', 'second-column')}>
+                                        <label htmlFor="">Giá</label>
+                                        <span>{currentContract?.price}</span>
+                                    </div>
+                                    <div className={cx('info-group', 'third-column')}>
+                                        <label htmlFor="">Số buổi</label>
+                                        <span>{currentContract?.duration}</span>
+                                    </div>
+                                </div>
+                                <div className={cx('row-info')}>
+                                    <div className={cx('info-group', 'first-column')}>
+                                        <label htmlFor="">Trạng thái</label>
+                                        <span>Đang tập luyện</span>
+                                    </div>
+                                </div>
+                                <div className={cx('row-info')}>
+                                    <div className={cx('info-group', 'first-column', 'description')}>
+                                        <label htmlFor="">Mô tả</label>
+                                        <div
+                                            dangerouslySetInnerHTML={{ __html: currentContract?.courseDescription }}
+                                        ></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    )}
-                    <div
-                        className={currentContract?.isReported ? cx('report-btn', 'disabled') : cx('report-btn')}
-                        onClick={handleReportOpen}
-                    >
-                        <button>Khiếu nại</button>
+                        {currentContract?.isReported && (
+                            <div className={cx('error')}>
+                                <ErrorMessage message="Bạn đã gửi khiếu nại cho quản lý" />
+                            </div>
+                        )}
+                        <div
+                            className={
+                                currentContract?.isReported || loading ? cx('report-btn', 'disabled') : cx('report-btn')
+                            }
+                            onClick={handleReportOpen}
+                        >
+                            <button>{loading ? <Spinner /> : 'Khiếu nại'}</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
             {reportOpen && (
                 <Modal
                     show={reportOpen}
