@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ErrorMessage from '~/components/ErrorMessage';
 import Modal from '~/components/Modal';
+import Spinner from '~/layouts/components/Spinner';
 import { cancelTrainingRequestAsync, getCoachingRequestsAsync, getPaymentLinkAsync } from '~/features/clientSlice';
 import styles from './Init.module.scss';
 import Pagination from '~/components/Pagination';
@@ -13,18 +14,21 @@ const cx = classNames.bind(styles);
 
 const Init = () => {
     const dispatch = useDispatch();
-    const { coachingRequests, paymentLink, totalCount, pageSize } = useSelector((state) => state.client);
+    const { coachingRequests, paymentLink, totalCount, pageSize, loading } = useSelector((state) => state.client);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isCancel, setIsCancel] = useState(false);
     const [isOpenCancelMessage, setIsOpenCancelMessage] = useState(false);
     const [message, setMessage] = useState('');
     const [messageError, setMessageError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [requestLoading, setRequestLoading] = useState(true);
 
     console.log(paymentLink);
 
     useEffect(() => {
-        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 6, clientRequestStatus: 'Init' }));
+        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 6, clientRequestStatus: 'Init' }))
+            .unwrap()
+            .then(() => setRequestLoading(false));
     }, [dispatch, currentPage]);
 
     useEffect(() => {
@@ -72,58 +76,73 @@ const Init = () => {
 
     return (
         <div className={cx('wrapper')}>
-            {coachingRequests && coachingRequests.length > 0 ? (
-                <div className={cx('request-list')}>
-                    {coachingRequests.map((request) => (
-                        <div className={cx('request-item')} key={request.id}>
-                            <div className={cx('card')}>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'coach')}>Huấn luyện viên</span>
-                                    <span>{request.coachName}</span>
-                                </div>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'course-name')}>Gói tập</span>
-                                    <span>{request.courseName}</span>
-                                </div>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'duration')}>Số buổi</span>
-                                    <span>{request.duration}</span>
-                                </div>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'price')}>Giá</span>
-                                    <span>{request.price}</span>
-                                </div>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'discount')}>Giảm giá</span>
-                                    <span>{request.discount ? request.discount : 0}%</span>
-                                </div>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'pay')}>Thành tiền</span>
-                                    <span>{request.priceToPay}</span>
-                                </div>
-                            </div>
-                            <div className={cx('action')}>
-                                <button id={cx('payment-btn')} onClick={() => handlePayment(request)}>
-                                    Thanh toán
-                                </button>
-                                <button id={cx('canceled-btn')} onClick={() => handleOpenCancelModal(request)}>
-                                    Hủy
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                    <Pagination
-                        className={cx('pagination-bar')}
-                        currentPage={currentPage}
-                        totalCount={totalCount}
-                        pageSize={pageSize}
-                        onPageChange={(page) => setCurrentPage(page)}
-                    />
-                </div>
+            {requestLoading ? (
+                <Spinner />
             ) : (
-                <div className={cx('request-empty')}>
-                    <h2>Hiện chưa có yêu cầu nào!</h2>
-                </div>
+                <>
+                    {coachingRequests && coachingRequests.length > 0 ? (
+                        <div className={cx('request-list')}>
+                            {coachingRequests.map((request) => (
+                                <div className={cx('request-item')} key={request.id}>
+                                    <div className={cx('card')}>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'coach')}>Huấn luyện viên</span>
+                                            <span>{request.coachName}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'course-name')}>Gói tập</span>
+                                            <span>{request.courseName}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'duration')}>Số buổi</span>
+                                            <span>{request.duration}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'price')}>Giá</span>
+                                            <span>{request.price}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'discount')}>Giảm giá</span>
+                                            <span>{request.discount ? request.discount : 0}%</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'pay')}>Thành tiền</span>
+                                            <span>{request.priceToPay}</span>
+                                        </div>
+                                    </div>
+                                    <div className={cx('action')}>
+                                        {loading ? (
+                                            <Spinner />
+                                        ) : (
+                                            <>
+                                                <button id={cx('payment-btn')} onClick={() => handlePayment(request)}>
+                                                    Thanh toán
+                                                </button>
+                                                <button
+                                                    id={cx('canceled-btn')}
+                                                    onClick={() => handleOpenCancelModal(request)}
+                                                >
+                                                    Hủy
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                            <Pagination
+                                className={cx('pagination-bar')}
+                                currentPage={currentPage}
+                                totalCount={totalCount}
+                                pageSize={pageSize}
+                                onPageChange={(page) => setCurrentPage(page)}
+                            />
+                        </div>
+                    ) : (
+                        <div className={cx('request-empty')}>
+                            <h2>Hiện chưa có yêu cầu nào!</h2>
+                        </div>
+                    )}
+                </>
             )}
 
             {isCancel && (

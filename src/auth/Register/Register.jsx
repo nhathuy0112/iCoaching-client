@@ -1,6 +1,5 @@
 import styles from './Register.module.scss';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

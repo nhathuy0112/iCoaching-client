@@ -19,12 +19,13 @@ import { BiTrash } from 'react-icons/bi';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 
 import styles from './Information.module.scss';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
 const Information = () => {
     const dispatch = useDispatch();
-    const { currentContract } = useSelector((state) => state.contract);
+    const { currentContract, loading } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
     const navigate = useNavigate();
 
@@ -34,9 +35,12 @@ const Information = () => {
     const [description, setDescription] = useState('');
     const [descriptionError, setDescriptionError] = useState('');
     const [imagesError, setImagesError] = useState('');
+    const [contractLoading, setContractLoading] = useState(true);
 
     useEffect(() => {
-        dispatch(getContractDetailsAsync(contractId));
+        dispatch(getContractDetailsAsync(contractId))
+            .unwrap()
+            .then(() => setContractLoading(false));
     }, [dispatch, contractId]);
 
     const handleCompletedContract = () => {
@@ -104,86 +108,105 @@ const Information = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('content')}>
-                <div className={cx('contract-info')}>
-                    <div className={cx('row-info')}>
-                        <div className={cx('group-info', 'first-column')}>
-                            <label htmlFor="">Khách hàng</label>
-                            <span>{currentContract?.client?.fullname}</span>
-                        </div>
-                        <div className={cx('group-info', 'second-column')}>
-                            <label htmlFor="">Giới tính</label>
-                            <span>{handleRenderGenders(currentContract?.client?.gender)}</span>
-                        </div>
-                        <div className={cx('group-info', 'third-column')}>
-                            <label htmlFor="">Tuổi</label>
-                            <span>{currentContract?.client?.age}</span>
-                        </div>
-                        <div className={cx('group-info', 'fourth-column')}>
-                            <label htmlFor="">Email</label>
-                            <span>{currentContract?.client?.email}</span>
-                        </div>
-                        <div className={cx('group-info', 'fifth-column')}>
-                            <label htmlFor="">SĐT</label>
-                            <span>{currentContract?.client?.phoneNumber}</span>
+            {contractLoading ? (
+                <Spinner />
+            ) : (
+                <>
+                    <div className={cx('content')}>
+                        <div className={cx('contract-info')}>
+                            <div className={cx('row-info')}>
+                                <div className={cx('group-info', 'first-column')}>
+                                    <label htmlFor="">Khách hàng</label>
+                                    <span>{currentContract?.client?.fullname}</span>
+                                </div>
+                                <div className={cx('group-info', 'second-column')}>
+                                    <label htmlFor="">Giới tính</label>
+                                    <span>{handleRenderGenders(currentContract?.client?.gender)}</span>
+                                </div>
+                                <div className={cx('group-info', 'third-column')}>
+                                    <label htmlFor="">Tuổi</label>
+                                    <span>{currentContract?.client?.age}</span>
+                                </div>
+                                <div className={cx('group-info', 'fourth-column')}>
+                                    <label htmlFor="">Email</label>
+                                    <span>{currentContract?.client?.email}</span>
+                                </div>
+                                <div className={cx('group-info', 'fifth-column')}>
+                                    <label htmlFor="">SĐT</label>
+                                    <span>{currentContract?.client?.phoneNumber}</span>
+                                </div>
+                            </div>
+                            <div className={cx('row-info')}>
+                                <div className={cx('group-info', 'first-column')}>
+                                    <label htmlFor="">Huấn luyện viên</label>
+                                    <span>{currentContract?.coach?.fullname}</span>
+                                </div>
+                                <div className={cx('group-info', 'second-column')}>
+                                    <label htmlFor="">Giới tính</label>
+                                    <span>{handleRenderGenders(currentContract?.coach?.gender)}</span>
+                                </div>
+                                <div className={cx('group-info', 'third-column')}>
+                                    <label htmlFor="">Tuổi</label>
+                                    <span>{currentContract?.coach?.age}</span>
+                                </div>
+                                <div className={cx('group-info', 'fourth-column')}>
+                                    <label htmlFor="">Email</label>
+                                    <span>{currentContract?.coach?.email}</span>
+                                </div>
+                                <div className={cx('group-info', 'fifth-column')}>
+                                    <label htmlFor="">SĐT</label>
+                                    <span>{currentContract?.coach?.phoneNumber}</span>
+                                </div>
+                            </div>
+                            <div className={cx('row-info')}>
+                                <div className={cx('group-info', 'first-column')}>
+                                    <label htmlFor="">Gói tập</label>
+                                    <span>{currentContract?.courseName}</span>
+                                </div>
+                                <div className={cx('group-info', 'second-column')}>
+                                    <label htmlFor="">Số buổi</label>
+                                    <span>{currentContract?.duration}</span>
+                                </div>
+                                <div className={cx('group-info', 'third-column')}>
+                                    <label htmlFor="">Trạng thái</label>
+                                    <span>Đợi hoàn thành</span>
+                                </div>
+                                <div className={cx('group-info', 'fourth-column')}>
+                                    <label htmlFor="">Giá</label>
+                                    <span>{currentContract?.price}</span>
+                                </div>
+                            </div>
+                            <div className={cx('row-info')}>
+                                <div className={cx('group-info', 'description')}>
+                                    <label htmlFor="">Mô tả</label>
+                                    <span>{currentContract?.courseDescription}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className={cx('row-info')}>
-                        <div className={cx('group-info', 'first-column')}>
-                            <label htmlFor="">Huấn luyện viên</label>
-                            <span>{currentContract?.coach?.fullname}</span>
+                    {currentContract.isReported ? (
+                        <span className={cx('reported')}>
+                            Đã từ chối hoàn thành hợp đồng. Vui lòng xem khiếu nại đã gửi
+                        </span>
+                    ) : (
+                        <div className={cx('action-btn')}>
+                            {loading ? (
+                                <Spinner />
+                            ) : (
+                                <>
+                                    <button id={cx('completed')} onClick={handleCompletedContract}>
+                                        Hoàn thành
+                                    </button>
+                                    <button id={cx('rejected')} onClick={handleReportOpen}>
+                                        Từ chối
+                                    </button>
+                                </>
+                            )}
                         </div>
-                        <div className={cx('group-info', 'second-column')}>
-                            <label htmlFor="">Giới tính</label>
-                            <span>{handleRenderGenders(currentContract?.coach?.gender)}</span>
-                        </div>
-                        <div className={cx('group-info', 'third-column')}>
-                            <label htmlFor="">Tuổi</label>
-                            <span>{currentContract?.coach?.age}</span>
-                        </div>
-                        <div className={cx('group-info', 'fourth-column')}>
-                            <label htmlFor="">Email</label>
-                            <span>{currentContract?.coach?.email}</span>
-                        </div>
-                        <div className={cx('group-info', 'fifth-column')}>
-                            <label htmlFor="">SĐT</label>
-                            <span>{currentContract?.coach?.phoneNumber}</span>
-                        </div>
-                    </div>
-                    <div className={cx('row-info')}>
-                        <div className={cx('group-info', 'first-column')}>
-                            <label htmlFor="">Gói tập</label>
-                            <span>{currentContract?.courseName}</span>
-                        </div>
-                        <div className={cx('group-info', 'second-column')}>
-                            <label htmlFor="">Số buổi</label>
-                            <span>{currentContract?.duration}</span>
-                        </div>
-                        <div className={cx('group-info', 'third-column')}>
-                            <label htmlFor="">Trạng thái</label>
-                            <span>Đợi hoàn thành</span>
-                        </div>
-                        <div className={cx('group-info', 'fourth-column')}>
-                            <label htmlFor="">Giá</label>
-                            <span>{currentContract?.price}</span>
-                        </div>
-                    </div>
-                    <div className={cx('row-info')}>
-                        <div className={cx('group-info', 'description')}>
-                            <label htmlFor="">Mô tả</label>
-                            <span>{currentContract?.courseDescription}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className={cx('action-btn')}>
-                <button id={cx('completed')} onClick={handleCompletedContract}>
-                    Hoàn thành
-                </button>
-                <button id={cx('rejected')} onClick={handleReportOpen}>
-                    Từ chối
-                </button>
-            </div>
+                    )}
+                </>
+            )}
+
             {reportOpen && (
                 <Modal
                     show={reportOpen}

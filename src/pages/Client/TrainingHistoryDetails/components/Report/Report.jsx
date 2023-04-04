@@ -5,13 +5,13 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getContractReportsAsync } from '~/features/contractSlice';
 import Modal from '~/components/Modal';
-
+import Spinner from '~/layouts/components/Spinner';
 import { AiOutlineClose } from 'react-icons/ai';
 const cx = classNames.bind(styles);
 
 const Report = () => {
     const dispatch = useDispatch();
-    const { reports } = useSelector((state) => state.contract);
+    const { reports, loading } = useSelector((state) => state.contract);
     const { contractId } = useParams();
     const [viewDetail, setViewDetail] = useState(false);
     const [file, setFile] = useState('');
@@ -60,35 +60,39 @@ const Report = () => {
     };
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('content')}>
-                {reports?.length !== 0 ? (
-                    <>
-                        <div className={cx('list-reports')}>
-                            {reports?.map((report) => (
-                                <div className={cx('rp')} key={report.id}>
-                                    <div className={cx('status')}>{handleReportStatus(report)}</div>
-                                    <hr />
-                                    <div className={cx('photos')}>
-                                        {report.images?.map((photo) => (
-                                            <img
-                                                key={photo.id}
-                                                src={photo}
-                                                alt="report"
-                                                onClick={() => handleViewDetail(photo)}
-                                            />
-                                        ))}
+            {loading ? (
+                <Spinner />
+            ) : (
+                <div className={cx('content')}>
+                    {reports?.length !== 0 ? (
+                        <>
+                            <div className={cx('list-reports')}>
+                                {reports?.map((report) => (
+                                    <div className={cx('rp')} key={report.id}>
+                                        <div className={cx('status')}>{handleReportStatus(report)}</div>
+                                        <hr />
+                                        <div className={cx('photos')}>
+                                            {report.images?.map((photo) => (
+                                                <img
+                                                    key={photo.id}
+                                                    src={photo}
+                                                    alt="report"
+                                                    onClick={() => handleViewDetail(photo)}
+                                                />
+                                            ))}
+                                        </div>
+                                        <p className={cx('detail')}>&#8827; &nbsp;{report.detail}</p>
                                     </div>
-                                    <p className={cx('detail')}>&#8827; &nbsp;{report.detail}</p>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <div className={cx('message')}>
+                            <h1>Không có khiếu nại nào!</h1>
                         </div>
-                    </>
-                ) : (
-                    <div className={cx('message')}>
-                        <h1>Hiện chưa có khiếu nại nào!</h1>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            )}
             {viewDetail && (
                 <Modal
                     open={viewDetail}

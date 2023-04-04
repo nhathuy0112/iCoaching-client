@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './CoachDetails.module.scss';
 
@@ -14,6 +14,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 import Home from '~/components/Chat/Home';
 import { changeUser } from '~/features/chatSlice';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 const CoachDetail = () => {
@@ -43,6 +44,8 @@ const CoachDetail = () => {
     const { currentCoach, error } = useSelector((state) => state.guest);
     const { currentUser } = useSelector((state) => state.user);
 
+    const [loading, setLoading] = useState(true);
+
     const handleSelect = () => {
         dispatch(changeUser({ currentUser: currentUser, payload: coachId }));
     };
@@ -57,7 +60,9 @@ const CoachDetail = () => {
     }, [id, currentUser, navigate, location, coachId]);
 
     useEffect(() => {
-        dispatch(getCoachProfileAsync(coachId));
+        dispatch(getCoachProfileAsync(coachId))
+            .unwrap()
+            .then(() => setLoading(false));
     }, [dispatch, coachId]);
 
     return (
@@ -98,18 +103,28 @@ const CoachDetail = () => {
                         </div>
                         <div className={cx('main')}>
                             <div className={cx('profile')}>
-                                <div className={cx('avatar')}>
-                                    {currentCoach?.avatarUrl ? (
-                                        <img src={currentCoach.avatarUrl} className={cx('image')} alt={'coach'} />
-                                    ) : (
-                                        <FaUserCircle className={cx('default')} />
-                                    )}
-                                </div>
-                                <h2 className={cx('name')}>{currentCoach?.fullname}</h2>
-                                <span className={cx(handleRenderGenderClassNames(currentCoach?.gender))}>
-                                    {handleRenderGenders(currentCoach?.gender)}
-                                </span>
-                                <span className={cx('age')}>{currentCoach?.age} tuổi</span>
+                                {loading ? (
+                                    <Spinner />
+                                ) : (
+                                    <>
+                                        <div className={cx('avatar')}>
+                                            {currentCoach?.avatarUrl ? (
+                                                <img
+                                                    src={currentCoach.avatarUrl}
+                                                    className={cx('image')}
+                                                    alt={'coach'}
+                                                />
+                                            ) : (
+                                                <FaUserCircle className={cx('default')} />
+                                            )}
+                                        </div>
+                                        <h2 className={cx('name')}>{currentCoach?.fullname}</h2>
+                                        <span className={cx(handleRenderGenderClassNames(currentCoach?.gender))}>
+                                            {handleRenderGenders(currentCoach?.gender)}
+                                        </span>
+                                        <span className={cx('age')}>{currentCoach?.age} tuổi</span>
+                                    </>
+                                )}
                             </div>
                             <div className={cx('tabs')}>
                                 <Tabs tabs={tabs}></Tabs>

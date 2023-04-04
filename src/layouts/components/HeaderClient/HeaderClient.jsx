@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { currentUser, avatar } = useSelector((state) => state.user);
+    const { currentUser, avatar, profile } = useSelector((state) => state.user);
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -144,7 +144,7 @@ const Header = () => {
                                     }
                                 >
                                     <div className={cx('info')}>
-                                        <span className={cx('name')}>{currentUser?.Fullname}</span>
+                                        <span className={cx('name')}>{profile.fullname}</span>
                                         <div className={cx('avatar-wrapper')}>
                                             {avatar ? (
                                                 <img className={cx('avatar')} src={avatar} alt="user-avatar" />
