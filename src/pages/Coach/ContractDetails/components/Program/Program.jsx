@@ -148,7 +148,7 @@ const Program = () => {
                     )}
                     <Link
                         className={
-                            currentContract?.status === 'Canceled' || currentContract?.isReported
+                            currentContract?.status !== 'Active' || currentContract?.isReported
                                 ? cx('add-link', 'disabled')
                                 : cx('add-link')
                         }
