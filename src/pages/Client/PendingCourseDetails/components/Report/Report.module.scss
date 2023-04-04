@@ -1,0 +1,91 @@
+.wrapper {
+    height: 100%;
+    position: relative;
+    overflow-y: initial !important;
+    .content {
+        .message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            color: #d01515;
+            text-align: center;
+        }
+    }
+    button {
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}
+.list-reports {
+    height: 65vh;
+    overflow: auto;
+    .rp {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        border-spacing: 2px 8px;
+        box-shadow: var(--default-box-shadow);
+        border-radius: var(--default-border-radius);
+        margin: 10px 5px;
+        padding: 10px;
+        .status {
+            padding-bottom: 8px;
+            .pending {
+                color: orange;
+            }
+            .solved {
+                color: green;
+            }
+            .rejected {
+                color: red;
+            }
+            .note {
+            }
+            .date {
+                font-size: 1.3rem;
+                position: absolute;
+                right: 0;
+                top: 0;
+                padding: 10px 10px 0 0;
+            }
+        }
+        .photos {
+            display: flex;
+            margin-top: 10px;
+            img {
+                width: 15%;
+                height: 80px;
+                margin: 0 8px;
+                cursor: pointer;
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+        .detail {
+            margin-top: 8px;
+            display: block;
+        }
+    }
+}
+
+#photo {
+    border-radius: 0;
+    display: block;
+    width: 60%;
+    max-height: 800px;
+    margin: 0 auto;
+}
+.closeBtn {
+    color: white;
+    background: none;
+    font-size: 3.2rem;
+    float: right;
+    cursor: pointer;
+}

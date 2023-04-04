@@ -1,28 +1,29 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './ListAdmin.module.scss';
 import classNames from 'classnames/bind';
+import styles from './ListAdmin.module.scss';
+
+import { BsCheckLg, BsXLg, BsFillInfoCircleFill } from 'react-icons/bs';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { BsCheckLg } from 'react-icons/bs';
-import { HiOutlineXMark } from 'react-icons/hi2';
-import { setPage, setSearch, setLock, updateAdminStatus, getAdminData } from '~/features/superAdminSlice';
+import { FaLockOpen, FaLock } from 'react-icons/fa';
+
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
+import { getAdminData, updateAdminStatus } from '~/features/superAdminSlice';
+import { handleRenderGenders } from '~/utils/gender';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 const ListAdmin = () => {
     const dispatch = useDispatch();
-    const { data, currentPage, pageSize, search, isLocked, count } = useSelector((state) => state.superAdmin);
-    const [page, setPageChanged] = useState(currentPage);
-    const [searchValue, setSearchValue] = useState('');
-    const [open, setOpen] = useState(false);
-    const [adminId, setAdminId] = useState(null);
-
+    const { data, count, pageSize, status } = useSelector((state) => state.superAdmin);
+    const [currentPage, setCurrentPage] = useState(1);
     const { id } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
+    const [isViewMessage, setIsViewMessage] = useState(false);
+    const [note, setNote] = useState('');
 
     useEffect(() => {
         if (currentUser) {
@@ -33,155 +34,136 @@ const ListAdmin = () => {
     }, [id, currentUser, navigate]);
 
     useEffect(() => {
-        dispatch(
-            getAdminData({
-                currentPage,
-                pageSize,
-                search,
-                count,
-            }),
-        );
-    }, [dispatch, currentPage, pageSize, search, isLocked, count]);
+        dispatch(getAdminData({ currentPage: currentPage, pageSize: 6 }));
+    }, [dispatch, currentPage, status]);
 
-    const handleSearchSubmit = (event) => {
-        event.preventDefault();
-        dispatch(setSearch(searchValue));
+    const [lockOpen, setLockOpen] = useState(false);
+    const [adminAccount, setAdminAccount] = useState();
+
+    const handleLockOpen = (admin) => {
+        setLockOpen(true);
+        setAdminAccount(admin);
     };
 
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            dispatch(setSearch(searchValue));
-            setPageChanged(1);
-        }, 200);
-
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    }, [searchValue, dispatch]);
-
-    const LockedAdmin = (adminId) => {
-        dispatch(updateAdminStatus(adminId));
-        dispatch(setLock(adminId));
-        setOpen(false);
+    const handleUpdateStatus = (id) => {
+        dispatch(updateAdminStatus(id));
+        setLockOpen(false);
     };
 
-    const handleOpen = (item) => {
-        setOpen(true);
-        setAdminId(item);
+    const handleNoteOpen = (note) => {
+        setIsViewMessage(true);
+        setNote(note);
     };
-
-    const currentAdminPagination = useMemo(() => {
-        return data;
-    }, [data]);
-
-    const handlePageChanged = (pageNumber) => {
-        setPageChanged(pageNumber);
-        dispatch(setPage(pageNumber));
-        dispatch(getAdminData({ currentPage: pageNumber, pageSize }));
-    };
-
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('container')}>
-                <form className={cx('search')} onSubmit={handleSearchSubmit}>
+            <div className={cx('content')}>
+                <form className={cx('search')}>
                     <div className={cx('search-box')} type="submit">
                         <AiOutlineSearch className={cx('search-icon')} />
-                        <input
-                            className={cx('search_input')}
-                            type="text"
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
-                            placeholder="Tìm kiếm"
-                        />
+                        <input type="text" placeholder="Tìm kiếm" />
                     </div>
                 </form>
-            </div>
-            <table className={cx('tb-admin')}>
-                <thead>
-                    <tr className={cx('header-row')}>
-                        <th>Tên đăng nhập</th>
-                        <th>Họ và tên</th>
-                        <th>Giới tính</th>
-                        <th>Email</th>
-                        <th>SĐT</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentAdminPagination?.map((item) => {
-                        return (
-                            <tr className={cx('content-row')} key={item.adminId}>
+
+                <table className={cx('tb-coaches')}>
+                    <thead>
+                        <tr className={cx('header-row')}>
+                            <th>Tên đăng nhập</th>
+                            <th>Họ và tên</th>
+                            <th>Giới tính</th>
+                            <th>Tuổi</th>
+                            <th>Email</th>
+                            <th>SĐT</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data?.map((admin) => (
+                            <tr className={cx('content-row')} key={admin.id}>
                                 <td className={cx('name')}>
                                     <div className={cx('avatar')}>
-                                        <img src={item.avatarUrl} alt="" />
+                                        <img src={admin.avatarUrl} alt="" />
                                     </div>
-                                    <span>{item.userName}</span>
+                                    <span>{admin.userName}</span>
                                 </td>
-                                <td>{item.fullname}</td>
-                                <td>{item.gender}</td>
-                                <td>{item.email}</td>
-                                <td>{item.phoneNumber}</td>
+                                <td>{admin.fullname}</td>
+                                <td>{handleRenderGenders(admin.gender)}</td>
+                                <td>{admin.age}</td>
+                                <td>{admin.email}</td>
+                                <td>{admin.phoneNumber}</td>
                                 <td className={cx('action-btn')}>
+                                    {admin.note ? (
+                                        <button id={cx('btn-info')} onClick={() => handleNoteOpen(admin.note)}>
+                                            <BsFillInfoCircleFill />
+                                        </button>
+                                    ) : (
+                                        ''
+                                    )}
+
                                     <button
-                                        adminId={cx({
-                                            button_lock: !item.isLocked,
-                                            button_active: item.isLocked,
-                                        })}
-                                        onClick={() => handleOpen(item.adminId)}
+                                        id={cx(`${admin.isLocked ? 'btn-confirm' : 'btn-warn'}`)}
+                                        onClick={() => handleLockOpen(admin)}
                                     >
-                                        {item.isLocked ? 'Mở khoá tài khoản' : 'Khoá tài khoản'}
+                                        {admin.isLocked ? <FaLockOpen /> : <FaLock />}
                                     </button>
                                 </td>
-                                <td>
-                                    {open && (
-                                        <Modal
-                                            show={open}
-                                            onClose={() => setOpen(false)}
-                                            modalStyle={{ width: '60%' }}
-                                            closeBtnStyle={{ display: 'none' }}
-                                        >
-                                            <div className={cx('modal_container')}>
-                                                <h1 className={cx('modal-header')}>iCoaching</h1>
-                                                <h2 className={cx('text_modal')}>
-                                                    Bạn có đồng ý khoá tài khoản{' '}
-                                                    <span style={{ color: '#DF1B1B' }}>
-                                                        {data.find((item) => item.adminId === adminId).userName}
-                                                    </span>
-                                                </h2>
-                                                <div className={cx('container_confirm')}>
-                                                    <button
-                                                        className={cx('button_active')}
-                                                        onClick={() => LockedAdmin(adminId)}
-                                                    >
-                                                        <BsCheckLg className={cx('icon_modal')} />
-                                                        Đồng ý
-                                                    </button>
-                                                    <button
-                                                        className={cx('button_lock')}
-                                                        onClick={() => setOpen(false)}
-                                                    >
-                                                        <HiOutlineXMark className={cx('icon_modal')} />
-                                                        Huỷ bỏ
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </Modal>
-                                    )}
-                                </td>
                             </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-            <div>
-                <Pagination
-                    className={cx('pagination-bar')}
-                    currentPage={page}
-                    totalCount={count}
-                    pageSize={pageSize}
-                    onPageChange={(page) => handlePageChanged(page)}
-                />
+                        ))}
+                    </tbody>
+                </table>
             </div>
+            <Pagination
+                className={cx('pagination-bar')}
+                currentPage={currentPage}
+                totalCount={count}
+                pageSize={pageSize}
+                onPageChange={(page) => setCurrentPage(page)}
+            />
+
+            {/* lock admin account */}
+            {lockOpen && (
+                <Modal
+                    show={lockOpen}
+                    onClose={() => setLockOpen(false)}
+                    closeBtnStyle={{ display: 'none' }}
+                    modalStyle={{ width: '60%' }}
+                >
+                    <div className={cx('modal')}>
+                        <h2 className={cx('header')}>iCoaching</h2>
+                        <p>{`Bạn có đồng ý ${adminAccount.isLocked ? 'mở' : ''} khoá tài khoản ${
+                            adminAccount.userName
+                        }?`}</p>
+                        <div className={cx('button')}>
+                            <button className={cx('btn-confirm')} onClick={() => handleUpdateStatus(adminAccount.id)}>
+                                <BsCheckLg className={cx('icon')} />
+                                Đồng ý
+                            </button>
+                            <button className={cx('btn-warn')} onClick={() => setLockOpen(false)}>
+                                <BsXLg className={cx('icon')} /> Huỷ bỏ
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+            )}
+
+            {/* view admin's note */}
+            {isViewMessage && (
+                <Modal
+                    id={cx('view-message-modal')}
+                    show={isViewMessage}
+                    onClose={() => setIsViewMessage(false)}
+                    modalStyle={{ width: '60%' }}
+                    closeBtnStyle={{ color: 'var(--white-color)', cursor: 'pointer' }}
+                >
+                    <div className={cx('modal')}>
+                        <div className={cx('header')}>
+                            <h1>iCoaching</h1>
+                        </div>
+                        <div className={cx('body')}>
+                            <textarea className={cx('note')} defaultValue={note} readOnly />
+                        </div>
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 };

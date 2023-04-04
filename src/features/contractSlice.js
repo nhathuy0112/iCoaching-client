@@ -11,6 +11,7 @@ import {
     uploadContractProgramFiles,
     sendReport,
     deleteContractLogMedia,
+    getContractReports,
 } from '~/services/contractService';
 
 //get contract details
@@ -137,12 +138,24 @@ export const deleteContractLogMediaAsync = createAsyncThunk('contract/deleteCont
     }
 });
 
+
+//get contract reports
+export const getContractReportsAsync = createAsyncThunk('contract/getContractReports', async (payload) => {
+    try {
+        const response = await getContractReports(payload);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 const initialState = {
     currentContract: {},
     programFiles: [],
     downloadLink: '',
     logs: [],
     currentLog: {},
+    reports: [],
     loading: false,
     error: null,
     message: '',
@@ -289,6 +302,8 @@ export const contractSlice = createSlice({
                 state.error = action.error.message;
             })
 
+
+
             //delete media in contract log
             .addCase(deleteContractLogMediaAsync.pending, (state) => {
                 state.loading = true;
@@ -302,7 +317,22 @@ export const contractSlice = createSlice({
             .addCase(deleteContractLogMediaAsync.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.error.message;
-            });
+            })
+
+            //get contract reports
+            .addCase(getContractReportsAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.message = '';
+            })
+            .addCase(getContractReportsAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.reports = action.payload;
+            })
+            .addCase(getContractReportsAsync.rejected, (state, action) => {
+                state.loading = true;
+                state.error = action.error.message;
+            })
     },
 });
 

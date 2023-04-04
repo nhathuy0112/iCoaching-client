@@ -1,5 +1,5 @@
 .wrapper {
-    padding-top: 4%;
+    padding-top: 16px;
     button {
         &:hover {
             opacity: 0.8;
@@ -8,7 +8,7 @@
 }
 #register-form {
     width: 80%;
-    margin: 4% auto 2%;
+    margin: auto;
     label {
         font-size: 1.8rem;
     }
@@ -34,12 +34,16 @@
         cursor: pointer;
         font-size: 1.5rem;
         display: block;
-        margin: 5% auto 0;
+        margin: 2% auto 0;
         padding: 15px 35px;
         color: white;
         border-radius: var(--default-border-radius);
         background-color: #2e9d2c;
         text-align: center;
+    }
+    .note {
+        width: 100%;
+        resize: none;
     }
 }
 @media only screen and (max-width: 768px) {

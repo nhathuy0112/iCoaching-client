@@ -42,3 +42,5 @@ export const sendReport = ({ contractId, data }) =>
             'Content-Type': 'multipart/form-data',
         },
     });
+
+export const getContractReports = (contractId) => axios.get(`${END_POINTS.CONTRACT}/${contractId}/reports`);
