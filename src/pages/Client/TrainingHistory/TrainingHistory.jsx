@@ -41,7 +41,7 @@ const TrainingHistory = () => {
                     <IoIosArrowBack />
                     <span>Trang chủ</span>
                 </Link>
-                <h2 className={cx('header')}>Yêu cầu tập luyện</h2>
+                <h2 className={cx('header')}>Lịch sử tập luyện</h2>
             </div>
             <div className={cx('content')}>
                 <Tabs tabs={tabs} />
