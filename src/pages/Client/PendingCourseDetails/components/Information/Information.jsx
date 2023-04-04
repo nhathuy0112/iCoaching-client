@@ -91,7 +91,11 @@ const Information = () => {
                         formData.append('Files', image);
                     }
                 });
-                dispatch(sendReportAsync({ contractId, formData }));
+                dispatch(sendReportAsync({ contractId, formData }))
+                    .unwrap()
+                    .then(() => {
+                        dispatch(getContractDetailsAsync(contractId));
+                    });
                 setIsAddingImage(false);
                 setReportOpen(false);
             }
@@ -200,21 +204,22 @@ const Information = () => {
                             <ErrorMessage message="Bạn đã gửi khiếu nại cho quản lý" />
                         </div>
                     )}
-                    <div
-                        className={currentContract?.isReported ? cx('report-btn', 'disabled') : cx('report-btn')}
-                        onClick={handleReportOpen}
-                    >
-                        <button>Khiếu nại</button>
+
+                    <div className={cx('action-btn')}>
+                        <button
+                            className={currentContract?.isReported ? cx('completed', 'disabled') : cx('completed')}
+                            onClick={handleCompletedContract}
+                        >
+                            Hoàn thành
+                        </button>
+                        <button
+                            className={currentContract?.isReported ? cx('rejected', 'disabled') : cx('rejected')}
+                            onClick={handleReportOpen}
+                        >
+                            Từ chối
+                        </button>
                     </div>
                 </div>
-            </div>
-            <div className={cx('action-btn')}>
-                <button id={cx('completed')} onClick={handleCompletedContract}>
-                    Hoàn thành
-                </button>
-                <button id={cx('rejected')} onClick={handleReportOpen}>
-                    Từ chối
-                </button>
             </div>
             {reportOpen && (
                 <Modal

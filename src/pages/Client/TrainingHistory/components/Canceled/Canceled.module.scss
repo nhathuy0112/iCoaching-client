@@ -1,0 +1,57 @@
+.wrapper {
+    .course-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 80px;
+
+        .course-item {
+            position: relative;
+            width: 388px;
+            box-shadow: var(--default-box-shadow);
+            padding: 16px;
+            border-radius: var(--default-border-radius);
+
+            .card {
+                .card-content {
+                    display: flex;
+                    align-items: center;
+                    margin: 4px 0;
+
+                    .card-title {
+                        min-width: 160px;
+                        color: var(--primary-color);
+                    }
+                }
+            }
+
+            .action {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+
+                #view-detail-link {
+                    color: var(--primary-color);
+                    text-decoration: underline !important;
+                }
+            }
+        }
+    }
+
+    .course-empty {
+        margin-top: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        .message {
+            color: red;
+        }
+
+        .find-link {
+            text-decoration: underline !important;
+            color: var(--primary-color);
+        }
+    }
+}

@@ -9,7 +9,6 @@ import styles from './Progress.module.scss';
 import { handleRenderFileIcon } from '~/utils/file';
 import Modal from '~/components/Modal';
 import ErrorMessage from '~/components/ErrorMessage';
-import { current } from '@reduxjs/toolkit';
 
 const cx = classNames.bind(styles);
 

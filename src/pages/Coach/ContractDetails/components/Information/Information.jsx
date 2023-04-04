@@ -140,11 +140,13 @@ const Information = () => {
                         </div>
                     </div>
 
-                    {currentContract?.status === 'Active' && !currentContract?.isComplete && (
-                        <div className={cx('error')}>
-                            <ErrorMessage message={'Hợp đồng chưa hoàn thành hết tiến độ'} />
-                        </div>
-                    )}
+                    {currentContract?.status === 'Active' &&
+                        !currentContract?.isComplete &&
+                        !currentContract?.isReported && (
+                            <div className={cx('error')}>
+                                <ErrorMessage message={'Hợp đồng chưa hoàn thành hết tiến độ'} />
+                            </div>
+                        )}
                     {currentContract?.status !== 'Complete' && currentContract?.isReported && (
                         <div className={cx('error')}>
                             <ErrorMessage message={'Hợp đồng đang bị khiếu nại từ khách hàng'} />
