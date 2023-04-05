@@ -105,6 +105,11 @@
     }
 }
 
+.policy-link {
+    text-decoration: underline;
+    color: var(--primary-color);
+}
+
 @media (max-width: 1000px) {
     .img-wrapper {
         display: none;

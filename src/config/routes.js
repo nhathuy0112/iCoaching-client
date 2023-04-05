@@ -5,6 +5,7 @@ import Home from '~/pages/Guest/Home';
 import CoachesView from '~/pages/Guest/CoachesView';
 import CoachDetail from '~/pages/Guest/CoachDetails';
 import CourseDetails from '~/pages/Guest/CourseDetails';
+import Policy from '~/pages/Guest/Policy';
 
 //Client
 import ClientHome from '~/pages/Client/Home';
@@ -64,6 +65,7 @@ import RoleGuard from '~/components/Guards/RoleGuard';
 
 const guestRoutes = [
     { path: '/', component: Home, layout: GuestLayout },
+    { path: '/policy', component: Policy, layout: GuestLayout },
     { path: '/all-coaches', component: CoachesView, layout: GuestLayout },
     { path: '/all-coaches/view-details/coach/:coachId', component: CoachDetail, layout: GuestLayout },
     {
