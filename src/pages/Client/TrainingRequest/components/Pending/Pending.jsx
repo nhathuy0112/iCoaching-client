@@ -24,7 +24,9 @@ const Pending = () => {
     const [requestLoading, setRequestLoading] = useState(true);
 
     useEffect(() => {
-        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 6, clientRequestStatus: 'Pending' }));
+        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 6, clientRequestStatus: 'Pending' }))
+            .unwrap()
+            .then(() => setRequestLoading(true));
     }, [dispatch, currentPage]);
 
     const handleOnChangeMessage = (e) => {

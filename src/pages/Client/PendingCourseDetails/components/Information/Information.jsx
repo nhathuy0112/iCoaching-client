@@ -113,7 +113,7 @@ const Information = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                {loading ? (
+                {contractLoading ? (
                     <Spinner />
                 ) : (
                     <div className={cx('contract-info')}>
