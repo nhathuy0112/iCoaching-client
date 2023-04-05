@@ -178,7 +178,7 @@ const Chat = () => {
                             </div>
 
                             <span style={{ borderLeft: '2px solid lightgray', paddingLeft: '5px', color: 'white' }}>
-                                {user.fullname} ({user.username})
+                                {user.fullname}
                             </span>
                         </span>
 
@@ -201,9 +201,7 @@ const Chat = () => {
     ) : (
         <div className={cx('chat', { chatClient: currentUser?.role !== 'COACH' && !coachId })}>
             <div className={cx('chatInfo', { chatInfoClient: coachId })}>
-                <span>
-                    {user.fullname} ({user.username})
-                </span>
+                <span>{user.fullname}</span>
                 {status.isOnline ? (
                     <div
                         className={cx('chatIcons')}
