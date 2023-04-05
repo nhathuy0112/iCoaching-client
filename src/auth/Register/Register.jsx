@@ -11,6 +11,7 @@ import { registerAsync, resetAuth } from '~/features/userSlice';
 import ErrorMessage from '~/components/ErrorMessage';
 import SuccessMessage from '~/components/SuccessMessage';
 import { convertDateFormat } from '~/utils/dateFormat';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -182,7 +183,14 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                     <input className={cx('checkbox')} type="checkbox" {...register('isCoach')} /> Đăng
                                     ký trở thành huấn luyện viên <br />
                                     <input className={cx('checkbox')} type="checkbox" {...register('isAgreed')} /> Tôi
-                                    đồng ý với các điều khoản
+                                    đồng ý với các{' '}
+                                    <Link
+                                        className={cx('policy-link')}
+                                        onClick={() => setRegisterOpen(false)}
+                                        to="/policy"
+                                    >
+                                        điều khoản
+                                    </Link>
                                     {errors.isAgreed && <ErrorMessage message={errors.isAgreed.message} />}
                                 </div>
                                 {message && <SuccessMessage message={message} />}
