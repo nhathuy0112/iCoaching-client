@@ -155,7 +155,7 @@ const AccountProfile = () => {
                                 <img src={currentAvatar} alt="" style={{ width: '100%', height: '100%' }} />
                                 <input id="upload" type="file" accept="image/*" hidden />
                                 <label className={cx('change_image')} htmlFor="upload" onClick={handleChangeAvatar}>
-                                    Change Image
+                                    Chọn ảnh
                                 </label>
                             </div>
                             <button type="submit" onClick={() => setConfirmAvatar(true)}>
@@ -219,7 +219,14 @@ const AccountProfile = () => {
                         {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
                         {response && message && <SuccessMessage message={message} />}
                         <button type="submit" id={cx('submit_btn')} className={cx('align-center')} disabled={loading}>
-                            <BsCheckLg className={cx('icon')} /> {loading ? <Spinner /> : 'Cập nhật'}
+                            {loading ? (
+                                <Spinner />
+                            ) : (
+                                <>
+                                    <BsCheckLg className={cx('icon')} />
+                                    Cập nhật
+                                </>
+                            )}
                         </button>
                     </form>
                 </div>

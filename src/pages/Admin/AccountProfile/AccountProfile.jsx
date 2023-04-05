@@ -155,7 +155,7 @@ const AccountProfile = () => {
                                 <img src={currentAvatar} alt="" style={{ width: '100%', height: '100%' }} />
                                 <input id="upload" type="file" accept="image/*" hidden />
                                 <label className={cx('change_image')} htmlFor="upload" onClick={handleChangeAvatar}>
-                                    Change Image
+                                    Chọn ảnh
                                 </label>
                             </div>
                             <button type="submit" onClick={() => setConfirmAvatar(true)}>
