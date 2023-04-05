@@ -27,6 +27,7 @@ import { changeUser } from '~/features/chatSlice';
 const cx = classNames.bind(styles);
 
 const Chat = () => {
+    const [status, setStatus] = useState('');
     const user = useSelector((state) => state.chat.user);
     const { currentUser } = useSelector((state) => state.user);
     const [currentCoach, setCurrentCoach] = useState([]);
@@ -42,7 +43,7 @@ const Chat = () => {
 
     async function init() {
         const userID = currentUser?.Username;
-        const userName = 'userName' + userID;
+        const userName = currentUser?.Fullname;
         const { token } = await generateToken('https://node-express-vercel-master-one.vercel.app', userID);
         const KitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(1980920521, token, null, userID, userName);
         zp = ZegoUIKitPrebuilt.create(KitToken);
@@ -61,7 +62,7 @@ const Chat = () => {
         if (zp) {
             const targetUser = {
                 userID: user?.username,
-                userName: user?.username,
+                userName: user?.fullname,
             };
 
             zp.sendCallInvitation({
@@ -96,7 +97,6 @@ const Chat = () => {
         }
     }, [coachId]);
 
-    const [status, setStatus] = useState('');
     useEffect(() => {
         if (user.uid) {
             const q = query(collection(db, 'users'), where('uid', '==', user.uid));
@@ -111,6 +111,8 @@ const Chat = () => {
         }
     }, [user.uid]);
 
+    console.log(currentCoach);
+    console.log(coachId);
     useEffect(() => {
         if (currentCoach.uid && chatId) {
             const handleSelect = async () => {
@@ -125,6 +127,7 @@ const Chat = () => {
                             username: currentCoach?.username,
                             email: currentCoach?.email,
                             avatar: currentCoach?.avatar,
+                            fullname: currentCoach?.fullname,
                         },
                         [chatId + '.date']: serverTimestamp(),
                     });
@@ -135,6 +138,7 @@ const Chat = () => {
                             username: currentUser?.Username,
                             email: currentUser?.email,
                             avatar: currentUser?.Avatar,
+                            fullname: currentUser?.Fullname,
                         },
                         [chatId + '.date']: serverTimestamp(),
                     });
@@ -174,7 +178,7 @@ const Chat = () => {
                             </div>
 
                             <span style={{ borderLeft: '2px solid lightgray', paddingLeft: '5px', color: 'white' }}>
-                                {user.username}
+                                {user.fullname}
                             </span>
                         </span>
 
@@ -197,7 +201,7 @@ const Chat = () => {
     ) : (
         <div className={cx('chat', { chatClient: currentUser?.role !== 'COACH' && !coachId })}>
             <div className={cx('chatInfo', { chatInfoClient: coachId })}>
-                <span>{user.username}</span>
+                <span>{user.fullname}</span>
                 {status.isOnline ? (
                     <div
                         className={cx('chatIcons')}
