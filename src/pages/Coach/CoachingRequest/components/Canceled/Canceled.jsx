@@ -7,12 +7,13 @@ import { getCoachingRequestsAsync } from '~/features/coachSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Canceled.module.scss';
 import Pagination from '~/components/Pagination';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
 const Canceled = () => {
     const dispatch = useDispatch();
-    const { coachingRequests, totalCount, pageSize } = useSelector((state) => state.coach);
+    const { coachingRequests, totalCount, pageSize, loading } = useSelector((state) => state.coach);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isViewDetails, setIsViewDetails] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -28,66 +29,75 @@ const Canceled = () => {
 
     return (
         <div className={cx('wrapper')}>
-            {coachingRequests && coachingRequests.length > 0 ? (
-                <>
-                    <form className={cx('search')}>
-                        <div className={cx('search-box')} type="submit">
-                            <AiOutlineSearch className={cx('search-icon')} />
-                            <input type="text" placeholder="Tìm kiếm" />
-                        </div>
-                    </form>
-
-                    <table id={cx('request-table')}>
-                        <thead>
-                            <tr className={cx('header-row')}>
-                                <th>Khách hàng</th>
-                                <th>Tuổi</th>
-                                <th>Giới tính</th>
-                                <th>Email</th>
-                                <th>SĐT</th>
-                                <th>Gói tập</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {coachingRequests.map((request) => (
-                                <tr className={cx('content-row')} key={request.id}>
-                                    <td className={cx('name')}>
-                                        <div className={cx('avatar')}>
-                                            <img
-                                                src={require('../../../../../assets/images/coach-avatar.png')}
-                                                alt=""
-                                            />
-                                        </div>
-                                        <span>{request.clientName}</span>
-                                    </td>
-                                    <td>{request.age}</td>
-                                    <td>{handleRenderGenders(request.gender)}</td>
-                                    <td>{request.email}</td>
-                                    <td>{request.phoneNumber}</td>
-                                    <td>{request.courseName}</td>
-                                    <td className={cx('action-btn')}>
-                                        <button id={cx('btn-view-detail')} onClick={() => handleViewDetails(request)}>
-                                            Xem lý do
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </>
+            {loading ? (
+                <Spinner />
             ) : (
-                <div className={cx('request-empty')}>
-                    <h2>Hiện chưa có yêu cầu nào!</h2>
-                </div>
+                <>
+                    {coachingRequests && coachingRequests.length > 0 ? (
+                        <>
+                            <form className={cx('search')}>
+                                <div className={cx('search-box')} type="submit">
+                                    <AiOutlineSearch className={cx('search-icon')} />
+                                    <input type="text" placeholder="Tìm kiếm" />
+                                </div>
+                            </form>
+
+                            <table id={cx('request-table')}>
+                                <thead>
+                                    <tr className={cx('header-row')}>
+                                        <th>Khách hàng</th>
+                                        <th>Tuổi</th>
+                                        <th>Giới tính</th>
+                                        <th>Email</th>
+                                        <th>SĐT</th>
+                                        <th>Gói tập</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {coachingRequests.map((request) => (
+                                        <tr className={cx('content-row')} key={request.id}>
+                                            <td className={cx('name')}>
+                                                <div className={cx('avatar')}>
+                                                    <img
+                                                        src={require('../../../../../assets/images/coach-avatar.png')}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                <span>{request.clientName}</span>
+                                            </td>
+                                            <td>{request.age}</td>
+                                            <td>{handleRenderGenders(request.gender)}</td>
+                                            <td>{request.email}</td>
+                                            <td>{request.phoneNumber}</td>
+                                            <td>{request.courseName}</td>
+                                            <td className={cx('action-btn')}>
+                                                <button
+                                                    id={cx('btn-view-detail')}
+                                                    onClick={() => handleViewDetails(request)}
+                                                >
+                                                    Xem lý do
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </>
+                    ) : (
+                        <div className={cx('request-empty')}>
+                            <h2>Hiện chưa có yêu cầu nào!</h2>
+                        </div>
+                    )}
+                    <Pagination
+                        className={cx('pagination-bar')}
+                        currentPage={currentPage}
+                        totalCount={totalCount}
+                        pageSize={pageSize}
+                        onPageChange={(page) => setCurrentPage(page)}
+                    />
+                </>
             )}
-            <Pagination
-                className={cx('pagination-bar')}
-                currentPage={currentPage}
-                totalCount={totalCount}
-                pageSize={pageSize}
-                onPageChange={(page) => setCurrentPage(page)}
-            />
 
             {isViewDetails && (
                 <Modal

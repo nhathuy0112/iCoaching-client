@@ -12,11 +12,12 @@ import Pagination from '~/components/Pagination';
 import { MdOutlineEdit } from 'react-icons/md';
 import { BiTrash } from 'react-icons/bi';
 import { useNavigate, useParams } from 'react-router-dom';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
 const MyCourse = () => {
-    const { trainingCourses, pageSize, totalCount } = useSelector((state) => state.coach);
+    const { trainingCourses, pageSize, totalCount, loading } = useSelector((state) => state.coach);
     const dispatch = useDispatch();
     const [isDelete, setIsDelete] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState({});
@@ -49,57 +50,63 @@ const MyCourse = () => {
 
     return (
         <div className={cx('wrapper')}>
-            {trainingCourses && trainingCourses.length > 0 ? (
+            {loading ? (
+                <Spinner />
+            ) : (
                 <>
-                    <div className={cx('action')}>
-                        <div className={cx('add')}>
-                            <button id={cx('add-btn')} onClick={() => navigate(`/coach/${id}/my-courses/add`)}>
+                    {trainingCourses && trainingCourses.length > 0 ? (
+                        <>
+                            <div className={cx('action')}>
+                                <div className={cx('add')}>
+                                    <button id={cx('add-btn')} onClick={() => navigate(`/coach/${id}/my-courses/add`)}>
+                                        <AiOutlinePlus className={cx('icon')} />
+                                        <span>Thêm gói tập</span>
+                                    </button>
+                                </div>
+                                <div className={cx('filter-and-search')}>
+                                    <input type="text" placeholder="Tìm kiếm" />
+                                </div>
+                            </div>
+                            <div className={cx('course-list')}>
+                                {trainingCourses.map((course) => (
+                                    <div className={cx('course-item')} key={course.id}>
+                                        <TrainingCourseCard course={course} />
+                                        <div className={cx('item-action')}>
+                                            <button
+                                                id={cx('edit-btn')}
+                                                onClick={() => navigate(`/coach/${id}/my-courses/edit/${course.id}`)}
+                                            >
+                                                <MdOutlineEdit />
+                                            </button>
+                                            <button id={cx('delete-btn')} onClick={() => handleOpenDeleteModal(course)}>
+                                                <BiTrash />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                                <Pagination
+                                    className={cx('pagination-bar')}
+                                    currentPage={currentPage}
+                                    totalCount={totalCount}
+                                    pageSize={pageSize}
+                                    onPageChange={(page) => setCurrentPage(page)}
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <div className={cx('course-empty')}>
+                            <h1>Hiện chưa có gói tập nào!</h1>
+                            <button
+                                id={cx('add-btn')}
+                                onClick={() => navigate(`/coach/${id}/my-courses/add`)}
+                                style={{ margin: 'auto' }}
+                            >
                                 <AiOutlinePlus className={cx('icon')} />
                                 <span>Thêm gói tập</span>
                             </button>
                         </div>
-                        <div className={cx('filter-and-search')}>
-                            <input type="text" placeholder="Tìm kiếm" />
-                        </div>
-                    </div>
-                    <div className={cx('course-list')}>
-                        {trainingCourses.map((course) => (
-                            <div className={cx('course-item')} key={course.id}>
-                                <TrainingCourseCard course={course} />
-                                <div className={cx('item-action')}>
-                                    <button
-                                        id={cx('edit-btn')}
-                                        onClick={() => navigate(`/coach/${id}/my-courses/edit/${course.id}`)}
-                                    >
-                                        <MdOutlineEdit />
-                                    </button>
-                                    <button id={cx('delete-btn')} onClick={() => handleOpenDeleteModal(course)}>
-                                        <BiTrash />
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                        <Pagination
-                            className={cx('pagination-bar')}
-                            currentPage={currentPage}
-                            totalCount={totalCount}
-                            pageSize={pageSize}
-                            onPageChange={(page) => setCurrentPage(page)}
-                        />
-                    </div>
+                    )}
                 </>
-            ) : (
-                <div className={cx('course-empty')}>
-                    <h1>Hiện chưa có gói tập nào!</h1>
-                    <button
-                        id={cx('add-btn')}
-                        onClick={() => navigate(`/coach/${id}/my-courses/add`)}
-                        style={{ margin: 'auto' }}
-                    >
-                        <AiOutlinePlus className={cx('icon')} />
-                        <span>Thêm gói tập</span>
-                    </button>
-                </div>
             )}
 
             {isDelete && (

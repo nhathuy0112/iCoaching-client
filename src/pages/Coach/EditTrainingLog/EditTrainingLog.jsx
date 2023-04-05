@@ -17,13 +17,14 @@ import ErrorMessage from '~/components/ErrorMessage';
 import { AiOutlineUpload } from 'react-icons/ai';
 import { FaTrashAlt } from 'react-icons/fa';
 import { handleRenderFileIcon } from '~/utils/file';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
 const EditTrainingLog = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { currentLog, logs } = useSelector((state) => state.contract);
+    const { currentLog, logs, loading } = useSelector((state) => state.contract);
     const { id, contractId, logId } = useParams();
     const [trainingDateInput, setTrainingDateInput] = useState('');
     const [fileList, setFileList] = useState([]);
@@ -32,6 +33,10 @@ const EditTrainingLog = () => {
     const [noteInput, setNoteInput] = useState('');
     const [trainingDateError, setTrainingDateError] = useState('');
     const [noteError, setNoteError] = useState('');
+
+    const [deleteFileLoading, setDeleteFileLoading] = useState({ id, isDeleting: false });
+    const [deleteImageLoading, setDeleteImageLoading] = useState({ id, isDeleting: false });
+    const [deleteVideoLoading, setDeleteVideoLoading] = useState({ id, isDeleting: false });
 
     useEffect(() => {
         dispatch(getContractLogsAsync(contractId));
@@ -119,21 +124,26 @@ const EditTrainingLog = () => {
 
     const handleDeleteFile = (fileId) => {
         let found = false;
+        setDeleteFileLoading({ id: fileId, isDeleting: true });
+
         for (let i = 0; i < currentLog.files.length; i++) {
             if (currentLog.files[i].id === fileId) {
                 found = true;
                 dispatch(deleteContractProgramFileAsync({ contractId: contractId, fileId: fileId }))
                     .unwrap()
                     .then(() => {
+                        setDeleteFileLoading({ isDeleting: false });
                         dispatch(getContractLogDetailsAsync({ contractId: contractId, logId: logId }));
                     });
                 break;
             }
         }
         if (!found) {
+            setDeleteFileLoading({ id: fileId, isDeleting: true });
             const newFileList = fileList.filter((file) => file.id !== fileId);
             setTimeout(() => {
                 setFileList(newFileList);
+                setDeleteFileLoading({ isDeleting: false });
             }, [3000]);
         }
     };
@@ -146,6 +156,7 @@ const EditTrainingLog = () => {
     };
 
     const handleDeleteImage = (imageId) => {
+        setDeleteImageLoading({ id: imageId, isDeleting: true });
         let found = false;
         for (let i = 0; i < currentLog.images.length; i++) {
             if (currentLog.images[i].id === imageId) {
@@ -153,14 +164,17 @@ const EditTrainingLog = () => {
                 dispatch(deleteContractLogMediaAsync({ contractId: contractId, logId: logId, mediaId: imageId }))
                     .unwrap()
                     .then(() => {
+                        setDeleteImageLoading({ isDeleting: false });
                         dispatch(getContractLogDetailsAsync({ contractId: contractId, logId: logId }));
                     });
                 break;
             }
         }
         if (!found) {
+            setDeleteImageLoading({ id: imageId, isDeleting: true });
             const newImageList = imageList.filter((image) => image.id !== imageId);
             setTimeout(() => {
+                setDeleteImageLoading({ isDeleting: false });
                 setImageList(newImageList);
             }, [3000]);
         }
@@ -174,6 +188,7 @@ const EditTrainingLog = () => {
     };
 
     const handleDeleteVideo = (videoId) => {
+        setDeleteVideoLoading({ id: videoId, isDeleting: true });
         let found = false;
         for (let i = 0; i < currentLog.videos.length; i++) {
             if (currentLog.videos[i].id === videoId) {
@@ -181,14 +196,17 @@ const EditTrainingLog = () => {
                 dispatch(deleteContractLogMediaAsync({ contractId: contractId, logId: logId, mediaId: videoId }))
                     .unwrap()
                     .then(() => {
+                        setDeleteVideoLoading({ isDeleting: false });
                         dispatch(getContractLogDetailsAsync({ contractId: contractId, logId: logId }));
                     });
                 break;
             }
         }
         if (!found) {
+            setDeleteVideoLoading({ id: videoId, isDeleting: true });
             const newVideoList = videoList.filter((video) => video.id !== videoId);
             setTimeout(() => {
+                setDeleteVideoLoading({ isDeleting: false });
                 setVideoList(newVideoList);
             }, [3000]);
         }
@@ -284,9 +302,13 @@ const EditTrainingLog = () => {
                                 <li className={cx('file-item')} key={file.id}>
                                     <span>{handleRenderFileIcon(file.fileName)}</span>
                                     <p>{file.fileName}</p>
+
                                     <div className={cx('action')} onClick={() => handleDeleteFile(file.id)}>
-                                        <div className={cx('loading')}></div>
-                                        <FaTrashAlt />
+                                        {deleteFileLoading.isDeleting && file.id === deleteFileLoading.id ? (
+                                            <Spinner />
+                                        ) : (
+                                            <>{deleteFileLoading.isDeleting ? '' : <FaTrashAlt />}</>
+                                        )}
                                     </div>
                                 </li>
                             ))}
@@ -311,7 +333,11 @@ const EditTrainingLog = () => {
                                 <li className={cx('image-item')} key={image.id}>
                                     <img src={image.url} alt="log" />
                                     <button className={cx('delete-btn')} onClick={() => handleDeleteImage(image.id)}>
-                                        <FaTrashAlt />
+                                        {deleteImageLoading.isDeleting && image.id === deleteImageLoading.id ? (
+                                            <Spinner />
+                                        ) : (
+                                            <>{deleteImageLoading.isDeleting ? '' : <FaTrashAlt />}</>
+                                        )}
                                     </button>
                                 </li>
                             ))}
@@ -337,7 +363,11 @@ const EditTrainingLog = () => {
                                         <source src={video.url} />
                                     </video>
                                     <button className={cx('delete-btn')} onClick={() => handleDeleteVideo(video.id)}>
-                                        <FaTrashAlt />
+                                        {deleteVideoLoading.isDeleting && video.id === deleteVideoLoading.id ? (
+                                            <Spinner />
+                                        ) : (
+                                            <>{deleteVideoLoading.isDeleting ? '' : <FaTrashAlt />}</>
+                                        )}
                                     </button>
                                 </li>
                             ))}
@@ -353,8 +383,15 @@ const EditTrainingLog = () => {
                         </div>
                     )}
                     <div className={cx('action-btn')}>
-                        <button className={cx('save-btn')} onClick={handleUpdateTrainingLog}>
-                            Lưu
+                        <button className={cx('save-btn')} onClick={handleUpdateTrainingLog} disabled={loading}>
+                            {loading &&
+                            !deleteFileLoading.isDeleting &&
+                            !deleteImageLoading.isDeleting &&
+                            !deleteVideoLoading.isDeleting ? (
+                                <Spinner />
+                            ) : (
+                                'Lưu'
+                            )}
                         </button>
                     </div>
                 </div>

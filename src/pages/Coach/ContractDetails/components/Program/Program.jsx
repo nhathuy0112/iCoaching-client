@@ -15,12 +15,13 @@ import Modal from '~/components/Modal';
 import { AiOutlineDelete, AiOutlineDownload } from 'react-icons/ai';
 import ErrorMessage from '~/components/ErrorMessage/ErrorMessage';
 import { toast } from 'react-toastify';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
 const Program = () => {
     const dispatch = useDispatch();
-    const { programFiles, currentContract } = useSelector((state) => state.contract);
+    const { programFiles, currentContract, loading } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
     const [isOpenDeteleModal, setIsOpenDeteleModal] = useState(false);
     const [selectedFile, setSeletectedFile] = useState({});
@@ -173,14 +174,20 @@ const Program = () => {
                             Bạn đồng ý xóa tệp <span style={{ color: '#1A97CC' }}>{selectedFile.fileName}</span>?
                         </h2>
                         <div className={cx('modal-action')}>
-                            <button id={cx('agree-btn')} type="submit" onClick={handleDeleteFile}>
-                                <BsCheckLg />
-                                <span>Đồng ý</span>
-                            </button>
-                            <button id={cx('cancel-btn')} onClick={() => setIsOpenDeteleModal(false)}>
-                                <BsXLg />
-                                <span>Hủy bỏ</span>
-                            </button>
+                            {loading ? (
+                                <Spinner />
+                            ) : (
+                                <>
+                                    <button id={cx('agree-btn')} type="submit" onClick={handleDeleteFile}>
+                                        <BsCheckLg />
+                                        <span>Đồng ý</span>
+                                    </button>
+                                    <button id={cx('cancel-btn')} onClick={() => setIsOpenDeteleModal(false)}>
+                                        <BsXLg />
+                                        <span>Hủy bỏ</span>
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Modal>

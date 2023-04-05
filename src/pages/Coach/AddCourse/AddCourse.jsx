@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './AddCourse.module.scss';
+import { useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
@@ -10,6 +11,7 @@ import { addTrainingCourseAsync } from '~/features/coachSlice';
 import { useDispatch } from 'react-redux';
 import ErrorMessage from '~/components/ErrorMessage';
 import { NumericFormat } from 'react-number-format';
+import Spinner from '~/layouts/components/Spinner';
 
 const modules = {
     toolbar: [
@@ -74,6 +76,7 @@ const AddCourse = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const {
         register,
@@ -83,6 +86,7 @@ const AddCourse = () => {
     } = useForm({ resolver: yupResolver(schema) });
 
     const handleAddCourse = (data) => {
+        setLoading(true);
         try {
             dispatch(
                 addTrainingCourseAsync({
@@ -94,6 +98,7 @@ const AddCourse = () => {
             )
                 .unwrap()
                 .then(() => {
+                    setLoading(false);
                     navigate(`/coach/${id}/my-courses`);
                 })
                 .catch((error) => {
@@ -181,8 +186,8 @@ const AddCourse = () => {
                             )}
                         />
                     </div>
-                    <button id={cx('agree-btn')} type="submit">
-                        <span>Thêm mới</span>
+                    <button id={cx('agree-btn')} type="submit" disabled={loading}>
+                        <span>{loading ? <Spinner /> : 'Thêm mới'}</span>
                     </button>
                 </form>
             </div>

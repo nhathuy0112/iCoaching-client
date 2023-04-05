@@ -12,6 +12,7 @@ import {
     resetPortfolioImages,
 } from '~/features/coachSlice';
 import { useEffect, useState } from 'react';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
@@ -46,7 +47,7 @@ const formats = [
 
 const About = () => {
     const dispatch = useDispatch();
-    const { aboutMe } = useSelector((state) => state.coach);
+    const { aboutMe, loading } = useSelector((state) => state.coach);
     const { currentUser } = useSelector((state) => state.user);
     const { control, handleSubmit } = useForm();
 
@@ -97,8 +98,8 @@ const About = () => {
                         />
                     )}
                 />
-                <button type="submit" id={cx('update-btn')}>
-                    <span>Cập nhật</span>
+                <button type="submit" id={cx('update-btn')} disabled={loading}>
+                    <span>{loading ? <Spinner /> : 'Cập nhật'}</span>
                 </button>
             </form>
         </div>

@@ -17,11 +17,12 @@ import {
     resetPortfolioImages,
 } from '~/features/coachSlice';
 import Pagination from '~/components/Pagination';
+import Spinner from '~/layouts/components/Spinner';
 const cx = classNames.bind(styles);
 
 const Photos = () => {
     const dispatch = useDispatch();
-    const { portfolioImages, totalCount, pageSize } = useSelector((state) => state.coach);
+    const { portfolioImages, totalCount, pageSize, loading } = useSelector((state) => state.coach);
     const { currentUser } = useSelector((state) => state.user);
     const [isAddingImage, setIsAddingImage] = useState(false);
     const [images, setImages] = useState(portfolioImages);
@@ -87,18 +88,23 @@ const Photos = () => {
                         // write your building UI
                         <div className={cx('image-upload')}>
                             <div className={cx('action')}>
-                                <button
-                                    id={cx('add-btn')}
-                                    style={isDragging ? { color: 'red' } : undefined}
-                                    onClick={() => {
-                                        setIsAddingImage(true);
-                                        onImageUpload();
-                                    }}
-                                    {...dragProps}
-                                >
-                                    <AiOutlinePlus className={cx('icon')} />
-                                    <span>Thêm ảnh</span>
-                                </button>
+                                {loading ? (
+                                    <Spinner />
+                                ) : (
+                                    <button
+                                        id={cx('add-btn')}
+                                        style={isDragging ? { color: 'red' } : undefined}
+                                        onClick={() => {
+                                            setIsAddingImage(true);
+                                            onImageUpload();
+                                        }}
+                                        disabled={loading}
+                                        {...dragProps}
+                                    >
+                                        <AiOutlinePlus className={cx('icon')} />
+                                        <span>Thêm ảnh</span>
+                                    </button>
+                                )}
                             </div>
                             <div className={cx('image-list')}>
                                 {imageList &&
@@ -122,18 +128,22 @@ const Photos = () => {
                                                             <MdOutlineEdit />
                                                         </button>
                                                     )}
-                                                    <button
-                                                        id={cx('remove-btn')}
-                                                        onClick={() => {
-                                                            if (isAddingImage) {
-                                                                onImageRemove(index);
-                                                            } else {
-                                                                handleDeleteImage(image.id);
-                                                            }
-                                                        }}
-                                                    >
-                                                        <BiTrash />
-                                                    </button>
+                                                    {loading ? (
+                                                        ''
+                                                    ) : (
+                                                        <button
+                                                            id={cx('remove-btn')}
+                                                            onClick={() => {
+                                                                if (isAddingImage) {
+                                                                    onImageRemove(index);
+                                                                } else {
+                                                                    handleDeleteImage(image.id);
+                                                                }
+                                                            }}
+                                                        >
+                                                            <BiTrash />
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </div>
                                         );

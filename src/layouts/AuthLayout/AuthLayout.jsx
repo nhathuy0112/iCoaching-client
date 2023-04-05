@@ -11,7 +11,7 @@ import { FaUserCircle } from 'react-icons/fa';
 const cx = classNames.bind(styles);
 
 const AuthLayout = ({ children }) => {
-    const { currentUser, avatar } = useSelector((state) => state.user);
+    const { currentUser, avatar, profile } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [links, setLinks] = useState([]);
     const url = window.location.href;
@@ -51,7 +51,7 @@ const AuthLayout = ({ children }) => {
                     <span>iCoaching</span>
                 </div>
                 <div className={cx('info')}>
-                    <span className={cx('name')}>{currentUser?.Fullname}</span>
+                    <span className={cx('name')}>{profile.fullname}</span>
                     <div className={cx('avatar-wrapper')}>
                         {avatar ? (
                             <img className={cx('avatar')} src={avatar} alt="user-avatar" />

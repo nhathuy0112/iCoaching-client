@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import ErrorMessage from '~/components/ErrorMessage';
 import { completedContractAsync } from '~/features/coachSlice';
 import { getContractDetailsAsync } from '~/features/contractSlice';
+import Spinner from '~/layouts/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Information.module.scss';
 
@@ -15,7 +16,7 @@ const Information = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { currentContract } = useSelector((state) => state.contract);
+    const { currentContract, loading } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
 
     useEffect(() => {
@@ -155,13 +156,13 @@ const Information = () => {
                     {currentContract?.status === 'Active' && (
                         <div
                             className={
-                                !currentContract?.isComplete || currentContract?.isReported
+                                !currentContract?.isComplete || currentContract?.isReported || loading
                                     ? cx('completed-btn', 'disabled')
                                     : cx('completed-btn')
                             }
                             onClick={handleCompletedContract}
                         >
-                            <button>Hoàn thành</button>
+                            <button>{loading ? <Spinner /> : 'Hoàn thành'}</button>
                         </div>
                     )}
                 </div>
