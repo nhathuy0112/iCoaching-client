@@ -1,5 +1,5 @@
 .wrapper {
-    height: 100%;
+    height: calc(95vh - var(--default-navbar-height));
     position: relative;
     .content {
         padding-top: 3%;
@@ -172,6 +172,7 @@
             padding: 8px 16px;
             font-size: 1.6rem;
             font-weight: 500;
+            height: 20vh;
         }
     }
 }

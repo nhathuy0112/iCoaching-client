@@ -86,12 +86,15 @@ export const superAdminSlice = createSlice({
                 state.isLocked = action.payload.isLocked;
                 state.status = !state.status;
             })
+
+            //create admin
             .addCase(createAdmin.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
 
             .addCase(createAdmin.fulfilled, (state, action) => {
+                state.loading = false;
                 state.admins.push(action.payload);
                 state.message = 'Thêm thành công';
 
