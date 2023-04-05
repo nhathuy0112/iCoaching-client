@@ -1,5 +1,5 @@
 .wrapper {
-    height: 100%;
+    height: calc(95vh - var(--default-navbar-height));
     position: relative;
     .content {
         padding-top: 3%;

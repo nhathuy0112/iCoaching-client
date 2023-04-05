@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: calc(95vh - var(--default-navbar-height));
     position: relative;
     .title-and-back {
         margin: 16px 0 8px;

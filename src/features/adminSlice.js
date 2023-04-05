@@ -234,10 +234,18 @@ export const adminSlice = createSlice({
             })
 
             //get certificate verification request detail
+            .addCase(getCertRequestDetailAsync.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
             .addCase(getCertRequestDetailAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.certRequest = action.payload;
                 state.status = null;
+            })
+            .addCase(getCertRequestDetailAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             })
 
             //update certificate verification request detail
@@ -247,6 +255,7 @@ export const adminSlice = createSlice({
             })
 
             .addCase(updateCertStatusAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
                 state.status = action.payload.status;
             })
@@ -279,6 +288,7 @@ export const adminSlice = createSlice({
             })
 
             .addCase(updateReportAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
             })
             .addCase(updateReportAsync.rejected, (state, action) => {
@@ -293,6 +303,7 @@ export const adminSlice = createSlice({
             })
 
             .addCase(createContractAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
             })
             .addCase(createContractAsync.rejected, (state, action) => {
@@ -307,6 +318,7 @@ export const adminSlice = createSlice({
             })
 
             .addCase(createVoucherAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
             })
             .addCase(createVoucherAsync.rejected, (state, action) => {
@@ -321,6 +333,7 @@ export const adminSlice = createSlice({
             })
 
             .addCase(updateContractStatusAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
             })
             .addCase(updateContractStatusAsync.rejected, (state, action) => {

@@ -10,6 +10,7 @@ import { BsCheckLg, BsXLg } from 'react-icons/bs';
 
 import { createVoucherAsync, updateContractStatusAsync, updateReportAsync } from '~/features/adminSlice';
 import Modal from '~/components/Modal';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
@@ -18,7 +19,7 @@ const Voucher = () => {
     const navigate = useNavigate();
 
     const { currentUser } = useSelector((state) => state.user);
-    const { currentContract } = useSelector((state) => state.contract);
+    const { currentContract, loading } = useSelector((state) => state.contract);
     const { contractId, reportId } = useParams();
     const { client } = currentContract;
 
@@ -26,19 +27,31 @@ const Voucher = () => {
     const [description, setDescription] = useState('');
     const [message, setMessage] = useState('');
     const [cancelOpen, setCancelOpen] = useState(false);
+    const [cancelLoading, setCancelLoading] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createVoucherAsync({ reportId: reportId, discount: voucher, data: description }));
-        dispatch(updateReportAsync({ reportId: reportId, option: 'Solve', message: 'Đã tặng voucher cho khách hàng' }));
+        dispatch(createVoucherAsync({ reportId: reportId, discount: voucher, data: description }))
+            .unwrap()
+            .then(() =>
+                dispatch(
+                    updateReportAsync({
+                        reportId: reportId,
+                        option: 'Solve',
+                        message: 'Đã tặng voucher cho khách hàng',
+                    }),
+                ),
+            );
         setCancelOpen(true);
     };
 
     //update contract status
     const handleCancelContract = (e) => {
+        setCancelLoading(true);
         e.preventDefault();
-        dispatch(updateContractStatusAsync({ reportId: reportId, option: 'Cancel', message: message }));
-        navigate(`/admin/${currentUser.id}/reports`);
+        dispatch(updateContractStatusAsync({ reportId: reportId, option: 'Cancel', message: message }))
+            .unwrap()
+            .then(() => navigate(`/admin/${currentUser.id}/reports`));
     };
 
     const handleCloseCancel = (e) => {
@@ -78,9 +91,15 @@ const Voucher = () => {
                             onChange={(e) => setDescription(e.target.value)}
                         ></textarea>
                     </div>
-                    <button onClick={handleSubmit}>
-                        <AiOutlineCheck className={cx('icon')} />
-                        Gửi
+                    <button onClick={handleSubmit} disabled={loading}>
+                        {loading ? (
+                            <Spinner />
+                        ) : (
+                            <>
+                                <AiOutlineCheck className={cx('icon')} />
+                                Gửi
+                            </>
+                        )}
                     </button>
                 </form>
                 {/* cancel contract modal */}
@@ -102,13 +121,23 @@ const Voucher = () => {
                                 onChange={(e) => setMessage(e.target.value)}
                             ></textarea>
                             <div className={cx('button')}>
-                                <button className={cx('btn-confirm')} onClick={handleCancelContract} type="submit">
-                                    <BsCheckLg className={cx('icon')} />
-                                    Xác nhận
-                                </button>
-                                <button className={cx('btn-warn')} onClick={handleCloseCancel}>
-                                    <BsXLg className={cx('icon')} /> Từ chối
-                                </button>
+                                {cancelLoading ? (
+                                    <Spinner />
+                                ) : (
+                                    <>
+                                        <button
+                                            className={cx('btn-confirm')}
+                                            onClick={handleCancelContract}
+                                            type="submit"
+                                        >
+                                            <BsCheckLg className={cx('icon')} />
+                                            Xác nhận
+                                        </button>
+                                        <button className={cx('btn-warn')} onClick={handleCloseCancel}>
+                                            <BsXLg className={cx('icon')} /> Từ chối
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </Modal>

@@ -3,7 +3,7 @@
     flex-direction: column;
     position: relative;
     margin-top: 2%;
-    height: 100%;
+    height: calc(95vh - var(--default-navbar-height));
     label {
         display: inline-block;
         width: 130px;

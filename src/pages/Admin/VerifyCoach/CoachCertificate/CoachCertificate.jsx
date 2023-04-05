@@ -10,12 +10,13 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import { handleRenderGenders, handleRenderGenderClassNames } from '~/utils/gender';
 import Modal from '~/components/Modal';
+import Spinner from '~/layouts/components/Spinner';
 
 const cx = classNames.bind(styles);
 
 const CoachCertificate = () => {
     const { currentUser } = useSelector((state) => state.user);
-    const { certRequest, status } = useSelector((state) => state.admin);
+    const { certRequest, status, loading } = useSelector((state) => state.admin);
 
     const [viewDetail, setViewDetail] = useState(false);
     const [denied, setDenied] = useState(false);
@@ -39,8 +40,9 @@ const CoachCertificate = () => {
     };
 
     const handleUpdateStatus = (option, reason) => {
-        handleClose();
-        dispatch(updateCertStatusAsync({ certId: id, option: option, reason }));
+        dispatch(updateCertStatusAsync({ certId: id, option: option, reason }))
+            .unwrap()
+            .then(() => handleClose());
     };
     return (
         <div className={cx('wrapper')}>
@@ -139,13 +141,19 @@ const CoachCertificate = () => {
                                 onChange={(e) => setReason(e.target.value)}
                             ></textarea>
                             <div className={cx('button')}>
-                                <button className={cx('btn-confirm')} type="submit">
-                                    <BsCheckLg className={cx('icon')} />
-                                    Xác nhận
-                                </button>
-                                <button className={cx('btn-warn')} onClick={handleClose}>
-                                    <BsXLg className={cx('icon')} /> Huỷ bỏ
-                                </button>
+                                {loading ? (
+                                    <Spinner />
+                                ) : (
+                                    <>
+                                        <button className={cx('btn-confirm')} type="submit">
+                                            <BsCheckLg className={cx('icon')} />
+                                            Xác nhận
+                                        </button>
+                                        <button className={cx('btn-warn')} onClick={handleClose}>
+                                            <BsXLg className={cx('icon')} /> Huỷ bỏ
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         </form>
                     </div>

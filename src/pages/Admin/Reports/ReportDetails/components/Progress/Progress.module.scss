@@ -1,4 +1,5 @@
 .wrapper {
+    height: calc(95vh - var(--default-navbar-height));
     .day-list {
         height: 55vh;
         overflow-y: auto;

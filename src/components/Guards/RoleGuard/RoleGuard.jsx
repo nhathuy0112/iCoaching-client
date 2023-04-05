@@ -8,7 +8,7 @@ const RoleGuard = ({ children }) => {
     const { pathname } = useLocation();
     const pathRole = pathname.split('/')[1];
     const currentUserRole = currentUser?.role;
-    const currentUserRoleLowerCase = currentUserRole.toLowerCase();
+    const currentUserRoleLowerCase = currentUserRole?.toLowerCase();
 
     useEffect(() => {
         if (currentUser) {

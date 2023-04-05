@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    height: 100%;
+    height: calc(95vh - var(--default-navbar-height));
     overflow-y: initial !important;
     .title-and-back {
         margin: 16px 0;

@@ -1,5 +1,5 @@
 .wrapper {
-    height: 100%;
+    height: calc(95vh - var(--default-navbar-height));
     position: relative;
     overflow-y: initial !important;
     .content {
@@ -9,10 +9,10 @@
             justify-content: center;
             align-items: center;
             position: absolute;
-            top: 0px;
-            right: 0px;
-            bottom: 0px;
-            left: 0px;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
             color: #d01515;
             text-align: center;
         }

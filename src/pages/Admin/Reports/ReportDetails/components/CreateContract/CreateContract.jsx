@@ -16,6 +16,7 @@ import { getCoachTrainingCourseAsync } from '~/features/guestSlice';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import ErrorMessage from '~/components/ErrorMessage';
+import Spinner from '~/layouts/components/Spinner';
 const cx = classNames.bind(styles);
 
 // const schema = yup.object({
@@ -31,7 +32,7 @@ const CreateContract = () => {
 
     const { currentUser } = useSelector((state) => state.user);
     const { trainingCourses } = useSelector((state) => state.guest);
-    const { currentContract } = useSelector((state) => state.contract);
+    const { currentContract, loading } = useSelector((state) => state.contract);
     const { coaches } = useSelector((state) => state.admin);
 
     const { id, contractId, reportId } = useParams();
@@ -165,8 +166,14 @@ const CreateContract = () => {
                         <textarea name="desc" id="" cols="30" rows="10" {...register('description')}></textarea>
                     </div>
                     <button type="submit">
-                        <AiOutlineCheck className={cx('icon')} />
-                        Tạo hợp đồng
+                        {loading ? (
+                            <Spinner />
+                        ) : (
+                            <>
+                                <AiOutlineCheck className={cx('icon')} />
+                                Tạo hợp đồng
+                            </>
+                        )}
                     </button>
                 </form>
             </div>
