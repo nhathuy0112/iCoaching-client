@@ -45,26 +45,24 @@ const AuthLayout = ({ children }) => {
 
     return (
         <div className={cx('wrapper')}>
-            <Sidebar links={links} />
-            <div className={cx('container')}>
-                <div className={cx('header')}>
-                    <h3>
-                        {links.map((link) => {
-                            if (link.url === headerPath) return link.name;
-                            return '';
-                        })}
-                    </h3>
-                    <div className={cx('info')}>
-                        <span className={cx('name')}>{currentUser?.Fullname}</span>
-                        <div className={cx('avatar-wrapper')}>
-                            {avatar ? (
-                                <img className={cx('avatar')} src={avatar} alt="user-avatar" />
-                            ) : (
-                                <FaUserCircle className={cx('avatar')} />
-                            )}
-                        </div>
+            <div className={cx('header')}>
+                <div className={cx('logo')}>
+                    <img src={require('../../assets/images/Logo-black.png')} alt="logo" />
+                    <span>iCoaching</span>
+                </div>
+                <div className={cx('info')}>
+                    <span className={cx('name')}>{currentUser?.Fullname}</span>
+                    <div className={cx('avatar-wrapper')}>
+                        {avatar ? (
+                            <img className={cx('avatar')} src={avatar} alt="user-avatar" />
+                        ) : (
+                            <FaUserCircle className={cx('avatar')} />
+                        )}
                     </div>
                 </div>
+            </div>
+            <div className={cx('container')}>
+                <Sidebar links={links} />
                 <div className={cx('content')}>{children}</div>
             </div>
         </div>

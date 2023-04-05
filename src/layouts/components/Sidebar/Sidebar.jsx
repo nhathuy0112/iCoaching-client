@@ -58,10 +58,6 @@ const Sidebar = ({ links }) => {
 
     return (
         <div className={cx('container')}>
-            <div className={cx('logo')}>
-                <img src={require('../../../assets/images/Logo-black.png')} alt="logo" />
-                <span>iCoaching</span>
-            </div>
             <ul className={cx('link-list')}>
                 {links.map((link, index) => {
                     const isDisabled = disabledLinks.some((disabledLink) => disabledLink.url === link.url);

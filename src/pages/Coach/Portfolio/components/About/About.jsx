@@ -98,7 +98,7 @@ const About = () => {
                     )}
                 />
                 <button type="submit" id={cx('update-btn')}>
-                    Cập nhật
+                    <span>Cập nhật</span>
                 </button>
             </form>
         </div>

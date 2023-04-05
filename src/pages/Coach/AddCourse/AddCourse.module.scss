@@ -1,5 +1,5 @@
 .wrapper {
-    height: 100%;
+    min-height: calc(100vh - 60px - 16px - 48px);
     display: flex;
     flex-direction: column;
 
@@ -21,11 +21,10 @@
 
     .content {
         flex: 1;
+        display: flex;
 
         #add-form {
-            padding: 16px 0;
-            height: 100%;
-            position: relative;
+            flex: 1;
 
             .input-group {
                 display: flex;
@@ -58,8 +57,6 @@
                 }
 
                 &.description {
-                    height: 120px;
-
                     div {
                         flex: 1;
                         border-radius: var(--default-border-radius);
@@ -68,16 +65,17 @@
                             &:first-child {
                                 border: 1px solid var(--primary-color);
                             }
+                            &:nth-child(2) {
+                                height: unset;
+                            }
                         }
                     }
                 }
             }
 
             #agree-btn {
-                position: absolute;
-                bottom: 0;
-                left: 50%;
-                transform: translateX(-50%);
+                display: flex;
+                margin: auto;
                 padding: 8px 16px;
                 width: 160px;
                 background-color: green;
@@ -86,6 +84,10 @@
                 font-weight: 500;
                 border-radius: var(--default-border-radius);
                 cursor: pointer;
+
+                span {
+                    margin: auto;
+                }
 
                 &:hover {
                     opacity: 0.6;

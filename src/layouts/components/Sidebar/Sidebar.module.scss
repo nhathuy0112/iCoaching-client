@@ -1,9 +1,11 @@
 .container {
-    height: 100vh;
-    padding: 32px 16px;
-    background-color: var(--white-color);
-    box-shadow: var(--default-box-shadow);
-    flex: 0 0 20%;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    width: var(--default-sidebar-width);
+    padding: 16px 32px;
+    z-index: 1030;
 
     .logo {
         display: flex;
@@ -11,15 +13,20 @@
         justify-content: center;
         margin-bottom: 32px;
 
-        img{
+        img {
             width: 30%;
         }
-        span{
+        span {
             font-size: 2rem;
             font-weight: 500;
             margin-left: 8px;
-            color: var(--text-color)
+            color: var(--text-color);
         }
+    }
+
+    .link-list {
+        height: 100%;
+        box-shadow: var(--default-box-shadow);
     }
 
     .link-item {
@@ -29,8 +36,7 @@
             align-items: center;
             font-size: 1.6rem;
             font-weight: 500;
-            margin: 4px 0;
-            padding: 8px;
+            padding: 16px;
             color: #000;
             background-color: unset;
 
@@ -42,7 +48,6 @@
             &.active {
                 background-color: var(--primary-color);
                 color: var(--white-color);
-                border-radius: var(--default-border-radius);
             }
 
             &.disabled {
