@@ -23,8 +23,6 @@ const Messages = () => {
             return () => {
                 unSub();
             };
-        } else {
-            return;
         }
     }, [chatId]);
 

@@ -5,7 +5,9 @@
     justify-content: center;
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     border-radius: 4px;
-
+    &.wrapperCoach {
+        box-shadow: none;
+    }
     &.wrapperNavBar {
         margin: calc(var(--default-navbar-height) + 32px) auto 32px auto;
         width: var(--default-layout-max-width);
@@ -104,6 +106,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+                    gap: 10px;
                     .iconChat {
                         font-size: 20px;
                         color: lightgray;
@@ -170,13 +173,38 @@
             overflow-y: scroll;
             // border-left: 2.5px solid #d9d9d9;
             border-bottom: 2.5px solid #d9d9d9;
+
             &.messagesClient {
                 height: calc(100% - 50px);
             }
+
             .message {
                 display: flex;
                 gap: 15px;
                 margin-bottom: 15px;
+                .onlineInfo {
+                    position: relative;
+                    display: flex;
+
+                    .onlineStatus {
+                        right: 0;
+                        position: absolute;
+                        width: 15px;
+                        height: 15px;
+                        border-radius: 50%;
+                        background-color: green;
+                        border: 2px solid white;
+                    }
+                    .offlineStatus {
+                        right: 0;
+                        position: absolute;
+                        width: 15px;
+                        height: 15px;
+                        border-radius: 50%;
+                        background-color: red;
+                        border: 2px solid white;
+                    }
+                }
 
                 .imgInfo {
                     display: flex;

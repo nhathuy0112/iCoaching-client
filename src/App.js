@@ -14,17 +14,17 @@ import { ZIM } from 'zego-zim-web';
 function App() {
     const { currentUser } = useSelector((state) => state.user);
     const dispatch = useDispatch();
+    var isPageVisible = true;
 
     useEffect(() => {
         if (currentUser) {
             init();
         }
     });
-
     async function init() {
         let zp;
         const userID = currentUser?.Username;
-        const userName = 'userName' + userID;
+        const userName = currentUser?.Fullname;
         const { token } = await generateToken('https://node-express-vercel-master-one.vercel.app', userID);
         const KitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(1980920521, token, null, userID, userName);
         zp = ZegoUIKitPrebuilt.create(KitToken);
@@ -34,9 +34,6 @@ function App() {
         return fetch(`${tokenServerUrl}/api/userID/${userID}`, {
             method: 'GET',
         }).then((res) => res.json());
-        // return fetch(`${tokenServerUrl}/api/get_access_token?userID=${userID}&expired_ts=7200`, {
-        //     method: 'GET',
-        // }).then((res) => res.json());
     }
     useEffect(() => {
         if (currentUser) {
@@ -51,6 +48,8 @@ function App() {
                 username: userToken?.Username,
                 email: userToken?.email,
                 avatar: userToken?.Avatar,
+                isOnline: true,
+                fullname: userToken?.Fullname,
             });
             const userChatsRef = doc(db, 'userChats', userToken?.Id);
             const userChatsDoc = await getDoc(userChatsRef);
@@ -81,10 +80,18 @@ function App() {
         }
     }, [currentUser?.Avatar, currentUser]);
 
-    window.addEventListener('unload', function (e) {
-        e.preventDefault();
-        dispatch(updateUserOnlineStatus(currentUser?.Id));
-    });
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('unload', handleUnload);
+
+    function handleVisibilityChange() {
+        isPageVisible = !document.hidden;
+    }
+
+    function handleUnload() {
+        if (!isPageVisible) {
+            dispatch(updateUserOnlineStatus(currentUser?.Id));
+        }
+    }
     return (
         <Router>
             <div className="App">

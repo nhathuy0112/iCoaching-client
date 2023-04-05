@@ -45,6 +45,7 @@ const Search = () => {
                         username: user.username,
                         email: user.email,
                         avatar: user.avatar,
+                        fullname: user.fullname,
                     },
                     [combinedId + '.date']: serverTimestamp(),
                 });
@@ -55,6 +56,7 @@ const Search = () => {
                         username: currentUser?.Username,
                         email: currentUser?.email,
                         avatar: currentUser?.Avatar,
+                        fullname: currentUser?.Fullname,
                     },
                     [combinedId + '.date']: serverTimestamp(),
                 });
@@ -89,7 +91,11 @@ const Search = () => {
                 <div className={cx('userChat')} onClick={handleSelect}>
                     <img src={user.avatar ? user.avatar : require('~/assets/images/Facebook.png')} alt="" />
                     <div className={cx('userChatInfo', { usserChatInfoSearch: user })}>
-                        <span>{user.username}</span>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <span>{user.fullname}</span>
+                            <span style={{ color: 'rgba(0, 0, 0, 0.422)', fontSize: ' 14px' }}>{user.username}</span>
+                        </div>
+
                         <FaSearch className={cx('iconChat')} />
                     </div>
                 </div>
