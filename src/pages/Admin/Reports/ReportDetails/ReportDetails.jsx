@@ -59,7 +59,7 @@ const ReportDetails = () => {
     const handleResolveReport = (e) => {
         switch (solution) {
             case 'contract':
-                return navigate('createContract');
+                return navigate('create-contract');
             case 'voucher':
                 return navigate('voucher');
             case 'message':

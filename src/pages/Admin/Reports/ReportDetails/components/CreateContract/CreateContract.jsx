@@ -9,7 +9,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import useDebounce from '~/hooks/useDebounce';
 import { IoIosArrowBack } from 'react-icons/io';
-import { AiOutlineCheck } from 'react-icons/ai';
+import { AiOutlineCheck, AiOutlineSearch } from 'react-icons/ai';
 import { createContractAsync, getAllCoachesAsync } from '~/features/adminSlice';
 import { getCoachTrainingCourseAsync } from '~/features/guestSlice';
 
@@ -17,14 +17,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import ErrorMessage from '~/components/ErrorMessage';
 import Spinner from '~/layouts/components/Spinner';
+import { handleRenderGenders } from '~/utils/gender';
+import { getContractDetailsAsync } from '~/features/contractSlice';
 const cx = classNames.bind(styles);
 
-// const schema = yup.object({
-//     reason: yup.string().required('Lý do không được để trống'),
-//     coachId: yup.string().required('Huấn luyện viên không được để trống'),
-//     trainingCourse: yup.string().required('Khoá tập phải được chọn'),
-//     description: yup.string().required('Mô tả không được để trống'),
-// });
+const schema = yup.object({
+    reason: yup.string().required('Lý do không được để trống'),
+    coachId: yup.string().required('Huấn luyện viên không được để trống'),
+    courseId: yup.string().required('Khóa tập phải được chọn'),
+    description: yup.string().required('Mô tả không được để trống'),
+});
 
 const CreateContract = () => {
     const dispatch = useDispatch();
@@ -39,11 +41,14 @@ const CreateContract = () => {
     const { client } = currentContract;
 
     const [search, setSearch] = useState('');
-    const [coachId, setCoachId] = useState('');
 
     const [initialCourse, setInitialCourse] = useState(false);
     const [showResult, setShowResult] = useState(true);
     const debounced = useDebounce(search, 500);
+
+    useEffect(() => {
+        dispatch(getContractDetailsAsync(contractId));
+    }, [dispatch, contractId]);
 
     useEffect(() => {
         if (!debounced.trim()) {
@@ -57,17 +62,18 @@ const CreateContract = () => {
         register,
         handleSubmit,
         setValue,
+        setError,
+        clearErrors,
         formState: { errors },
-    } = useForm();
-    // { resolver: yupResolver(schema)
+    } = useForm({ resolver: yupResolver(schema) });
 
-    const handleContract = (data) => {
+    const handleCreateContract = (data) => {
         try {
             dispatch(
                 createContractAsync({
                     reportId: reportId,
                     contract: {
-                        coachId: coachId,
+                        coachId: data.coachId,
                         courseId: data.courseId,
                         description: data.description,
                         cancelReason: data.reason,
@@ -89,36 +95,51 @@ const CreateContract = () => {
 
     const handleChooseCoach = (coach) => {
         setSearch(`${coach.userName} - ${coach.fullname}`);
-        setCoachId(coach.id);
         dispatch(getCoachTrainingCourseAsync({ coachId: coach.id }));
-        setValue('courseId', 0);
+        setValue('courseId', '');
         setInitialCourse(true);
+        setValue('coachId', coach.id);
     };
+
+    const handleCoachChange = (e) => {
+        setSearch(e.target.value);
+        if (e.target.value) {
+            clearErrors('coachId');
+        } else {
+            setError('coachId', { type: 'custom', message: 'Huấn luyện viên không được để trống' });
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <div className={cx('title-and-back')}>
                     <Link
-                        to={`/admin/${currentUser?.Id}/reports/${contractId}/${reportId}`}
+                        to={`/admin/${currentUser?.Id}/reports/${contractId}/view-details/${reportId}`}
                         className={cx('back-link')}
                     >
                         <IoIosArrowBack />
                         <span>Quay lại</span>
                     </Link>
                 </div>
-                <form onSubmit={handleSubmit(handleContract)} className={cx('contract')}>
+                <form onSubmit={handleSubmit(handleCreateContract)} className={cx('contract')}>
                     <div className={cx('client')}>
                         <label>Khách hàng:</label>
                         <span>{client?.fullname}</span>
                         <label>Giới tính:</label>
-                        <span>{client?.gender}</span>
+                        <span>{handleRenderGenders(client?.gender)}</span>
                         <label>Tuổi:</label>
                         <span>{client?.age}</span>
                     </div>
                     <div className={cx('cancel')}>
                         <label>Lý do huỷ hợp đồng cũ:</label>
-                        <textarea name="reason" id="" cols="30" rows="3" {...register('reason')}></textarea>
+                        <textarea name="reason" id="" {...register('reason')}></textarea>
                     </div>
+                    {errors.reason && (
+                        <div className={cx('error')}>
+                            <ErrorMessage message={errors.reason.message} />
+                        </div>
+                    )}
                     <hr />
                     <div className={cx('coach')}>
                         <h2 className={cx('title')}>Hợp đồng mới</h2>
@@ -132,7 +153,11 @@ const CreateContract = () => {
                             content={
                                 <div className={cx('wrapper')} tabIndex="-1">
                                     {coaches.map((coach) => (
-                                        <div className={cx('item')} onClick={() => handleChooseCoach(coach)}>
+                                        <div
+                                            key={coach.id}
+                                            className={cx('item')}
+                                            onClick={() => handleChooseCoach(coach)}
+                                        >
                                             {coach.userName} - {coach.fullname}
                                         </div>
                                     ))}
@@ -140,30 +165,51 @@ const CreateContract = () => {
                             }
                             onClickOutside={handleHideResult}
                         >
-                            <input
-                                type="text"
-                                name="coach"
-                                id={cx('coach-name')}
-                                {...register('coachId')}
-                                value={search}
-                                onFocus={() => setShowResult(true)}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
+                            <div className={cx('coach-search')}>
+                                <input
+                                    type="text"
+                                    name="coach"
+                                    id={cx('coach-name')}
+                                    {...register('coachId')}
+                                    value={search}
+                                    onFocus={() => setShowResult(true)}
+                                    onChange={handleCoachChange}
+                                />
+
+                                <div className={cx('icon')}>
+                                    <AiOutlineSearch />
+                                </div>
+                            </div>
                         </Tippy>
+                        {errors.coachId && (
+                            <div className={cx('error')}>
+                                <ErrorMessage message={errors.coachId.message} />
+                            </div>
+                        )}
                         <label>Khoá tập</label>
-                        <select defaultValue="0" {...register('courseId')}>
-                            <option value="0" disabled>
+                        <select defaultValue="" {...register('courseId')}>
+                            <option value="" disabled>
                                 {'--Chọn huấn luyện viên để lấy gói tập--'}
                             </option>
                             {initialCourse &&
                                 trainingCourses?.map((course) => (
-                                    <option value={course.id}>
+                                    <option key={course.id} value={course.id}>
                                         {course.id}: {course.name}
                                     </option>
                                 ))}
                         </select>
+                        {errors.courseId && (
+                            <div className={cx('error')}>
+                                <ErrorMessage message={errors.courseId.message} />
+                            </div>
+                        )}
                         <label>Mô tả hợp đồng</label>
-                        <textarea name="desc" id="" cols="30" rows="10" {...register('description')}></textarea>
+                        <textarea name="desc" id="" {...register('description')}></textarea>
+                        {errors.description && (
+                            <div className={cx('error')}>
+                                <ErrorMessage message={errors.description.message} />
+                            </div>
+                        )}
                     </div>
                     <button type="submit">
                         {loading ? (

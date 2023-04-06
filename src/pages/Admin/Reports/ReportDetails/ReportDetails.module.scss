@@ -31,10 +31,17 @@
     justify-content: center;
     margin-left: 15px;
 }
+
 .button {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
+
+    .btn-confirm,
+    .btn-warn {
+        margin: 0 4px;
+    }
+
     .icon {
         vertical-align: text-bottom;
         margin-right: 10px;

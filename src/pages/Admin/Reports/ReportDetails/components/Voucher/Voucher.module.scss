@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    height: calc(95vh - var(--default-navbar-height));
     .title-and-back {
         margin: 16px 0;
         .back-link {
@@ -14,60 +13,88 @@
             width: fit-content;
         }
     }
+
+    .title {
+        text-align: center;
+        color: var(--primary-color);
+    }
+
+    .message-frame {
+        padding: 0 80px;
+    }
+
     .voucher {
-        width: 80%;
         display: flex;
         flex-direction: column;
-        margin: 10% auto 0;
         font-size: 2rem;
         font-weight: 500;
+
         .row {
-            margin-bottom: 20px;
+            display: flex;
+            margin: 16px;
+
+            &:not(.note) {
+                align-items: center;
+            }
+
             label {
-                width: 200px;
-                display: inline-block;
-                vertical-align: top;
+                min-width: 160px;
+                font-size: 1.6rem;
+                font-weight: 500;
+                color: var(--primary-color);
             }
             input {
-                background-color: #eaeaea;
-                padding: 8px;
+                flex: 1;
+                background-color: var(--white-color);
+                padding: 12px 16px;
+                border: 1px solid var(--primary-color);
                 border-radius: var(--default-border-radius);
-                width: calc(100% - 200px);
             }
             textarea {
+                flex: 1;
                 resize: none;
-                width: calc(100% - 200px);
-                background-color: #eaeaea;
-                border: none;
-                padding: 8px;
+                background-color: var(--white-color);
+                border: 1px solid var(--primary-color);
+                border-radius: var(--default-border-radius);
+                outline: none;
+                padding: 12px 16px;
             }
         }
         button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            margin-top: 8px;
             cursor: pointer;
-            display: block;
-            justify-self: center;
-            margin: 28px auto 0;
-            width: 180px;
+            width: 160px;
             padding: 12px;
-            background-color: #2c9e2a;
+            background-color: green;
+            border-radius: var(--default-border-radius);
             color: white;
             font-size: 1.6rem;
+
             &:hover {
-                opacity: 0.8;
+                opacity: 0.6;
             }
             .icon {
-                margin-right: 5px;
-                vertical-align: bottom;
+                margin-right: 8px;
             }
+        }
+
+        .error {
+            margin-left: 180px;
         }
     }
     .button {
         display: flex;
         align-items: center;
-        justify-content: space-evenly;
+        justify-content: center;
+        margin-top: 8px;
+
         .icon {
             vertical-align: text-bottom;
-            margin-right: 10px;
+            margin-right: 8px;
         }
     }
     .btn-wrapper {
@@ -93,6 +120,10 @@
             text-align: center;
             margin: 20px 0 0;
         }
+
+        .error {
+            margin-left: 80px;
+        }
         select {
             width: 40%;
             padding: 10px;
@@ -103,29 +134,33 @@
             }
         }
         textarea {
-            margin: 16px 0;
+            padding: 12px 16px;
+            margin: 8px 0;
             resize: none;
-            width: 80%;
+            outline: none;
+            width: 100%;
         }
     }
 
     .btn-warn {
         cursor: pointer;
-        background-color: #ca1414;
+        background-color: red;
         border-radius: var(--default-border-radius);
         width: 150px;
         height: 50px;
         font-size: 1.5rem;
         color: white;
+        margin: 0 4px;
     }
 
     .btn-confirm {
         cursor: pointer;
-        background-color: #2c8415;
+        background-color: green;
         border-radius: var(--default-border-radius);
         width: 150px;
         height: 50px;
         font-size: 1.5rem;
         color: white;
+        margin: 0 4px;
     }
 }

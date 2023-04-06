@@ -1,66 +1,100 @@
 .wrapper {
-    display: flex;
-    flex-direction: column;
+    height: 100%;
     position: relative;
-    margin-top: 2%;
-    height: calc(95vh - var(--default-navbar-height));
-    label {
-        display: inline-block;
-        width: 130px;
-        color: #1a97cc;
-        vertical-align: top;
-    }
-}
 
-.content {
-    margin: 20px 0 10px 15px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    justify-content: center;
-    .contract-info {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        .f-col {
-            width: 280px;
-        }
-        span {
-            display: inline-block;
-            width: 150px;
-            margin: 3px 0;
-        }
-        .col {
-            width: 280px;
-            label {
-                width: 100px;
-                margin: 3px 0;
+    .content {
+        .contract-info {
+            max-height: 420px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            .info-container:nth-child(1),
+            .info-container:nth-child(2) {
+                border-bottom: 1px solid #ccc;
             }
-            span {
-                width: 100px;
-            }
-        }
-        #sm {
-            width: 180px;
-            span {
-                width: 60px;
-            }
-        }
-        #last {
-            label {
-                width: 70px;
-            }
-            span {
-                width: 150px;
+
+            .info-container {
+                padding: 8px;
+                .title {
+                    color: var(--primary-color);
+                }
+                .info-frame {
+                    padding: 0 32px;
+
+                    .row-info {
+                        display: flex;
+                        align-items: center;
+                        margin: 8px 0;
+
+                        .info-group {
+                            flex: 0 0 calc(100% / 3);
+                            margin-left: 32px;
+                            display: flex;
+
+                            &:not(.description) {
+                                align-items: center;
+                            }
+
+                            label {
+                                font-size: 1.6rem;
+                                font-weight: 500;
+                                margin-bottom: 0;
+                            }
+
+                            &.first-column {
+                                label {
+                                    min-width: 120px;
+                                }
+                            }
+
+                            &.second-column {
+                                label {
+                                    min-width: 100px;
+                                }
+                            }
+
+                            &.third-column {
+                                label {
+                                    min-width: 100px;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-    .description {
-        margin-top: 40px;
-        .detail {
-            width: calc(100% - 130px);
-            display: inline-block;
-            line-height: 30px;
+    .error {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 8px;
+    }
+
+    .completed-btn {
+        display: flex;
+        margin: auto;
+        padding: 8px 16px;
+        width: 160px;
+        border-radius: var(--default-border-radius);
+        background-color: green;
+        text-align: center;
+        cursor: pointer;
+
+        button {
+            margin: auto;
+            background-color: transparent;
+            color: var(--white-color);
+            font-size: 1.6rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        &:hover {
+            opacity: 0.6;
+        }
+
+        &.disabled {
+            background-color: #ccc;
+            pointer-events: none;
         }
     }
 }

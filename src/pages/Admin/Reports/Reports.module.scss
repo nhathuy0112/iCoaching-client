@@ -1,9 +1,5 @@
 .wrapper {
-    height: calc(95vh - var(--default-navbar-height));
-    position: relative;
-    overflow-y: initial !important;
     .content {
-        padding-top: 3%;
         .message {
             display: flex;
             justify-content: center;
@@ -24,11 +20,9 @@
     }
 }
 .search {
-    position: absolute;
-    align-items: center;
-    right: 0;
-    display: inline-block;
-    z-index: 2;
+    display: flex;
+    justify-content: flex-end;
+
     .search-box {
         display: flex;
         height: 36px;
@@ -49,9 +43,6 @@
 }
 
 .list-reports {
-    margin-top: 30px;
-    height: 65vh;
-    overflow: auto;
     .rp {
         position: relative;
         display: flex;
@@ -92,13 +83,15 @@
             margin: 0 10px 10px 0;
             z-index: 2;
             .btn-info {
-                cursor: pointer;
-                display: block;
+                padding: 8px 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 background-color: var(--primary-color);
                 border-radius: var(--default-border-radius);
-                width: 120px;
-                height: 40px;
-                font-size: 1.3rem;
+                width: 140px;
+                font-size: 1.4rem;
+                cursor: pointer;
                 color: white;
             }
         }

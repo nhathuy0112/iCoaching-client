@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Voucher.module.scss';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,8 +11,32 @@ import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import { createVoucherAsync, updateContractStatusAsync, updateReportAsync } from '~/features/adminSlice';
 import Modal from '~/components/Modal';
 import Spinner from '~/layouts/components/Spinner';
+import { getContractDetailsAsync } from '~/features/contractSlice';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import ErrorMessage from '~/components/ErrorMessage';
 
 const cx = classNames.bind(styles);
+
+const schema = yup.object({
+    voucher: yup
+        .string()
+        .required('Phần trăm giảm giá không được để trống')
+        .test('greaterThanZero', 'Phần trăm giảm giá phải lớn hơn 0', (value) => {
+            if (value && parseInt(value) <= 0) {
+                return false;
+            }
+            return true;
+        })
+        .test('durationFormat', 'Phần trăm giảm giá phải là số và không gồm kí tự đặc biệt', (value) => {
+            if (value && !/^\d+$/.test(value)) {
+                return false;
+            }
+            return true;
+        }),
+    note: yup.string().required('Mô tả không được để trống'),
+});
 
 const Voucher = () => {
     const dispatch = useDispatch();
@@ -22,16 +46,25 @@ const Voucher = () => {
     const { currentContract, loading } = useSelector((state) => state.contract);
     const { contractId, reportId } = useParams();
     const { client } = currentContract;
-
-    const [voucher, setVoucher] = useState('');
-    const [description, setDescription] = useState('');
     const [message, setMessage] = useState('');
+    const [messageError, setMessageError] = useState('');
     const [cancelOpen, setCancelOpen] = useState(false);
     const [cancelLoading, setCancelLoading] = useState(false);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(createVoucherAsync({ reportId: reportId, discount: voucher, data: description }))
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
+
+    useEffect(() => {
+        dispatch(getContractDetailsAsync(contractId));
+    }, [dispatch, contractId]);
+
+    const handleCreateVoucher = (data) => {
+        dispatch(createVoucherAsync({ reportId: reportId, discount: data.voucher, data: data.note }))
             .unwrap()
             .then(() =>
                 dispatch(
@@ -47,11 +80,15 @@ const Voucher = () => {
 
     //update contract status
     const handleCancelContract = (e) => {
-        setCancelLoading(true);
         e.preventDefault();
-        dispatch(updateContractStatusAsync({ reportId: reportId, option: 'Cancel', message: message }))
-            .unwrap()
-            .then(() => navigate(`/admin/${currentUser.id}/reports`));
+        if (!message) {
+            setMessageError('Lý do không được để trống');
+        } else {
+            dispatch(updateContractStatusAsync({ reportId: reportId, option: 'Cancel', message: message }))
+                .unwrap()
+                .then(() => navigate(`/admin/${currentUser.id}/reports`));
+            setCancelLoading(true);
+        }
     };
 
     const handleCloseCancel = (e) => {
@@ -65,39 +102,44 @@ const Voucher = () => {
             <div className={cx('content')}>
                 <div className={cx('title-and-back')}>
                     <Link
-                        to={`/admin/${currentUser?.Id}/reports/${contractId}/${reportId}`}
+                        to={`/admin/${currentUser?.Id}/reports/${contractId}/view-details/${reportId}`}
                         className={cx('back-link')}
                     >
                         <IoIosArrowBack />
                         <span>Quay lại</span>
                     </Link>
                 </div>
-                <form className={cx('voucher')}>
+                <h1 className={cx('title')}>Voucher</h1>
+                <form className={cx('voucher')} onSubmit={handleSubmit(handleCreateVoucher)}>
                     <div className={cx('row')}>
                         <label>Khách hàng</label>
                         <span>{client?.fullname}</span>
                     </div>
                     <div className={cx('row')}>
                         <label>{`Giảm giá (%)`}</label>
-                        <input type="text" name="discount" id="" onChange={(e) => setVoucher(e.target.value)} />
+                        <input type="text" id="" {...register('voucher')} />
                     </div>
-                    <div className={cx('row')}>
+                    {errors.voucher && (
+                        <div className={cx('error')}>
+                            <ErrorMessage message={errors.voucher.message} />
+                        </div>
+                    )}
+                    <div className={cx('row', 'note')}>
                         <label>Ghi chú</label>
-                        <textarea
-                            name="description"
-                            id=""
-                            cols="30"
-                            rows="10"
-                            onChange={(e) => setDescription(e.target.value)}
-                        ></textarea>
+                        <textarea {...register('note')} id="" cols="30" rows="10"></textarea>
                     </div>
-                    <button onClick={handleSubmit} disabled={loading}>
+                    {errors.note && (
+                        <div className={cx('error')}>
+                            <ErrorMessage message={errors.note.message} />
+                        </div>
+                    )}
+                    <button type="submit" className={cx('send-btn')} disabled={loading}>
                         {loading ? (
                             <Spinner />
                         ) : (
                             <>
                                 <AiOutlineCheck className={cx('icon')} />
-                                Gửi
+                                <span>Gửi</span>
                             </>
                         )}
                     </button>
@@ -113,13 +155,27 @@ const Voucher = () => {
                         <div className={cx('modal')}>
                             <h2 className={cx('header')}>iCoaching</h2>
                             <h2 className={cx('title')}>Bạn có muốn huỷ hợp đồng này? Hãy nhập lý do: </h2>
-                            <textarea
-                                name="cancel"
-                                id=""
-                                cols="30"
-                                rows="10"
-                                onChange={(e) => setMessage(e.target.value)}
-                            ></textarea>
+                            <div className={cx('message-frame')}>
+                                <textarea
+                                    name="cancel"
+                                    id=""
+                                    cols="30"
+                                    rows="10"
+                                    onChange={(e) => {
+                                        setMessage(e.target.value);
+                                        if (!e.target.value) {
+                                            setMessageError('Lý do không được để trống');
+                                        } else {
+                                            setMessageError('');
+                                        }
+                                    }}
+                                ></textarea>
+                            </div>
+                            {messageError && (
+                                <div className={cx('error')}>
+                                    <ErrorMessage message={messageError} />
+                                </div>
+                            )}
                             <div className={cx('button')}>
                                 {cancelLoading ? (
                                     <Spinner />
