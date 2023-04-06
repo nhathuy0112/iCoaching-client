@@ -13,6 +13,7 @@ import {
 } from '~/features/coachSlice';
 import { useEffect, useState } from 'react';
 import Spinner from '~/layouts/components/Spinner';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -72,7 +73,11 @@ const About = () => {
     }, [currentUser, dispatch]);
 
     const handlePostAboutMe = (data) => {
-        dispatch(postAboutMeAsync(editorValue ? editorValue : data.about));
+        dispatch(postAboutMeAsync(editorValue ? editorValue : data.about))
+            .unwrap()
+            .then(() => {
+                toast.success('Cập nhật hồ sơ thành công!');
+            });
     };
 
     const handleEditorChange = (value) => {

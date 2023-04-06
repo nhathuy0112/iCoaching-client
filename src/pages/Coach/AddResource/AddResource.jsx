@@ -9,6 +9,7 @@ import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { handleRenderFileIcon } from '~/utils/file';
 import { uploadContractProgramFilesAsync } from '~/features/contractSlice';
 import Spinner from '~/layouts/components/Spinner';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -42,6 +43,7 @@ const AddResource = () => {
                 navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
                     state: { isAddedResources: true },
                 });
+                toast.success('Thêm tài nguyên thành công!');
             });
     };
 

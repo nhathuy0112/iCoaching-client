@@ -34,11 +34,15 @@ export const getAllCertRequests = ({ pageIndex, pageSize, sort, search }) => {
 export const getCertRequestDetail = (certId) => axios.get(`${END_POINTS.CERT_REQUEST}-detail/${certId}`);
 
 export const updateCertStatus = (payload) => {
-    return axios.put(`${END_POINTS.CERT_REQUEST}-status/${payload.certId}?option=${payload.option}`, payload.data, {
-        headers: {
-            'Content-Type': 'application/json',
+    return axios.put(
+        `${END_POINTS.CERT_REQUEST}-status/${payload.certId}?option=${payload.option}`,
+        JSON.stringify(payload.data),
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
         },
-    });
+    );
 };
 
 //report
@@ -53,14 +57,14 @@ export const getAllReports = ({ pageIndex, pageSize, sort, search }) => {
 };
 
 export const createVoucher = ({ reportId, discount, data }) =>
-    axios.post(`${END_POINTS.VOUCHER}/${reportId}?discount=${discount}`, data, {
+    axios.post(`${END_POINTS.VOUCHER}/${reportId}?discount=${discount}`, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
         },
     });
 
 export const updateReport = ({ reportId, option, message }) => {
-    return axios.put(`${END_POINTS.REPORT}/${reportId}?optionForAdmin=${option}`, message, {
+    return axios.put(`${END_POINTS.REPORT}/${reportId}?optionForAdmin=${option}`, JSON.stringify(message), {
         headers: {
             'Content-Type': 'application/json',
         },
@@ -73,4 +77,3 @@ export const updateContractStatus = ({ reportId, option, data }) =>
             'Content-Type': 'application/json',
         },
     });
-

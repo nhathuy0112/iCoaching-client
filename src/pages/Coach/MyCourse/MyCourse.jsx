@@ -13,6 +13,7 @@ import { MdOutlineEdit } from 'react-icons/md';
 import { BiTrash } from 'react-icons/bi';
 import { useNavigate, useParams } from 'react-router-dom';
 import Spinner from '~/layouts/components/Spinner';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -45,6 +46,7 @@ const MyCourse = () => {
 
     const handleDeleteCourse = (courseId) => {
         dispatch(deleteTrainingCourseAsync(courseId));
+        toast.success('Xóa gói tập thành công!');
         setIsDelete(false);
     };
 

@@ -10,7 +10,7 @@ export const sendCoachingRequest = ({ coachId, courseId, voucherCode, data }) =>
     const voucherCodeParam = voucherCode ? `&voucherCode=${voucherCode}` : '';
     return axios.post(
         `${END_POINTS.COACHING_REQUEST}?coachId=${coachId}&courseId=${courseId}${voucherCodeParam}`,
-        data,
+        JSON.stringify(data),
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export const getTrainingCourses = ({ pageIndex, pageSize, sort, search, status }
 };
 
 export const cancelTrainingRequest = ({ requestId, data }) =>
-    axios.put(`${END_POINTS.COACHING_REQUEST}-cancellation/${requestId}`, data, {
+    axios.put(`${END_POINTS.COACHING_REQUEST}-cancellation/${requestId}`, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
         },

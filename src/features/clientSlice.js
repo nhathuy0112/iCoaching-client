@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import {
     cancelTrainingRequest,
     completedContract,
@@ -15,11 +14,7 @@ export const sendCoachingRequestAsync = createAsyncThunk(
     async (payload, { rejectWithValue }) => {
         try {
             const response = await sendCoachingRequest(payload);
-            if (response) {
-                toast.success('Yêu cầu tập luyện thành công!');
-                return response;
-            }
-            // return response;
+            return response;
         } catch (error) {
             console.log(error);
             return rejectWithValue(error);

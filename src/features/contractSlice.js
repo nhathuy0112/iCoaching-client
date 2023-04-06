@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
+
 import {
     deleteContractProgramFile,
     getContractDetails,
@@ -34,10 +34,7 @@ export const uploadContractProgramFilesAsync = createAsyncThunk(
     async (payload) => {
         try {
             const response = await uploadContractProgramFiles(payload);
-            if (response) {
-                toast.success('Thêm tài nguyên thành công!');
-                return response;
-            }
+            return response;
         } catch (error) {
             console.log(error);
         }
@@ -81,10 +78,7 @@ export const getProgramFileDownloadAsync = createAsyncThunk('contract/getProgram
 export const updateContractLogAsync = createAsyncThunk('contract/updateContractLog', async (payload) => {
     try {
         const response = await updateContractLog(payload);
-        if (response) {
-            toast.success('Cập nhật tiến độ thành công!');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -117,11 +111,7 @@ export const sendReportAsync = createAsyncThunk('contract/sendReport', async (pa
             contractId: payload.contractId,
             data: payload.formData,
         });
-        if (response) {
-            toast.success('Khiếu nại thành công!');
-            return response;
-        }
-        // return response;
+        return response;
     } catch (error) {
         console.log(error);
         return rejectWithValue(error);
@@ -137,7 +127,6 @@ export const deleteContractLogMediaAsync = createAsyncThunk('contract/deleteCont
         console.log(error);
     }
 });
-
 
 //get contract reports
 export const getContractReportsAsync = createAsyncThunk('contract/getContractReports', async (payload) => {
@@ -302,8 +291,6 @@ export const contractSlice = createSlice({
                 state.error = action.error.message;
             })
 
-
-
             //delete media in contract log
             .addCase(deleteContractLogMediaAsync.pending, (state) => {
                 state.loading = true;
@@ -332,7 +319,7 @@ export const contractSlice = createSlice({
             .addCase(getContractReportsAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
-            })
+            });
     },
 });
 

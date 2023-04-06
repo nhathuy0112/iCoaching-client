@@ -16,6 +16,7 @@ import Spinner from '~/layouts/components/Spinner';
 import ErrorMessage from '~/components/ErrorMessage';
 import ImageUploading from 'react-images-uploading';
 import { dataURItoBlob } from '~/utils/blob';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -84,6 +85,7 @@ const Information = () => {
                     .unwrap()
                     .then(() => {
                         dispatch(getContractDetailsAsync(contractId));
+                        toast.success('Khiếu nại thành công!');
                     });
                 setIsAddingImage(false);
                 setReportOpen(false);
