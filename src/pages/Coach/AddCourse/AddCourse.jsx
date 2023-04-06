@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import ErrorMessage from '~/components/ErrorMessage';
 import { NumericFormat } from 'react-number-format';
 import Spinner from '~/layouts/components/Spinner';
+import { toast } from 'react-toastify';
 
 const modules = {
     toolbar: [
@@ -100,6 +101,7 @@ const AddCourse = () => {
                 .then(() => {
                     setLoading(false);
                     navigate(`/coach/${id}/my-courses`);
+                    toast.success('Thêm gói tập thành công!');
                 })
                 .catch((error) => {
                     console.log(error);

@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import {
     certificationSubmit,
     getCertificationRequest,
@@ -43,10 +42,7 @@ export const getCertificationAsync = createAsyncThunk('/coach/getCertificationRe
 export const postAboutMeAsync = createAsyncThunk('/coach/postAboutMe', async (data) => {
     try {
         const response = await postAboutMe(data);
-        if (response) {
-            toast.success('Cập nhật hồ sơ thành công!');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -64,10 +60,7 @@ export const getAboutMeAsync = createAsyncThunk('/coach/getAboutMe', async () =>
 export const postPortfolioPhotosAsync = createAsyncThunk('/coach/postPortfolioPhotos', async (payload) => {
     try {
         const response = await postPortfolioPhotos(payload);
-        if (response) {
-            toast.success('Thêm ảnh thành công!');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
         throw error;
@@ -85,11 +78,8 @@ export const getPortfolioPhotosAsync = createAsyncThunk('/coach/getPortfolioPhot
 
 export const removePortfolioPhotosAsync = createAsyncThunk('/coach/removePortfolioPhotos', async (id) => {
     try {
-        const response = await removePortfolioPhotos(id);
-        if (response) {
-            toast.success('Xóa ảnh thành công!');
-            return { id };
-        }
+        await removePortfolioPhotos(id);
+        return { id };
     } catch (error) {
         console.log(error);
     }
@@ -104,10 +94,7 @@ export const addTrainingCourseAsync = createAsyncThunk('/coach/addTrainingCourse
             duration: payload.duration,
             description: payload.description,
         });
-        if (response) {
-            toast.success('Thêm gói tập thành công!');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -139,10 +126,7 @@ export const editTrainingCourseAsync = createAsyncThunk('/coach/editTrainingCour
             duration: payload.duration,
             description: payload.description,
         });
-        if (response) {
-            toast.success('Chỉnh sửa gói tập thành công!');
-            return { id: payload.id, name: response.name, price: response.price, duration: response.duration };
-        }
+        return { id: payload.id, name: response.name, price: response.price, duration: response.duration };
     } catch (error) {
         console.log(error);
     }
@@ -150,11 +134,8 @@ export const editTrainingCourseAsync = createAsyncThunk('/coach/editTrainingCour
 
 export const deleteTrainingCourseAsync = createAsyncThunk('/coach/deleteTrainingCourse', async (id) => {
     try {
-        const response = await deleteTrainingCourse(id);
-        if (response) {
-            toast.success('Xóa gói tập thành công!');
-            return { id };
-        }
+        await deleteTrainingCourse(id);
+        return { id };
     } catch (error) {
         console.log(error);
     }

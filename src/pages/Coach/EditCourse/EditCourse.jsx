@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import ErrorMessage from '~/components/ErrorMessage';
 import { editTrainingCourseAsync, getTrainingCourseByIdAsync } from '~/features/coachSlice';
 import { NumericFormat } from 'react-number-format';
+import { toast } from 'react-toastify';
 
 const modules = {
     toolbar: [
@@ -106,6 +107,7 @@ const EditCourse = () => {
                     description: data.description,
                 }),
             );
+            toast.success('Chỉnh sửa gói tập thành công!');
             navigate(`/coach/${id}/my-courses`);
         } catch (error) {
             console.log(error);

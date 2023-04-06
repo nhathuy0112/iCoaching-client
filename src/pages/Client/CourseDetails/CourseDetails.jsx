@@ -8,9 +8,9 @@ import { getCoachTrainingCourseDetailsAsync } from '~/features/guestSlice';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import Modal from '~/components/Modal/Modal';
 import { getAllVouchersAsync, resetError, sendCoachingRequestAsync } from '~/features/clientSlice';
-import { getCoachingRequestsAsync } from '~/features/coachSlice';
 import ErrorMessage from '~/components/ErrorMessage/ErrorMessage';
 import Spinner from '~/layouts/components/Spinner';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -70,8 +70,8 @@ const CourseDetails = () => {
                 .then(() => {
                     setIsSendMessage(false);
                     setMessage('');
-                    dispatch(getCoachingRequestsAsync({ pageIndex: 1, pageSize: 6, clientRequestStatus: 'Init' }));
                     navigate(`/client/${id}/training-requests`);
+                    toast.success('Yêu cầu tập luyện thành công!');
                 })
                 .catch((error) => {
                     setMessageError(error);

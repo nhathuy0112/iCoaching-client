@@ -18,6 +18,7 @@ import { AiOutlineUpload } from 'react-icons/ai';
 import { FaTrashAlt } from 'react-icons/fa';
 import { handleRenderFileIcon } from '~/utils/file';
 import Spinner from '~/layouts/components/Spinner';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -245,6 +246,7 @@ const EditTrainingLog = () => {
                         navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
                             state: { isEditTrainingLog: true },
                         });
+                        toast.success('Cập nhật tiến độ thành công!');
                     });
             }
         }

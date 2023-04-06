@@ -18,6 +18,7 @@ import {
 } from '~/features/coachSlice';
 import Pagination from '~/components/Pagination';
 import Spinner from '~/layouts/components/Spinner';
+import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 
 const Photos = () => {
@@ -60,12 +61,20 @@ const Photos = () => {
                 formData.append('files', image);
             }
         });
-        dispatch(postPortfolioPhotosAsync(formData));
+        dispatch(postPortfolioPhotosAsync(formData))
+            .unwrap()
+            .then(() => {
+                toast.success('Thêm ảnh thành công!');
+            });
         setIsAddingImage(false);
     };
 
     const handleDeleteImage = (id) => {
-        dispatch(removePortfolioPhotosAsync(id));
+        dispatch(removePortfolioPhotosAsync(id))
+            .unwrap()
+            .then(() => {
+                toast.success('Xóa ảnh thành công!');
+            });
     };
 
     const handleCancelAdding = () => {

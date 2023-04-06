@@ -23,7 +23,7 @@ export const getCertificationRequest = () => axios.get(END_POINTS.CERTIFICATION_
 
 //portfolio
 export const postAboutMe = (data) =>
-    axios.post(END_POINTS.ABOUT_ME, data, {
+    axios.post(END_POINTS.ABOUT_ME, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
         },
@@ -78,7 +78,7 @@ export const getCoachingRequests = ({ pageIndex, pageSize, sort, search, coachRe
 };
 
 export const updateCoachingRequest = ({ requestId, options, data }) =>
-    axios.put(`${END_POINTS.COACHING_REQUEST}/${requestId}?options=${options}`, data, {
+    axios.put(`${END_POINTS.COACHING_REQUEST}/${requestId}?options=${options}`, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
         },
