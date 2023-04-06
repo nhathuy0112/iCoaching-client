@@ -36,6 +36,7 @@ const Init = () => {
     }, [paymentLink]);
 
     const handlePayment = (request) => {
+        setSelectedRequest(request);
         dispatch(getPaymentLinkAsync(request.id));
     };
 
@@ -111,16 +112,21 @@ const Init = () => {
                                         </div>
                                     </div>
                                     <div className={cx('action')}>
-                                        {loading ? (
+                                        {loading && selectedRequest === request ? (
                                             <Spinner />
                                         ) : (
                                             <>
-                                                <button id={cx('payment-btn')} onClick={() => handlePayment(request)}>
+                                                <button
+                                                    id={cx('payment-btn')}
+                                                    onClick={() => handlePayment(request)}
+                                                    disabled={loading}
+                                                >
                                                     Thanh toán
                                                 </button>
                                                 <button
                                                     id={cx('canceled-btn')}
                                                     onClick={() => handleOpenCancelModal(request)}
+                                                    disabled={loading}
                                                 >
                                                     Hủy
                                                 </button>
