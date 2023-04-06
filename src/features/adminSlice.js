@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import {
     getAllCoaches,
     updateStatus,
@@ -38,10 +37,7 @@ export const updateStatusAsync = createAsyncThunk('/admin/updateStatus', async (
 export const warnCoachAsync = createAsyncThunk('/admin/warnCoach', async (coachId) => {
     try {
         const response = await warnCoach(coachId);
-        if (response) {
-            toast.success('Cảnh báo thành công');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -99,10 +95,7 @@ export const updateReportAsync = createAsyncThunk('/admin/updateReport', async (
             option: payload.option,
             message: payload.message,
         });
-        if (response) {
-            toast.success('Đã cập nhật trạng thái khiếu nại');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -112,10 +105,7 @@ export const updateReportAsync = createAsyncThunk('/admin/updateReport', async (
 export const createContractAsync = createAsyncThunk('/admin/createContract', async (payload) => {
     try {
         const response = await createContract({ reportId: payload.reportId, data: payload.contract });
-        if (response) {
-            toast.success('Tạo hợp đồng thành công');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -129,10 +119,7 @@ export const createVoucherAsync = createAsyncThunk('/admin/createVoucher', async
             discount: payload.discount,
             data: payload.data,
         });
-        if (response) {
-            toast.success('Tạo mã giảm giá thành công');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -146,10 +133,7 @@ export const updateContractStatusAsync = createAsyncThunk('/admin/updateContract
             option: payload.option,
             data: payload.message,
         });
-        if (response) {
-            toast.success('Đã cập nhật trạng thái hợp đồng');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -207,13 +191,13 @@ export const adminSlice = createSlice({
             //update coach status
             .addCase(updateStatusAsync.fulfilled, (state, action) => {
                 state.status = !state.status;
-                state.message = action.payload
+                state.message = action.payload;
             })
 
             //warn coach
             .addCase(warnCoachAsync.fulfilled, (state, action) => {
                 state.status = !state.status;
-                state.message = action.payload
+                state.message = action.payload;
             })
 
             //get all certificate verification requests

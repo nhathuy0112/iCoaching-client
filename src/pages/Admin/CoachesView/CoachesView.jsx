@@ -13,6 +13,7 @@ import Pagination from '~/components/Pagination';
 import { getAllCoachesAsync, updateStatusAsync, warnCoachAsync } from '~/features/adminSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -58,6 +59,7 @@ const CoachesView = () => {
 
     const handleWarnCoach = (id) => {
         dispatch(warnCoachAsync(id));
+        toast.success('Cảnh báo thành công!');
         setWarnOpen(false);
         setCurrentPage(1);
     };

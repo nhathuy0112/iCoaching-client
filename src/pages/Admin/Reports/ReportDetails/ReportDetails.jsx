@@ -15,6 +15,7 @@ import Progress from './components/Progress';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import Spinner from '~/layouts/components/Spinner';
+import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 
 const ReportDetails = () => {
@@ -80,6 +81,7 @@ const ReportDetails = () => {
                     handleOpen(setCancelOpen);
                 } else {
                     navigate(`/admin/${currentUser.id}/reports`);
+                    toast.success('Đã cập nhật trạng thái khiếu nại');
                 }
             });
     };
@@ -92,7 +94,10 @@ const ReportDetails = () => {
                 if (option === 'End') {
                     dispatch(updateReportAsync({ reportId: reportId, option: 'Solve', message: message }))
                         .unwrap()
-                        .then(() => navigate(`/admin/${currentUser.id}/reports`));
+                        .then(() => {
+                            navigate(`/admin/${currentUser.id}/reports`);
+                            toast.success('Đã cập nhật trạng thái khiếu nại');
+                        });
                 }
             });
     };

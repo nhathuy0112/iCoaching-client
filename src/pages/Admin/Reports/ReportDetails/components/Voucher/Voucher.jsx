@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import ErrorMessage from '~/components/ErrorMessage';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -66,15 +67,18 @@ const Voucher = () => {
     const handleCreateVoucher = (data) => {
         dispatch(createVoucherAsync({ reportId: reportId, discount: data.voucher, data: data.note }))
             .unwrap()
-            .then(() =>
+            .then(() => {
+                toast.success('Tạo mã giảm giá thành công');
                 dispatch(
                     updateReportAsync({
                         reportId: reportId,
                         option: 'Solve',
                         message: 'Đã tặng voucher cho khách hàng',
                     }),
-                ),
-            );
+                );
+
+                toast.success('Đã cập nhật trạng thái khiếu nại');
+            });
         setCancelOpen(true);
     };
 
@@ -86,7 +90,10 @@ const Voucher = () => {
         } else {
             dispatch(updateContractStatusAsync({ reportId: reportId, option: 'Cancel', message: message }))
                 .unwrap()
-                .then(() => navigate(`/admin/${currentUser.id}/reports`));
+                .then(() => {
+                    navigate(`/admin/${currentUser.id}/reports`);
+                    toast.success('Đã cập nhật trạng thái hợp đồng');
+                });
             setCancelLoading(true);
         }
     };

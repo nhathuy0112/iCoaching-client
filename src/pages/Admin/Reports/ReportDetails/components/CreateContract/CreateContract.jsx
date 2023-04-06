@@ -19,6 +19,7 @@ import ErrorMessage from '~/components/ErrorMessage';
 import Spinner from '~/layouts/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
 import { getContractDetailsAsync } from '~/features/contractSlice';
+import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 
 const schema = yup.object({
@@ -83,6 +84,7 @@ const CreateContract = () => {
                 .unwrap()
                 .then(() => {
                     navigate(`/admin/${id}/reports `);
+                    toast.success('Tạo hợp đồng thành công');
                 });
         } catch (error) {
             console.log(error);
