@@ -331,7 +331,7 @@ const EditTrainingLog = () => {
                         </div>
                     </div>
 
-                    {(imageDbList.length > 0 || imageList.length > 0) && (
+                    {(imageDbList?.length > 0 || imageList?.length > 0) && (
                         <ul className={cx('image-list')}>
                             {imageDbList.map((image) => (
                                 <li className={cx('image-item')} key={image.id}>
@@ -365,7 +365,7 @@ const EditTrainingLog = () => {
                         </div>
                     </div>
 
-                    {(videoDbList.length > 0 || videoList.length > 0) && (
+                    {(videoDbList?.length > 0 || videoList?.length > 0) && (
                         <ul className={cx('video-list')}>
                             {videoDbList.map((video) => (
                                 <li className={cx('video-item')} key={video.id}>
