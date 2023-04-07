@@ -1,4 +1,6 @@
 .wrapper {
+    position: relative;
+    height: calc(95vh - var(--default-navbar-height));
     .content {
         .message {
             display: flex;

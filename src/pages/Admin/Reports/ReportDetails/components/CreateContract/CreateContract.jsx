@@ -34,9 +34,8 @@ const CreateContract = () => {
     const navigate = useNavigate();
 
     const { currentUser } = useSelector((state) => state.user);
-    const { trainingCourses } = useSelector((state) => state.guest);
+    const { trainingCourses, coaches } = useSelector((state) => state.guest);
     const { currentContract, loading } = useSelector((state) => state.contract);
-    const { coaches } = useSelector((state) => state.admin);
 
     const { id, contractId, reportId } = useParams();
     const { client } = currentContract;
@@ -196,7 +195,7 @@ const CreateContract = () => {
                             {initialCourse &&
                                 trainingCourses?.map((course) => (
                                     <option key={course.id} value={course.id}>
-                                        {course.id}: {course.name}
+                                        {course.name}: {course.duration} buổi - {course.price}
                                     </option>
                                 ))}
                         </select>
