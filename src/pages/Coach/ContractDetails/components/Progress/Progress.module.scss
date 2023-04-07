@@ -1,8 +1,5 @@
 .wrapper {
     .day-list {
-        overflow-y: auto;
-        overflow-x: hidden;
-        max-height: 420px;
         .day-item {
             display: flex;
             flex-direction: column;

@@ -90,7 +90,7 @@ const AddResource = () => {
             </div>
             {fileList && fileList.length > 0 && (
                 <button id={cx('save-btn')} onClick={handleUploadProgramFiles} disabled={loading}>
-                    {loading ? <Spinner /> : 'Lưu'}
+                    {loading ? <Spinner /> : <span>Lưu</span>}
                 </button>
             )}
         </div>

@@ -4,9 +4,6 @@
 
     .content {
         .contract-info {
-            max-height: 420px;
-            overflow-y: auto;
-            overflow-x: hidden;
             .info-container:nth-child(1),
             .info-container:nth-child(2) {
                 border-bottom: 1px solid #ccc;

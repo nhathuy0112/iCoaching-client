@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import {
     deleteContractLogMediaAsync,
     deleteContractProgramFileAsync,
+    getContractDetailsAsync,
     getContractLogDetailsAsync,
     getContractLogsAsync,
     updateContractLogAsync,
@@ -29,15 +30,14 @@ const EditTrainingLog = () => {
     const { id, contractId, logId } = useParams();
     const [trainingDateInput, setTrainingDateInput] = useState('');
     const [fileList, setFileList] = useState([]);
+    const [fileDbList, setFileDbList] = useState([]);
     const [imageList, setImageList] = useState([]);
+    const [imageDbList, setImageDbList] = useState([]);
     const [videoList, setVideoList] = useState([]);
+    const [videoDbList, setVideoDbList] = useState([]);
     const [noteInput, setNoteInput] = useState('');
     const [trainingDateError, setTrainingDateError] = useState('');
     const [noteError, setNoteError] = useState('');
-
-    const [deleteFileLoading, setDeleteFileLoading] = useState({ id, isDeleting: false });
-    const [deleteImageLoading, setDeleteImageLoading] = useState({ id, isDeleting: false });
-    const [deleteVideoLoading, setDeleteVideoLoading] = useState({ id, isDeleting: false });
 
     useEffect(() => {
         dispatch(getContractLogsAsync(contractId));
@@ -50,9 +50,9 @@ const EditTrainingLog = () => {
     useEffect(() => {
         if (currentLog) {
             setTrainingDateInput(convertDateFormatToInput(currentLog.trainingDate));
-            setFileList(currentLog.files);
-            setImageList(currentLog.images);
-            setVideoList(currentLog.videos);
+            setFileDbList(currentLog.files);
+            setImageDbList(currentLog.images);
+            setVideoDbList(currentLog.videos);
             setNoteInput(currentLog.note);
         }
     }, [currentLog]);
@@ -124,29 +124,13 @@ const EditTrainingLog = () => {
     };
 
     const handleDeleteFile = (fileId) => {
-        let found = false;
-        setDeleteFileLoading({ id: fileId, isDeleting: true });
+        const newFileList = fileList.filter((file) => file.id !== fileId);
+        setFileList(newFileList);
+    };
 
-        for (let i = 0; i < currentLog.files.length; i++) {
-            if (currentLog.files[i].id === fileId) {
-                found = true;
-                dispatch(deleteContractProgramFileAsync({ contractId: contractId, fileId: fileId }))
-                    .unwrap()
-                    .then(() => {
-                        setDeleteFileLoading({ isDeleting: false });
-                        dispatch(getContractLogDetailsAsync({ contractId: contractId, logId: logId }));
-                    });
-                break;
-            }
-        }
-        if (!found) {
-            setDeleteFileLoading({ id: fileId, isDeleting: true });
-            const newFileList = fileList.filter((file) => file.id !== fileId);
-            setTimeout(() => {
-                setFileList(newFileList);
-                setDeleteFileLoading({ isDeleting: false });
-            }, [3000]);
-        }
+    const handleDeleteDbFile = (fileId) => {
+        const newFileList = fileDbList.filter((file) => file.id !== fileId);
+        setFileDbList(newFileList);
     };
 
     const handleImageListChange = (event) => {
@@ -157,28 +141,13 @@ const EditTrainingLog = () => {
     };
 
     const handleDeleteImage = (imageId) => {
-        setDeleteImageLoading({ id: imageId, isDeleting: true });
-        let found = false;
-        for (let i = 0; i < currentLog.images.length; i++) {
-            if (currentLog.images[i].id === imageId) {
-                found = true;
-                dispatch(deleteContractLogMediaAsync({ contractId: contractId, logId: logId, mediaId: imageId }))
-                    .unwrap()
-                    .then(() => {
-                        setDeleteImageLoading({ isDeleting: false });
-                        dispatch(getContractLogDetailsAsync({ contractId: contractId, logId: logId }));
-                    });
-                break;
-            }
-        }
-        if (!found) {
-            setDeleteImageLoading({ id: imageId, isDeleting: true });
-            const newImageList = imageList.filter((image) => image.id !== imageId);
-            setTimeout(() => {
-                setDeleteImageLoading({ isDeleting: false });
-                setImageList(newImageList);
-            }, [3000]);
-        }
+        const newImageList = imageList.filter((image) => image.id !== imageId);
+        setImageList(newImageList);
+    };
+
+    const handleDeleteDbImage = (imageId) => {
+        const newImageList = imageDbList.filter((image) => image.id !== imageId);
+        setImageDbList(newImageList);
     };
 
     const handleVideoListChange = (event) => {
@@ -189,28 +158,13 @@ const EditTrainingLog = () => {
     };
 
     const handleDeleteVideo = (videoId) => {
-        setDeleteVideoLoading({ id: videoId, isDeleting: true });
-        let found = false;
-        for (let i = 0; i < currentLog.videos.length; i++) {
-            if (currentLog.videos[i].id === videoId) {
-                found = true;
-                dispatch(deleteContractLogMediaAsync({ contractId: contractId, logId: logId, mediaId: videoId }))
-                    .unwrap()
-                    .then(() => {
-                        setDeleteVideoLoading({ isDeleting: false });
-                        dispatch(getContractLogDetailsAsync({ contractId: contractId, logId: logId }));
-                    });
-                break;
-            }
-        }
-        if (!found) {
-            setDeleteVideoLoading({ id: videoId, isDeleting: true });
-            const newVideoList = videoList.filter((video) => video.id !== videoId);
-            setTimeout(() => {
-                setDeleteVideoLoading({ isDeleting: false });
-                setVideoList(newVideoList);
-            }, [3000]);
-        }
+        const newVideoList = videoList.filter((video) => video.id !== videoId);
+        setVideoList(newVideoList);
+    };
+
+    const handleDeleteDbVideo = (videoId) => {
+        const newVideoList = videoDbList.filter((video) => video.id !== videoId);
+        setVideoDbList(newVideoList);
     };
 
     const handleUpdateTrainingLog = () => {
@@ -223,31 +177,69 @@ const EditTrainingLog = () => {
             } else if (!noteInput) {
                 setNoteError('Ghi chú phải được thêm');
             } else {
+                const filesNeedToBeDelete = currentLog.files.filter(
+                    (file) => !fileDbList.some((fileDb) => file.id === fileDb.id),
+                );
+                const imagesNeedToBeDelete = currentLog.images.filter(
+                    (image) => !imageDbList.some((imageDb) => image.id === imageDb.id),
+                );
+                const videosNeedToBeDelete = currentLog.videos.filter(
+                    (video) => !imageDbList.some((videoDb) => video.id === videoDb.id),
+                );
+
+                const deleteFilePromises = filesNeedToBeDelete.map((file) =>
+                    dispatch(deleteContractProgramFileAsync({ contractId: contractId, fileId: file.id })),
+                );
+
+                const deleteImagePromises = imagesNeedToBeDelete.map((image) =>
+                    dispatch(
+                        deleteContractLogMediaAsync({
+                            contractId: contractId,
+                            logId: logId,
+                            mediaId: image.id,
+                        }),
+                    ),
+                );
+
+                const deleteVideoPromises = videosNeedToBeDelete.map((video) =>
+                    dispatch(
+                        deleteContractLogMediaAsync({
+                            contractId: contractId,
+                            logId: logId,
+                            mediaId: video.id,
+                        }),
+                    ),
+                );
+
                 const formData = new FormData();
                 formData.append('TrainingDate', convertDateFormat(trainingDateInput));
                 formData.append('Note', noteInput);
-                for (let i = 0; i < fileList.length; i++) {
-                    const file = fileList[i];
-                    formData.append('Files', file);
-                }
-                for (let i = 0; i < imageList.length; i++) {
-                    const image = imageList[i];
-                    formData.append('Images', image);
-                }
-                for (let i = 0; i < videoList.length; i++) {
-                    const video = videoList[i];
-                    formData.append('Videos', video);
-                }
 
-                dispatch(updateContractLogAsync({ contractId: contractId, logId: logId, payload: formData }))
-                    .unwrap()
-                    .then(() => {
-                        setTrainingDateError('');
-                        navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
-                            state: { isEditTrainingLog: true },
+                Promise.all([...deleteFilePromises, ...deleteImagePromises, ...deleteVideoPromises]).then(() => {
+                    for (let i = 0; i < fileList.length; i++) {
+                        const file = fileList[i];
+                        formData.append('Files', file);
+                    }
+
+                    for (let i = 0; i < imageList.length; i++) {
+                        const image = imageList[i];
+                        formData.append('Images', image);
+                    }
+
+                    for (let i = 0; i < videoList.length; i++) {
+                        const video = videoList[i];
+                        formData.append('Videos', video);
+                    }
+                    dispatch(updateContractLogAsync({ contractId: contractId, logId: logId, payload: formData }))
+                        .unwrap()
+                        .then(() => {
+                            setTrainingDateError('');
+                            navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
+                                state: { isEditTrainingLog: true },
+                            });
+                            toast.success('Cập nhật tiến độ thành công!');
                         });
-                        toast.success('Cập nhật tiến độ thành công!');
-                    });
+                });
             }
         }
     };
@@ -298,6 +290,20 @@ const EditTrainingLog = () => {
                             </button>
                         </div>
                     </div>
+                    {fileDbList && fileDbList.length > 0 && (
+                        <ul className={cx('file-list')}>
+                            {fileDbList.map((file) => (
+                                <li className={cx('file-item')} key={file.id}>
+                                    <span>{handleRenderFileIcon(file.fileName)}</span>
+                                    <p>{file.fileName}</p>
+
+                                    <div className={cx('action')} onClick={() => handleDeleteDbFile(file.id)}>
+                                        <FaTrashAlt />
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                     {fileList && fileList.length > 0 && (
                         <ul className={cx('file-list')}>
                             {fileList.map((file) => (
@@ -306,11 +312,7 @@ const EditTrainingLog = () => {
                                     <p>{file.fileName}</p>
 
                                     <div className={cx('action')} onClick={() => handleDeleteFile(file.id)}>
-                                        {deleteFileLoading.isDeleting && file.id === deleteFileLoading.id ? (
-                                            <Spinner />
-                                        ) : (
-                                            <>{deleteFileLoading.isDeleting ? '' : <FaTrashAlt />}</>
-                                        )}
+                                        <FaTrashAlt />
                                     </div>
                                 </li>
                             ))}
@@ -329,22 +331,27 @@ const EditTrainingLog = () => {
                         </div>
                     </div>
 
-                    {imageList && imageList.length > 0 && (
+                    {(imageDbList?.length > 0 || imageList?.length > 0) && (
                         <ul className={cx('image-list')}>
+                            {imageDbList.map((image) => (
+                                <li className={cx('image-item')} key={image.id}>
+                                    <img src={image.url} alt="log" />
+                                    <button className={cx('delete-btn')} onClick={() => handleDeleteDbImage(image.id)}>
+                                        <FaTrashAlt />
+                                    </button>
+                                </li>
+                            ))}
                             {imageList.map((image) => (
                                 <li className={cx('image-item')} key={image.id}>
                                     <img src={image.url} alt="log" />
                                     <button className={cx('delete-btn')} onClick={() => handleDeleteImage(image.id)}>
-                                        {deleteImageLoading.isDeleting && image.id === deleteImageLoading.id ? (
-                                            <Spinner />
-                                        ) : (
-                                            <>{deleteImageLoading.isDeleting ? '' : <FaTrashAlt />}</>
-                                        )}
+                                        <FaTrashAlt />
                                     </button>
                                 </li>
                             ))}
                         </ul>
                     )}
+
                     <div className={cx('input-group')}>
                         <label htmlFor="file">Video</label>
                         <div className={cx('file-inputs')}>
@@ -357,24 +364,32 @@ const EditTrainingLog = () => {
                             </button>
                         </div>
                     </div>
-                    {videoList && videoList.length > 0 && (
+
+                    {(videoDbList?.length > 0 || videoList?.length > 0) && (
                         <ul className={cx('video-list')}>
+                            {videoDbList.map((video) => (
+                                <li className={cx('video-item')} key={video.id}>
+                                    <video controls>
+                                        <source src={video.url} />
+                                    </video>
+                                    <button className={cx('delete-btn')} onClick={() => handleDeleteDbVideo(video.id)}>
+                                        <FaTrashAlt />
+                                    </button>
+                                </li>
+                            ))}
                             {videoList.map((video) => (
                                 <li className={cx('video-item')} key={video.id}>
                                     <video controls>
                                         <source src={video.url} />
                                     </video>
                                     <button className={cx('delete-btn')} onClick={() => handleDeleteVideo(video.id)}>
-                                        {deleteVideoLoading.isDeleting && video.id === deleteVideoLoading.id ? (
-                                            <Spinner />
-                                        ) : (
-                                            <>{deleteVideoLoading.isDeleting ? '' : <FaTrashAlt />}</>
-                                        )}
+                                        <FaTrashAlt />
                                     </button>
                                 </li>
                             ))}
                         </ul>
                     )}
+
                     <div className={cx('input-group', 'note')}>
                         <label htmlFor="note">Ghi chú</label>
                         <textarea name="note" value={noteInput ? noteInput : ''} onChange={handleNoteChange} />
@@ -386,14 +401,7 @@ const EditTrainingLog = () => {
                     )}
                     <div className={cx('action-btn')}>
                         <button className={cx('save-btn')} onClick={handleUpdateTrainingLog} disabled={loading}>
-                            {loading &&
-                            !deleteFileLoading.isDeleting &&
-                            !deleteImageLoading.isDeleting &&
-                            !deleteVideoLoading.isDeleting ? (
-                                <Spinner />
-                            ) : (
-                                'Lưu'
-                            )}
+                            {loading ? <Spinner /> : 'Lưu'}
                         </button>
                     </div>
                 </div>
