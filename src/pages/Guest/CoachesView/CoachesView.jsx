@@ -7,6 +7,7 @@ import { getAllCoachesAsync } from '~/features/guestSlice';
 import UserCard from '~/components/UserCard';
 import { Link } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
+import { AiOutlineSearch } from 'react-icons/ai';
 const cx = classNames.bind(styles);
 
 const CoachesView = () => {
@@ -16,8 +17,7 @@ const CoachesView = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-      }, []);
-
+    }, []);
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
@@ -57,6 +57,12 @@ const CoachesView = () => {
                         <span>Đội ngũ huấn luyện viên chất lượng, tận tình sẵn sàng phục vụ mọi người</span>
                     </div>
                 </div>
+                <form className={cx('search')}>
+                    <div className={cx('search-box')} type="submit">
+                        <AiOutlineSearch className={cx('search-icon')} />
+                        <input type="text" placeholder="Huấn luyện viên" />
+                    </div>
+                </form>
                 <div className={cx('coach-list')}>
                     {coaches.map((coach) => (
                         <div className={cx('coach-item')} key={coach.id}>

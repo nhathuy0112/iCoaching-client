@@ -32,7 +32,7 @@ const Canceled = () => {
                             <form className={cx('search')}>
                                 <div className={cx('search-box')} type="submit">
                                     <AiOutlineSearch className={cx('search-icon')} />
-                                    <input type="text" placeholder="Tìm kiếm" />
+                                    <input type="text" placeholder="Khách hàng" />
                                 </div>
                             </form>
                             <div className={cx('contract-list')}>

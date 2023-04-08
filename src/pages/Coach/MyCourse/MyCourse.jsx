@@ -4,7 +4,7 @@ import styles from './MyCourse.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import TrainingCourseCard from '~/components/TrainingCourseCard';
 import { deleteTrainingCourseAsync, getTrainingCourseAsync } from '~/features/coachSlice';
-import { AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import 'react-quill/dist/quill.snow.css';
 import Modal from '~/components/Modal';
@@ -65,10 +65,13 @@ const MyCourse = () => {
                                         <span>Thêm gói tập</span>
                                     </button>
                                 </div>
-                                <div className={cx('filter-and-search')}>
-                                    <input type="text" placeholder="Tìm kiếm" />
-                                </div>
                             </div>
+                            <form className={cx('search')}>
+                                <div className={cx('search-box')} type="submit">
+                                    <AiOutlineSearch className={cx('search-icon')} />
+                                    <input type="text" placeholder="Gói tập" />
+                                </div>
+                            </form>
                             <div className={cx('course-list')}>
                                 {trainingCourses.map((course) => (
                                     <div className={cx('course-item')} key={course.id}>

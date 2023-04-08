@@ -1,7 +1,7 @@
 import styles from './Home.module.scss';
 import classNames from 'classnames/bind';
 
-import { AiOutlineSchedule } from 'react-icons/ai';
+import { AiOutlineSchedule, AiOutlineSearch } from 'react-icons/ai';
 import { CgGym } from 'react-icons/cg';
 import { GiWeightScale, GiWeightLiftingUp } from 'react-icons/gi';
 import { MdOutlineNoFood } from 'react-icons/md';
@@ -106,6 +106,12 @@ const Home = () => {
                         <h1>Huấn luyện viên</h1>
                         <span>Đội ngũ huấn luyện viên chất lượng, tận tình sẵn sàng phục vụ mọi người</span>
                     </div>
+                    <form className={cx('search')}>
+                        <div className={cx('search-box')} type="submit">
+                            <AiOutlineSearch className={cx('search-icon')} />
+                            <input type="text" placeholder="Huấn luyện viên" />
+                        </div>
+                    </form>
                     <div className={cx('coach-list')}>
                         {coaches.map((coach) => (
                             <div className={cx('coach-item')} key={coach.id}>

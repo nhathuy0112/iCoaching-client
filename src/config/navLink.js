@@ -22,7 +22,7 @@ export const adminNavLinks = [
 ];
 
 export const superAdminNavLinks = [
-    { url: 'list-admin', icon: <FaUserShield />, name: 'Danh sách quản lý' },
+    { url: 'list-admin', icon: <FaUserShield />, name: 'Danh sách quản trị viên' },
     { url: 'create-account', icon: <FaUserTie />, name: 'Tạo tài khoản admin' },
     { url: 'account-profile', icon: <FaUserAlt />, name: 'Thông tin tài khoản' },
 ];

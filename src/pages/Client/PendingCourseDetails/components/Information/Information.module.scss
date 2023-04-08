@@ -83,18 +83,10 @@
 
             &.completed {
                 background-color: green;
-
-                &.disabled {
-                    background-color: #ccc;
-                }
             }
 
             &.rejected {
                 background-color: red;
-
-                &.disabled {
-                    background-color: #ccc;
-                }
             }
 
             &:hover {
