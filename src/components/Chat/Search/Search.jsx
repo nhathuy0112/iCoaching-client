@@ -13,15 +13,20 @@ const Search = () => {
     const [username, setUsername] = useState('');
     const [user, setUser] = useState(null);
     const [err, setErr] = useState(false);
-
     const handleSearch = async () => {
-        const q = query(collection(db, 'users'), where('username', '==', username));
+        const q = query(
+            collection(db, 'users'),
+            where('fullname', '>=', username),
+            where('fullname', '<=', username + '\uf8ff'),
+        );
 
         try {
             const querySnapshot = await getDocs(q);
+            const users = [];
             querySnapshot.forEach((doc) => {
-                setUser(doc.data());
+                users.push(doc.data());
             });
+            setUser(users);
         } catch (err) {
             setErr(true);
         }
@@ -31,8 +36,11 @@ const Search = () => {
         e.code === 'Enter' && handleSearch();
     };
 
-    const handleSelect = async () => {
-        const combinedId = currentUser?.Id > user.uid ? currentUser?.Id + user.uid : user.uid + currentUser?.Id;
+    const handleSelect = async (selectedUser) => {
+        const combinedId =
+            currentUser?.Id > selectedUser.uid
+                ? currentUser?.Id + selectedUser.uid
+                : selectedUser.uid + currentUser?.Id;
         try {
             const res = await getDoc(doc(db, 'chats', combinedId));
 
@@ -41,16 +49,16 @@ const Search = () => {
 
                 await updateDoc(doc(db, 'userChats', currentUser?.Id), {
                     [combinedId + '.userInfo']: {
-                        uid: user.uid,
-                        username: user.username,
-                        email: user.email,
-                        avatar: user.avatar,
-                        fullname: user.fullname,
+                        uid: selectedUser.uid,
+                        username: selectedUser.username,
+                        email: selectedUser.email,
+                        avatar: selectedUser.avatar,
+                        fullname: selectedUser.fullname,
                     },
                     [combinedId + '.date']: serverTimestamp(),
                 });
 
-                await updateDoc(doc(db, 'userChats', user.uid), {
+                await updateDoc(doc(db, 'userChats', selectedUser.uid), {
                     [combinedId + '.userInfo']: {
                         uid: currentUser?.Id,
                         username: currentUser?.Username,
@@ -63,7 +71,7 @@ const Search = () => {
             }
         } catch (err) {}
 
-        setUser(null);
+        setUser([]);
         setUsername('');
     };
 
@@ -79,7 +87,7 @@ const Search = () => {
                         const value = e.target.value;
                         setUsername(value);
                         if (value === '') {
-                            setUser(null);
+                            setUser([]);
                             setUsername('');
                         }
                     }}
@@ -87,19 +95,22 @@ const Search = () => {
                 />
             </div>
             {err && <span>User not found!</span>}
-            {user && (
-                <div className={cx('userChat')} onClick={handleSelect}>
-                    <img src={user.avatar ? user.avatar : require('~/assets/images/Facebook.png')} alt="" />
-                    <div className={cx('userChatInfo', { usserChatInfoSearch: user })}>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <span>{user.fullname}</span>
-                            <span style={{ color: 'rgba(0, 0, 0, 0.422)', fontSize: ' 14px' }}>{user.username}</span>
-                        </div>
+            {user &&
+                user.map((user) => (
+                    <div key={user.uid} className={cx('userChat')} onClick={() => handleSelect(user)}>
+                        <img src={user.avatar ? user.avatar : require('~/assets/images/Facebook.png')} alt="" />
+                        <div className={cx('userChatInfo', { usserChatInfoSearch: user })}>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <span>{user.fullname}</span>
+                                <span style={{ color: 'rgba(0, 0, 0, 0.422)', fontSize: ' 14px' }}>
+                                    {user.username}
+                                </span>
+                            </div>
 
-                        <FaSearch className={cx('iconChat')} />
+                            <FaSearch className={cx('iconChat')} />
+                        </div>
                     </div>
-                </div>
-            )}
+                ))}
         </div>
     );
 };
