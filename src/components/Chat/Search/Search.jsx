@@ -1,76 +1,75 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../Chat.module.scss';
 import classNames from 'classnames/bind';
-import { collection, query, where, getDocs, setDoc, doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import {
+    collection,
+    query,
+    where,
+    getDocs,
+    setDoc,
+    doc,
+    updateDoc,
+    serverTimestamp,
+    getDoc,
+    onSnapshot,
+} from 'firebase/firestore';
 import { db } from '~/firebase';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaSearch } from 'react-icons/fa';
+import { changeUser } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 
 const Search = () => {
     const { currentUser } = useSelector((state) => state.user);
+    const chatId = useSelector((state) => state.chat.chatId);
     const [username, setUsername] = useState('');
     const [user, setUser] = useState(null);
     const [err, setErr] = useState(false);
-    const handleSearch = async () => {
-        const q = query(
-            collection(db, 'users'),
-            where('fullname', '>=', username),
-            where('fullname', '<=', username + '\uf8ff'),
-        );
+    const dispatch = useDispatch();
+    const [chats, setChats] = useState();
 
-        try {
-            const querySnapshot = await getDocs(q);
-            const users = [];
-            querySnapshot.forEach((doc) => {
-                users.push(doc.data());
+    useEffect(() => {
+        const getChats = () => {
+            if (currentUser?.Id) {
+                const unsub = onSnapshot(doc(db, 'userChats', currentUser?.Id), (doc) => {
+                    const chatsData = doc.data() || {};
+                    const chatList = Object.keys(chatsData).map((chatId) => {
+                        return {
+                            uid: chatsData[chatId].userInfo.uid,
+                            fullname: chatsData[chatId].userInfo.fullname,
+                            avatar: chatsData[chatId].userInfo.avatar,
+                            username: chatsData[chatId].userInfo.username,
+                        };
+                    });
+                    const filteredChats = chatList.filter((chat) => {
+                        return chat.fullname;
+                    });
+                    setChats(filteredChats);
+                });
+
+                return () => {
+                    unsub();
+                };
+            } else {
+                return;
+            }
+        };
+
+        currentUser?.Id && getChats();
+    }, [currentUser?.Id]);
+
+    const handleKey = (e) => {
+        if (e.key === 'Enter') {
+            const filteredChats = chats.filter((chat) => {
+                return chat.fullname.includes(username);
             });
-            setUser(users);
-        } catch (err) {
-            setErr(true);
+            setUser(filteredChats);
         }
     };
 
-    const handleKey = (e) => {
-        e.code === 'Enter' && handleSearch();
-    };
-
-    const handleSelect = async (selectedUser) => {
-        const combinedId =
-            currentUser?.Id > selectedUser.uid
-                ? currentUser?.Id + selectedUser.uid
-                : selectedUser.uid + currentUser?.Id;
-        try {
-            const res = await getDoc(doc(db, 'chats', combinedId));
-
-            if (!res.exists()) {
-                await setDoc(doc(db, 'chats', combinedId), { messages: [] });
-
-                await updateDoc(doc(db, 'userChats', currentUser?.Id), {
-                    [combinedId + '.userInfo']: {
-                        uid: selectedUser.uid,
-                        username: selectedUser.username,
-                        email: selectedUser.email,
-                        avatar: selectedUser.avatar,
-                        fullname: selectedUser.fullname,
-                    },
-                    [combinedId + '.date']: serverTimestamp(),
-                });
-
-                await updateDoc(doc(db, 'userChats', selectedUser.uid), {
-                    [combinedId + '.userInfo']: {
-                        uid: currentUser?.Id,
-                        username: currentUser?.Username,
-                        email: currentUser?.email,
-                        avatar: currentUser?.Avatar,
-                        fullname: currentUser?.Fullname,
-                    },
-                    [combinedId + '.date']: serverTimestamp(),
-                });
-            }
-        } catch (err) {}
-
+    const handleSelect = (selectedUser) => {
+        dispatch(changeUser({ currentUser, payload: selectedUser }));
         setUser([]);
         setUsername('');
     };
