@@ -8,6 +8,7 @@ import { handleRenderGenders } from '~/utils/gender';
 import styles from './Canceled.module.scss';
 import Pagination from '~/components/Pagination';
 import Spinner from '~/layouts/components/Spinner';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -17,10 +18,16 @@ const Canceled = () => {
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isViewDetails, setIsViewDetails] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 7, coachRequestStatus: 'Canceled' }));
     }, [dispatch, currentPage]);
+
+    const filteredRequests = coachingRequests.filter((request) =>
+        request.clientName.toLowerCase().includes(debounced.toLowerCase()),
+    );
 
     const handleViewDetails = (request) => {
         setSelectedRequest(request);
@@ -38,7 +45,12 @@ const Canceled = () => {
                             <form className={cx('search')}>
                                 <div className={cx('search-box')} type="submit">
                                     <AiOutlineSearch className={cx('search-icon')} />
-                                    <input type="text" placeholder="Khách hàng" />
+                                    <input
+                                        type="text"
+                                        placeholder="Khách hàng"
+                                        value={searchValue}
+                                        onChange={(e) => setSearchValue(e.target.value)}
+                                    />
                                 </div>
                             </form>
 
@@ -55,7 +67,7 @@ const Canceled = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {coachingRequests.map((request) => (
+                                    {filteredRequests.map((request) => (
                                         <tr className={cx('content-row')} key={request.id}>
                                             <td className={cx('name')}>
                                                 <div className={cx('avatar')}>

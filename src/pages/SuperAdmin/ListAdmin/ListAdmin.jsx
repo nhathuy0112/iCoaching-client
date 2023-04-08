@@ -12,6 +12,7 @@ import Pagination from '~/components/Pagination';
 import { getAdminData, updateAdminStatus } from '~/features/superAdminSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import { useNavigate, useParams } from 'react-router-dom';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -24,6 +25,8 @@ const ListAdmin = () => {
     const { currentUser } = useSelector((state) => state.user);
     const [isViewMessage, setIsViewMessage] = useState(false);
     const [note, setNote] = useState('');
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -36,6 +39,8 @@ const ListAdmin = () => {
     useEffect(() => {
         dispatch(getAdminData({ currentPage: currentPage, pageSize: 6 }));
     }, [dispatch, currentPage, status]);
+
+    const filteredAdmins = data.filter((admin) => admin.fullname.toLowerCase().includes(debounced.toLowerCase()));
 
     const [lockOpen, setLockOpen] = useState(false);
     const [adminAccount, setAdminAccount] = useState();
@@ -60,7 +65,12 @@ const ListAdmin = () => {
                 <form className={cx('search')}>
                     <div className={cx('search-box')} type="submit">
                         <AiOutlineSearch className={cx('search-icon')} />
-                        <input type="text" placeholder="Quản trị viên" />
+                        <input
+                            type="text"
+                            placeholder="Quản trị viên"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                        />
                     </div>
                 </form>
 
@@ -77,7 +87,7 @@ const ListAdmin = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.map((admin) => (
+                        {filteredAdmins?.map((admin) => (
                             <tr className={cx('content-row')} key={admin.id}>
                                 <td className={cx('name')}>
                                     <div className={cx('avatar')}>

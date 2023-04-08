@@ -9,9 +9,10 @@ import { RiBaseStationLine } from 'react-icons/ri';
 import ServiceCard from '~/components/ServiceCard';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllCoachesAsync } from '~/features/guestSlice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import UserCard from '~/components/UserCard';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -45,6 +46,8 @@ const Home = () => {
     const navigate = useNavigate();
     const { coaches } = useSelector((state) => state.guest);
     const { currentUser } = useSelector((state) => state.user);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -57,6 +60,8 @@ const Home = () => {
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
     }, [dispatch]);
+
+    const filteredCoaches = coaches.filter((coach) => coach.fullname.toLowerCase().includes(debounced.toLowerCase()));
 
     return (
         <div className={cx('wrapper')}>
@@ -116,11 +121,16 @@ const Home = () => {
                     <form className={cx('search')}>
                         <div className={cx('search-box')} type="submit">
                             <AiOutlineSearch className={cx('search-icon')} />
-                            <input type="text" placeholder="Huấn luyện viên" />
+                            <input
+                                type="text"
+                                placeholder="Huấn luyện viên"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
                         </div>
                     </form>
                     <div className={cx('coach-list')}>
-                        {coaches.map((coach) => (
+                        {filteredCoaches.map((coach) => (
                             <div className={cx('coach-item')} key={coach.id}>
                                 <UserCard user={coach} role="coach" />
                             </div>

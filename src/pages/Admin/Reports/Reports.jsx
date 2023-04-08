@@ -10,6 +10,7 @@ import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
 
 import { AiOutlineClose } from 'react-icons/ai';
+import useDebounce from '~/hooks/useDebounce';
 const cx = classNames.bind(styles);
 
 const Reports = () => {
@@ -21,6 +22,8 @@ const Reports = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -33,6 +36,10 @@ const Reports = () => {
     useEffect(() => {
         dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3 }));
     }, [dispatch, currentPage]);
+
+    const filteredReports = reports.filter((report) =>
+        report.clientFullname.toLowerCase().includes(debounced.toLowerCase()),
+    );
 
     const handleViewDetail = (img) => {
         setFile(img);
@@ -50,11 +57,16 @@ const Reports = () => {
                         <form className={cx('search')}>
                             <div className={cx('search-box')} type="submit">
                                 <AiOutlineSearch className={cx('search-icon')} />
-                                <input type="text" placeholder="Tìm kiếm" />
+                                <input
+                                    type="text"
+                                    placeholder="Khách hàng"
+                                    value={searchValue}
+                                    onChange={(e) => setSearchValue(e.target.value)}
+                                />
                             </div>
                         </form>
                         <div className={cx('list-reports')}>
-                            {reports?.map((report) => (
+                            {filteredReports?.map((report) => (
                                 <div className={cx('rp')} key={report.id}>
                                     <label>{report.clientFullName}</label>
                                     <div className={cx('photos')}>

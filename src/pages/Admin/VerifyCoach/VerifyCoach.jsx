@@ -10,6 +10,7 @@ import { handleRenderGenders } from '~/utils/gender';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -17,10 +18,11 @@ const VerifyCoach = () => {
     const dispatch = useDispatch();
     const { coaches, totalCount, pageSize } = useSelector((state) => state.admin);
     const [currentPage, setCurrentPage] = useState(1);
-
     const { id } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -34,6 +36,8 @@ const VerifyCoach = () => {
         dispatch(getAllCertRequestsAsync({ pageIndex: currentPage }));
     }, [dispatch, currentPage]);
 
+    const filteredCoaches = coaches.filter((coach) => coach.fullname.toLowerCase().includes(debounced.toLowerCase()));
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -41,7 +45,12 @@ const VerifyCoach = () => {
                     <form className={cx('search')}>
                         <div className={cx('search-box')} type="submit">
                             <AiOutlineSearch className={cx('search-icon')} />
-                            <input type="text" placeholder="Huấn luyện viên" />
+                            <input
+                                type="text"
+                                placeholder="Huấn luyện viên"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
                         </div>
                     </form>
                 ) : (
@@ -62,7 +71,7 @@ const VerifyCoach = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {coaches.map((coach) => (
+                            {filteredCoaches.map((coach) => (
                                 <tr className={cx('content-row')} key={coach.id}>
                                     <td className={cx('name')}>
                                         <div className={cx('avatar')}>

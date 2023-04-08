@@ -8,6 +8,7 @@ import UserCard from '~/components/UserCard';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 import { AiOutlineSearch } from 'react-icons/ai';
+import useDebounce from '~/hooks/useDebounce';
 const cx = classNames.bind(styles);
 
 const CoachesView = () => {
@@ -17,6 +18,8 @@ const CoachesView = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -33,6 +36,8 @@ const CoachesView = () => {
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
     }, [dispatch, coachesDisplay]);
+
+    const filteredCoaches = coaches.filter((coach) => coach.fullname.toLowerCase().includes(debounced.toLowerCase()));
 
     const handleShowMoreCoaches = () => {
         const newCoachesDisplay = totalCount - coachesDisplay;
@@ -71,11 +76,16 @@ const CoachesView = () => {
                 <form className={cx('search')}>
                     <div className={cx('search-box')} type="submit">
                         <AiOutlineSearch className={cx('search-icon')} />
-                        <input type="text" placeholder="Huấn luyện viên" />
+                        <input
+                            type="text"
+                            placeholder="Huấn luyện viên"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                        />
                     </div>
                 </form>
                 <div className={cx('coach-list')}>
-                    {coaches.map((coach) => (
+                    {filteredCoaches.map((coach) => (
                         <div className={cx('coach-item')} key={coach.id}>
                             <UserCard user={coach} role="coach" />
                         </div>

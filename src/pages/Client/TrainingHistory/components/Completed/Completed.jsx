@@ -7,6 +7,7 @@ import { Pagination } from 'antd';
 import { useEffect, useState } from 'react';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
 import { AiOutlineSearch } from 'react-icons/ai';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -15,10 +16,16 @@ const Completed = () => {
     const { trainingCourses, totalCount, pageSize } = useSelector((state) => state.client);
     const { id } = useParams();
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         dispatch(getTrainingCoursesAsync({ pageIndex: currentPage, pageSize: 15, status: 'Complete' }));
     }, [dispatch, currentPage]);
+
+    const filteredCourses = trainingCourses.filter((course) =>
+        course.courseName.toLowerCase().includes(debounced.toLowerCase()),
+    );
 
     return (
         <div className={cx('wrapper')}>
@@ -27,11 +34,16 @@ const Completed = () => {
                     <form className={cx('search')}>
                         <div className={cx('search-box')} type="submit">
                             <AiOutlineSearch className={cx('search-icon')} />
-                            <input type="text" placeholder="Gói tập" />
+                            <input
+                                type="text"
+                                placeholder="Gói tập"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
                         </div>
                     </form>
                     <div className={cx('course-list')}>
-                        {trainingCourses.map((course) => (
+                        {filteredCourses.map((course) => (
                             <div className={cx('course-item')} key={course.id}>
                                 <div className={cx('card')}>
                                     <div className={cx('card-content')}>

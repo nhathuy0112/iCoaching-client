@@ -14,6 +14,7 @@ import { BiTrash } from 'react-icons/bi';
 import { useNavigate, useParams } from 'react-router-dom';
 import Spinner from '~/layouts/components/Spinner';
 import { toast } from 'react-toastify';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -26,6 +27,8 @@ const MyCourse = () => {
     const { currentUser } = useSelector((state) => state.user);
     const { id } = useParams();
     const navigate = useNavigate();
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -38,6 +41,10 @@ const MyCourse = () => {
     useEffect(() => {
         dispatch(getTrainingCourseAsync({ pageIndex: currentPage, pageSize: 20 }));
     }, [dispatch, currentPage]);
+
+    const filteredCourses = trainingCourses.filter((course) =>
+        course.name.toLowerCase().includes(debounced.toLowerCase()),
+    );
 
     const handleOpenDeleteModal = (course) => {
         setIsDelete(true);
@@ -69,11 +76,16 @@ const MyCourse = () => {
                             <form className={cx('search')}>
                                 <div className={cx('search-box')} type="submit">
                                     <AiOutlineSearch className={cx('search-icon')} />
-                                    <input type="text" placeholder="Gói tập" />
+                                    <input
+                                        type="text"
+                                        placeholder="Gói tập"
+                                        value={searchValue}
+                                        onChange={(e) => setSearchValue(e.target.value)}
+                                    />
                                 </div>
                             </form>
                             <div className={cx('course-list')}>
-                                {trainingCourses.map((course) => (
+                                {filteredCourses.map((course) => (
                                     <div className={cx('course-item')} key={course.id}>
                                         <TrainingCourseCard course={course} />
                                         <div className={cx('item-action')}>

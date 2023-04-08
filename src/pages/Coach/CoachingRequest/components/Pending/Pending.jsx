@@ -12,6 +12,7 @@ import { getCoachingRequestsAsync, updateCoachingRequestAsync } from '~/features
 import Spinner from '~/layouts/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Pending.module.scss';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -29,12 +30,18 @@ const Pending = () => {
     const [messageError, setMessageError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [requestLoading, setRequestLoading] = useState(true);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 7, coachRequestStatus: 'Pending' }))
             .unwrap()
             .then(() => setRequestLoading(false));
     }, [dispatch, currentPage, status]);
+
+    const filteredRequests = coachingRequests.filter((request) =>
+        request.clientName.toLowerCase().includes(debounced.toLowerCase()),
+    );
 
     const handleViewRequestMessage = (request) => {
         setSelectedRequest(request);
@@ -107,7 +114,12 @@ const Pending = () => {
                             <form className={cx('search')}>
                                 <div className={cx('search-box')} type="submit">
                                     <AiOutlineSearch className={cx('search-icon')} />
-                                    <input type="text" placeholder="Khách hàng" />
+                                    <input
+                                        type="text"
+                                        placeholder="Khách hàng"
+                                        value={searchValue}
+                                        onChange={(e) => setSearchValue(e.target.value)}
+                                    />
                                 </div>
                             </form>
 
@@ -124,7 +136,7 @@ const Pending = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {coachingRequests.map((request) => (
+                                    {filteredRequests.map((request) => (
                                         <tr className={cx('content-row')} key={request.id}>
                                             <td className={cx('name')}>
                                                 <div className={cx('avatar')}>

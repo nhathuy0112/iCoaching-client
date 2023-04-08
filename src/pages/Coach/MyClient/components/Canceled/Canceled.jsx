@@ -8,6 +8,7 @@ import { handleRenderGenders } from '~/utils/gender';
 import Spinner from '~/layouts/components/Spinner';
 import styles from './Canceled.module.scss';
 import Pagination from '~/components/Pagination';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -16,10 +17,16 @@ const Canceled = () => {
     const { id } = useParams();
     const { contracts, totalCount, pageSize, loading } = useSelector((state) => state.coach);
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         dispatch(getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Canceled' }));
     }, [dispatch, currentPage]);
+
+    const filteredContracts = contracts.filter((contract) =>
+        contract.clientName.toLowerCase().includes(debounced.toLowerCase()),
+    );
 
     return (
         <div className={cx('wrapper')}>
@@ -32,11 +39,16 @@ const Canceled = () => {
                             <form className={cx('search')}>
                                 <div className={cx('search-box')} type="submit">
                                     <AiOutlineSearch className={cx('search-icon')} />
-                                    <input type="text" placeholder="Khách hàng" />
+                                    <input
+                                        type="text"
+                                        placeholder="Khách hàng"
+                                        value={searchValue}
+                                        onChange={(e) => setSearchValue(e.target.value)}
+                                    />
                                 </div>
                             </form>
                             <div className={cx('contract-list')}>
-                                {contracts.map((contract) => (
+                                {filteredContracts.map((contract) => (
                                     <div className={cx('contract-item')} key={contract.id}>
                                         <div className={cx('card')}>
                                             <div className={cx('card-content')}>

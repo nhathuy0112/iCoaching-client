@@ -9,6 +9,7 @@ import { handleRenderGenders } from '~/utils/gender';
 import Pagination from '~/components/Pagination';
 import Spinner from '~/layouts/components/Spinner';
 import { AiOutlineSearch } from 'react-icons/ai';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +19,8 @@ const OnGoingCourse = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -32,6 +35,10 @@ const OnGoingCourse = () => {
     useEffect(() => {
         dispatch(getTrainingCoursesAsync({ pageIndex: currentPage, pageSize: 10, status: 'Active' }));
     }, [dispatch, currentPage]);
+
+    const filteredCourses = trainingCourses.filter((course) =>
+        course.courseName.toLowerCase().includes(debounced.toLowerCase()),
+    );
 
     return (
         <div className={cx('wrapper')}>
@@ -51,11 +58,16 @@ const OnGoingCourse = () => {
                             <form className={cx('search')}>
                                 <div className={cx('search-box')} type="submit">
                                     <AiOutlineSearch className={cx('search-icon')} />
-                                    <input type="text" placeholder="Gói tập" />
+                                    <input
+                                        type="text"
+                                        placeholder="Gói tập"
+                                        value={searchValue}
+                                        onChange={(e) => setSearchValue(e.target.value)}
+                                    />
                                 </div>
                             </form>
                             <div className={cx('course-list')}>
-                                {trainingCourses.map((course) => (
+                                {filteredCourses.map((course) => (
                                     <div className={cx('course-item')} key={course.id}>
                                         <div className={cx('card')}>
                                             <div className={cx('card-content')}>

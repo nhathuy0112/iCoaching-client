@@ -10,6 +10,7 @@ import { cancelTrainingRequestAsync, getCoachingRequestsAsync, getPaymentLinkAsy
 import styles from './Init.module.scss';
 import Pagination from '~/components/Pagination';
 import { AiOutlineSearch } from 'react-icons/ai';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -23,14 +24,18 @@ const Init = () => {
     const [messageError, setMessageError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [requestLoading, setRequestLoading] = useState(true);
-
-    console.log(paymentLink);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 6, clientRequestStatus: 'Init' }))
             .unwrap()
             .then(() => setRequestLoading(false));
     }, [dispatch, currentPage]);
+
+    const filteredRequests = coachingRequests.filter((request) =>
+        request.coachName.toLowerCase().includes(debounced.toLowerCase()),
+    );
 
     useEffect(() => {
         if (paymentLink) window.location.replace(paymentLink);
@@ -87,11 +92,16 @@ const Init = () => {
                             <form className={cx('search')}>
                                 <div className={cx('search-box')} type="submit">
                                     <AiOutlineSearch className={cx('search-icon')} />
-                                    <input type="text" placeholder="Huấn luyện viên" />
+                                    <input
+                                        type="text"
+                                        placeholder="Huấn luyện viên"
+                                        value={searchValue}
+                                        onChange={(e) => setSearchValue(e.target.value)}
+                                    />
                                 </div>
                             </form>
                             <div className={cx('request-list')}>
-                                {coachingRequests.map((request) => (
+                                {filteredRequests.map((request) => (
                                     <div className={cx('request-item')} key={request.id}>
                                         <div className={cx('card')}>
                                             <div className={cx('card-content')}>

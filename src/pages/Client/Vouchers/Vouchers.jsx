@@ -3,10 +3,11 @@ import styles from './Vouchers.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getAllVouchersAsync } from '~/features/clientSlice';
 import Spinner from '~/layouts/components/Spinner';
 import { AiOutlineSearch } from 'react-icons/ai';
+import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -16,6 +17,8 @@ const Vouchers = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { currentUser } = useSelector((state) => state.user);
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -28,6 +31,10 @@ const Vouchers = () => {
     useEffect(() => {
         dispatch(getAllVouchersAsync());
     }, [dispatch]);
+
+    const filteredVouchers = vouchers.filter((voucher) =>
+        voucher.discount.toLowerCase().includes(debounced.toLowerCase()),
+    );
 
     return (
         <div className={cx('wrapper')}>
@@ -47,11 +54,16 @@ const Vouchers = () => {
                             <form className={cx('search')}>
                                 <div className={cx('search-box')} type="submit">
                                     <AiOutlineSearch className={cx('search-icon')} />
-                                    <input type="text" placeholder="Mã giảm giá" />
+                                    <input
+                                        type="text"
+                                        placeholder="Giảm giá (%)"
+                                        value={searchValue}
+                                        onChange={(e) => setSearchValue(e.target.value)}
+                                    />
                                 </div>
                             </form>
                             <div className={cx('voucher-list')}>
-                                {vouchers.map((voucher) => (
+                                {filteredVouchers.map((voucher) => (
                                     <div className={cx('voucher-item')} key={voucher.id}>
                                         <div className={cx('logo')}>
                                             <img src={require('../../../assets/images/Logo.png')} alt="logo" />
