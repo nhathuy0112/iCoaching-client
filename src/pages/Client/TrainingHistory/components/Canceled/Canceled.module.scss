@@ -1,4 +1,30 @@
 .wrapper {
+    .search {
+        max-width: var(--default-layout-max-width);
+        margin: auto;
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 16px;
+
+        .search-box {
+            display: flex;
+            height: 36px;
+            border-radius: var(--default-border-radius);
+            background: var(--search-filter-background-color);
+            padding: 8px 12px;
+            color: #8f9bba;
+            font-size: 1.4rem;
+            input {
+                background: transparent;
+            }
+            .search-icon {
+                margin-right: 11px;
+                color: #2b3674;
+                font-size: 1.8rem;
+            }
+        }
+    }
+
     .course-list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
