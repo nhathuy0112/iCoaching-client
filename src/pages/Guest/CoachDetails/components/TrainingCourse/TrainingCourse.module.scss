@@ -2,6 +2,31 @@
     flex: 1;
     .content {
         height: 100%;
+        .search {
+            margin: auto;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+
+            .search-box {
+                display: flex;
+                height: 36px;
+                border-radius: var(--default-border-radius);
+                background: var(--search-filter-background-color);
+                padding: 8px 12px;
+                color: #8f9bba;
+                font-size: 1.4rem;
+                input {
+                    background: transparent;
+                }
+                .search-icon {
+                    margin-right: 11px;
+                    color: #2b3674;
+                    font-size: 1.8rem;
+                }
+            }
+        }
+
         .course-list {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -9,6 +34,7 @@
 
             .course-item {
                 position: relative;
+                height: 80px;
 
                 .item-action {
                     position: absolute;
@@ -35,137 +61,10 @@
                 color: red;
             }
 
-            .link {
+            .find-link {
                 text-decoration: underline !important;
                 color: var(--primary-color);
             }
-        }
-    }
-    //Modal
-    .body {
-        padding-bottom: 2%;
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-
-        .title,
-        .sub-title {
-            align-content: center;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-        .title {
-            background-color: var(--primary-color);
-            color: rgba(255, 255, 255, 0.6);
-            padding: 14px;
-        }
-
-        .input-group {
-            padding: 0 120px;
-            margin-bottom: 16px;
-
-            label {
-                display: block;
-                margin-bottom: 8px;
-            }
-
-            select {
-                padding: 8px;
-                border-radius: var(--default-border-radius);
-                width: 100%;
-
-                option {
-                    font-size: 1.6rem;
-                    font-weight: 500;
-                    color: #000;
-                }
-            }
-        }
-
-        .course-detail {
-            border: 1px solid rgba(0, 0, 0, 0.25);
-            width: 90%;
-            display: flex;
-            margin: 16px auto;
-            padding: 16px 80px;
-            flex-direction: column;
-            border-radius: var(--default-border-radius);
-            max-height: 320px;
-            overflow-y: auto;
-
-            .info-group {
-                display: flex;
-                margin: 8px 0;
-
-                &:not(.description) {
-                    align-items: center;
-                }
-
-                label {
-                    font-weight: 700;
-                    font-size: 2rem;
-                    color: #1a97cc;
-                    min-width: 180px;
-                    // margin: 10px 0 10px 20px;
-                }
-            }
-        }
-        .button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            .icon {
-                vertical-align: sub;
-                margin-right: 10px;
-            }
-            .btn-warn {
-                cursor: pointer;
-                background-color: #ca1414;
-                border-radius: var(--default-border-radius);
-                width: 150px;
-                height: 50px;
-                font-size: 1.5rem;
-                color: white;
-                margin: 0 8px;
-
-                &:hover {
-                    opacity: 0.6;
-                }
-            }
-
-            .btn-confirm {
-                cursor: pointer;
-                background-color: #2c8415;
-                border-radius: var(--default-border-radius);
-                width: 150px;
-                height: 50px;
-                font-size: 1.5rem;
-                color: white;
-                margin: 0 8px;
-
-                &:hover {
-                    opacity: 0.6;
-                }
-            }
-        }
-        .message-frame {
-            height: 200px;
-            margin-bottom: 16px;
-
-            textarea {
-                resize: none;
-                outline: none;
-                width: 100%;
-                height: 100%;
-                font-size: 16px;
-                padding: 10px;
-                box-sizing: border-box;
-                border-radius: var(--default-border-radius);
-            }
-        }
-
-        .error {
-            margin-bottom: 16px;
-            margin-left: 120px;
         }
     }
 }

@@ -1,5 +1,6 @@
 .wrapper {
     margin-top: var(--default-navbar-height);
+    min-height: var(--default-content-min-height);
 
     .title-and-back {
         margin: 16px auto;
