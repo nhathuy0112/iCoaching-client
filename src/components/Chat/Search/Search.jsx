@@ -106,8 +106,6 @@ const Search = () => {
                                     {user.username}
                                 </span>
                             </div>
-
-                            <FaSearch className={cx('iconChat')} />
                         </div>
                     </div>
                 ))}
