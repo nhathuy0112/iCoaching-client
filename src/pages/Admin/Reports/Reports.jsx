@@ -38,7 +38,7 @@ const Reports = () => {
     }, [dispatch, currentPage]);
 
     const filteredReports = reports.filter((report) =>
-        report.clientFullname.toLowerCase().includes(debounced.toLowerCase()),
+        report?.clientFullName.toLowerCase().includes(debounced.toLowerCase()),
     );
 
     const handleViewDetail = (img) => {
