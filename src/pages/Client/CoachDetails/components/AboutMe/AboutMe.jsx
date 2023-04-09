@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 import { getCoachAboutAsync } from '~/features/guestSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 

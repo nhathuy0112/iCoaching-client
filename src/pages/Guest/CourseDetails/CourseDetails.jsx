@@ -8,7 +8,7 @@ import { getCoachTrainingCourseDetailsAsync } from '~/features/guestSlice';
 import Login from '~/auth/Login/Login';
 import Register from '~/auth/Register/Register';
 import ForgotPassword from '~/auth/ForgotPassword/ForgotPassword';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 

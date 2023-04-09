@@ -10,7 +10,8 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import { handleRenderGenders, handleRenderGenderClassNames } from '~/utils/gender';
 import Modal from '~/components/Modal';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -39,10 +40,14 @@ const CoachCertificate = () => {
         setDenied(false);
     };
 
-    const handleUpdateStatus = (option, reason) => {
+    const handleUpdateStatus = (e, option, reason) => {
+        e.preventDefault();
         dispatch(updateCertStatusAsync({ certId: id, option: option, reason }))
             .unwrap()
-            .then(() => handleClose());
+            .then(() => {
+                toast.success('Cập nhật yêu cầu thành công!');
+                handleClose();
+            });
     };
     return (
         <div className={cx('wrapper')}>
@@ -70,11 +75,33 @@ const CoachCertificate = () => {
                 </div>
 
                 <div className={cx('certificates')}>
-                    <h3>Danh sách chứng chỉ</h3>
-                    <div className={cx('img-wrapper')}>
-                        {certRequest.certPhotos?.map((item) => (
-                            <img src={item} alt="cert-photos" onClick={() => handleOpenModal(setViewDetail, item)} />
-                        ))}
+                    <div className={cx('info-group')}>
+                        <h3 className={cx('title')}>Giấy tờ tùy thân</h3>
+                        <div className={cx('img-wrapper')}>
+                            <div className={cx('img-item')}>
+                                {certRequest.idImages?.map((item) => (
+                                    <img
+                                        src={item}
+                                        alt="cert-photos"
+                                        onClick={() => handleOpenModal(setViewDetail, item)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                    <div className={cx('info-group')}>
+                        <h3 className={cx('title')}>Chứng chỉ huấn luyện</h3>
+                        <div className={cx('img-wrapper')}>
+                            <div className={cx('img-item')}>
+                                {certRequest.certImages?.map((item) => (
+                                    <img
+                                        src={item}
+                                        alt="cert-photos"
+                                        onClick={() => handleOpenModal(setViewDetail, item)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,7 +114,7 @@ const CoachCertificate = () => {
                                     <div className={cx('button')}>
                                         <button
                                             className={cx('btn-confirm')}
-                                            onClick={() => handleUpdateStatus('Accepted', '')}
+                                            onClick={(e) => handleUpdateStatus(e, 'Accepted', '')}
                                         >
                                             <BsCheckLg className={cx('icon')} />
                                             Xác nhận
@@ -129,7 +156,7 @@ const CoachCertificate = () => {
                 >
                     <div className={cx('modal')}>
                         <h2 className={cx('modal-header')}>iCoaching</h2>
-                        <form onSubmit={() => handleUpdateStatus('Denied', reason)}>
+                        <form onSubmit={(e) => handleUpdateStatus(e, 'Denied', reason)}>
                             <p>{'Vui lòng nhập lý do từ chối'}</p>
                             <textarea
                                 name=""

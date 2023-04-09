@@ -7,7 +7,7 @@ import { getCoachingRequestsAsync } from '~/features/coachSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import Pagination from '~/components/Pagination';
 import styles from './CoachRejected.module.scss';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);

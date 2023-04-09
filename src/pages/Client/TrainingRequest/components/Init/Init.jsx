@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ErrorMessage from '~/components/ErrorMessage';
 import Modal from '~/components/Modal';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { cancelTrainingRequestAsync, getCoachingRequestsAsync, getPaymentLinkAsync } from '~/features/clientSlice';
 import styles from './Init.module.scss';
 import Pagination from '~/components/Pagination';

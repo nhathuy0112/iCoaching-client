@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import Pagination from '~/components/Pagination';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { AiOutlineSearch } from 'react-icons/ai';
 import useDebounce from '~/hooks/useDebounce';
 

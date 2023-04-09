@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCoachTrainingCourseAsync } from '~/features/guestSlice';
 import TrainingCourseCard from '~/components/TrainingCourseCard';
 import Pagination from '~/components/Pagination';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { AiOutlineSearch } from 'react-icons/ai';
 import useDebounce from '~/hooks/useDebounce';
 

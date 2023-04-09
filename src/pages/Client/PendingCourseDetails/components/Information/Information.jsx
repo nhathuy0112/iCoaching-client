@@ -19,7 +19,7 @@ import { BiTrash } from 'react-icons/bi';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 
 import styles from './Information.module.scss';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 

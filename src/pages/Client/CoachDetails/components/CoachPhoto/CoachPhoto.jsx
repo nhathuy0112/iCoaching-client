@@ -9,7 +9,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getCoachPhotosAsync } from '~/features/guestSlice';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 

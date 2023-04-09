@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { handleRenderFileIcon } from '~/utils/file';
 import { uploadContractProgramFilesAsync } from '~/features/contractSlice';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);

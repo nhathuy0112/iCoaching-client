@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';

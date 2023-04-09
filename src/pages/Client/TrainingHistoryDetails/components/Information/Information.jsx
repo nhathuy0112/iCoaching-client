@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getContractDetailsAsync } from '~/features/contractSlice';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Information.module.scss';
 

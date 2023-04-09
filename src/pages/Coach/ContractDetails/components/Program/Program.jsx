@@ -15,7 +15,7 @@ import Modal from '~/components/Modal';
 import { AiOutlineDelete, AiOutlineDownload } from 'react-icons/ai';
 import ErrorMessage from '~/components/ErrorMessage/ErrorMessage';
 import { toast } from 'react-toastify';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 

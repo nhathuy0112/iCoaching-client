@@ -10,7 +10,7 @@ import { BsCheckLg, BsXLg } from 'react-icons/bs';
 
 import { createVoucherAsync, updateContractStatusAsync, updateReportAsync } from '~/features/adminSlice';
 import Modal from '~/components/Modal';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { getContractDetailsAsync } from '~/features/contractSlice';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

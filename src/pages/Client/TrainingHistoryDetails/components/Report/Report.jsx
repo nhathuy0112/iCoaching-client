@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getContractReportsAsync } from '~/features/contractSlice';
 import Modal from '~/components/Modal';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { AiOutlineClose } from 'react-icons/ai';
 const cx = classNames.bind(styles);
 

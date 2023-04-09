@@ -14,9 +14,6 @@ const AuthLayout = ({ children }) => {
     const { currentUser, avatar, profile } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [links, setLinks] = useState([]);
-    const url = window.location.href;
-    const path = url.split('/');
-    const headerPath = path[5];
 
     useEffect(() => {
         dispatch(getUserAvatarAsync());

@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import {
     deleteContractLogMediaAsync,
     deleteContractProgramFileAsync,
-    getContractDetailsAsync,
     getContractLogDetailsAsync,
     getContractLogsAsync,
     updateContractLogAsync,
@@ -18,7 +17,7 @@ import ErrorMessage from '~/components/ErrorMessage';
 import { AiOutlineUpload } from 'react-icons/ai';
 import { FaTrashAlt } from 'react-icons/fa';
 import { handleRenderFileIcon } from '~/utils/file';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);

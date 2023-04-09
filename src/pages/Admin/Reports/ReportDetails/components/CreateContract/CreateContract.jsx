@@ -16,7 +16,7 @@ import { getCoachTrainingCourseAsync } from '~/features/guestSlice';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import ErrorMessage from '~/components/ErrorMessage';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
 import { getContractDetailsAsync } from '~/features/contractSlice';
 import { toast } from 'react-toastify';

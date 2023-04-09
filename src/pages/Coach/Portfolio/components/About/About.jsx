@@ -12,7 +12,7 @@ import {
     resetPortfolioImages,
 } from '~/features/coachSlice';
 import { useEffect, useState } from 'react';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import ErrorMessage from '~/components/ErrorMessage';
 import { completedContractAsync } from '~/features/coachSlice';
 import { getContractDetailsAsync } from '~/features/contractSlice';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Information.module.scss';
 

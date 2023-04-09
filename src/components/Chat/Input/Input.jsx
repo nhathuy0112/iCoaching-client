@@ -9,7 +9,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { GrFormClose } from 'react-icons/gr';
 
 import { v4 as uuid } from 'uuid';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 

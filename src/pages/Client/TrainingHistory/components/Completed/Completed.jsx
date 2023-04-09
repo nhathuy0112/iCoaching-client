@@ -3,7 +3,6 @@ import styles from './Completed.module.scss';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleRenderGenders } from '~/utils/gender';
-import { Pagination } from 'antd';
 import { useEffect, useState } from 'react';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
 import { AiOutlineSearch } from 'react-icons/ai';

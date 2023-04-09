@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { getAllContractsAsync } from '~/features/coachSlice';
 import { handleRenderGenders } from '~/utils/gender';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import styles from './Canceled.module.scss';
 import Pagination from '~/components/Pagination';
 import useDebounce from '~/hooks/useDebounce';

@@ -25,6 +25,7 @@ import Messages from '~/pages/Client/Messages';
 
 //Coach
 import Verify from '~/pages/Coach/Verify';
+import UpdateCertification from '~/pages/Coach/UpdateCertification';
 import MyClient from '~/pages/Coach/MyClient';
 import CoachingRequest from '~/pages/Coach/CoachingRequest';
 import MyCourse from '~/pages/Coach/MyCourse';
@@ -135,6 +136,12 @@ const clientRoutes = [
 
 const coachRoutes = [
     { path: '/coach/:id/verify', component: Verify, layout: AuthLayout, guard: RoleGuard },
+    {
+        path: '/coach/:id/verify/update-certification',
+        component: UpdateCertification,
+        layout: AuthLayout,
+        guard: RoleGuard,
+    },
     { path: '/coach/:id/my-clients', component: MyClient, layout: AuthLayout, guard: RoleGuard },
     {
         path: '/coach/:id/my-clients/view-details/:contractId',

@@ -8,7 +8,7 @@ import { getContractLogsAsync, getProgramFileDownloadAsync } from '~/features/co
 import styles from './Progress.module.scss';
 import { handleRenderFileIcon } from '~/utils/file';
 import Modal from '~/components/Modal';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 

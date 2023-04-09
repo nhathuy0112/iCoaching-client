@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useEffect, useState } from 'react';
 import { getAllVouchersAsync } from '~/features/clientSlice';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { AiOutlineSearch } from 'react-icons/ai';
 import useDebounce from '~/hooks/useDebounce';
 

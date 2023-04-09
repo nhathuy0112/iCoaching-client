@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getContractProgramFilesAsync, getProgramFileDownloadAsync } from '~/features/contractSlice';
 import { handleRenderFileIcon } from '~/utils/file';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import styles from './Program.module.scss';
 
 const cx = classNames.bind(styles);

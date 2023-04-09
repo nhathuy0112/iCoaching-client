@@ -9,7 +9,7 @@ import ErrorMessage from '~/components/ErrorMessage';
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
 import { getCoachingRequestsAsync, updateCoachingRequestAsync } from '~/features/coachSlice';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Pending.module.scss';
 import useDebounce from '~/hooks/useDebounce';

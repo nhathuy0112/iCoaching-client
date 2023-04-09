@@ -9,7 +9,7 @@ import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import Modal from '~/components/Modal/Modal';
 import { getAllVouchersAsync, resetError, sendCoachingRequestAsync } from '~/features/clientSlice';
 import ErrorMessage from '~/components/ErrorMessage/ErrorMessage';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);

@@ -5,7 +5,7 @@ import Modal from '~/components/Modal';
 import { getCoachingRequestsAsync } from '~/features/clientSlice';
 import styles from './Canceled.module.scss';
 import Pagination from '~/components/Pagination';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { AiOutlineSearch } from 'react-icons/ai';
 import useDebounce from '~/hooks/useDebounce';
 

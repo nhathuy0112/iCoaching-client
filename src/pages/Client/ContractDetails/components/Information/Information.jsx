@@ -12,7 +12,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { MdOutlineEdit } from 'react-icons/md';
 import { BiTrash } from 'react-icons/bi';
 
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import ErrorMessage from '~/components/ErrorMessage';
 import ImageUploading from 'react-images-uploading';
 import { dataURItoBlob } from '~/utils/blob';

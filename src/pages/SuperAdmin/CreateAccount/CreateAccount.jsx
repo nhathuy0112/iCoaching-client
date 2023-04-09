@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAdmin } from '~/features/superAdminSlice';
 import { useEffect, useState } from 'react';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ErrorMessage from '~/components/ErrorMessage';

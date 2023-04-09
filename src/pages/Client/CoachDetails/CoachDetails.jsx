@@ -14,7 +14,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 import Home from '~/components/Chat/Home';
 import { changeUser } from '~/features/chatSlice';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 const CoachDetail = () => {

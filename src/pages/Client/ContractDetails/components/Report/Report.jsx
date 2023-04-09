@@ -7,7 +7,7 @@ import { getContractReportsAsync } from '~/features/contractSlice';
 import Modal from '~/components/Modal';
 
 import { AiOutlineClose } from 'react-icons/ai';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 const cx = classNames.bind(styles);
 
 const Report = () => {

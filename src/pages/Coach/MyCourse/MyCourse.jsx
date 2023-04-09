@@ -12,7 +12,7 @@ import Pagination from '~/components/Pagination';
 import { MdOutlineEdit } from 'react-icons/md';
 import { BiTrash } from 'react-icons/bi';
 import { useNavigate, useParams } from 'react-router-dom';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { toast } from 'react-toastify';
 import useDebounce from '~/hooks/useDebounce';
 

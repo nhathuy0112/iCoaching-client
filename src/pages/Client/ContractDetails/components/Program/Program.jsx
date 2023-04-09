@@ -4,7 +4,7 @@ import { AiOutlineDownload } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getContractProgramFilesAsync, getProgramFileDownloadAsync } from '~/features/contractSlice';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { handleRenderFileIcon } from '~/utils/file';
 import styles from './Program.module.scss';
 

@@ -14,7 +14,7 @@ import Progress from './components/Progress';
 
 import { IoIosArrowBack } from 'react-icons/io';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 

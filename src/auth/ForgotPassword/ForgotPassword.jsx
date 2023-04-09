@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { forgotAsync, resetAuth } from './../../features/userSlice';
 import ErrorMessage from '~/components/ErrorMessage';
 import SuccessMessage from '~/components/SuccessMessage';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 

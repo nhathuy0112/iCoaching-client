@@ -8,7 +8,7 @@ import ErrorMessage from '~/components/ErrorMessage';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { AiOutlineSearch } from 'react-icons/ai';
 import useDebounce from '~/hooks/useDebounce';
 

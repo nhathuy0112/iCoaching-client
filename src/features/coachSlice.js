@@ -184,6 +184,7 @@ export const completedContractAsync = createAsyncThunk(
 );
 
 const initialState = {
+    currentCertificationRequest: {},
     certificationImages: [],
     portfolioImages: [],
     trainingCourses: [],
@@ -242,8 +243,7 @@ export const coachSlice = createSlice({
             })
             .addCase(getCertificationAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                state.certificationImages = action.payload.urls;
-                state.status = action.payload.status;
+                state.currentCertificationRequest = action.payload;
             })
             .addCase(getCertificationAsync.rejected, (state, action) => {
                 state.loading = false;

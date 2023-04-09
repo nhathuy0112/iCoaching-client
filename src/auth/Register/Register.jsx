@@ -13,7 +13,7 @@ import SuccessMessage from '~/components/SuccessMessage';
 import { convertDateFormat } from '~/utils/dateFormat';
 import { Link } from 'react-router-dom';
 
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 

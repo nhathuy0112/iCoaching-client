@@ -17,7 +17,7 @@ import {
     resetPortfolioImages,
 } from '~/features/coachSlice';
 import Pagination from '~/components/Pagination';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 

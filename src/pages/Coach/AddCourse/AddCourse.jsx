@@ -11,7 +11,7 @@ import { addTrainingCourseAsync } from '~/features/coachSlice';
 import { useDispatch } from 'react-redux';
 import ErrorMessage from '~/components/ErrorMessage';
 import { NumericFormat } from 'react-number-format';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import { toast } from 'react-toastify';
 
 const modules = {
