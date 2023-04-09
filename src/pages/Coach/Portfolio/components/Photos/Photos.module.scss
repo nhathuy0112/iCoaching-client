@@ -1,5 +1,6 @@
 .wrapper {
     flex: 1;
+    min-height: calc(88vh - var(--default-navbar-height));
     position: relative;
     .image-wrapper {
         .image-upload {
@@ -101,6 +102,12 @@
                 }
             }
         }
+    }
+    .btn-wrapper {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
     }
     .action-btn {
         display: flex;

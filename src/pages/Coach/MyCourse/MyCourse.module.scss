@@ -1,5 +1,5 @@
 .wrapper {
-    height: 100%;
+    height: calc(95vh - var(--default-navbar-height));
     position: relative;
     display: flex;
     flex-direction: column;
