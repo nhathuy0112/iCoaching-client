@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
 import { AiOutlineSearch } from 'react-icons/ai';
 import useDebounce from '~/hooks/useDebounce';
-
+import Pagination from '~/components/Pagination/Pagination';
 const cx = classNames.bind(styles);
 
 const Canceled = () => {
@@ -76,13 +76,13 @@ const Canceled = () => {
                                 </div>
                             </div>
                         ))}
-                        {/* <Pagination
-                                className={cx('pagination-bar')}
-                                currentPage={currentPage}
-                                totalCount={totalCount}
-                                pageSize={pageSize}
-                                onPageChange={(page) => setCurrentPage(page)}
-                            /> */}
+                        <Pagination
+                            className={cx('pagination-bar')}
+                            currentPage={currentPage}
+                            totalCount={totalCount}
+                            pageSize={pageSize}
+                            onPageChange={(page) => setCurrentPage(page)}
+                        />
                     </div>
                 </>
             ) : (
