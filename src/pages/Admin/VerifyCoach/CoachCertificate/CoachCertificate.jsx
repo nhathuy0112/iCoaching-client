@@ -51,87 +51,92 @@ const CoachCertificate = () => {
     };
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('title-and-back')}>
-                <Link to={`/admin/${currentUser?.Id}/verify-coach`} className={cx('back-link')}>
-                    <IoIosArrowBack />
-                    <span>Quay lại</span>
-                </Link>
-                <h3>
-                    Yêu cầu từ Huấn luyện viên <span>{`${certRequest.fullname}`}</span>
-                </h3>
-            </div>
             <div className={cx('content')}>
-                <div className={cx('profile')}>
-                    <div className={cx('avatar')}>
-                        <img src={certRequest.avatarUrl} alt={'avatar'} className={cx('image')} />
-                    </div>
-                    <h2 className={cx('name')}>{certRequest.fullname}</h2>
-                    <div className={cx('gender')}>
-                        <span className={cx(handleRenderGenderClassNames(certRequest.gender))}>
-                            {handleRenderGenders(certRequest.gender)}
-                        </span>
-                    </div>
-                    <span className={cx('age')}>{certRequest.age} tuổi</span>
+                <div className={cx('title-and-back')}>
+                    <Link to={`/admin/${currentUser?.Id}/verify-coach`} className={cx('back-link')}>
+                        <IoIosArrowBack />
+                        <span>Quay lại</span>
+                    </Link>
+                    <h3>
+                        Yêu cầu từ Huấn luyện viên <span>{`${certRequest.fullname}`}</span>
+                    </h3>
                 </div>
+                <div className={cx('main')}>
+                    <div className={cx('profile')}>
+                        <div className={cx('avatar')}>
+                            <img src={certRequest.avatarUrl} alt={'avatar'} className={cx('image')} />
+                        </div>
+                        <h2 className={cx('name')}>{certRequest.fullname}</h2>
+                        <div className={cx('gender')}>
+                            <span className={cx(handleRenderGenderClassNames(certRequest.gender))}>
+                                {handleRenderGenders(certRequest.gender)}
+                            </span>
+                        </div>
+                        <span className={cx('age')}>{certRequest.age} tuổi</span>
+                    </div>
 
-                <div className={cx('certificates')}>
-                    <div className={cx('info-group')}>
-                        <h3 className={cx('title')}>Giấy tờ tùy thân</h3>
-                        <div className={cx('img-wrapper')}>
-                            <div className={cx('img-item')}>
+                    <div className={cx('certificates')}>
+                        <div className={cx('info-group')}>
+                            <h3 className={cx('title')}>Giấy tờ tùy thân</h3>
+                            <div className={cx('img-wrapper')}>
                                 {certRequest.idImages?.map((item) => (
-                                    <img
-                                        src={item}
-                                        alt="cert-photos"
-                                        onClick={() => handleOpenModal(setViewDetail, item)}
-                                    />
+                                    <div className={cx('img-item')}>
+                                        <img
+                                            src={item}
+                                            alt="cert-photos"
+                                            onClick={() => handleOpenModal(setViewDetail, item)}
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         </div>
-                    </div>
-                    <div className={cx('info-group')}>
-                        <h3 className={cx('title')}>Chứng chỉ huấn luyện</h3>
-                        <div className={cx('img-wrapper')}>
-                            <div className={cx('img-item')}>
+                        <div className={cx('info-group')}>
+                            <h3 className={cx('title')}>Chứng chỉ huấn luyện</h3>
+                            <div className={cx('img-wrapper')}>
                                 {certRequest.certImages?.map((item) => (
-                                    <img
-                                        src={item}
-                                        alt="cert-photos"
-                                        onClick={() => handleOpenModal(setViewDetail, item)}
-                                    />
+                                    <div className={cx('img-item')}>
+                                        <img
+                                            src={item}
+                                            alt="cert-photos"
+                                            onClick={() => handleOpenModal(setViewDetail, item)}
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className={cx('status')}>
-                {(() => {
-                    switch (certRequest.status) {
-                        case 'Pending':
-                            return (
-                                <div className={cx('btn-wrapper')}>
-                                    <div className={cx('button')}>
-                                        <button
-                                            className={cx('btn-confirm')}
-                                            onClick={(e) => handleUpdateStatus(e, 'Accepted', '')}
-                                        >
-                                            <BsCheckLg className={cx('icon')} />
-                                            Xác nhận
-                                        </button>
-                                        <button className={cx('btn-warn')} onClick={() => handleOpenModal(setDenied)}>
-                                            <BsXLg className={cx('icon')} />
-                                            Từ chối
-                                        </button>
+                <div className={cx('status')}>
+                    {(() => {
+                        switch (certRequest.status) {
+                            case 'Pending':
+                                return (
+                                    <div className={cx('btn-wrapper')}>
+                                        <div className={cx('button')}>
+                                            <button
+                                                className={cx('btn-confirm')}
+                                                onClick={(e) => handleUpdateStatus(e, 'Accepted', '')}
+                                            >
+                                                <BsCheckLg className={cx('icon')} />
+                                                Xác nhận
+                                            </button>
+                                            <button
+                                                className={cx('btn-warn')}
+                                                onClick={() => handleOpenModal(setDenied)}
+                                            >
+                                                <BsXLg className={cx('icon')} />
+                                                Từ chối
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            );
-                        case 'Denied':
-                            return <p className={cx('denied')}>Đã từ chối</p>;
-                        default:
-                            return <p className={cx('accepted')}>Đã xác nhận</p>;
-                    }
-                })()}
+                                );
+                            case 'Denied':
+                                return <p className={cx('denied')}>Đã từ chối</p>;
+                            default:
+                                return <p className={cx('accepted')}>Đã xác nhận</p>;
+                        }
+                    })()}
+                </div>
             </div>
 
             {viewDetail && (

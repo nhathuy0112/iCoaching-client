@@ -44,8 +44,8 @@
                             display: flex;
                             justify-content: flex-start;
 
-                            #add-btn,
-                            #remove-all-btn {
+                            .add-btn,
+                            .remove-all-btn {
                                 padding: 12px 16px;
                                 width: 120px;
                                 display: flex;
@@ -67,18 +67,23 @@
                                     opacity: 0.6;
                                 }
 
+                                &.disabled {
+                                    background-color: #ccc;
+                                    pointer-events: none;
+                                }
+
                                 @media (min-width: 1201px) and (max-width: 1920px) {
                                     padding: 12px;
                                     font-size: 1.4rem;
                                 }
                             }
 
-                            #add-btn {
+                            .add-btn {
                                 background-color: green;
                                 margin-right: 8px;
                             }
 
-                            #remove-all-btn {
+                            .remove-all-btn {
                                 background-color: red;
                             }
                         }

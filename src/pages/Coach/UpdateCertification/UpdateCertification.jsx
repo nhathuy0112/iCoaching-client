@@ -96,7 +96,8 @@ const UpdateCertification = () => {
                                     <div className={cx('image-upload')}>
                                         <div className={cx('action')}>
                                             <button
-                                                id={cx('add-btn')}
+                                                className={!loading ? cx('add-btn') : cx('add-btn', 'disabled')}
+                                                disabled={loading}
                                                 style={isDragging ? { color: 'red' } : undefined}
                                                 onClick={onImageUpload}
                                                 {...dragProps}
@@ -104,7 +105,13 @@ const UpdateCertification = () => {
                                                 <AiOutlinePlus className={cx('icon')} />
                                                 <span>Thêm ảnh</span>
                                             </button>
-                                            <button id={cx('remove-all-btn')} onClick={onImageRemoveAll}>
+                                            <button
+                                                className={
+                                                    !loading ? cx('remove-all-btn') : cx('remove-all-btn', 'disabled')
+                                                }
+                                                disabled={loading}
+                                                onClick={onImageRemoveAll}
+                                            >
                                                 <BiTrash className={cx('icon')} />
                                                 Xóa tất cả
                                             </button>
@@ -167,7 +174,8 @@ const UpdateCertification = () => {
                                     <div className={cx('image-upload')}>
                                         <div className={cx('action')}>
                                             <button
-                                                id={cx('add-btn')}
+                                                className={!loading ? cx('add-btn') : cx('add-btn', 'disabled')}
+                                                disabled={loading}
                                                 style={isDragging ? { color: 'red' } : undefined}
                                                 onClick={onImageUpload}
                                                 {...dragProps}
@@ -175,7 +183,13 @@ const UpdateCertification = () => {
                                                 <AiOutlinePlus className={cx('icon')} />
                                                 <span>Thêm ảnh</span>
                                             </button>
-                                            <button id={cx('remove-all-btn')} onClick={onImageRemoveAll}>
+                                            <button
+                                                className={
+                                                    !loading ? cx('remove-all-btn') : cx('remove-all-btn', 'disabled')
+                                                }
+                                                disabled={loading}
+                                                onClick={onImageRemoveAll}
+                                            >
                                                 <BiTrash className={cx('icon')} />
                                                 Xóa tất cả
                                             </button>

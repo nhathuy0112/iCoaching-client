@@ -29,7 +29,7 @@ const Sidebar = ({ links }) => {
             // Get list of Coach navLinks
             const coachLinks = [...coachNavLinks];
             if (!isVerified) {
-                // Find the links you want to disable
+                // Find the links want to disable
                 const linksToDisable = ['my-clients', 'coaching-requests', 'my-courses'];
 
                 // Disable the links
@@ -66,10 +66,7 @@ const Sidebar = ({ links }) => {
                             <NavLink
                                 to={`/${currentUser?.role.toLowerCase()}/${currentUser?.Id}/${link.url}`}
                                 className={({ isActive }) =>
-                                    isActive
-                                        ? // || link.url.includes('coaching-requests')
-                                          cx('link-url', 'active')
-                                        : cx('link-url', isDisabled && 'disabled')
+                                    isActive ? cx('link-url', 'active') : cx('link-url', isDisabled && 'disabled')
                                 }
                                 disabled={isDisabled}
                             >
