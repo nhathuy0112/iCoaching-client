@@ -34,17 +34,17 @@ const CreateContract = () => {
     const navigate = useNavigate();
 
     const { currentUser } = useSelector((state) => state.user);
-    const { trainingCourses, coaches } = useSelector((state) => state.guest);
+    const { trainingCourses } = useSelector((state) => state.guest);
+    const { coaches } = useSelector((state) => state.admin);
     const { currentContract, loading } = useSelector((state) => state.contract);
 
     const { id, contractId, reportId } = useParams();
     const { client } = currentContract;
 
     const [search, setSearch] = useState('');
-
     const [initialCourse, setInitialCourse] = useState(false);
     const [showResult, setShowResult] = useState(true);
-    const debounced = useDebounce(search, 500);
+    const debounced = useDebounce(search, 300);
 
     useEffect(() => {
         dispatch(getContractDetailsAsync(contractId));
@@ -95,7 +95,7 @@ const CreateContract = () => {
     };
 
     const handleChooseCoach = (coach) => {
-        setSearch(`${coach.userName} - ${coach.fullname}`);
+        setSearch(`${coach.userName} - ${coach.fullname} - ${coach.email}`);
         dispatch(getCoachTrainingCourseAsync({ coachId: coach.id }));
         setValue('courseId', '');
         setInitialCourse(true);
@@ -150,18 +150,22 @@ const CreateContract = () => {
                             placement="bottom-start"
                             arrow={false}
                             interactive={true}
-                            visible={showResult && search !== '' && coaches.length > 0}
+                            visible={
+                                showResult && search !== '' && coaches.filter((coach) => !coach.isLocked).length > 0
+                            }
                             content={
-                                <div className={cx('wrapper')} tabIndex="-1">
-                                    {coaches.map((coach) => (
-                                        <div
-                                            key={coach.id}
-                                            className={cx('item')}
-                                            onClick={() => handleChooseCoach(coach)}
-                                        >
-                                            {coach.userName} - {coach.fullname}
-                                        </div>
-                                    ))}
+                                <div className={cx('wrapper')}>
+                                    {coaches
+                                        .filter((coach) => !coach.isLocked)
+                                        .map((coach) => (
+                                            <div
+                                                key={coach.id}
+                                                className={cx('item')}
+                                                onClick={() => handleChooseCoach(coach)}
+                                            >
+                                                {coach.userName} - <b>{coach.fullname} </b>-{coach.email}
+                                            </div>
+                                        ))}
                                 </div>
                             }
                             onClickOutside={handleHideResult}

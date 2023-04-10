@@ -1,7 +1,8 @@
 .wrapper {
     margin-top: var(--default-navbar-height);
     min-height: var(--default-content-min-height);
-
+    position: relative;
+    margin-bottom: 20px;
     .title-and-back {
         margin: 16px auto;
         max-width: var(--default-layout-max-width);

@@ -6,7 +6,7 @@ import { handleRenderGenders } from '~/utils/gender';
 import { useEffect, useState } from 'react';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
 import { AiOutlineSearch } from 'react-icons/ai';
-
+import Pagination from '~/components/Pagination';
 const cx = classNames.bind(styles);
 
 const Canceled = () => {
@@ -83,23 +83,15 @@ const Canceled = () => {
                                     <span>{course.coachPhoneNumber}</span>
                                 </div>
                             </div>
-                            <div className={cx('action')}>
-                                <Link
-                                    to={`/client/${id}/training-history/view-details/${course.id}`}
-                                    id={cx('view-detail-link')}
-                                >
-                                    Xem chi tiết
-                                </Link>
-                            </div>
-                        </div>
-                    ))}
-                    {/* <Pagination
+                            <Pagination
                                 className={cx('pagination-bar')}
                                 currentPage={currentPage}
                                 totalCount={totalCount}
                                 pageSize={pageSize}
                                 onPageChange={(page) => setCurrentPage(page)}
-                            /> */}
+                            />
+                        </div>
+                    ))}
                 </div>
             ) : (
                 <div className={cx('course-empty')}>

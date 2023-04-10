@@ -6,7 +6,8 @@ import { handleRenderGenders } from '~/utils/gender';
 import { useEffect, useState } from 'react';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
 import { AiOutlineSearch } from 'react-icons/ai';
-
+import useDebounce from '~/hooks/useDebounce';
+import Pagination from '~/components/Pagination/Pagination';
 const cx = classNames.bind(styles);
 
 const Completed = () => {
@@ -46,7 +47,7 @@ const Completed = () => {
         <div className={cx('wrapper')}>
             <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
                 <div className={cx('search-box')}>
-                    <button type="submit">
+                    <button type="sumbit">
                         <AiOutlineSearch className={cx('search-icon')} />
                     </button>
                     <input
@@ -83,23 +84,15 @@ const Completed = () => {
                                     <span>{course.coachPhoneNumber}</span>
                                 </div>
                             </div>
-                            <div className={cx('action')}>
-                                <Link
-                                    to={`/client/${id}/training-history/view-details/${course.id}`}
-                                    id={cx('view-detail-link')}
-                                >
-                                    Xem chi tiết
-                                </Link>
-                            </div>
-                        </div>
-                    ))}
-                    {/* <Pagination
+                            <Pagination
                                 className={cx('pagination-bar')}
                                 currentPage={currentPage}
                                 totalCount={totalCount}
                                 pageSize={pageSize}
                                 onPageChange={(page) => setCurrentPage(page)}
-                            /> */}
+                            />
+                        </div>
+                    ))}
                 </div>
             ) : (
                 <div className={cx('course-empty')}>
