@@ -1,7 +1,7 @@
 import styles from './Home.module.scss';
 import classNames from 'classnames/bind';
 
-import { AiOutlineSchedule, AiOutlineSearch } from 'react-icons/ai';
+import { AiOutlineSchedule } from 'react-icons/ai';
 import { CgGym } from 'react-icons/cg';
 import { GiWeightScale, GiWeightLiftingUp } from 'react-icons/gi';
 import { MdOutlineNoFood } from 'react-icons/md';
@@ -9,10 +9,9 @@ import { RiBaseStationLine } from 'react-icons/ri';
 import ServiceCard from '~/components/ServiceCard';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllCoachesAsync } from '~/features/guestSlice';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import UserCard from '~/components/UserCard';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -46,8 +45,6 @@ const Home = () => {
     const navigate = useNavigate();
     const { coaches } = useSelector((state) => state.guest);
     const { currentUser } = useSelector((state) => state.user);
-    const [searchValue, setSearchValue] = useState('');
-    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -60,8 +57,6 @@ const Home = () => {
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
     }, [dispatch]);
-
-    const filteredCoaches = coaches.filter((coach) => coach.fullname.toLowerCase().includes(debounced.toLowerCase()));
 
     return (
         <div className={cx('wrapper')}>
@@ -118,19 +113,8 @@ const Home = () => {
                         <h1>Huấn luyện viên</h1>
                         <span>Đội ngũ huấn luyện viên chất lượng, tận tình sẵn sàng phục vụ mọi người</span>
                     </div>
-                    <form className={cx('search')}>
-                        <div className={cx('search-box')} type="submit">
-                            <AiOutlineSearch className={cx('search-icon')} />
-                            <input
-                                type="text"
-                                placeholder="Huấn luyện viên"
-                                value={searchValue}
-                                onChange={(e) => setSearchValue(e.target.value)}
-                            />
-                        </div>
-                    </form>
                     <div className={cx('coach-list')}>
-                        {filteredCoaches.map((coach) => (
+                        {coaches.map((coach) => (
                             <div className={cx('coach-item')} key={coach.id}>
                                 <UserCard user={coach} role="coach" />
                             </div>

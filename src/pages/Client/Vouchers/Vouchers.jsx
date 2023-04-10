@@ -86,7 +86,7 @@ const Vouchers = () => {
                         </>
                     ) : (
                         <div className={cx('voucher-empty')}>
-                            <h3 className={cx('message')}>Hiện chưa có mã giảm giá nào!</h3>
+                            <h3 className={cx('message')}>Không tìm thấy mã giảm giá nào!</h3>
                         </div>
                     )}
                 </div>

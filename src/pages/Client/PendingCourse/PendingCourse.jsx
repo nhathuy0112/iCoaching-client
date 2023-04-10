@@ -9,7 +9,6 @@ import { handleRenderGenders } from '~/utils/gender';
 import Pagination from '~/components/Pagination';
 import Spinner from '~/components/Spinner';
 import { AiOutlineSearch } from 'react-icons/ai';
-import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -20,7 +19,6 @@ const PendingCourse = () => {
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
     const [searchValue, setSearchValue] = useState('');
-    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -36,9 +34,27 @@ const PendingCourse = () => {
         dispatch(getTrainingCoursesAsync({ pageIndex: currentPage, pageSize: 10, status: 'Pending' }));
     }, [dispatch, currentPage]);
 
-    const filteredCourses = trainingCourses.filter((course) =>
-        course.courseName.toLowerCase().includes(debounced.toLowerCase()),
-    );
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(
+                getTrainingCoursesAsync({
+                    pageIndex: currentPage,
+                    pageSize: 9,
+                    status: 'Pending',
+                }),
+            );
+        } else {
+            dispatch(
+                getTrainingCoursesAsync({
+                    pageIndex: currentPage,
+                    pageSize: 9,
+                    status: 'Pending',
+                    search: searchValue,
+                }),
+            );
+        }
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -53,66 +69,66 @@ const PendingCourse = () => {
                 <Spinner />
             ) : (
                 <div className={cx('content')}>
+                    <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                        <div className={cx('search-box')}>
+                            <button type="submit">
+                                <AiOutlineSearch className={cx('search-icon')} />
+                            </button>
+                            <input
+                                type="text"
+                                placeholder="Gói tập"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                        </div>
+                    </form>
                     {trainingCourses && trainingCourses.length > 0 ? (
-                        <>
-                            <form className={cx('search')}>
-                                <div className={cx('search-box')} type="submit">
-                                    <AiOutlineSearch className={cx('search-icon')} />
-                                    <input
-                                        type="text"
-                                        placeholder="Gói tập"
-                                        value={searchValue}
-                                        onChange={(e) => setSearchValue(e.target.value)}
-                                    />
-                                </div>
-                            </form>
-                            <div className={cx('course-list')}>
-                                {filteredCourses.map((course) => (
-                                    <div className={cx('course-item')} key={course.id}>
-                                        <div className={cx('card')}>
-                                            <div className={cx('card-content')}>
-                                                <span className={cx('card-title', 'course-name')}>Gói tập</span>
-                                                <span>{course.courseName}</span>
-                                            </div>
-                                            <div className={cx('card-content')}>
-                                                <span className={cx('card-title', 'coach')}>Huấn luyện viên</span>
-                                                <span>{course.coachName}</span>
-                                            </div>
-                                            <div className={cx('card-content')}>
-                                                <span className={cx('card-title', 'gender')}>Giới tính</span>
-                                                <span>{handleRenderGenders(course.coachGender)}</span>
-                                            </div>
-                                            <div className={cx('card-content')}>
-                                                <span className={cx('card-title', 'email')}>Email</span>
-                                                <span>{course.coachEmail}</span>
-                                            </div>
-                                            <div className={cx('card-content')}>
-                                                <span className={cx('card-title', 'phone')}>Số điện thoại</span>
-                                                <span>{course.coachPhoneNumber}</span>
-                                            </div>
+                        <div className={cx('course-list')}>
+                            {trainingCourses.map((course) => (
+                                <div className={cx('course-item')} key={course.id}>
+                                    <div className={cx('card')}>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'course-name')}>Gói tập</span>
+                                            <span>{course.courseName}</span>
                                         </div>
-                                        <div className={cx('action')}>
-                                            <Link
-                                                to={`/client/${id}/pending-courses/view-details/${course.id}`}
-                                                id={cx('view-detail-link')}
-                                            >
-                                                Xem chi tiết
-                                            </Link>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'coach')}>Huấn luyện viên</span>
+                                            <span>{course.coachName}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'gender')}>Giới tính</span>
+                                            <span>{handleRenderGenders(course.coachGender)}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'email')}>Email</span>
+                                            <span>{course.coachEmail}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'phone')}>Số điện thoại</span>
+                                            <span>{course.coachPhoneNumber}</span>
                                         </div>
                                     </div>
-                                ))}
-                                <Pagination
-                                    className={cx('pagination-bar')}
-                                    currentPage={currentPage}
-                                    totalCount={totalCount}
-                                    pageSize={pageSize}
-                                    onPageChange={(page) => setCurrentPage(page)}
-                                />
-                            </div>
-                        </>
+                                    <div className={cx('action')}>
+                                        <Link
+                                            to={`/client/${id}/pending-courses/view-details/${course.id}`}
+                                            id={cx('view-detail-link')}
+                                        >
+                                            Xem chi tiết
+                                        </Link>
+                                    </div>
+                                </div>
+                            ))}
+                            <Pagination
+                                className={cx('pagination-bar')}
+                                currentPage={currentPage}
+                                totalCount={totalCount}
+                                pageSize={pageSize}
+                                onPageChange={(page) => setCurrentPage(page)}
+                            />
+                        </div>
                     ) : (
                         <div className={cx('course-empty')}>
-                            <h3 className={cx('message')}>Hiện chưa có gói tập nào!</h3>
+                            <h3 className={cx('message')}>Không tìm thấy gói tập nào!</h3>
                             <Link className={cx('find-link')} to={`/client/${id}/all-coaches`}>
                                 Tìm HLV tại đây!
                             </Link>

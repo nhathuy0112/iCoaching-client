@@ -14,7 +14,6 @@ import { BiTrash } from 'react-icons/bi';
 import { useNavigate, useParams } from 'react-router-dom';
 import Spinner from '~/components/Spinner';
 import { toast } from 'react-toastify';
-import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -28,7 +27,6 @@ const MyCourse = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [searchValue, setSearchValue] = useState('');
-    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -42,10 +40,6 @@ const MyCourse = () => {
         dispatch(getTrainingCourseAsync({ pageIndex: currentPage, pageSize: 20 }));
     }, [dispatch, currentPage]);
 
-    const filteredCourses = trainingCourses.filter((course) =>
-        course.name.toLowerCase().includes(debounced.toLowerCase()),
-    );
-
     const handleOpenDeleteModal = (course) => {
         setIsDelete(true);
         setSelectedCourse(course);
@@ -57,35 +51,46 @@ const MyCourse = () => {
         setIsDelete(false);
     };
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getTrainingCourseAsync({ pageIndex: currentPage, pageSize: 20 }));
+        } else {
+            dispatch(getTrainingCourseAsync({ pageIndex: currentPage, pageSize: 20, search: searchValue }));
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             {loading ? (
                 <Spinner />
             ) : (
                 <>
+                    <div className={cx('action')}>
+                        <div className={cx('add')}>
+                            <button id={cx('add-btn')} onClick={() => navigate(`/coach/${id}/my-courses/add`)}>
+                                <AiOutlinePlus className={cx('icon')} />
+                                <span>Thêm gói tập</span>
+                            </button>
+                        </div>
+                        <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                            <div className={cx('search-box')}>
+                                <button type="submit">
+                                    <AiOutlineSearch className={cx('search-icon')} />
+                                </button>
+                                <input
+                                    type="text"
+                                    placeholder="Gói tập"
+                                    value={searchValue}
+                                    onChange={(e) => setSearchValue(e.target.value)}
+                                />
+                            </div>
+                        </form>
+                    </div>
                     {trainingCourses && trainingCourses.length > 0 ? (
                         <>
-                            <div className={cx('action')}>
-                                <div className={cx('add')}>
-                                    <button id={cx('add-btn')} onClick={() => navigate(`/coach/${id}/my-courses/add`)}>
-                                        <AiOutlinePlus className={cx('icon')} />
-                                        <span>Thêm gói tập</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <form className={cx('search')}>
-                                <div className={cx('search-box')} type="submit">
-                                    <AiOutlineSearch className={cx('search-icon')} />
-                                    <input
-                                        type="text"
-                                        placeholder="Gói tập"
-                                        value={searchValue}
-                                        onChange={(e) => setSearchValue(e.target.value)}
-                                    />
-                                </div>
-                            </form>
                             <div className={cx('course-list')}>
-                                {filteredCourses.map((course) => (
+                                {trainingCourses.map((course) => (
                                     <div className={cx('course-item')} key={course.id}>
                                         <TrainingCourseCard course={course} />
                                         <div className={cx('item-action')}>
@@ -112,15 +117,7 @@ const MyCourse = () => {
                         </>
                     ) : (
                         <div className={cx('course-empty')}>
-                            <h1>Hiện chưa có gói tập nào!</h1>
-                            <button
-                                id={cx('add-btn')}
-                                onClick={() => navigate(`/coach/${id}/my-courses/add`)}
-                                style={{ margin: 'auto' }}
-                            >
-                                <AiOutlinePlus className={cx('icon')} />
-                                <span>Thêm gói tập</span>
-                            </button>
+                            <h2>Không tìm thấy gói tập nào!</h2>
                         </div>
                     )}
                 </>

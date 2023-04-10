@@ -7,7 +7,7 @@
     .course-empty {
         margin: auto;
 
-        h1 {
+        h2 {
             color: red;
         }
     }
@@ -60,8 +60,13 @@
             input {
                 background: transparent;
             }
+            button {
+                background-color: transparent;
+                cursor: pointer;
+            }
+
             .search-icon {
-                margin-right: 11px;
+                margin-right: 12px;
                 color: #2b3674;
                 font-size: 1.8rem;
             }

@@ -12,7 +12,6 @@ import Pagination from '~/components/Pagination';
 import { getAdminData, updateAdminStatus } from '~/features/superAdminSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import { useNavigate, useParams } from 'react-router-dom';
-import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -26,7 +25,6 @@ const ListAdmin = () => {
     const [isViewMessage, setIsViewMessage] = useState(false);
     const [note, setNote] = useState('');
     const [searchValue, setSearchValue] = useState('');
-    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -39,8 +37,6 @@ const ListAdmin = () => {
     useEffect(() => {
         dispatch(getAdminData({ currentPage: currentPage, pageSize: 6 }));
     }, [dispatch, currentPage, status]);
-
-    const filteredAdmins = data.filter((admin) => admin.fullname.toLowerCase().includes(debounced.toLowerCase()));
 
     const [lockOpen, setLockOpen] = useState(false);
     const [adminAccount, setAdminAccount] = useState();
@@ -59,12 +55,24 @@ const ListAdmin = () => {
         setIsViewMessage(true);
         setNote(note);
     };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getAdminData({ currentPage: currentPage, pageSize: 6 }));
+        } else {
+            dispatch(getAdminData({ currentPage: currentPage, pageSize: 6, search: searchValue }));
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <form className={cx('search')}>
-                    <div className={cx('search-box')} type="submit">
-                        <AiOutlineSearch className={cx('search-icon')} />
+                <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                    <div className={cx('search-box')}>
+                        <button type="submit">
+                            <AiOutlineSearch className={cx('search-icon')} />
+                        </button>
                         <input
                             type="text"
                             placeholder="Quản trị viên"
@@ -73,61 +81,68 @@ const ListAdmin = () => {
                         />
                     </div>
                 </form>
+                {data && data.length > 0 ? (
+                    <>
+                        <table className={cx('tb-coaches')}>
+                            <thead>
+                                <tr className={cx('header-row')}>
+                                    <th>Tên đăng nhập</th>
+                                    <th>Họ và tên</th>
+                                    <th>Giới tính</th>
+                                    <th>Tuổi</th>
+                                    <th>Email</th>
+                                    <th>SĐT</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data?.map((admin) => (
+                                    <tr className={cx('content-row')} key={admin.id}>
+                                        <td className={cx('name')}>
+                                            <div className={cx('avatar')}>
+                                                <img src={admin.avatarUrl} alt="" />
+                                            </div>
+                                            <span>{admin.userName}</span>
+                                        </td>
+                                        <td>{admin.fullname}</td>
+                                        <td>{handleRenderGenders(admin.gender)}</td>
+                                        <td>{admin.age}</td>
+                                        <td>{admin.email}</td>
+                                        <td>{admin.phoneNumber}</td>
+                                        <td className={cx('action-btn')}>
+                                            {admin.note ? (
+                                                <button id={cx('btn-info')} onClick={() => handleNoteOpen(admin.note)}>
+                                                    <BsFillInfoCircleFill />
+                                                </button>
+                                            ) : (
+                                                ''
+                                            )}
 
-                <table className={cx('tb-coaches')}>
-                    <thead>
-                        <tr className={cx('header-row')}>
-                            <th>Tên đăng nhập</th>
-                            <th>Họ và tên</th>
-                            <th>Giới tính</th>
-                            <th>Tuổi</th>
-                            <th>Email</th>
-                            <th>SĐT</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredAdmins?.map((admin) => (
-                            <tr className={cx('content-row')} key={admin.id}>
-                                <td className={cx('name')}>
-                                    <div className={cx('avatar')}>
-                                        <img src={admin.avatarUrl} alt="" />
-                                    </div>
-                                    <span>{admin.userName}</span>
-                                </td>
-                                <td>{admin.fullname}</td>
-                                <td>{handleRenderGenders(admin.gender)}</td>
-                                <td>{admin.age}</td>
-                                <td>{admin.email}</td>
-                                <td>{admin.phoneNumber}</td>
-                                <td className={cx('action-btn')}>
-                                    {admin.note ? (
-                                        <button id={cx('btn-info')} onClick={() => handleNoteOpen(admin.note)}>
-                                            <BsFillInfoCircleFill />
-                                        </button>
-                                    ) : (
-                                        ''
-                                    )}
-
-                                    <button
-                                        id={cx(`${admin.isLocked ? 'btn-confirm' : 'btn-warn'}`)}
-                                        onClick={() => handleLockOpen(admin)}
-                                    >
-                                        {admin.isLocked ? <FaLockOpen /> : <FaLock />}
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                            <button
+                                                id={cx(`${admin.isLocked ? 'btn-confirm' : 'btn-warn'}`)}
+                                                onClick={() => handleLockOpen(admin)}
+                                            >
+                                                {admin.isLocked ? <FaLockOpen /> : <FaLock />}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <Pagination
+                            className={cx('pagination-bar')}
+                            currentPage={currentPage}
+                            totalCount={count}
+                            pageSize={pageSize}
+                            onPageChange={(page) => setCurrentPage(page)}
+                        />
+                    </>
+                ) : (
+                    <div className={cx('admin-empty')}>
+                        <h2>Không tìm thấy Quản trị viên nào!</h2>
+                    </div>
+                )}
             </div>
-            <Pagination
-                className={cx('pagination-bar')}
-                currentPage={currentPage}
-                totalCount={count}
-                pageSize={pageSize}
-                onPageChange={(page) => setCurrentPage(page)}
-            />
 
             {/* lock admin account */}
             {lockOpen && (

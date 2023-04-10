@@ -1,16 +1,11 @@
 .wrapper {
     position: relative;
-    height: calc(95vh - var(--default-navbar-height));
+
     .content {
         .message {
             display: flex;
             justify-content: center;
             align-items: center;
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
             color: #d01515;
             text-align: center;
         }
@@ -36,8 +31,14 @@
         input {
             background: transparent;
         }
+
+        button {
+            background-color: transparent;
+            cursor: pointer;
+        }
+
         .search-icon {
-            margin-right: 11px;
+            margin-right: 12px;
             color: #2b3674;
             font-size: 1.8rem;
         }

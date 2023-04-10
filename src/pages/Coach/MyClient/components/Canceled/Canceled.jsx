@@ -8,7 +8,6 @@ import { handleRenderGenders } from '~/utils/gender';
 import Spinner from '~/components/Spinner';
 import styles from './Canceled.module.scss';
 import Pagination from '~/components/Pagination';
-import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -18,15 +17,21 @@ const Canceled = () => {
     const { contracts, totalCount, pageSize, loading } = useSelector((state) => state.coach);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchValue, setSearchValue] = useState('');
-    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         dispatch(getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Canceled' }));
     }, [dispatch, currentPage]);
 
-    const filteredContracts = contracts.filter((contract) =>
-        contract.clientName.toLowerCase().includes(debounced.toLowerCase()),
-    );
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Canceled' }));
+        } else {
+            dispatch(
+                getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Canceled', search: searchValue }),
+            );
+        }
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -34,21 +39,23 @@ const Canceled = () => {
                 <Spinner />
             ) : (
                 <>
+                    <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                        <div className={cx('search-box')}>
+                            <button type="submit">
+                                <AiOutlineSearch className={cx('search-icon')} />
+                            </button>
+                            <input
+                                type="text"
+                                placeholder="Khách hàng"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                        </div>
+                    </form>
                     {contracts && contracts.length > 0 ? (
                         <>
-                            <form className={cx('search')}>
-                                <div className={cx('search-box')} type="submit">
-                                    <AiOutlineSearch className={cx('search-icon')} />
-                                    <input
-                                        type="text"
-                                        placeholder="Khách hàng"
-                                        value={searchValue}
-                                        onChange={(e) => setSearchValue(e.target.value)}
-                                    />
-                                </div>
-                            </form>
                             <div className={cx('contract-list')}>
-                                {filteredContracts.map((contract) => (
+                                {contracts.map((contract) => (
                                     <div className={cx('contract-item')} key={contract.id}>
                                         <div className={cx('card')}>
                                             <div className={cx('card-content')}>
@@ -97,7 +104,7 @@ const Canceled = () => {
                         </>
                     ) : (
                         <div className={cx('contract-empty')}>
-                            <h2>Hiện chưa có khách hàng nào!</h2>
+                            <h2>Không tìm thấy khách hàng nào!</h2>
                         </div>
                     )}
                 </>

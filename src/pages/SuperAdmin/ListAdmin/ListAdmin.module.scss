@@ -1,9 +1,5 @@
 .wrapper {
-    height: calc(95vh - var(--default-navbar-height));
     position: relative;
-    .content {
-        padding-top: 3%;
-    }
     button {
         &:hover {
             opacity: 0.8;
@@ -11,10 +7,8 @@
     }
 }
 .search {
-    position: absolute;
-    align-items: center;
-    right: 0;
-    display: inline-block;
+    display: flex;
+    justify-content: flex-end;
     .search-box {
         display: flex;
         height: 36px;
@@ -27,17 +21,26 @@
             background: transparent;
         }
         .search-icon {
-            margin-right: 11px;
+            margin-right: 12px;
             color: #2b3674;
             font-size: 1.8rem;
         }
     }
 }
+
+.admin-empty {
+    display: flex;
+    justify-content: center;
+
+    h2 {
+        color: red;
+    }
+}
+
 .tb-coaches {
     table-layout: auto;
     width: 100%;
     text-align: center;
-    margin-top: 30px;
     border-spacing: 0 8px;
 
     .header-row {

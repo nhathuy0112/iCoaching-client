@@ -8,7 +8,6 @@ import UserCard from '~/components/UserCard';
 import { Link } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 import { AiOutlineSearch } from 'react-icons/ai';
-import useDebounce from '~/hooks/useDebounce';
 const cx = classNames.bind(styles);
 
 const CoachesView = () => {
@@ -16,7 +15,7 @@ const CoachesView = () => {
     const { coaches, totalCount } = useSelector((state) => state.guest);
     const [coachesDisplay, setCoachesDisplay] = useState(15);
     const [searchValue, setSearchValue] = useState('');
-    const debounced = useDebounce(searchValue, 500);
+    const [isViewMoreSearch, setIsViewMoreSearch] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -26,24 +25,30 @@ const CoachesView = () => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
     }, [dispatch, coachesDisplay]);
 
-    const filteredCoaches = coaches.filter((coach) => coach.fullname.toLowerCase().includes(debounced.toLowerCase()));
-
     const handleShowMoreCoaches = () => {
         const newCoachesDisplay = totalCount - coachesDisplay;
         if (newCoachesDisplay >= 15) {
-            setCoachesDisplay(
-                (prev) => prev + 15,
-                () => {
-                    dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
-                },
-            );
+            setCoachesDisplay((prev) => prev + 15);
         } else {
-            setCoachesDisplay(
-                (prev) => prev + newCoachesDisplay,
-                () => {
-                    dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
-                },
-            );
+            setCoachesDisplay((prev) => prev + newCoachesDisplay);
+        }
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
+            setIsViewMoreSearch(true);
+        } else {
+            dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay, search: searchValue }))
+                .unwrap()
+                .then((response) => {
+                    if (response.count <= coachesDisplay) {
+                        setIsViewMoreSearch(false);
+                    } else {
+                        setIsViewMoreSearch(true);
+                    }
+                });
         }
     };
 
@@ -62,9 +67,11 @@ const CoachesView = () => {
                         <span>Đội ngũ huấn luyện viên chất lượng, tận tình sẵn sàng phục vụ mọi người</span>
                     </div>
                 </div>
-                <form className={cx('search')}>
-                    <div className={cx('search-box')} type="submit">
-                        <AiOutlineSearch className={cx('search-icon')} />
+                <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                    <div className={cx('search-box')}>
+                        <button type="submit">
+                            <AiOutlineSearch className={cx('search-icon')} />
+                        </button>
                         <input
                             type="text"
                             placeholder="Huấn luyện viên"
@@ -73,15 +80,21 @@ const CoachesView = () => {
                         />
                     </div>
                 </form>
-                <div className={cx('coach-list')}>
-                    {filteredCoaches.map((coach) => (
-                        <div className={cx('coach-item')} key={coach.id}>
-                            <UserCard user={coach} role="coach" />
-                        </div>
-                    ))}
-                </div>
+                {coaches && coaches.length > 0 ? (
+                    <div className={cx('coach-list')}>
+                        {coaches.map((coach) => (
+                            <div className={cx('coach-item')} key={coach.id}>
+                                <UserCard user={coach} role="coach" />
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className={cx('coach-empty')}>
+                        <h2>Không tìm thấy Huấn luyện viên nào!</h2>
+                    </div>
+                )}
             </div>
-            {coachesDisplay !== totalCount && (
+            {coachesDisplay !== totalCount && isViewMoreSearch && (
                 <button id={cx('view-all-btn')} onClick={handleShowMoreCoaches}>
                     Xem thêm
                 </button>

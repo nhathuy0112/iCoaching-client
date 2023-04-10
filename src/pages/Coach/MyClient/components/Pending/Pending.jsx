@@ -28,25 +28,38 @@ const Pending = () => {
         contract.clientName.toLowerCase().includes(debounced.toLowerCase()),
     );
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Pending' }));
+        } else {
+            dispatch(
+                getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Pending', search: searchValue }),
+            );
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             {loading ? (
                 <Spinner />
             ) : (
                 <>
+                    <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                        <div className={cx('search-box')}>
+                            <button type="submit">
+                                <AiOutlineSearch className={cx('search-icon')} />
+                            </button>
+                            <input
+                                type="text"
+                                placeholder="Khách hàng"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                        </div>
+                    </form>
                     {contracts && contracts.length > 0 ? (
                         <>
-                            <form className={cx('search')}>
-                                <div className={cx('search-box')} type="submit">
-                                    <AiOutlineSearch className={cx('search-icon')} />
-                                    <input
-                                        type="text"
-                                        placeholder="Khách hàng"
-                                        value={searchValue}
-                                        onChange={(e) => setSearchValue(e.target.value)}
-                                    />
-                                </div>
-                            </form>
                             <div className={cx('contract-list')}>
                                 {filteredContracts.map((contract) => (
                                     <div className={cx('contract-item')} key={contract.id}>
@@ -97,7 +110,7 @@ const Pending = () => {
                         </>
                     ) : (
                         <div className={cx('contract-empty')}>
-                            <h2>Hiện chưa có khách hàng nào!</h2>
+                            <h2>Không tìm thấy khách hàng nào!</h2>
                         </div>
                     )}
                 </>

@@ -19,8 +19,12 @@
                 input {
                     background: transparent;
                 }
+                button {
+                    background-color: transparent;
+                    cursor: pointer;
+                }
                 .search-icon {
-                    margin-right: 11px;
+                    margin-right: 12px;
                     color: #2b3674;
                     font-size: 1.8rem;
                 }
@@ -55,14 +59,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
 
             .message {
                 color: red;
             }
 
             .find-link {
-                text-decoration: underline !important;
+                text-decoration: underline;
                 color: var(--primary-color);
             }
         }

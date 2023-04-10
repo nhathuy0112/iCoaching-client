@@ -12,7 +12,6 @@ import { getCoachingRequestsAsync, updateCoachingRequestAsync } from '~/features
 import Spinner from '~/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Pending.module.scss';
-import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -31,17 +30,12 @@ const Pending = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [requestLoading, setRequestLoading] = useState(true);
     const [searchValue, setSearchValue] = useState('');
-    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 7, coachRequestStatus: 'Pending' }))
             .unwrap()
             .then(() => setRequestLoading(false));
     }, [dispatch, currentPage, status]);
-
-    const filteredRequests = coachingRequests.filter((request) =>
-        request.clientName.toLowerCase().includes(debounced.toLowerCase()),
-    );
 
     const handleViewRequestMessage = (request) => {
         setSelectedRequest(request);
@@ -103,26 +97,43 @@ const Pending = () => {
             });
     };
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 7, coachRequestStatus: 'Pending' }));
+        } else {
+            dispatch(
+                getCoachingRequestsAsync({
+                    pageIndex: currentPage,
+                    pageSize: 7,
+                    coachRequestStatus: 'Pending',
+                    search: searchValue,
+                }),
+            );
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             {requestLoading ? (
                 <Spinner />
             ) : (
                 <>
+                    <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                        <div className={cx('search-box')}>
+                            <button type="submit">
+                                <AiOutlineSearch className={cx('search-icon')} />
+                            </button>
+                            <input
+                                type="text"
+                                placeholder="Khách hàng"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                        </div>
+                    </form>
                     {coachingRequests && coachingRequests.length > 0 ? (
                         <>
-                            <form className={cx('search')}>
-                                <div className={cx('search-box')} type="submit">
-                                    <AiOutlineSearch className={cx('search-icon')} />
-                                    <input
-                                        type="text"
-                                        placeholder="Khách hàng"
-                                        value={searchValue}
-                                        onChange={(e) => setSearchValue(e.target.value)}
-                                    />
-                                </div>
-                            </form>
-
                             <table id={cx('request-table')}>
                                 <thead>
                                     <tr className={cx('header-row')}>
@@ -136,7 +147,7 @@ const Pending = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredRequests.map((request) => (
+                                    {coachingRequests.map((request) => (
                                         <tr className={cx('content-row')} key={request.id}>
                                             <td className={cx('name')}>
                                                 <div className={cx('avatar')}>
@@ -186,7 +197,7 @@ const Pending = () => {
                         </>
                     ) : (
                         <div className={cx('request-empty')}>
-                            <h2>Hiện chưa có yêu cầu nào!</h2>
+                            <h2>Không tìm thấy yêu cầu nào!</h2>
                         </div>
                     )}
                 </>

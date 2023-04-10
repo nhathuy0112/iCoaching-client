@@ -218,10 +218,10 @@ const Information = () => {
                                     <Spinner />
                                 ) : (
                                     <>
-                                        <button id={cx('completed')} onClick={handleCompletedContract}>
+                                        <button className={cx('completed')} onClick={handleCompletedContract}>
                                             Hoàn thành
                                         </button>
-                                        <button id={cx('rejected')} onClick={handleReportOpen}>
+                                        <button className={cx('rejected')} onClick={handleReportOpen}>
                                             Từ chối
                                         </button>
                                     </>

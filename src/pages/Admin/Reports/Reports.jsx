@@ -23,7 +23,6 @@ const Reports = () => {
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
     const [searchValue, setSearchValue] = useState('');
-    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         if (currentUser) {
@@ -37,10 +36,6 @@ const Reports = () => {
         dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3 }));
     }, [dispatch, currentPage]);
 
-    const filteredReports = reports.filter((report) =>
-        report?.clientFullName.toLowerCase().includes(debounced.toLowerCase()),
-    );
-
     const handleViewDetail = (img) => {
         setFile(img);
         setViewDetail(true);
@@ -49,24 +44,36 @@ const Reports = () => {
         setViewDetail(false);
         setFile(null);
     };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3 }));
+        } else {
+            dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3, searchValue }));
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                {reports.length !== 0 ? (
+                <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                    <div className={cx('search-box')}>
+                        <button type="submit">
+                            <AiOutlineSearch className={cx('search-icon')} />
+                        </button>
+                        <input
+                            type="text"
+                            placeholder="Khách hàng"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                    </div>
+                </form>
+                {reports && reports.length > 0 ? (
                     <>
-                        <form className={cx('search')}>
-                            <div className={cx('search-box')} type="submit">
-                                <AiOutlineSearch className={cx('search-icon')} />
-                                <input
-                                    type="text"
-                                    placeholder="Khách hàng"
-                                    value={searchValue}
-                                    onChange={(e) => setSearchValue(e.target.value)}
-                                />
-                            </div>
-                        </form>
                         <div className={cx('list-reports')}>
-                            {filteredReports?.map((report) => (
+                            {reports?.map((report) => (
                                 <div className={cx('rp')} key={report.id}>
                                     <label>{report.clientFullName}</label>
                                     <div className={cx('photos')}>
@@ -91,7 +98,7 @@ const Reports = () => {
                     </>
                 ) : (
                     <div className={cx('message')}>
-                        <h1>Hiện chưa có khiếu nại nào!</h1>
+                        <h2>Không tìm thấy khiếu nại nào!</h2>
                     </div>
                 )}
             </div>

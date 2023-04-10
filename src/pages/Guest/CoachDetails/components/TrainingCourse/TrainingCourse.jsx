@@ -7,7 +7,6 @@ import { getCoachTrainingCourseAsync } from '~/features/guestSlice';
 import TrainingCourseCard from '~/components/TrainingCourseCard';
 import Pagination from '~/components/Pagination';
 import Spinner from '~/components/Spinner';
-import useDebounce from '~/hooks/useDebounce';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 const cx = classNames.bind(styles);
@@ -19,15 +18,26 @@ const TrainingCourse = () => {
     const { trainingCourses, totalCount, pageSize, loading } = useSelector((state) => state.guest);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchValue, setSearchValue] = useState('');
-    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         dispatch(getCoachTrainingCourseAsync({ coachId: coachId, pageIndex: currentPage, pageSize: 9 }));
     }, [dispatch, currentPage, coachId]);
 
-    const filteredCourses = trainingCourses.filter((course) =>
-        course.name.toLowerCase().includes(debounced.toLowerCase()),
-    );
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getCoachTrainingCourseAsync({ coachId: coachId, pageIndex: currentPage, pageSize: 9 }));
+        } else {
+            dispatch(
+                getCoachTrainingCourseAsync({
+                    coachId: coachId,
+                    pageIndex: currentPage,
+                    pageSize: 9,
+                    search: searchValue,
+                }),
+            );
+        }
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -35,21 +45,23 @@ const TrainingCourse = () => {
                 <Spinner />
             ) : (
                 <div className={cx('content')}>
+                    <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                        <div className={cx('search-box')}>
+                            <button type="submit">
+                                <AiOutlineSearch className={cx('search-icon')} />
+                            </button>
+                            <input
+                                type="text"
+                                placeholder="Gói tập"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                        </div>
+                    </form>
                     {trainingCourses && trainingCourses.length > 0 ? (
                         <>
-                            <form className={cx('search')}>
-                                <div className={cx('search-box')} type="submit">
-                                    <AiOutlineSearch className={cx('search-icon')} />
-                                    <input
-                                        type="text"
-                                        placeholder="Gói tập"
-                                        value={searchValue}
-                                        onChange={(e) => setSearchValue(e.target.value)}
-                                    />
-                                </div>
-                            </form>
                             <div className={cx('course-list')}>
-                                {filteredCourses.map((course) => (
+                                {trainingCourses.map((course) => (
                                     <div className={cx('course-item')} key={course.id}>
                                         <TrainingCourseCard course={course} />
                                         <div className={cx('item-action')}>
@@ -73,8 +85,8 @@ const TrainingCourse = () => {
                         </>
                     ) : (
                         <div className={cx('course-empty')}>
-                            <h3 className={cx('message')}>Huấn luyện viên này chưa có gói tập nào!</h3>
-                            <Link className={cx('link')} to="/all-coaches">
+                            <h3 className={cx('message')}>Không tìm thấy gói tập nào!</h3>
+                            <Link className={cx('find-link')} to="/all-coaches">
                                 Tìm HLV khác!
                             </Link>
                         </div>
