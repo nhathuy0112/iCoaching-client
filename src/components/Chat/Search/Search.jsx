@@ -60,7 +60,7 @@ const Search = () => {
     }, [currentUser?.Id]);
 
     const handleKey = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && username !== '') {
             const filteredChats = chats.filter((chat) => {
                 return chat.fullname.includes(username);
             });
@@ -105,6 +105,7 @@ const Search = () => {
                                     {user.username}
                                 </span>
                             </div>
+                            <FaSearch className={cx('iconChat')} />
                         </div>
                     </div>
                 ))}
