@@ -33,22 +33,20 @@ const CourseDetails = () => {
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <div className={cx('frame')}>
-                    <div className={cx('title-and-back')}>
-                        <div className={cx('back')}>
-                            <Link
-                                to={
-                                    location.pathname.startsWith('/all-coaches')
-                                        ? `/all-coaches/view-details/coach/${coachId}`
-                                        : `/view-details/coach/${coachId}`
-                                }
-                                className={cx('back-link')}
-                            >
-                                <IoIosArrowBack />
-                                <span>Quay lại</span>
-                            </Link>
-                        </div>
-                        <h1 className={cx('title')}>Thông tin gói tập</h1>
+                    <div className={cx('back')}>
+                        <Link
+                            to={
+                                location.pathname.startsWith('/all-coaches')
+                                    ? `/all-coaches/view-details/coach/${coachId}`
+                                    : `/view-details/coach/${coachId}`
+                            }
+                            className={cx('back-link')}
+                        >
+                            <IoIosArrowBack />
+                            <span>Quay lại</span>
+                        </Link>
                     </div>
+                    <h2 className={cx('title')}>Thông tin gói tập</h2>
                     {loading ? (
                         <Spinner />
                     ) : (

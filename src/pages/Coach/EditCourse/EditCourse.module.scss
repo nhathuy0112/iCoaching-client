@@ -70,6 +70,18 @@
                             }
                         }
                     }
+
+                    img {
+                        width: 240px;
+                        margin: 0 4px;
+                        border-radius: var(--default-border-radius);
+                    }
+
+                    video {
+                        width: 240px;
+                        margin: 0 4px;
+                        border-radius: var(--default-border-radius);
+                    }
                 }
             }
 

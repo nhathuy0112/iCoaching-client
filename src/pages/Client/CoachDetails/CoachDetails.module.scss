@@ -68,6 +68,9 @@
         .main {
             display: flex;
             .profile {
+                position: sticky;
+                top: calc(var(--default-navbar-height) + 32px);
+                left: 0;
                 flex: 0 0 25%;
                 display: flex;
                 height: fit-content;
