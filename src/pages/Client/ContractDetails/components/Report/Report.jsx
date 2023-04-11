@@ -8,6 +8,7 @@ import Modal from '~/components/Modal';
 
 import { AiOutlineClose } from 'react-icons/ai';
 import Spinner from '~/components/Spinner';
+import { BiChevronRight } from 'react-icons/bi';
 const cx = classNames.bind(styles);
 
 const Report = () => {
@@ -82,7 +83,12 @@ const Report = () => {
                                                 />
                                             ))}
                                         </div>
-                                        <p className={cx('detail')}>&#8827; &nbsp;{report.detail}</p>
+                                        <p className={cx('detail')}>
+                                            <span className={cx('icon')}>
+                                                <BiChevronRight />
+                                            </span>
+                                            {report.detail}
+                                        </p>
                                     </div>
                                 ))}
                             </div>

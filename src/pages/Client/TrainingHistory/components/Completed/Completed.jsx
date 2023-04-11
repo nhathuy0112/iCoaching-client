@@ -6,7 +6,6 @@ import { handleRenderGenders } from '~/utils/gender';
 import { useEffect, useState } from 'react';
 import { getTrainingCoursesAsync } from '~/features/clientSlice';
 import { AiOutlineSearch } from 'react-icons/ai';
-import useDebounce from '~/hooks/useDebounce';
 import Pagination from '~/components/Pagination/Pagination';
 const cx = classNames.bind(styles);
 

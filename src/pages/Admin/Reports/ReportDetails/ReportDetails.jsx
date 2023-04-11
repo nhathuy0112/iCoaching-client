@@ -123,23 +123,23 @@ const ReportDetails = () => {
                 <div className={cx('tabs')}>
                     <Tabs tabs={tabs}></Tabs>
                 </div>
-                <div className={cx('btn-wrapper')}>
-                    <div className={cx('button')}>
-                        <button className={cx('btn-confirm')} onClick={() => handleOpen(setResolveOpen)}>
-                            <BsCheckLg className={cx('icon')} />
-                            Giải quyết
+            </div>
+            <div className={cx('btn-wrapper')}>
+                <div className={cx('button')}>
+                    <button className={cx('btn-confirm')} onClick={() => handleOpen(setResolveOpen)}>
+                        <BsCheckLg className={cx('icon')} />
+                        Giải quyết
+                    </button>
+                    {currentContract.status === 'Pending' ? (
+                        <button className={cx('btn-warn')} onClick={() => handleOpen(setEndOpen)}>
+                            Hoàn thành
                         </button>
-                        {currentContract.status === 'Pending' ? (
-                            <button className={cx('btn-warn')} onClick={() => handleOpen(setEndOpen)}>
-                                Hoàn thành
-                            </button>
-                        ) : (
-                            <button className={cx('btn-warn')} onClick={() => handleOpen(setRejectOpen)}>
-                                <BsXLg className={cx('icon')} />
-                                Từ chối
-                            </button>
-                        )}
-                    </div>
+                    ) : (
+                        <button className={cx('btn-warn')} onClick={() => handleOpen(setRejectOpen)}>
+                            <BsXLg className={cx('icon')} />
+                            Từ chối
+                        </button>
+                    )}
                 </div>
             </div>
 

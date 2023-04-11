@@ -1,9 +1,6 @@
 .wrapper {
-    height: calc(95vh - var(--default-navbar-height));
     position: relative;
-    .content {
-        padding-top: 3%;
-    }
+
     button {
         &:hover {
             opacity: 0.8;
@@ -49,7 +46,6 @@
     table-layout: auto;
     width: 100%;
     text-align: center;
-    margin-top: 30px;
     border-spacing: 0 8px;
 
     .header-row {

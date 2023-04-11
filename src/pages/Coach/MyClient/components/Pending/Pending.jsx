@@ -8,7 +8,6 @@ import { handleRenderGenders } from '~/utils/gender';
 import styles from './Pending.module.scss';
 import Pagination from '~/components/Pagination';
 import Spinner from '~/components/Spinner';
-import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -18,15 +17,10 @@ const Pending = () => {
     const { id } = useParams();
     const [currentPage, setCurrentPage] = useState(1);
     const [searchValue, setSearchValue] = useState('');
-    const debounced = useDebounce(searchValue, 500);
 
     useEffect(() => {
         dispatch(getAllContractsAsync({ pageIndex: currentPage, pageSize: 12, status: 'Pending' }));
     }, [dispatch, currentPage]);
-
-    const filteredContracts = contracts.filter((contract) =>
-        contract.clientName.toLowerCase().includes(debounced.toLowerCase()),
-    );
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -61,7 +55,7 @@ const Pending = () => {
                     {contracts && contracts.length > 0 ? (
                         <>
                             <div className={cx('contract-list')}>
-                                {filteredContracts.map((contract) => (
+                                {contracts.map((contract) => (
                                     <div className={cx('contract-item')} key={contract.id}>
                                         <div className={cx('card')}>
                                             <div className={cx('card-content')}>

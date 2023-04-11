@@ -3,18 +3,25 @@
         .day-item {
             display: flex;
             flex-direction: column;
-            padding-bottom: 32px;
-            margin-bottom: 32px;
 
             &:not(:last-child) {
                 border-bottom: 1px solid #333;
+            }
+
+            &:hover {
+                background-color: var(--light-white-color);
             }
 
             .day-number {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 16px;
+                padding: 16px 0;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #f4f6f6;
+                }
 
                 .number {
                     display: flex;
@@ -116,7 +123,7 @@
 
                 .edit-btn {
                     display: block;
-                    margin: 16px auto 0 auto;
+                    margin: 16px auto;
                     padding: 8px 16px;
                     border-radius: var(--default-border-radius);
                     cursor: pointer;

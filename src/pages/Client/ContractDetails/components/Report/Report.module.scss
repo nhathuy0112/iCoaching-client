@@ -70,7 +70,15 @@
         }
         .detail {
             margin-top: 8px;
-            display: block;
+            display: flex;
+            align-items: center;
+
+            .icon {
+                margin-right: 4px;
+                svg {
+                    display: block;
+                }
+            }
         }
     }
 }
