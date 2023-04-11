@@ -36,11 +36,13 @@ import AddResource from '~/pages/Coach/AddResource';
 import EditTrainingLog from '~/pages/Coach/EditTrainingLog';
 import CoachAccountProfile from '~/pages/Coach/AccountProfile';
 import Portfolio from '~/pages/Coach/Portfolio';
+import UpdatePortfolio from '~/pages/Coach/UpdatePortfolio';
+import UpdateImage from '~/pages/Coach/UpdateImage';
 
 //Admin
 import AdminCoachesView from '~/pages/Admin/CoachesView';
 import VerifyCoach from '~/pages/Admin/VerifyCoach';
-import CoachCertificate from '~/pages/Admin/VerifyCoach/CoachCertificate';
+import CoachCertificate from '~/pages/Admin/CoachCertificate';
 import Reports from '~/pages/Admin/Reports';
 import ReportDetails from '~/pages/Admin/Reports/ReportDetails';
 import CreateContract from '~/pages/Admin/Reports/ReportDetails/components/CreateContract';
@@ -167,6 +169,8 @@ const coachRoutes = [
     { path: '/coach/:id/my-courses/edit/:courseId', component: EditCourse, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/portfolio/update-about', component: UpdatePortfolio, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/portfolio/update-images', component: UpdateImage, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/messages', component: Messages, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/*', component: NotFound },
     { path: '/coach/:id/messages/:userId', component: Chat, layout: AuthLayout },

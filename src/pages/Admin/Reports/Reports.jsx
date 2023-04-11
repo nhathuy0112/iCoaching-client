@@ -10,7 +10,6 @@ import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
 
 import { AiOutlineClose } from 'react-icons/ai';
-import useDebounce from '~/hooks/useDebounce';
 const cx = classNames.bind(styles);
 
 const Reports = () => {
