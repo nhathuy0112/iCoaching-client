@@ -1,5 +1,7 @@
 .wrapper {
     flex: 1;
+    min-height: 65vh;
+
     .content {
         user-select: none;
         img {
