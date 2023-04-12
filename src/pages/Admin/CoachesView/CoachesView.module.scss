@@ -1,6 +1,6 @@
 .wrapper {
     position: relative;
-
+    min-height: calc(94vh - var(--default-navbar-height));
     button {
         &:hover {
             opacity: 0.8;

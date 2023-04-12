@@ -31,7 +31,7 @@ const VerifyCoach = () => {
     }, [id, currentUser, navigate]);
 
     useEffect(() => {
-        dispatch(getAllCertRequestsAsync({ pageIndex: currentPage }));
+        dispatch(getAllCertRequestsAsync({ pageIndex: currentPage, pageSize: 6 }));
     }, [dispatch, currentPage]);
 
     const handleSearch = (e) => {
@@ -45,22 +45,22 @@ const VerifyCoach = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('content')}>
-                <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
-                    <div className={cx('search-box')}>
-                        <button type="submit">
-                            <AiOutlineSearch className={cx('search-icon')} />
-                        </button>
-                        <input
-                            type="text"
-                            placeholder="Huấn luyện viên"
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
-                        />
-                    </div>
-                </form>
+            {coaches && coaches.length > 0 ? (
+                <div className={cx('content')}>
+                    <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                        <div className={cx('search-box')}>
+                            <button type="submit">
+                                <AiOutlineSearch className={cx('search-icon')} />
+                            </button>
+                            <input
+                                type="text"
+                                placeholder="Huấn luyện viên"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                        </div>
+                    </form>
 
-                {coaches && coaches.length > 0 ? (
                     <table className={cx('tb-coaches')}>
                         <thead>
                             <tr className={cx('header-row')}>
@@ -98,19 +98,19 @@ const VerifyCoach = () => {
                             ))}
                         </tbody>
                     </table>
-                ) : (
-                    <div className={cx('message')}>
-                        <h2>Không tìm thấy yêu cầu xác minh nào!</h2>
-                    </div>
-                )}
-                <Pagination
-                    className={cx('pagination-bar')}
-                    currentPage={currentPage}
-                    totalCount={totalCount}
-                    pageSize={pageSize}
-                    onPageChange={(page) => setCurrentPage(page)}
-                />
-            </div>
+                    <Pagination
+                        className={cx('pagination-bar')}
+                        currentPage={currentPage}
+                        totalCount={totalCount}
+                        pageSize={pageSize}
+                        onPageChange={(page) => setCurrentPage(page)}
+                    />
+                </div>
+            ) : (
+                <div className={cx('message')}>
+                    <h2>Không tìm thấy yêu cầu xác minh nào!</h2>
+                </div>
+            )}
         </div>
     );
 };

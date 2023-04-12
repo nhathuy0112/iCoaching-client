@@ -190,9 +190,11 @@ const EditCourse = () => {
                             )}
                         />
                     </div>
-                    <button id={cx('agree-btn')} type="submit">
-                        <span>Cập nhật</span>
-                    </button>
+                    <div className={cx('btn-wrapper')}>
+                        <button id={cx('agree-btn')} type="submit">
+                            <span>Cập nhật</span>
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

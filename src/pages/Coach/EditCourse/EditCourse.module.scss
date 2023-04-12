@@ -1,4 +1,6 @@
 .wrapper {
+    position: relative;
+    min-height: calc(90vh - var(--default-navbar-height));
     display: flex;
     flex-direction: column;
 
@@ -56,6 +58,7 @@
                 }
 
                 &.description {
+                    margin-bottom: 5%;
                     div {
                         flex: 1;
                         border-radius: var(--default-border-radius);
@@ -84,6 +87,12 @@
                 }
             }
 
+            .btn-wrapper {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                left: 0;
+            }
             #agree-btn {
                 display: flex;
                 margin: auto;

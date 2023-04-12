@@ -1,7 +1,7 @@
 .wrapper {
     min-height: calc(100vh - 60px - 16px - 48px);
     display: flex;
-
+    position: relative;
     .title-and-back {
         .back-link {
             display: flex;
@@ -93,9 +93,9 @@
 
         .main {
             display: flex;
+            margin-bottom: 8vh;
             .certificates {
                 padding-left: 16px;
-
                 .info-group {
                     margin: 16px 0;
                     .title {
@@ -125,6 +125,10 @@
         }
     }
     .status {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
         p {
             text-align: center;
             width: 100%;
@@ -139,7 +143,12 @@
         }
     }
 }
-
+.btn-wrapper {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
 .button {
     display: flex;
     align-items: center;
