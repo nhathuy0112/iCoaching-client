@@ -1,5 +1,6 @@
 .wrapper {
     position: relative;
+    min-height: calc(94vh - var(--default-navbar-height));
     .content {
         padding-top: 3%;
     }
@@ -7,6 +8,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
         color: #d01515;
         text-align: center;
     }
