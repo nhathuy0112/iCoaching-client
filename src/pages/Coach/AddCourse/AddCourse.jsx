@@ -188,9 +188,11 @@ const AddCourse = () => {
                             )}
                         />
                     </div>
-                    <button id={cx('agree-btn')} type="submit" disabled={loading}>
-                        <span>{loading ? <Spinner /> : 'Thêm mới'}</span>
-                    </button>
+                    <div className={cx('btn-wrapper')}>
+                        <button id={cx('agree-btn')} type="submit" disabled={loading}>
+                            <span>{loading ? <Spinner /> : 'Thêm mới'}</span>
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

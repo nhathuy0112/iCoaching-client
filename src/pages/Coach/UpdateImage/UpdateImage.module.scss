@@ -1,10 +1,16 @@
 .wrapper {
     .title-and-back {
+        .back {
+            display: flex;
+        }
+
         .back-link {
             display: flex;
             align-items: center;
             cursor: pointer;
             color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: 600;
         }
         .title {
             font-size: 3rem;

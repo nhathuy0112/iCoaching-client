@@ -1,11 +1,18 @@
 .wrapper {
     position: relative;
-
+    min-height: calc(94vh - var(--default-navbar-height));
+    overflow: auto;
     .content {
+        margin-bottom: 6%;
         .message {
             display: flex;
             justify-content: center;
             align-items: center;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
             color: #d01515;
             text-align: center;
         }
@@ -52,7 +59,7 @@
         flex-direction: column;
         box-shadow: var(--default-box-shadow);
         border-radius: var(--default-border-radius);
-        margin: 16px 0;
+        margin: 16px 2px;
         padding: 16px;
         label {
             color: var(--primary-color);
@@ -84,8 +91,12 @@
             display: block;
         }
         a {
-            display: flex;
-            justify-content: flex-end;
+            margin-bottom: 6px;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            margin: 0 10px 10px 0;
+            z-index: 2;
             .btn-info {
                 padding: 8px 16px;
                 display: flex;

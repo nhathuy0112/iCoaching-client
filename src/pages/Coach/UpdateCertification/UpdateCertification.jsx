@@ -130,12 +130,14 @@ const UpdateCertification = () => {
                                                         <img src={handleRenderImage(image)} alt="" width="100" />
                                                         <div className={cx('image-action')}>
                                                             <button
+                                                                hidden={loading}
                                                                 id={cx('update-btn')}
                                                                 onClick={() => onImageUpdate(index)}
                                                             >
                                                                 <MdOutlineEdit />
                                                             </button>
                                                             <button
+                                                                hidden={loading}
                                                                 id={cx('remove-btn')}
                                                                 onClick={() => onImageRemove(index)}
                                                             >
@@ -210,12 +212,14 @@ const UpdateCertification = () => {
                                                             <button
                                                                 id={cx('update-btn')}
                                                                 onClick={() => onImageUpdate(index)}
+                                                                hidden={loading}
                                                             >
                                                                 <MdOutlineEdit />
                                                             </button>
                                                             <button
                                                                 id={cx('remove-btn')}
                                                                 onClick={() => onImageRemove(index)}
+                                                                hidden={loading}
                                                             >
                                                                 <BiTrash />
                                                             </button>

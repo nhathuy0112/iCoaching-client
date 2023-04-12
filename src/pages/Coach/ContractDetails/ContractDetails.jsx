@@ -43,10 +43,14 @@ const ContractDetails = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title-and-back')}>
-                <Link to={`/coach/${id}/my-clients`} className={cx('back-link')}>
-                    <IoIosArrowBack />
-                    <span>Quay lại</span>
-                </Link>
+                <div className={cx('back')}>
+                    <div className={cx('back-link')}>
+                        <Link to={`/coach/${id}/my-clients`} className={cx('back-link')}>
+                            <IoIosArrowBack />
+                            <span>Quay lại</span>
+                        </Link>
+                    </div>
+                </div>
                 <h2 className={cx('title')}>Chi tiết hợp đồng</h2>
             </div>
             <div className={cx('content')}>

@@ -8,6 +8,7 @@ import { handleRenderGenders } from '~/utils/gender';
 import Pagination from '~/components/Pagination';
 import styles from './CoachRejected.module.scss';
 import Spinner from '~/components/Spinner';
+import { BsFillEnvelopeFill } from 'react-icons/bs';
 
 const cx = classNames.bind(styles);
 
@@ -103,7 +104,7 @@ const CoachRejected = () => {
                                                     id={cx('btn-view-detail')}
                                                     onClick={() => handleViewDetails(request)}
                                                 >
-                                                    Xem lý do
+                                                    <BsFillEnvelopeFill />
                                                 </button>
                                             </td>
                                         </tr>

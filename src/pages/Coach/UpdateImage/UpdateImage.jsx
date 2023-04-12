@@ -52,13 +52,15 @@ const UpdateImage = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title-and-back')}>
-                <span
-                    onClick={() => navigate(`/coach/${id}/portfolio`, { state: { isImagesGallery: true } })}
-                    className={cx('back-link')}
-                >
-                    <IoIosArrowBack />
-                    <span>Quay lại</span>
-                </span>
+                <div className={cx('back')}>
+                    <span
+                        onClick={() => navigate(`/coach/${id}/portfolio`, { state: { isImagesGallery: true } })}
+                        className={cx('back-link')}
+                    >
+                        <IoIosArrowBack />
+                        <span>Quay lại</span>
+                    </span>
+                </div>
                 <h2 className={cx('title')}>Thư viện ảnh</h2>
             </div>
             <div className={cx('content')}>

@@ -39,7 +39,9 @@
             position: relative;
 
             .back {
+                display: flex;
                 margin-bottom: 16px;
+
                 .back-link {
                     display: flex;
                     align-items: center;

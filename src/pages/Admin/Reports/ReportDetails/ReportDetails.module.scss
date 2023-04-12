@@ -1,7 +1,9 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-
+    position: relative;
+    min-height: calc(94vh - var(--default-navbar-height));
+    overflow: auto;
     .title-and-back {
         margin: 16px 0;
         .back-link {
@@ -27,12 +29,16 @@
     flex-direction: column;
     justify-content: center;
 }
-
+.btn-wrapper {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
 .button {
     display: flex;
     align-items: center;
     justify-content: center;
-
     .btn-confirm,
     .btn-warn {
         margin: 0 4px;

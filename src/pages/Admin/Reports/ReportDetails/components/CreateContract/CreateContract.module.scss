@@ -1,4 +1,6 @@
 .wrapper {
+    position: relative;
+    min-height: calc(90vh - var(--default-navbar-height));
     .content {
         .title-and-back {
             margin: 16px 0;
@@ -106,7 +108,7 @@
                 cursor: pointer;
                 display: block;
                 justify-self: center;
-                margin: 8px auto 0;
+                margin: 8% auto 0;
                 padding: 12px 30px;
                 background-color: green;
                 color: white;

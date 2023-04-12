@@ -118,10 +118,13 @@ const CoachesView = () => {
                                         <td>{coach.email}</td>
                                         <td>{coach.phoneNumber}</td>
                                         <td className={cx('action-btn')}>
-                                            <button id={cx('warning')} onClick={() => handleWarnOpen(coach)}>
-                                                {coach.warningCount}
-                                                <IoMdWarning className={cx('icon')} />
-                                            </button>
+                                            {!coach.isLocked && (
+                                                <button id={cx('warning')} onClick={() => handleWarnOpen(coach)}>
+                                                    {coach.warningCount}
+                                                    <IoMdWarning className={cx('icon')} />
+                                                </button>
+                                            )}
+
                                             <button
                                                 id={cx(`${coach.isLocked ? 'btn-confirm' : 'btn-warn'}`)}
                                                 onClick={() => handleLockOpen(coach)}

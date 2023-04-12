@@ -8,6 +8,7 @@ import { handleRenderGenders } from '~/utils/gender';
 import styles from './Canceled.module.scss';
 import Pagination from '~/components/Pagination';
 import Spinner from '~/components/Spinner';
+import { BsFillEnvelopeFill } from 'react-icons/bs';
 
 const cx = classNames.bind(styles);
 
@@ -99,7 +100,7 @@ const Canceled = () => {
                                                     id={cx('btn-view-detail')}
                                                     onClick={() => handleViewDetails(request)}
                                                 >
-                                                    Xem lý do
+                                                    <BsFillEnvelopeFill />
                                                 </button>
                                             </td>
                                         </tr>

@@ -25,8 +25,6 @@ const Header = () => {
             logoutAsync({
                 currentRefreshToken: getLocalStorage('auth').refreshToken,
                 successCallback: () => {
-                    console.log('navigate /');
-                    // navigate('/');
                     window.location.href = '/';
                 },
             }),
@@ -40,7 +38,9 @@ const Header = () => {
     }, [dispatch, avatar]);
 
     useEffect(() => {
-        if (currentUser) dispatch(getUserProfileAsync());
+        if (currentUser) {
+            dispatch(getUserProfileAsync());
+        }
     }, [dispatch, currentUser]);
 
     useEffect(() => {
@@ -144,7 +144,7 @@ const Header = () => {
                                     }
                                 >
                                     <div className={cx('info')}>
-                                        <span className={cx('name')}>{profile.fullname}</span>
+                                        <span className={cx('name')}>{profile?.fullname}</span>
                                         <div className={cx('avatar-wrapper')}>
                                             {avatar ? (
                                                 <img className={cx('avatar')} src={avatar} alt="user-avatar" />

@@ -44,7 +44,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
-    }, [dispatch, coaches]);
+    }, [dispatch]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
