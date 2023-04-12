@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import {
     cancelTrainingRequest,
     completedContract,
@@ -15,11 +14,7 @@ export const sendCoachingRequestAsync = createAsyncThunk(
     async (payload, { rejectWithValue }) => {
         try {
             const response = await sendCoachingRequest(payload);
-            if (response) {
-                toast.success('Yêu cầu tập luyện thành công!');
-                return response;
-            }
-            // return response;
+            return response;
         } catch (error) {
             console.log(error);
             return rejectWithValue(error);
@@ -120,7 +115,7 @@ export const clientSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(sendCoachingRequestAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.payload;
             })
 
@@ -137,7 +132,7 @@ export const clientSlice = createSlice({
                 state.pageSize = action.payload.pageSize;
             })
             .addCase(getCoachingRequestsAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -154,7 +149,7 @@ export const clientSlice = createSlice({
                 state.pageSize = action.payload.pageSize;
             })
             .addCase(getTrainingCoursesAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -168,7 +163,7 @@ export const clientSlice = createSlice({
                 state.loading = false;
             })
             .addCase(cancelTrainingRequestAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -183,7 +178,7 @@ export const clientSlice = createSlice({
                 state.paymentLink = action.payload;
             })
             .addCase(getPaymentLinkAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -198,7 +193,7 @@ export const clientSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(completedContractAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -213,7 +208,7 @@ export const clientSlice = createSlice({
                 state.vouchers = action.payload;
             })
             .addCase(getAllVouchersAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             });
     },

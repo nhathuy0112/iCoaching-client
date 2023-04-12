@@ -1,0 +1,172 @@
+.wrapper {
+    .content {
+        .title-and-back {
+            display: flex;
+            align-items: center;
+            .back {
+                margin-bottom: 16px;
+                .back-link {
+                    display: flex;
+                    align-items: center;
+                    font-size: 2rem;
+                    font-weight: 600;
+                    color: var(--primary-color);
+                }
+            }
+
+            .title {
+                flex: 1;
+                padding-top: 30px;
+                margin-bottom: 20px;
+                text-align: center;
+                color: var(--primary-color);
+
+                @media (min-width: 1201px) and (max-width: 1920px) {
+                    padding-top: 0;
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .main {
+            .info-group {
+                margin: 16px 0;
+
+                .title {
+                    font-size: 2rem;
+                    font-weight: 500;
+                    color: var(--primary-color);
+                }
+
+                .image-wrapper {
+                    .image-upload {
+                        .action {
+                            display: flex;
+                            justify-content: flex-start;
+
+                            .add-btn,
+                            .remove-all-btn {
+                                padding: 12px 16px;
+                                width: 120px;
+                                display: flex;
+                                align-items: center;
+                                text-align: center;
+                                font-size: 1.6rem;
+                                font-weight: 600;
+                                color: var(--white-color);
+                                border-radius: var(--default-border-radius);
+                                cursor: pointer;
+
+                                .icon {
+                                    font-size: 1.6rem;
+                                    font-weight: 600;
+                                    margin-right: 4px;
+                                }
+
+                                &:hover {
+                                    opacity: 0.6;
+                                }
+
+                                &.disabled {
+                                    background-color: #ccc;
+                                    pointer-events: none;
+                                }
+
+                                @media (min-width: 1201px) and (max-width: 1920px) {
+                                    padding: 12px;
+                                    font-size: 1.4rem;
+                                }
+                            }
+
+                            .add-btn {
+                                background-color: green;
+                                margin-right: 8px;
+                            }
+
+                            .remove-all-btn {
+                                background-color: red;
+                            }
+                        }
+                        .image-list {
+                            display: grid;
+                            grid-template-columns: repeat(5, 1fr);
+                            gap: 12px;
+                            margin-top: 16px;
+
+                            @media (min-width: 1201px) and (max-width: 1920px) {
+                                margin-top: 24px;
+                            }
+
+                            .image-item {
+                                position: relative;
+                                width: 338px;
+                                height: 224px;
+                                border: 1px solid var(--border-color);
+                                border-radius: var(--default-border-radius);
+                                cursor: pointer;
+
+                                img {
+                                    width: 100%;
+                                    height: 100%;
+                                }
+
+                                .image-action {
+                                    position: absolute;
+                                    top: 50%;
+                                    left: 50%;
+                                    transform: translate(-50%, -50%);
+                                    display: none;
+                                    align-items: center;
+
+                                    #update-btn,
+                                    #remove-btn {
+                                        padding: 16px;
+                                        font-size: 4rem;
+                                        font-weight: 600;
+                                        color: var(--primary-color);
+                                        background-color: transparent;
+                                        cursor: pointer;
+                                    }
+                                }
+
+                                &:hover {
+                                    opacity: 0.8;
+
+                                    .image-action {
+                                        display: flex;
+                                    }
+                                }
+
+                                @media (min-width: 1201px) and (max-width: 1920px) {
+                                    width: 208px;
+                                    height: 124px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .action-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                #send-btn {
+                    padding: 12px 16px;
+                    width: 120px;
+                    text-align: center;
+                    background-color: var(--primary-color);
+                    color: var(--white-color);
+                    font-size: 1.6rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    border-radius: var(--default-border-radius);
+
+                    &:hover {
+                        opacity: 0.6;
+                    }
+                }
+            }
+        }
+    }
+}

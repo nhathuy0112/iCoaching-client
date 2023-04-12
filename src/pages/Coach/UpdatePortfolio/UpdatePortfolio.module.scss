@@ -1,0 +1,52 @@
+.wrapper {
+    .title-and-back {
+        .back-link {
+            display: flex;
+            align-items: center;
+            color: var(--primary-color);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+    }
+    .content {
+        #about-form {
+            img {
+                width: 240px;
+                margin: 0 4px;
+                border-radius: var(--default-border-radius);
+            }
+
+            video {
+                width: 240px;
+                margin: 0 4px;
+                border-radius: var(--default-border-radius);
+            }
+
+            #save-btn {
+                padding: 12px 16px;
+                width: 120px;
+                background-color: green;
+                color: var(--white-color);
+                border-radius: var(--default-border-radius);
+                display: flex;
+                margin: auto;
+                margin-top: 16px;
+                cursor: pointer;
+
+                span {
+                    margin: auto;
+                }
+
+                &:hover {
+                    opacity: 0.6;
+                }
+            }
+        }
+    }
+}

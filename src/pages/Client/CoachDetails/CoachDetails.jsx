@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './CoachDetails.module.scss';
 
@@ -12,6 +12,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCoachProfileAsync } from '~/features/guestSlice';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
+import Home from '~/components/Chat/Home';
+import { changeUser } from '~/features/chatSlice';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 const CoachDetail = () => {
@@ -28,6 +31,11 @@ const CoachDetail = () => {
             label: 'Gói tập',
             content: <TrainingCourse />,
         },
+        {
+            label: 'Trò chuyện',
+            content: <Home />,
+            onClick: () => handleSelect(),
+        },
     ];
     const { id, coachId } = useParams();
     const location = useLocation();
@@ -36,6 +44,11 @@ const CoachDetail = () => {
     const { currentCoach, error } = useSelector((state) => state.guest);
     const { currentUser } = useSelector((state) => state.user);
 
+    const [loading, setLoading] = useState(true);
+
+    const handleSelect = () => {
+        dispatch(changeUser({ currentUser: currentUser, payload: coachId }));
+    };
     useEffect(() => {
         if (currentUser) {
             if (id !== currentUser.Id) {
@@ -47,7 +60,9 @@ const CoachDetail = () => {
     }, [id, currentUser, navigate, location, coachId]);
 
     useEffect(() => {
-        dispatch(getCoachProfileAsync(coachId));
+        dispatch(getCoachProfileAsync(coachId))
+            .unwrap()
+            .then(() => setLoading(false));
     }, [dispatch, coachId]);
 
     return (
@@ -88,18 +103,28 @@ const CoachDetail = () => {
                         </div>
                         <div className={cx('main')}>
                             <div className={cx('profile')}>
-                                <div className={cx('avatar')}>
-                                    {currentCoach?.avatarUrl ? (
-                                        <img src={currentCoach.avatarUrl} className={cx('image')} alt={'coach'} />
-                                    ) : (
-                                        <FaUserCircle className={cx('default')} />
-                                    )}
-                                </div>
-                                <h2 className={cx('name')}>{currentCoach?.fullname}</h2>
-                                <span className={cx(handleRenderGenderClassNames(currentCoach?.gender))}>
-                                    {handleRenderGenders(currentCoach?.gender)}
-                                </span>
-                                <span className={cx('age')}>{currentCoach?.age} tuổi</span>
+                                {loading ? (
+                                    <Spinner />
+                                ) : (
+                                    <>
+                                        <div className={cx('avatar')}>
+                                            {currentCoach?.avatarUrl ? (
+                                                <img
+                                                    src={currentCoach.avatarUrl}
+                                                    className={cx('image')}
+                                                    alt={'coach'}
+                                                />
+                                            ) : (
+                                                <FaUserCircle className={cx('default')} />
+                                            )}
+                                        </div>
+                                        <h2 className={cx('name')}>{currentCoach?.fullname}</h2>
+                                        <span className={cx(handleRenderGenderClassNames(currentCoach?.gender))}>
+                                            {handleRenderGenders(currentCoach?.gender)}
+                                        </span>
+                                        <span className={cx('age')}>{currentCoach?.age} tuổi</span>
+                                    </>
+                                )}
                             </div>
                             <div className={cx('tabs')}>
                                 <Tabs tabs={tabs}></Tabs>

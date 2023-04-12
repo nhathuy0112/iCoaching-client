@@ -1,6 +1,8 @@
 .wrapper {
     margin-top: var(--default-navbar-height);
-
+    min-height: var(--default-content-min-height);
+    position: relative;
+    margin-bottom: 20px;
     .title-and-back {
         margin: 16px auto;
         max-width: var(--default-layout-max-width);
@@ -30,6 +32,36 @@
     .content {
         max-width: var(--default-layout-max-width);
         margin: auto;
+        .search {
+            max-width: var(--default-layout-max-width);
+            margin: auto;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+
+            .search-box {
+                display: flex;
+                height: 36px;
+                border-radius: var(--default-border-radius);
+                background: var(--search-filter-background-color);
+                padding: 8px 12px;
+                color: #8f9bba;
+                font-size: 1.4rem;
+                input {
+                    background: transparent;
+                }
+
+                button {
+                    background-color: transparent;
+                    cursor: pointer;
+                }
+                .search-icon {
+                    margin-right: 12px;
+                    color: #2b3674;
+                    font-size: 1.8rem;
+                }
+            }
+        }
 
         .course-list {
             display: grid;

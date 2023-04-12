@@ -3,18 +3,25 @@
         .day-item {
             display: flex;
             flex-direction: column;
-            padding-bottom: 32px;
-            margin-bottom: 32px;
 
             &:not(:last-child) {
                 border-bottom: 1px solid #333;
+            }
+
+            &:hover {
+                background-color: var(--light-white-color);
             }
 
             .day-number {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 16px;
+                padding: 16px 0;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #f4f6f6;
+                }
 
                 .number {
                     display: flex;
@@ -33,6 +40,8 @@
 
             .day-content {
                 padding: 0 64px;
+                margin-bottom: 32px;
+
                 table {
                     width: 100%;
                 }
@@ -78,10 +87,13 @@
                         height: 120px;
                         border: 1px solid #333;
                         border-radius: var(--default-border-radius);
-
                         img {
                             width: 100%;
                             height: 100%;
+                            cursor: pointer;
+                            &:hover {
+                                opacity: 0.8;
+                            }
                         }
                     }
                 }

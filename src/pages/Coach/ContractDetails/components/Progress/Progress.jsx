@@ -1,21 +1,29 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { AiFillCheckCircle } from 'react-icons/ai';
+import { AiFillCheckCircle, AiOutlineClose } from 'react-icons/ai';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getContractLogsAsync, getProgramFileDownloadAsync } from '~/features/contractSlice';
+import { getContractDetailsAsync, getContractLogsAsync, getProgramFileDownloadAsync } from '~/features/contractSlice';
 import styles from './Progress.module.scss';
 import { handleRenderFileIcon } from '~/utils/file';
+import Modal from '~/components/Modal';
+import ErrorMessage from '~/components/ErrorMessage';
 
 const cx = classNames.bind(styles);
 
 const Progress = () => {
     const dispatch = useDispatch();
-    const { logs } = useSelector((state) => state.contract);
+    const { logs, currentContract } = useSelector((state) => state.contract);
     const { id, contractId } = useParams();
     const navigate = useNavigate();
     const [expandedItems, setExpandedItems] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [file, setFile] = useState('');
+
+    useEffect(() => {
+        dispatch(getContractDetailsAsync(contractId));
+    }, [dispatch, contractId]);
 
     useEffect(() => {
         dispatch(getContractLogsAsync(contractId));
@@ -49,13 +57,18 @@ const Progress = () => {
             });
     };
 
+    const handleOpenImage = (e) => {
+        setOpen(true);
+        setFile(e);
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('day-list')}>
                 {logs &&
                     logs.map((log) => (
                         <div className={cx('day-item')} key={log.id}>
-                            <div className={cx('day-number')}>
+                            <div className={cx('day-number')} onClick={() => handleToggleShowItem(log)}>
                                 <div className={cx('number')}>
                                     <h3 className={cx('title')}>Ngày {log.dateNo}</h3>
                                     {log.status === 'Complete' && (
@@ -66,11 +79,11 @@ const Progress = () => {
                                 </div>
                                 <div className={cx('action')}>
                                     {isItemExpanded(log) ? (
-                                        <div className={cx('show-less')} onClick={() => handleToggleShowItem(log)}>
+                                        <div className={cx('show-less')}>
                                             <MdOutlineKeyboardArrowUp />
                                         </div>
                                     ) : (
-                                        <div className={cx('show-more')} onClick={() => handleToggleShowItem(log)}>
+                                        <div className={cx('show-more')}>
                                             <MdOutlineKeyboardArrowDown />
                                         </div>
                                     )}
@@ -115,7 +128,11 @@ const Progress = () => {
                                                     {log.images.length > 0
                                                         ? log.images.map((image) => (
                                                               <div className={cx('image-frame')} key={image.id}>
-                                                                  <img src={image.url} alt="person" />
+                                                                  <img
+                                                                      src={image.url}
+                                                                      alt="person"
+                                                                      onClick={() => handleOpenImage(image.url)}
+                                                                  />
                                                               </div>
                                                           ))
                                                         : 'Chưa cập nhật'}
@@ -141,9 +158,18 @@ const Progress = () => {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    {log.status !== 'Complete' && (
+                                    {currentContract?.isReported && (
+                                        <div className={cx('error')}>
+                                            <ErrorMessage message={'Hợp đồng đang bị khiếu nại từ khách hàng'} />
+                                        </div>
+                                    )}
+                                    {currentContract?.status === 'Active' && (
                                         <button
-                                            id={cx('edit-btn')}
+                                            className={
+                                                currentContract?.isReported
+                                                    ? cx('edit-btn', 'disabled')
+                                                    : cx('edit-btn')
+                                            }
                                             onClick={() => {
                                                 navigate(
                                                     `/coach/${id}/my-clients/view-details/${contractId}/edit/${log.id}`,
@@ -158,6 +184,21 @@ const Progress = () => {
                         </div>
                     ))}
             </div>
+            {open && (
+                <div className={cx('modal')}>
+                    <Modal
+                        open={open}
+                        onClose={() => setOpen(false)}
+                        modalStyle={{ background: 'none' }}
+                        closeBtnStyle={{ display: 'none' }}
+                    >
+                        <button className={cx('closeBtn')} onClick={() => setOpen(false)}>
+                            <AiOutlineClose />
+                        </button>
+                        <img id={cx('photo')} src={file} alt="expand" />
+                    </Modal>
+                </div>
+            )}
         </div>
     );
 };

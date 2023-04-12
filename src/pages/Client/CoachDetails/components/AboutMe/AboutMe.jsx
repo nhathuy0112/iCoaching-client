@@ -4,11 +4,12 @@ import classNames from 'classnames/bind';
 
 import { getCoachAboutAsync } from '~/features/guestSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 
 const AboutMe = () => {
-    const { about, currentCoach } = useSelector((state) => state.guest);
+    const { about, currentCoach, loading } = useSelector((state) => state.guest);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -17,15 +18,19 @@ const AboutMe = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('content')}>
-                {about ? (
-                    <div dangerouslySetInnerHTML={{ __html: about }}></div>
-                ) : (
-                    <div className={cx('empty')}>
-                        <h3 className={cx('message')}>Huấn luyện viên này chưa cập nhật giới thiệu bản thân</h3>
-                    </div>
-                )}
-            </div>
+            {loading ? (
+                <Spinner />
+            ) : (
+                <div className={cx('content')}>
+                    {about ? (
+                        <div dangerouslySetInnerHTML={{ __html: about }}></div>
+                    ) : (
+                        <div className={cx('empty')}>
+                            <h3 className={cx('message')}>Huấn luyện viên này chưa cập nhật giới thiệu bản thân</h3>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

@@ -1,39 +1,62 @@
 .wrapper {
     flex: 1;
 
-    #about-form {
-        height: 100%;
-        position: relative;
-
-        .editor {
-            height: 85%;
-
-            @media(min-width: 1201px) and (max-width: 1920px){
-                height: 82%;
-            }
+    .content {
+        img {
+            width: 240px;
+            margin: 0 4px;
+            border-radius: var(--default-border-radius);
         }
 
-        #update-btn {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 16px 32px;
-            font-size: 2rem;
-            font-weight: 500;
+        video {
+            width: 240px;
+            margin: 0 4px;
             border-radius: var(--default-border-radius);
-            background-color: green;
-            color: var(--white-color);
-            cursor: pointer;
+        }
+    }
 
-            &:hover {
-                opacity: 0.6;
-            }
+    .about-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
-            @media (min-width: 1201px) and (max-width: 1920px){
-                padding: 8px 20px;
-                font-size: 1.4rem;
-            }
+        h2 {
+            color: red;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .update-link {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+    }
+
+    #update-btn {
+        display: flex;
+        margin: auto;
+        margin-top: 16px;
+        width: 120px;
+        padding: 16px 32px;
+        font-size: 2rem;
+        font-weight: 500;
+        border-radius: var(--default-border-radius);
+        background-color: green;
+        color: var(--white-color);
+        cursor: pointer;
+
+        span {
+            margin: auto;
+        }
+
+        &:hover {
+            opacity: 0.6;
+        }
+
+        @media (min-width: 1201px) and (max-width: 1920px) {
+            padding: 8px 20px;
+            font-size: 1.4rem;
         }
     }
 }

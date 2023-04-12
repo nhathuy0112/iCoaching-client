@@ -12,7 +12,6 @@ import { getAllCoachesAsync } from '~/features/guestSlice';
 import { useEffect } from 'react';
 import UserCard from '~/components/UserCard';
 import { Link } from 'react-router-dom';
-
 const cx = classNames.bind(styles);
 
 const Home = () => {
@@ -45,7 +44,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
-    }, [dispatch]);
+    }, [dispatch, coaches]);
 
     useEffect(() => {
         window.scrollTo(0, 0);

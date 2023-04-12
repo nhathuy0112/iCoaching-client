@@ -1,5 +1,5 @@
 .wrapper {
-    height: 100%;
+    height: calc(95vh - var(--default-navbar-height));
     position: relative;
     display: flex;
     flex-direction: column;
@@ -7,7 +7,7 @@
     .course-empty {
         margin: auto;
 
-        h1 {
+        h2 {
             color: red;
         }
     }
@@ -44,8 +44,37 @@
         }
     }
 
+    .search {
+        max-width: var(--default-layout-max-width);
+        display: flex;
+        justify-content: flex-end;
+
+        .search-box {
+            display: flex;
+            height: 36px;
+            border-radius: var(--default-border-radius);
+            background: var(--search-filter-background-color);
+            padding: 8px 12px;
+            color: #8f9bba;
+            font-size: 1.4rem;
+            input {
+                background: transparent;
+            }
+            button {
+                background-color: transparent;
+                cursor: pointer;
+            }
+
+            .search-icon {
+                margin-right: 12px;
+                color: #2b3674;
+                font-size: 1.8rem;
+            }
+        }
+    }
+
     .course-list {
-        margin-top: 32px;
+        margin-top: 16px;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 12px;
@@ -78,113 +107,6 @@
                 #delete-btn {
                     color: red;
                 }
-            }
-        }
-    }
-
-    //Modal
-    .header {
-        padding: 16px;
-        background-color: var(--primary-color);
-        color: var(--white-color);
-        text-align: center;
-    }
-    .body {
-        padding: 32px 64px;
-
-        .title {
-            font-size: 3rem;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        #add-form,
-        #edit-form {
-            .input-group {
-                display: flex;
-                align-items: center;
-                margin: 16px 0;
-
-                &.description {
-                    align-items: unset;
-
-                    label {
-                        margin-top: 8px;
-                    }
-                }
-
-                &.price-edit {
-                    position: relative;
-
-                    .unit {
-                        position: absolute;
-                        right: 16px;
-                    }
-                }
-
-                label {
-                    font-size: 2rem;
-                    font-weight: 500;
-                    color: #1a97cc;
-                    min-width: 160px;
-                }
-
-                input,
-                textarea {
-                    padding: 12px 16px;
-                    border: 1px solid var(--primary-color);
-                    border-radius: var(--default-border-radius);
-                    flex: 1;
-                    font-size: 1.6rem;
-                    font-weight: 500;
-                    color: #000;
-                }
-
-                textarea {
-                    outline: none;
-                    height: 140px;
-                }
-            }
-
-            .error {
-                margin-left: 160px;
-            }
-        }
-        .modal-action {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            #agree-btn,
-            #cancel-btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 180px;
-                padding: 16px 32px;
-                margin: 0 8px;
-                color: var(--white-color);
-                font-size: 1.6rem;
-                font-weight: 500;
-                border-radius: var(--default-border-radius);
-                cursor: pointer;
-
-                span {
-                    margin-left: 8px;
-                }
-
-                &:hover {
-                    opacity: 0.6;
-                }
-            }
-
-            #agree-btn {
-                background-color: green;
-            }
-
-            #cancel-btn {
-                background-color: red;
             }
         }
     }

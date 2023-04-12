@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -12,7 +12,12 @@ import { dataURItoBlob } from '~/utils/blob';
 import ErrorMessage from '~/components/ErrorMessage';
 import SuccessMessage from '~/components/SuccessMessage';
 
-import { getUserAvatarAsync, updateUserAvatarAsync, updateUserProfileAsync } from '~/features/userSlice';
+import {
+    getUserAvatarAsync,
+    getUserProfileAsync,
+    updateUserAvatarAsync,
+    updateUserProfileAsync,
+} from '~/features/userSlice';
 
 import Modal from '~/components/Modal/Modal';
 import { BsCheckLg } from 'react-icons/bs';
@@ -50,10 +55,11 @@ const schema = yup.object({
 
 const AccountProfile = () => {
     const dispatch = useDispatch();
-    const { avatar, profile, error, message, currentUser } = useSelector((state) => state.user);
+    const { avatar, profile, error, message, currentUser, loading } = useSelector((state) => state.user);
     const [currentAvatar, setCurrentAvatar] = useState(avatar);
+    const [avatarLoading, setAvatarLoading] = useState(false);
+
     const [response, setResponse] = useState(false);
-    const [loading, setLoading] = useState(true);
     const [confirmAvatar, setConfirmAvatar] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -69,7 +75,6 @@ const AccountProfile = () => {
     useEffect(() => {
         dispatch(getUserAvatarAsync());
         setCurrentAvatar(avatar);
-        setLoading(false);
     }, [dispatch, avatar]);
 
     const {
@@ -96,7 +101,12 @@ const AccountProfile = () => {
                     gender: data.gender,
                     phoneNumber: data.phoneNumber,
                 }),
-            ).then(() => setResponse(true));
+            )
+                .unwrap()
+                .then(() => {
+                    setResponse(true);
+                    dispatch(getUserProfileAsync());
+                });
         } catch (error) {
             console.log(error);
         }
@@ -120,10 +130,12 @@ const AccountProfile = () => {
         const formData = new FormData();
         const blob = dataURItoBlob(currentAvatar);
         formData.append('file', blob);
-        setLoading(true);
-        dispatch(updateUserAvatarAsync(formData)).then(() => {
-            setLoading(false);
-        });
+        setAvatarLoading(true);
+        dispatch(updateUserAvatarAsync(formData))
+            .unwrap()
+            .then(() => {
+                setAvatarLoading(false);
+            });
         setConfirmAvatar(false);
     };
 
@@ -143,9 +155,9 @@ const AccountProfile = () => {
                     </div>
                     <div className={cx('container')}>
                         <div className={cx('left_container')}>
-                            <h3>Ảnh đại diện client</h3>
+                            <h3>Ảnh đại diện</h3>
 
-                            {loading ? (
+                            {avatarLoading ? (
                                 <Spinner />
                             ) : (
                                 <>
@@ -157,12 +169,12 @@ const AccountProfile = () => {
                                             htmlFor="upload"
                                             onClick={handleChangeAvatar}
                                         >
-                                            Change Image
+                                            Chọn ảnh
                                         </label>
                                     </div>
                                 </>
                             )}
-                            <button type="submit" onClick={() => setConfirmAvatar(true)}>
+                            <button type="submit" onClick={() => setConfirmAvatar(true)} hidden={avatarLoading}>
                                 Thay đổi
                             </button>
                         </div>
@@ -180,7 +192,7 @@ const AccountProfile = () => {
                                     <div className={cx('col-2')}>
                                         <label>Giới tính</label>
                                         <select
-                                            defaultValue={profile.gender ? profile.gender : ''}
+                                            defaultValue={profile.gender}
                                             {...register('gender', { required: true })}
                                         >
                                             <option value="" disabled>
@@ -221,8 +233,19 @@ const AccountProfile = () => {
                                 {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
                                 {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
                                 {response && message && <SuccessMessage message={message} />}
-                                <button type="submit" id={cx('submit_btn')} className={cx('align-center')}>
-                                    <BsCheckLg className={cx('icon')} /> Cập nhật
+                                <button
+                                    type="submit"
+                                    id={cx('submit_btn')}
+                                    className={cx('align-center')}
+                                    disabled={loading}
+                                >
+                                    {loading ? (
+                                        <Spinner />
+                                    ) : (
+                                        <>
+                                            <BsCheckLg className={cx('icon')} /> Cập nhật
+                                        </>
+                                    )}
                                 </button>
                             </form>
                         </div>

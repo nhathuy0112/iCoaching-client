@@ -3,11 +3,13 @@ import styles from './AddResource.module.scss';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { handleRenderFileIcon } from '~/utils/file';
 import { uploadContractProgramFilesAsync } from '~/features/contractSlice';
+import Spinner from '~/components/Spinner';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -16,6 +18,7 @@ const AddResource = () => {
     const navigate = useNavigate();
     const { id, contractId } = useParams();
     const [fileList, setFileList] = useState([]);
+    const { loading } = useSelector((state) => state.contract);
 
     const handleFileListChange = (event) => {
         const file = event.target.files[0];
@@ -40,6 +43,7 @@ const AddResource = () => {
                 navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
                     state: { isAddedResources: true },
                 });
+                toast.success('Thêm tài nguyên thành công!');
             });
     };
 
@@ -85,8 +89,8 @@ const AddResource = () => {
                 </ul>
             </div>
             {fileList && fileList.length > 0 && (
-                <button id={cx('save-btn')} onClick={handleUploadProgramFiles}>
-                    Lưu
+                <button id={cx('save-btn')} onClick={handleUploadProgramFiles} disabled={loading}>
+                    {loading ? <Spinner /> : <span>Lưu</span>}
                 </button>
             )}
         </div>

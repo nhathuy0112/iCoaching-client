@@ -7,19 +7,21 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getAllReportsAsync } from '~/features/adminSlice';
 import Modal from '~/components/Modal';
+import Pagination from '~/components/Pagination';
 
 import { AiOutlineClose } from 'react-icons/ai';
 const cx = classNames.bind(styles);
 
 const Reports = () => {
     const dispatch = useDispatch();
-    const { reports } = useSelector((state) => state.admin);
+    const { reports, totalCount, pageSize } = useSelector((state) => state.admin);
     const [viewDetail, setViewDetail] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [file, setFile] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
+    const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
         if (currentUser) {
@@ -30,7 +32,7 @@ const Reports = () => {
     }, [id, currentUser, navigate]);
 
     useEffect(() => {
-        dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 2 }));
+        dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3 }));
     }, [dispatch, currentPage]);
 
     const handleViewDetail = (img) => {
@@ -41,28 +43,52 @@ const Reports = () => {
         setViewDetail(false);
         setFile(null);
     };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3 }));
+        } else {
+            dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3, searchValue }));
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                {reports.length !== 0 ? (
+                <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                    <div className={cx('search-box')}>
+                        <button type="submit">
+                            <AiOutlineSearch className={cx('search-icon')} />
+                        </button>
+                        <input
+                            type="text"
+                            placeholder="Khách hàng"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                    </div>
+                </form>
+                {reports && reports.length > 0 ? (
                     <>
-                        <form className={cx('search')}>
-                            <div className={cx('search-box')} type="submit">
-                                <AiOutlineSearch className={cx('search-icon')} />
-                                <input type="text" placeholder="Tìm kiếm" />
-                            </div>
-                        </form>
                         <div className={cx('list-reports')}>
                             {reports?.map((report) => (
-                                <div className={cx('rp')}>
+                                <div className={cx('rp')} key={report.id}>
                                     <label>{report.clientFullName}</label>
                                     <div className={cx('photos')}>
                                         {report.images?.map((photo) => (
-                                            <img src={photo} alt="report" onClick={() => handleViewDetail(photo)} />
+                                            <div className={cx('photo-item')}>
+                                                <img
+                                                    key={photo.id}
+                                                    src={photo}
+                                                    alt="report"
+                                                    onClick={() => handleViewDetail(photo)}
+                                                />
+                                            </div>
                                         ))}
                                     </div>
                                     <p>{report.detail}</p>
-                                    <Link to={`${report.contractId}/${report.id}`}>
+                                    <Link to={`${report.contractId}/view-details/${report.id}`}>
                                         <button className={cx('btn-info')}>
                                             Xem chi tiết <MdOutlineKeyboardArrowRight className={cx('icon')} />
                                         </button>
@@ -73,10 +99,17 @@ const Reports = () => {
                     </>
                 ) : (
                     <div className={cx('message')}>
-                        <h1>Hiện chưa có khiếu nại nào!</h1>
+                        <h2>Không tìm thấy khiếu nại nào!</h2>
                     </div>
                 )}
             </div>
+            <Pagination
+                className={cx('pagination-bar')}
+                currentPage={currentPage}
+                totalCount={totalCount}
+                pageSize={pageSize}
+                onPageChange={(page) => setCurrentPage(page)}
+            />
             {viewDetail && (
                 <Modal
                     open={viewDetail}

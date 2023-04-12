@@ -10,13 +10,14 @@ import { IoMdGift, IoMdSettings } from 'react-icons/io';
 import { logoutAsync, getUserAvatarAsync, getUserProfileAsync } from '~/features/userSlice';
 import { getLocalStorage } from '~/utils/localStorage';
 import { BiLogOut } from 'react-icons/bi';
+import { changeUser, updateUserOnlineStatus } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { currentUser, avatar } = useSelector((state) => state.user);
+    const { currentUser, avatar, profile } = useSelector((state) => state.user);
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -30,6 +31,8 @@ const Header = () => {
                 },
             }),
         );
+        dispatch(changeUser({ currentUser: '', payload: '' }));
+        dispatch(updateUserOnlineStatus(currentUser?.Id));
     };
 
     useEffect(() => {
@@ -46,12 +49,15 @@ const Header = () => {
         }
     }, [currentUser, navigate]);
 
+    const handleSetNull = () => {
+        dispatch(changeUser({ currentUser: '', payload: '' }));
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <div className={cx('navbar')}>
                     <div className={cx('navbar-content')}>
-                        <div className={cx('logo')}>
+                        <div className={cx('logo')} onClick={() => navigate(`/client/${currentUser?.Id}`)}>
                             <img src={require('../../../assets/images/Logo.png')} alt="logo" />
                             <span className={cx('name')}>iCoaching</span>
                         </div>
@@ -95,6 +101,7 @@ const Header = () => {
                                         className={({ isActive }) =>
                                             isActive ? cx('nav-link-item', 'active') : cx('nav-link-item')
                                         }
+                                        onClick={handleSetNull}
                                     >
                                         Tin nhắn
                                     </NavLink>
@@ -137,7 +144,7 @@ const Header = () => {
                                     }
                                 >
                                     <div className={cx('info')}>
-                                        <span className={cx('name')}>{currentUser?.Fullname}</span>
+                                        <span className={cx('name')}>{profile.fullname}</span>
                                         <div className={cx('avatar-wrapper')}>
                                             {avatar ? (
                                                 <img className={cx('avatar')} src={avatar} alt="user-avatar" />

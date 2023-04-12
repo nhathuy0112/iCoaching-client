@@ -9,6 +9,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getCoachPhotosAsync } from '~/features/guestSlice';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 
@@ -18,7 +19,7 @@ const CoachPhoto = () => {
 
     const { coachId } = useParams();
     const dispatch = useDispatch();
-    const { photos, totalCount, pageSize } = useSelector((state) => state.guest);
+    const { photos, totalCount, pageSize, loading } = useSelector((state) => state.guest);
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
@@ -36,28 +37,34 @@ const CoachPhoto = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('content')}>
-                {photos.length !== 0 ? (
-                    <div className={cx('image-list')}>
-                        {photos.map((item, index) => (
-                            <div className={cx('item')} key={index}>
-                                <img onClick={() => handleOpen(item.url)} src={item.url} alt="porfolio" />
+            {loading ? (
+                <Spinner />
+            ) : (
+                <>
+                    <div className={cx('content')}>
+                        {photos.length !== 0 ? (
+                            <div className={cx('image-list')}>
+                                {photos.map((item, index) => (
+                                    <div className={cx('item')} key={index}>
+                                        <img onClick={() => handleOpen(item.url)} src={item.url} alt="porfolio" />
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        ) : (
+                            <div className={cx('empty')}>
+                                <h3 className={cx('message')}>Huấn luyện viên này chưa cập nhật ảnh</h3>
+                            </div>
+                        )}
                     </div>
-                ) : (
-                    <div className={cx('empty')}>
-                        <h3 className={cx('message')}>Huấn luyện viên này chưa cập nhật ảnh</h3>
-                    </div>
-                )}
-            </div>
-            <Pagination
-                className={cx('pagination-bar')}
-                currentPage={currentPage}
-                totalCount={totalCount}
-                pageSize={pageSize}
-                onPageChange={(page) => setCurrentPage(page)}
-            />
+                    <Pagination
+                        className={cx('pagination-bar')}
+                        currentPage={currentPage}
+                        totalCount={totalCount}
+                        pageSize={pageSize}
+                        onPageChange={(page) => setCurrentPage(page)}
+                    />
+                </>
+            )}
 
             {open && (
                 <Modal

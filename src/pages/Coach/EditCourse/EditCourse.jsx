@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ErrorMessage from '~/components/ErrorMessage';
 import { editTrainingCourseAsync, getTrainingCourseByIdAsync } from '~/features/coachSlice';
+import { NumericFormat } from 'react-number-format';
+import { toast } from 'react-toastify';
 
 const modules = {
     toolbar: [
@@ -44,14 +46,28 @@ const schema = yup.object({
     name: yup.string().required('Tên gói tập không được để trống'),
     price: yup
         .number()
-        .required('Giá không được để trống')
-        .positive('Giá gói tập phải lớn hơn 0')
-        .integer('Giá gói tập phải là số nguyên dương'),
+        .required('Giá gói tập không được để trống')
+        .min(10000, 'Giá gói tập phải từ 10,000 VNĐ trở lên')
+        .transform((value, originalValue) => {
+            const intValue = parseInt(originalValue.replaceAll(',', ''));
+            return isNaN(intValue) ? undefined : intValue;
+        })
+        .typeError('Giá gói tập phải là một số'),
     duration: yup
-        .number()
-        .required('Số buổi không được để trống')
-        .positive('Số buổi tập phải lớn hơn 0')
-        .integer('Số buổi tập phải là số nguyên dương'),
+        .string()
+        .required('Số buổi tập không được để trống')
+        .test('greaterThanZero', 'Số buổi tập phải lớn hơn 0', (value) => {
+            if (value && parseInt(value) <= 0) {
+                return false;
+            }
+            return true;
+        })
+        .test('durationFormat', 'Số buổi tập phải là số và không gồm kí tự đặc biệt', (value) => {
+            if (value && !/^\d+$/.test(value)) {
+                return false;
+            }
+            return true;
+        }),
 });
 
 const cx = classNames.bind(styles);
@@ -91,6 +107,7 @@ const EditCourse = () => {
                     description: data.description,
                 }),
             );
+            toast.success('Chỉnh sửa gói tập thành công!');
             navigate(`/coach/${id}/my-courses`);
         } catch (error) {
             console.log(error);
@@ -109,7 +126,9 @@ const EditCourse = () => {
             <div className={cx('content')}>
                 <form id={cx('edit-form')} onSubmit={handleSubmit(handleEditCourse)}>
                     <div className={cx('input-group')}>
-                        <label htmlFor="name">Tên gói tập</label>
+                        <label className={cx('input-label')} htmlFor="name">
+                            Tên gói tập
+                        </label>
                         <input type="text" {...register('name')} />
                     </div>
                     {errors.name && (
@@ -118,8 +137,21 @@ const EditCourse = () => {
                         </div>
                     )}
                     <div className={cx('input-group', cx('price'))}>
-                        <label htmlFor="price">Giá</label>
-                        <input type="text" {...register('price')} />
+                        <label className={cx('input-label')} htmlFor="price">
+                            Giá
+                        </label>
+                        <Controller
+                            name="price"
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                                <NumericFormat
+                                    value={value}
+                                    onChange={onChange}
+                                    allowLeadingZeros
+                                    thousandSeparator=","
+                                />
+                            )}
+                        />
                         <span className={cx('unit')}>VNĐ</span>
                     </div>
                     {errors.price && (
@@ -128,7 +160,9 @@ const EditCourse = () => {
                         </div>
                     )}
                     <div className={cx('input-group')}>
-                        <label htmlFor="duration">Số buổi</label>
+                        <label className={cx('input-label')} htmlFor="duration">
+                            Số buổi
+                        </label>
                         <input type="text" {...register('duration')} />
                     </div>
                     {errors.duration && (
@@ -137,7 +171,9 @@ const EditCourse = () => {
                         </div>
                     )}
                     <div className={cx('input-group', 'description')}>
-                        <label htmlFor="description">Mô tả</label>
+                        <label className={cx('input-label')} htmlFor="description">
+                            Mô tả
+                        </label>
                         <Controller
                             name="description"
                             control={control}

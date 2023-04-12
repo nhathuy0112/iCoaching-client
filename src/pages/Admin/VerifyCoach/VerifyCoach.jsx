@@ -17,10 +17,10 @@ const VerifyCoach = () => {
     const dispatch = useDispatch();
     const { coaches, totalCount, pageSize } = useSelector((state) => state.admin);
     const [currentPage, setCurrentPage] = useState(1);
-
     const { id } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
+    const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
         if (currentUser) {
@@ -34,21 +34,33 @@ const VerifyCoach = () => {
         dispatch(getAllCertRequestsAsync({ pageIndex: currentPage }));
     }, [dispatch, currentPage]);
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getAllCertRequestsAsync({ pageIndex: currentPage }));
+        } else {
+            dispatch(getAllCertRequestsAsync({ pageIndex: currentPage, search: searchValue }));
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                {coaches.length > 0 ? (
-                    <form className={cx('search')}>
-                        <div className={cx('search-box')} type="submit">
+                <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                    <div className={cx('search-box')}>
+                        <button type="submit">
                             <AiOutlineSearch className={cx('search-icon')} />
-                            <input type="text" placeholder="Tìm kiếm" />
-                        </div>
-                    </form>
-                ) : (
-                    ''
-                )}
+                        </button>
+                        <input
+                            type="text"
+                            placeholder="Huấn luyện viên"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                    </div>
+                </form>
 
-                {coaches.length > 0 ? (
+                {coaches && coaches.length > 0 ? (
                     <table className={cx('tb-coaches')}>
                         <thead>
                             <tr className={cx('header-row')}>
@@ -88,7 +100,7 @@ const VerifyCoach = () => {
                     </table>
                 ) : (
                     <div className={cx('message')}>
-                        <h1>Hiện chưa có yêu cầu xác minh nào!</h1>
+                        <h2>Không tìm thấy yêu cầu xác minh nào!</h2>
                     </div>
                 )}
                 <Pagination

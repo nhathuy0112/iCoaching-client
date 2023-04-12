@@ -4,6 +4,7 @@ import { AiOutlineDownload } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getContractProgramFilesAsync, getProgramFileDownloadAsync } from '~/features/contractSlice';
+import Spinner from '~/components/Spinner';
 import { handleRenderFileIcon } from '~/utils/file';
 import styles from './Program.module.scss';
 
@@ -11,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const Program = () => {
     const dispatch = useDispatch();
-    const { programFiles } = useSelector((state) => state.contract);
+    const { programFiles, loading } = useSelector((state) => state.contract);
     const { contractId } = useParams();
 
     useEffect(() => {
@@ -33,39 +34,50 @@ const Program = () => {
 
     return (
         <div className={cx('wrapper')}>
-            {programFiles && programFiles.length > 0 ? (
-                <div className={cx('file-list')}>
-                    <table id={cx('file-table')}>
-                        <tr>
-                            <th>Tệp</th>
-                            <th>Ngày cập nhật</th>
-                            <th>Kích thước</th>
-                            <th></th>
-                        </tr>
-                        {programFiles.map((file) => (
-                            <tr key={file.id}>
-                                <td>
-                                    <span className={cx('file-icon')}>{handleRenderFileIcon(file.fileName)}</span>
-                                    <span>{file.fileName}</span>
-                                </td>
-                                <td>{file.date}</td>
-                                <td>{file.size}</td>
-                                <td>
-                                    <div className={cx('action-btn')}>
-                                        <button id={cx('download-btn')} onClick={() => handleDownloadFile(file)}>
-                                            <AiOutlineDownload />
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </table>
-                </div>
+            {loading ? (
+                <Spinner />
             ) : (
-                <div className={cx('file-empty')}>
-                    <h2>Chương trình tập luyện chưa được cập nhật!</h2>
-                    <span>Vui lòng đợi Huấn luyện viên cập nhật!</span>
-                </div>
+                <>
+                    {programFiles && programFiles.length > 0 ? (
+                        <div className={cx('file-list')}>
+                            <table id={cx('file-table')}>
+                                <tr>
+                                    <th>Tệp</th>
+                                    <th>Ngày cập nhật</th>
+                                    <th>Kích thước</th>
+                                    <th></th>
+                                </tr>
+                                {programFiles.map((file) => (
+                                    <tr key={file.id}>
+                                        <td>
+                                            <span className={cx('file-icon')}>
+                                                {handleRenderFileIcon(file.fileName)}
+                                            </span>
+                                            <span>{file.fileName}</span>
+                                        </td>
+                                        <td>{file.date}</td>
+                                        <td>{file.size}</td>
+                                        <td>
+                                            <div className={cx('action-btn')}>
+                                                <button
+                                                    id={cx('download-btn')}
+                                                    onClick={() => handleDownloadFile(file)}
+                                                >
+                                                    <AiOutlineDownload />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </table>
+                        </div>
+                    ) : (
+                        <div className={cx('file-empty')}>
+                            <h2>Chương trình tập luyện chưa được cập nhật!</h2>
+                            <span>Vui lòng đợi Huấn luyện viên cập nhật!</span>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );

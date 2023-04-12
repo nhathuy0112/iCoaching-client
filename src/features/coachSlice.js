@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import {
     certificationSubmit,
     getCertificationRequest,
@@ -43,10 +42,7 @@ export const getCertificationAsync = createAsyncThunk('/coach/getCertificationRe
 export const postAboutMeAsync = createAsyncThunk('/coach/postAboutMe', async (data) => {
     try {
         const response = await postAboutMe(data);
-        if (response) {
-            toast.success('Cập nhật hồ sơ thành công!');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -64,10 +60,7 @@ export const getAboutMeAsync = createAsyncThunk('/coach/getAboutMe', async () =>
 export const postPortfolioPhotosAsync = createAsyncThunk('/coach/postPortfolioPhotos', async (payload) => {
     try {
         const response = await postPortfolioPhotos(payload);
-        if (response) {
-            toast.success('Thêm ảnh thành công!');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
         throw error;
@@ -85,11 +78,8 @@ export const getPortfolioPhotosAsync = createAsyncThunk('/coach/getPortfolioPhot
 
 export const removePortfolioPhotosAsync = createAsyncThunk('/coach/removePortfolioPhotos', async (id) => {
     try {
-        const response = await removePortfolioPhotos(id);
-        if (response) {
-            toast.success('Xóa ảnh thành công!');
-            return { id };
-        }
+        await removePortfolioPhotos(id);
+        return { id };
     } catch (error) {
         console.log(error);
     }
@@ -104,10 +94,7 @@ export const addTrainingCourseAsync = createAsyncThunk('/coach/addTrainingCourse
             duration: payload.duration,
             description: payload.description,
         });
-        if (response) {
-            toast.success('Thêm gói tập thành công!');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -139,10 +126,7 @@ export const editTrainingCourseAsync = createAsyncThunk('/coach/editTrainingCour
             duration: payload.duration,
             description: payload.description,
         });
-        if (response) {
-            toast.success('Chỉnh sửa gói tập thành công!');
-            return { id: payload.id, name: response.name, price: response.price, duration: response.duration };
-        }
+        return { id: payload.id, name: response.name, price: response.price, duration: response.duration };
     } catch (error) {
         console.log(error);
     }
@@ -150,11 +134,8 @@ export const editTrainingCourseAsync = createAsyncThunk('/coach/editTrainingCour
 
 export const deleteTrainingCourseAsync = createAsyncThunk('/coach/deleteTrainingCourse', async (id) => {
     try {
-        const response = await deleteTrainingCourse(id);
-        if (response) {
-            toast.success('Xóa gói tập thành công!');
-            return { id };
-        }
+        await deleteTrainingCourse(id);
+        return { id };
     } catch (error) {
         console.log(error);
     }
@@ -203,6 +184,7 @@ export const completedContractAsync = createAsyncThunk(
 );
 
 const initialState = {
+    currentCertificationRequest: {},
     certificationImages: [],
     portfolioImages: [],
     trainingCourses: [],
@@ -250,7 +232,7 @@ export const coachSlice = createSlice({
                 state.status = 'Submitted';
             })
             .addCase(certificationSubmitAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -261,11 +243,10 @@ export const coachSlice = createSlice({
             })
             .addCase(getCertificationAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                state.certificationImages = action.payload.urls;
-                state.status = action.payload.status;
+                state.currentCertificationRequest = action.payload;
             })
             .addCase(getCertificationAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -279,7 +260,7 @@ export const coachSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(postAboutMeAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -293,7 +274,7 @@ export const coachSlice = createSlice({
                 state.aboutMe = action.payload;
             })
             .addCase(getAboutMeAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -308,7 +289,7 @@ export const coachSlice = createSlice({
                 state.portfolioImages = state.portfolioImages.concat(action.payload);
             })
             .addCase(postPortfolioPhotosAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -325,7 +306,7 @@ export const coachSlice = createSlice({
                 state.pageSize = action.payload.pageSize;
             })
             .addCase(getPortfolioPhotosAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -340,7 +321,7 @@ export const coachSlice = createSlice({
                 state.portfolioImages = state.portfolioImages.filter((image) => image.id !== action.payload.id);
             })
             .addCase(removePortfolioPhotosAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -355,7 +336,7 @@ export const coachSlice = createSlice({
                 state.trainingCourses.push(action.payload);
             })
             .addCase(addTrainingCourseAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -373,7 +354,7 @@ export const coachSlice = createSlice({
                 state.totalCount = action.payload.count;
             })
             .addCase(getTrainingCourseAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -388,7 +369,7 @@ export const coachSlice = createSlice({
                 state.currentTrainingCourse = action.payload;
             })
             .addCase(getTrainingCourseByIdAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -407,7 +388,7 @@ export const coachSlice = createSlice({
                 state.trainingCourses[index].description = action.payload.description;
             })
             .addCase(editTrainingCourseAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -422,7 +403,7 @@ export const coachSlice = createSlice({
                 state.trainingCourses = state.trainingCourses.filter((course) => course.id !== action.payload.id);
             })
             .addCase(deleteTrainingCourseAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -439,7 +420,7 @@ export const coachSlice = createSlice({
                 state.totalCount = action.payload.count;
             })
             .addCase(getCoachingRequestsAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -454,7 +435,7 @@ export const coachSlice = createSlice({
                 state.status = !state.status;
             })
             .addCase(updateCoachingRequestAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -471,7 +452,7 @@ export const coachSlice = createSlice({
                 state.pageSize = action.payload.pageSize;
             })
             .addCase(getAllContractsAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.error.message;
             })
 
@@ -486,7 +467,7 @@ export const coachSlice = createSlice({
                 state.message = action.payload;
             })
             .addCase(completedContractAsync.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.payload;
             });
     },

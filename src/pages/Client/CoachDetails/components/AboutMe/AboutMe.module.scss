@@ -1,7 +1,18 @@
 .wrapper {
     flex: 1;
     .content {
-        height: 100%;
+        user-select: none;
+        img {
+            width: 240px;
+            margin: 0 4px;
+            border-radius: var(--default-border-radius);
+        }
+
+        video {
+            width: 240px;
+            margin: 0 4px;
+            border-radius: var(--default-border-radius);
+        }
 
         .empty {
             height: 100%;

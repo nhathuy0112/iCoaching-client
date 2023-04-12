@@ -1,0 +1,63 @@
+.wrapper {
+    .content {
+        position: relative;
+        margin: auto;
+        max-width: var(--default-layout-max-width);
+        min-height: var(--default-content-min-height);
+        margin-top: var(--default-navbar-height);
+        padding: 32px 0;
+        display: flex;
+
+        .frame {
+            flex: 1;
+            padding: 16px 32px;
+            box-shadow: var(--default-box-shadow);
+            border-radius: var(--default-border-radius);
+        }
+
+        .back {
+            .back-link {
+                display: flex;
+                align-items: center;
+                font-size: 2rem;
+                font-weight: 600;
+                color: var(--primary-color);
+            }
+        }
+
+        .title {
+            text-align: center;
+            color: var(--primary-color);
+
+            @media (min-width: 1201px) and (max-width: 1920px) {
+                padding-top: 0;
+                margin-bottom: 0;
+            }
+        }
+
+        .main {
+            .role-info {
+                margin-top: 16px;
+
+                .role-title {
+                    color: var(--primary-color);
+                    font-size: 2rem;
+                    font-weight: 600;
+                }
+
+                .policy-list {
+                    margin-left: 32px;
+                    .policy-item {
+                        margin: 8px 0;
+                        text-align: justify;
+
+                        &::before {
+                            content: '-';
+                            margin-right: 8px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

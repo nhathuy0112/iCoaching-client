@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import {
     getAllCoaches,
     updateStatus,
+    warnCoach,
     getAllCertRequests,
     getCertRequestDetail,
     updateCertStatus,
@@ -27,6 +27,16 @@ export const getAllCoachesAsync = createAsyncThunk('/admin/getAllCoaches', async
 export const updateStatusAsync = createAsyncThunk('/admin/updateStatus', async (coachId) => {
     try {
         const response = await updateStatus(coachId);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+//warning coach
+export const warnCoachAsync = createAsyncThunk('/admin/warnCoach', async (coachId) => {
+    try {
+        const response = await warnCoach(coachId);
         return response;
     } catch (error) {
         console.log(error);
@@ -83,12 +93,9 @@ export const updateReportAsync = createAsyncThunk('/admin/updateReport', async (
         const response = await updateReport({
             reportId: payload.reportId,
             option: payload.option,
-            data: payload.message,
+            message: payload.message,
         });
-        if (response) {
-            toast.success('Đã cập nhật trạng thái khiếu nại');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -98,10 +105,7 @@ export const updateReportAsync = createAsyncThunk('/admin/updateReport', async (
 export const createContractAsync = createAsyncThunk('/admin/createContract', async (payload) => {
     try {
         const response = await createContract({ reportId: payload.reportId, data: payload.contract });
-        if (response) {
-            toast.success('Tạo hợp đồng thành công');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -111,14 +115,11 @@ export const createContractAsync = createAsyncThunk('/admin/createContract', asy
 export const createVoucherAsync = createAsyncThunk('/admin/createVoucher', async (payload) => {
     try {
         const response = await createVoucher({
-            clientId: payload.clientId,
+            reportId: payload.reportId,
             discount: payload.discount,
             data: payload.data,
         });
-        if (response) {
-            toast.success('Tạo mã giảm giá thành công');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -132,10 +133,7 @@ export const updateContractStatusAsync = createAsyncThunk('/admin/updateContract
             option: payload.option,
             data: payload.message,
         });
-        if (response) {
-            toast.success('Đã cập nhật trạng thái hợp đồng');
-            return response;
-        }
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -193,6 +191,13 @@ export const adminSlice = createSlice({
             //update coach status
             .addCase(updateStatusAsync.fulfilled, (state, action) => {
                 state.status = !state.status;
+                state.message = action.payload;
+            })
+
+            //warn coach
+            .addCase(warnCoachAsync.fulfilled, (state, action) => {
+                state.status = !state.status;
+                state.message = action.payload;
             })
 
             //get all certificate verification requests
@@ -213,10 +218,18 @@ export const adminSlice = createSlice({
             })
 
             //get certificate verification request detail
+            .addCase(getCertRequestDetailAsync.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
             .addCase(getCertRequestDetailAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.certRequest = action.payload;
                 state.status = null;
+            })
+            .addCase(getCertRequestDetailAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             })
 
             //update certificate verification request detail
@@ -226,6 +239,7 @@ export const adminSlice = createSlice({
             })
 
             .addCase(updateCertStatusAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
                 state.status = action.payload.status;
             })
@@ -258,6 +272,7 @@ export const adminSlice = createSlice({
             })
 
             .addCase(updateReportAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
             })
             .addCase(updateReportAsync.rejected, (state, action) => {
@@ -272,6 +287,7 @@ export const adminSlice = createSlice({
             })
 
             .addCase(createContractAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
             })
             .addCase(createContractAsync.rejected, (state, action) => {
@@ -286,6 +302,7 @@ export const adminSlice = createSlice({
             })
 
             .addCase(createVoucherAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
             })
             .addCase(createVoucherAsync.rejected, (state, action) => {
@@ -300,6 +317,7 @@ export const adminSlice = createSlice({
             })
 
             .addCase(updateContractStatusAsync.fulfilled, (state, action) => {
+                state.loading = false;
                 state.message = action.payload;
             })
             .addCase(updateContractStatusAsync.rejected, (state, action) => {

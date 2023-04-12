@@ -4,12 +4,15 @@
 import Home from '~/pages/Guest/Home';
 import CoachesView from '~/pages/Guest/CoachesView';
 import CoachDetail from '~/pages/Guest/CoachDetails';
+import CourseDetails from '~/pages/Guest/CourseDetails';
+import Policy from '~/pages/Guest/Policy';
 
 //Client
 import ClientHome from '~/pages/Client/Home';
 import TrainingRequest from '~/pages/Client/TrainingRequest';
 import ClientCoachesView from '~/pages/Client/CoachesView';
 import ClientCoachDetails from '~/pages/Client/CoachDetails';
+import ClientCourseDetails from '~/pages/Client/CourseDetails';
 import OnGoingCourse from '~/pages/Client/OnGoingCourse';
 import ContractDetails from '~/pages/Client/ContractDetails';
 import PendingCourse from '~/pages/Client/PendingCourse';
@@ -22,6 +25,7 @@ import Messages from '~/pages/Client/Messages';
 
 //Coach
 import Verify from '~/pages/Coach/Verify';
+import UpdateCertification from '~/pages/Coach/UpdateCertification';
 import MyClient from '~/pages/Coach/MyClient';
 import CoachingRequest from '~/pages/Coach/CoachingRequest';
 import MyCourse from '~/pages/Coach/MyCourse';
@@ -32,11 +36,13 @@ import AddResource from '~/pages/Coach/AddResource';
 import EditTrainingLog from '~/pages/Coach/EditTrainingLog';
 import CoachAccountProfile from '~/pages/Coach/AccountProfile';
 import Portfolio from '~/pages/Coach/Portfolio';
+import UpdatePortfolio from '~/pages/Coach/UpdatePortfolio';
+import UpdateImage from '~/pages/Coach/UpdateImage';
 
 //Admin
 import AdminCoachesView from '~/pages/Admin/CoachesView';
 import VerifyCoach from '~/pages/Admin/VerifyCoach';
-import CoachCertificate from '~/pages/Admin/VerifyCoach/CoachCertificate';
+import CoachCertificate from '~/pages/Admin/CoachCertificate';
 import Reports from '~/pages/Admin/Reports';
 import ReportDetails from '~/pages/Admin/Reports/ReportDetails';
 import CreateContract from '~/pages/Admin/Reports/ReportDetails/components/CreateContract';
@@ -55,15 +61,23 @@ import NotFound from '~/pages/Errors/NotFound';
 import GuestLayout from '~/layouts/GuestLayout';
 import AuthLayout from '~/layouts/AuthLayout';
 import ClientLayout from '~/layouts/ClientLayout';
+import Chat from '~/components/Chat/Chat';
 
 //Guard
 import RoleGuard from '~/components/Guards/RoleGuard';
 
 const guestRoutes = [
     { path: '/', component: Home, layout: GuestLayout },
+    { path: '/policy', component: Policy, layout: GuestLayout },
     { path: '/all-coaches', component: CoachesView, layout: GuestLayout },
     { path: '/all-coaches/view-details/coach/:coachId', component: CoachDetail, layout: GuestLayout },
+    {
+        path: '/all-coaches/view-details/coach/:coachId/course/:courseId',
+        component: CourseDetails,
+        layout: GuestLayout,
+    },
     { path: '/view-details/coach/:coachId', component: CoachDetail, layout: GuestLayout },
+    { path: '/view-details/coach/:coachId/course/:courseId', component: CourseDetails, layout: GuestLayout },
     { path: '/*', component: NotFound },
 ];
 
@@ -77,8 +91,20 @@ const clientRoutes = [
         guard: RoleGuard,
     },
     {
+        path: '/client/:id/all-coaches/view-details/coach/:coachId/course/:courseId',
+        component: ClientCourseDetails,
+        layout: ClientLayout,
+        guard: RoleGuard,
+    },
+    {
         path: '/client/:id/view-details/coach/:coachId',
         component: ClientCoachDetails,
+        layout: ClientLayout,
+        guard: RoleGuard,
+    },
+    {
+        path: '/client/:id/view-details/coach/:coachId/course/:courseId',
+        component: ClientCourseDetails,
         layout: ClientLayout,
         guard: RoleGuard,
     },
@@ -112,6 +138,12 @@ const clientRoutes = [
 
 const coachRoutes = [
     { path: '/coach/:id/verify', component: Verify, layout: AuthLayout, guard: RoleGuard },
+    {
+        path: '/coach/:id/verify/update-certification',
+        component: UpdateCertification,
+        layout: AuthLayout,
+        guard: RoleGuard,
+    },
     { path: '/coach/:id/my-clients', component: MyClient, layout: AuthLayout, guard: RoleGuard },
     {
         path: '/coach/:id/my-clients/view-details/:contractId',
@@ -137,8 +169,11 @@ const coachRoutes = [
     { path: '/coach/:id/my-courses/edit/:courseId', component: EditCourse, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/account-information', component: CoachAccountProfile, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/portfolio', component: Portfolio, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/portfolio/update-about', component: UpdatePortfolio, layout: AuthLayout, guard: RoleGuard },
+    { path: '/coach/:id/portfolio/update-images', component: UpdateImage, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/:id/messages', component: Messages, layout: AuthLayout, guard: RoleGuard },
     { path: '/coach/*', component: NotFound },
+    { path: '/coach/:id/messages/:userId', component: Chat, layout: AuthLayout },
 ];
 
 const adminRoutes = [
@@ -147,13 +182,18 @@ const adminRoutes = [
     { path: '/admin/:id/verify-coach/:certId', component: CoachCertificate, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/:id/reports', component: Reports, layout: AuthLayout, guard: RoleGuard },
     {
-        path: '/admin/:id/reports/:contractId/:reportId',
+        path: '/admin/:id/reports/:contractId/view-details/:reportId',
         component: ReportDetails,
         layout: AuthLayout,
         guard: RoleGuard,
     },
-    { path: '/admin/:id/reports/:contractId/:reportId/createContract', component: CreateContract, layout: AuthLayout },
-    { path: '/admin/:id/reports/:contractId/:reportId/voucher', component: Voucher, layout: AuthLayout },
+    {
+        path: '/admin/:id/reports/:contractId/view-details/:reportId/create-contract',
+        component: CreateContract,
+        layout: AuthLayout,
+        guard: RoleGuard,
+    },
+    { path: '/admin/:id/reports/:contractId/view-details/:reportId/voucher', component: Voucher, layout: AuthLayout },
     { path: '/admin/:id/profile', component: AdminAccountProfile, layout: AuthLayout, guard: RoleGuard },
     { path: '/admin/*', component: NotFound },
 ];

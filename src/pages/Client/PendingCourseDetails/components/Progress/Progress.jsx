@@ -54,7 +54,7 @@ const Progress = () => {
                 {logs &&
                     logs.map((log) => (
                         <div className={cx('day-item')} key={log.id}>
-                            <div className={cx('day-number')}>
+                            <div className={cx('day-number')} onClick={() => handleToggleShowItem(log)}>
                                 <div className={cx('number')}>
                                     <h3 className={cx('title')}>Ngày {log.dateNo}</h3>
                                     {log.status === 'Complete' && (
@@ -65,11 +65,11 @@ const Progress = () => {
                                 </div>
                                 <div className={cx('action')}>
                                     {isItemExpanded(log) ? (
-                                        <div className={cx('show-less')} onClick={() => handleToggleShowItem(log)}>
+                                        <div className={cx('show-less')}>
                                             <MdOutlineKeyboardArrowUp />
                                         </div>
                                     ) : (
-                                        <div className={cx('show-more')} onClick={() => handleToggleShowItem(log)}>
+                                        <div className={cx('show-more')}>
                                             <MdOutlineKeyboardArrowDown />
                                         </div>
                                     )}

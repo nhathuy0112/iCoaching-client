@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Spinner from '~/layouts/components/Spinner';
+import Spinner from '~/components/Spinner';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -54,19 +54,20 @@ const schema = yup.object({
 
 const AccountProfile = () => {
     const dispatch = useDispatch();
-    const { avatar, profile, error, status, message } = useSelector((state) => state.user);
+    const { avatar, profile, error, status, message, loading } = useSelector((state) => state.user);
     const [currentAvatar, setCurrentAvatar] = useState(avatar);
     const [response, setResponse] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [avatarLoading, setLoading] = useState(true);
     const [confirmAvatar, setConfirmAvatar] = useState(false);
+
+    const { currentUser } = useSelector((state) => state.user);
     const { id } = useParams();
     const navigate = useNavigate();
-    const { currentUser } = useSelector((state) => state.user);
 
     useEffect(() => {
         if (currentUser) {
             if (id !== currentUser.Id) {
-                navigate(`/admin/${currentUser.Id}/profile`);
+                navigate(`/coach/${currentUser.Id}/account-information`);
             }
         }
     }, [id, currentUser, navigate]);
@@ -105,7 +106,9 @@ const AccountProfile = () => {
                     gender: data.gender,
                     phoneNumber: data.phoneNumber,
                 }),
-            ).then(() => setResponse(true));
+            )
+                .unwrap()
+                .then(() => setResponse(true));
         } catch (error) {
             console.log(error);
         }
@@ -144,7 +147,7 @@ const AccountProfile = () => {
             <div className={cx('container')}>
                 <div className={cx('left_container')}>
                     <h3>Ảnh đại diện</h3>
-                    {loading ? (
+                    {avatarLoading ? (
                         <Spinner />
                     ) : (
                         <>
@@ -152,14 +155,14 @@ const AccountProfile = () => {
                                 <img src={currentAvatar} alt="" style={{ width: '100%', height: '100%' }} />
                                 <input id="upload" type="file" accept="image/*" hidden />
                                 <label className={cx('change_image')} htmlFor="upload" onClick={handleChangeAvatar}>
-                                    Change Image
+                                    Chọn ảnh
                                 </label>
                             </div>
+                            <button type="submit" onClick={() => setConfirmAvatar(true)}>
+                                Thay đổi
+                            </button>
                         </>
                     )}
-                    <button type="submit" onClick={() => setConfirmAvatar(true)}>
-                        Thay đổi
-                    </button>
                 </div>
 
                 <div className={cx('right_container')}>
@@ -215,8 +218,15 @@ const AccountProfile = () => {
                         {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
                         {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
                         {response && message && <SuccessMessage message={message} />}
-                        <button type="submit" id={cx('submit_btn')} className={cx('align-center')}>
-                            <BsCheckLg className={cx('icon')} /> Cập nhật
+                        <button type="submit" id={cx('submit_btn')} className={cx('align-center')} disabled={loading}>
+                            {loading ? (
+                                <Spinner />
+                            ) : (
+                                <>
+                                    <BsCheckLg className={cx('icon')} />
+                                    Cập nhật
+                                </>
+                            )}
                         </button>
                     </form>
                 </div>

@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { getUserProfileAsync, logoutAsync } from '~/features/userSlice';
 import { getLocalStorage } from '~/utils/localStorage';
-
 import { BiLogOut } from 'react-icons/bi';
 import { coachNavLinks } from '~/config/navLink';
+import { changeUser, updateUserOnlineStatus } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 
@@ -29,7 +29,7 @@ const Sidebar = ({ links }) => {
             // Get list of Coach navLinks
             const coachLinks = [...coachNavLinks];
             if (!isVerified) {
-                // Find the links you want to disable
+                // Find the links want to disable
                 const linksToDisable = ['my-clients', 'coaching-requests', 'my-courses'];
 
                 // Disable the links
@@ -52,14 +52,12 @@ const Sidebar = ({ links }) => {
                 },
             }),
         );
+        dispatch(changeUser({ currentUser: '', payload: '' }));
+        dispatch(updateUserOnlineStatus(currentUser?.Id));
     };
 
     return (
         <div className={cx('container')}>
-            <div className={cx('logo')}>
-                <img src={require('../../../assets/images/Logo-black.png')} alt="logo" />
-                <span>iCoaching</span>
-            </div>
             <ul className={cx('link-list')}>
                 {links.map((link, index) => {
                     const isDisabled = disabledLinks.some((disabledLink) => disabledLink.url === link.url);
@@ -68,10 +66,7 @@ const Sidebar = ({ links }) => {
                             <NavLink
                                 to={`/${currentUser?.role.toLowerCase()}/${currentUser?.Id}/${link.url}`}
                                 className={({ isActive }) =>
-                                    isActive
-                                        ? // || link.url.includes('coaching-requests')
-                                          cx('link-url', 'active')
-                                        : cx('link-url', isDisabled && 'disabled')
+                                    isActive ? cx('link-url', 'active') : cx('link-url', isDisabled && 'disabled')
                                 }
                                 disabled={isDisabled}
                             >

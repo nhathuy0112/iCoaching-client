@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAdmin } from '~/features/superAdminSlice';
 import { useEffect, useState } from 'react';
-
+import Spinner from '~/components/Spinner';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ErrorMessage from '~/components/ErrorMessage';
@@ -16,6 +16,10 @@ const cx = classNames.bind(styles);
 const schema = yup.object({
     fullname: yup.string().required('Họ và tên không được để trống'),
     email: yup.string().required('Email không được để trống'),
+    phoneNumber: yup
+        .string()
+        .matches(/(0[3|5|7|8|9])+([0-9]{8})\b/g, 'Số điện thoại không hợp lệ')
+        .required('Số điện thoại không được để trống'),
     username: yup.string().required('Tài khoản không được để trống'),
     password: yup
         .string()
@@ -32,7 +36,7 @@ const schema = yup.object({
 
 const CreateAccount = () => {
     const dispatch = useDispatch();
-    const { error, message } = useSelector((state) => state.superAdmin);
+    const { error, message, loading } = useSelector((state) => state.superAdmin);
     const [response, setResponse] = useState(false);
 
     const { id } = useParams();
@@ -60,11 +64,16 @@ const CreateAccount = () => {
                 createAdmin({
                     fullname: data.fullname,
                     email: data.email,
+                    phoneNumber: data.phoneNumber,
                     username: data.username,
                     password: data.password,
                     confirmPassword: data.confirmPassword,
+                    note: data.note,
                 }),
-            ).then(() => setResponse(true));
+            )
+                .unwrap()
+                .then(() => setResponse(true))
+                .then(reset);
         } catch (error) {
             console.log(error);
         }
@@ -85,6 +94,11 @@ const CreateAccount = () => {
                 {errors.email && <ErrorMessage message={errors.email.message} />}
                 {error?.Email && <ErrorMessage message={error.Email?.message} />}
 
+                <label>Số điện thoại</label>
+                <input type="tel" placeholder="Nhập số điện thoại" {...register('phoneNumber')} />
+                {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
+                {error?.PhoneNumber && <ErrorMessage message={error.PhoneNumber?.message} />}
+
                 <label>Tên người dùng</label>
                 <input type="text" placeholder="Nhập tên người dùng" {...register('username')} />
                 {errors.username && <ErrorMessage message={errors.username.message} />}
@@ -103,12 +117,13 @@ const CreateAccount = () => {
                 </div>
                 {errors.password && <ErrorMessage message={errors.password.message} />}
                 {errors.confirmPassword && <ErrorMessage message={errors.confirmPassword.message} />}
-
+                <label>Ghi chú</label>
+                <textarea className={cx('note')} name="" id="" cols="50" rows="3" {...register('note')}></textarea>
                 {response && message && <SuccessMessage message={message} />}
 
                 <div>
-                    <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
-                        Thêm mới
+                    <button type="submit" id={cx('submit-btn')} className={cx('align-center')} disabled={loading}>
+                        {loading ? <Spinner /> : 'Thêm mới'}
                     </button>
                 </div>
             </form>

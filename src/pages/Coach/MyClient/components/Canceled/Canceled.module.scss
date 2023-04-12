@@ -1,4 +1,6 @@
 .wrapper {
+    min-height: calc(88vh - var(--default-navbar-height));
+
     .contract-empty {
         text-align: center;
         color: red;
@@ -17,11 +19,18 @@
             padding: 8px 12px;
             color: #8f9bba;
             font-size: 1.4rem;
+
             input {
                 background: transparent;
             }
+
+            button {
+                background-color: transparent;
+                cursor: pointer;
+            }
+
             .search-icon {
-                margin-right: 11px;
+                margin-right: 12px;
                 color: #2b3674;
                 font-size: 1.8rem;
             }
@@ -34,7 +43,7 @@
 
         .contract-item {
             position: relative;
-            width: 400px;
+            width: 356px;
             box-shadow: var(--default-box-shadow);
             padding: 16px;
             border-radius: var(--default-border-radius);

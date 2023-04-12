@@ -1,5 +1,4 @@
 .wrapper {
-    height: 100%;
     position: relative;
     .content {
         padding-top: 3%;
@@ -8,19 +7,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        bottom: 0px;
-        left: 0px;
         color: #d01515;
         text-align: center;
     }
     .search {
-        position: absolute;
-        align-items: center;
-        right: 0;
-        display: inline-block;
+        display: flex;
+        justify-content: flex-end;
+
         .search-box {
             display: flex;
             height: 36px;
@@ -32,8 +25,14 @@
             input {
                 background: transparent;
             }
+
+            button {
+                background-color: transparent;
+                cursor: pointer;
+            }
+
             .search-icon {
-                margin-right: 11px;
+                margin-right: 12px;
                 color: #2b3674;
                 font-size: 1.8rem;
             }
@@ -43,7 +42,6 @@
         table-layout: auto;
         width: 100%;
         text-align: center;
-        margin-top: 30px;
         border-spacing: 0 8px;
 
         .header-row {

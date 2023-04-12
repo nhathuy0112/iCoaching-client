@@ -14,9 +14,10 @@ const Tabs = ({ tabs }) => {
     const isAddedResources = location.state?.isAddedResources;
     const isEditTrainingLog = location.state?.isEditTrainingLog;
     const isPendingClient = location.state?.isPendingClient;
+    const isImagesGallery = location.state?.isImagesGallery;
 
     const renderTabNavigate = () => {
-        if (isAddedResources || isPendingClient) return 1;
+        if (isAddedResources || isPendingClient || isImagesGallery) return 1;
         else if (isEditTrainingLog) return 2;
         else return 0;
     };
@@ -34,7 +35,12 @@ const Tabs = ({ tabs }) => {
                     <li
                         key={index}
                         className={cx('tab', `${index === activeTabIndex ? 'active' : ''}`)}
-                        onClick={() => handleTabClick(index)}
+                        onClick={() => {
+                            handleTabClick(index);
+                            if (tab.onClick) {
+                                tab.onClick();
+                            }
+                        }}
                     >
                         {tab.label}
                     </li>

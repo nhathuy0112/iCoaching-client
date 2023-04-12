@@ -30,9 +30,11 @@ export const createAdmin = createAsyncThunk('superadmin/createAdmin', async (pay
         const response = await register({
             email: payload.email,
             fullname: payload.fullname,
+            phoneNumber: payload.phoneNumber,
             username: payload.username,
             password: payload.password,
             confirmPassword: payload.confirmPassword,
+            note: payload.note
         });
         return response;
     } catch (error) {
@@ -53,7 +55,8 @@ const initialState = {
     count: '',
     avatar: null,
     message: '',
-    error: null
+    error: null,
+    status: false
 };
 
 export const superAdminSlice = createSlice({
@@ -76,19 +79,25 @@ export const superAdminSlice = createSlice({
             .addCase(getAdminData.fulfilled, (state, action) => {
                 state.data = action.payload.data;
                 state.count = action.payload.count;
+                state.pageSize = action.payload.pageSize;
             })
             .addCase(updateAdminStatus.fulfilled, (state, action) => {
                 state.adminId = action.payload.adminId;
                 state.isLocked = action.payload.isLocked;
+                state.status = !state.status;
             })
+
+            //create admin
             .addCase(createAdmin.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
 
             .addCase(createAdmin.fulfilled, (state, action) => {
+                state.loading = false;
                 state.admins.push(action.payload);
-                state.message = 'Thêm thành công'
+                state.message = 'Thêm thành công';
+
             })
             .addCase(createAdmin.rejected, (state, action) => {
                 state.loading = false;

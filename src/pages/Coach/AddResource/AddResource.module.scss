@@ -134,10 +134,8 @@
     }
 
     #save-btn {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
+        display: flex;
+        margin: auto;
         width: 120px;
         padding: 8px 16px;
         background-color: green;
@@ -147,6 +145,10 @@
         font-weight: 500;
         text-align: center;
         cursor: pointer;
+
+        span {
+            margin: auto;
+        }
 
         &:hover {
             opacity: 0.6;

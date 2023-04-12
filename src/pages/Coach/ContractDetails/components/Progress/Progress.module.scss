@@ -1,23 +1,27 @@
 .wrapper {
     .day-list {
-        overflow-y: auto;
-        overflow-x: hidden;
-        max-height: 420px;
         .day-item {
             display: flex;
             flex-direction: column;
-            padding-bottom: 32px;
-            margin-bottom: 32px;
 
             &:not(:last-child) {
                 border-bottom: 1px solid #333;
+            }
+
+            &:hover {
+                background-color: var(--light-white-color);
             }
 
             .day-number {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 16px;
+                padding: 16px 0;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #f4f6f6;
+                }
 
                 .number {
                     display: flex;
@@ -85,6 +89,10 @@
                         img {
                             width: 100%;
                             height: 100%;
+                            cursor: pointer;
+                            &:hover {
+                                opacity: 0.8;
+                            }
                         }
                     }
                 }
@@ -107,9 +115,15 @@
                     }
                 }
 
-                #edit-btn {
+                .error {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 16px;
+                }
+
+                .edit-btn {
                     display: block;
-                    margin: 16px auto 0 auto;
+                    margin: 16px auto;
                     padding: 8px 16px;
                     border-radius: var(--default-border-radius);
                     cursor: pointer;
@@ -120,8 +134,30 @@
                     &:hover {
                         opacity: 0.6;
                     }
+
+                    &.disabled {
+                        pointer-events: none;
+                        background-color: #ccc;
+                        margin-top: 8px;
+                    }
                 }
             }
+        }
+    }
+    .modal {
+        #photo {
+            border-radius: 0;
+            display: block;
+            width: 50%;
+            height: 100%;
+            margin: 0 auto;
+        }
+        .closeBtn {
+            color: white;
+            background: none;
+            font-size: 3.2rem;
+            float: right;
+            cursor: pointer;
         }
     }
 }

@@ -4,67 +4,71 @@
 
     .content {
         .contract-info {
-            display: flex;
-            flex-direction: column;
-            .row-info {
-                margin: 16px 0;
-                display: flex;
-                align-items: center;
+            .info-container:nth-child(1),
+            .info-container:nth-child(2) {
+                border-bottom: 1px solid #ccc;
+            }
 
-                .group-info {
-                    display: flex;
-                    label {
-                        color: #1a97cc;
-                    }
+            .info-container {
+                padding: 8px;
+                .title {
+                    color: var(--primary-color);
+                }
+                .info-frame {
+                    padding: 0 32px;
 
-                    &.first-column {
-                        flex: 0 0 30%;
-                        label {
-                            min-width: 130px;
-                        }
-                    }
+                    .row-info {
+                        display: flex;
+                        align-items: center;
+                        margin: 8px 0;
 
-                    &.second-column {
-                        flex: 0 0 15%;
-                        label {
-                            min-width: 80px;
-                        }
-                    }
-                    &.third-column {
-                        flex: 0 0 15%;
-                        label {
-                            min-width: 90px;
-                        }
-                    }
+                        .info-group {
+                            flex: 0 0 calc(100% / 3);
+                            margin-left: 32px;
+                            display: flex;
 
-                    &.fourth-column {
-                        flex: 0 0 28%;
-                        label {
-                            min-width: 60px;
-                        }
-                    }
+                            &:not(.description) {
+                                align-items: center;
+                            }
 
-                    &.fifth-column {
-                        label {
-                            min-width: 42px;
-                        }
-                    }
+                            label {
+                                font-size: 1.6rem;
+                                font-weight: 500;
+                                margin-bottom: 0;
+                            }
 
-                    &.description {
-                        flex: 1;
-                        label {
-                            min-width: 130px;
+                            &.first-column {
+                                label {
+                                    min-width: 120px;
+                                }
+                            }
+
+                            &.second-column {
+                                label {
+                                    min-width: 100px;
+                                }
+                            }
+
+                            &.third-column {
+                                label {
+                                    min-width: 100px;
+                                }
+                            }
                         }
                     }
                 }
             }
         }
     }
+    .error {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 8px;
+    }
+
     .completed-btn {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
+        display: flex;
+        margin: auto;
         padding: 8px 16px;
         width: 160px;
         border-radius: var(--default-border-radius);
@@ -73,6 +77,7 @@
         cursor: pointer;
 
         button {
+            margin: auto;
             background-color: transparent;
             color: var(--white-color);
             font-size: 1.6rem;

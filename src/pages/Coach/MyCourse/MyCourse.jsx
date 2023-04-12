@@ -4,7 +4,7 @@ import styles from './MyCourse.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import TrainingCourseCard from '~/components/TrainingCourseCard';
 import { deleteTrainingCourseAsync, getTrainingCourseAsync } from '~/features/coachSlice';
-import { AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import 'react-quill/dist/quill.snow.css';
 import Modal from '~/components/Modal';
@@ -12,11 +12,13 @@ import Pagination from '~/components/Pagination';
 import { MdOutlineEdit } from 'react-icons/md';
 import { BiTrash } from 'react-icons/bi';
 import { useNavigate, useParams } from 'react-router-dom';
+import Spinner from '~/components/Spinner';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 const MyCourse = () => {
-    const { trainingCourses, pageSize, totalCount } = useSelector((state) => state.coach);
+    const { trainingCourses, pageSize, totalCount, loading } = useSelector((state) => state.coach);
     const dispatch = useDispatch();
     const [isDelete, setIsDelete] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState({});
@@ -24,6 +26,7 @@ const MyCourse = () => {
     const { currentUser } = useSelector((state) => state.user);
     const { id } = useParams();
     const navigate = useNavigate();
+    const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
         if (currentUser) {
@@ -44,12 +47,24 @@ const MyCourse = () => {
 
     const handleDeleteCourse = (courseId) => {
         dispatch(deleteTrainingCourseAsync(courseId));
+        toast.success('Xóa gói tập thành công!');
         setIsDelete(false);
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getTrainingCourseAsync({ pageIndex: currentPage, pageSize: 20 }));
+        } else {
+            dispatch(getTrainingCourseAsync({ pageIndex: currentPage, pageSize: 20, search: searchValue }));
+        }
     };
 
     return (
         <div className={cx('wrapper')}>
-            {trainingCourses && trainingCourses.length > 0 ? (
+            {loading ? (
+                <Spinner />
+            ) : (
                 <>
                     <div className={cx('action')}>
                         <div className={cx('add')}>
@@ -58,48 +73,54 @@ const MyCourse = () => {
                                 <span>Thêm gói tập</span>
                             </button>
                         </div>
-                        <div className={cx('filter-and-search')}>
-                            <input type="text" placeholder="Tìm kiếm" />
-                        </div>
-                    </div>
-                    <div className={cx('course-list')}>
-                        {trainingCourses.map((course) => (
-                            <div className={cx('course-item')} key={course.id}>
-                                <TrainingCourseCard course={course} />
-                                <div className={cx('item-action')}>
-                                    <button
-                                        id={cx('edit-btn')}
-                                        onClick={() => navigate(`/coach/${id}/my-courses/edit/${course.id}`)}
-                                    >
-                                        <MdOutlineEdit />
-                                    </button>
-                                    <button id={cx('delete-btn')} onClick={() => handleOpenDeleteModal(course)}>
-                                        <BiTrash />
-                                    </button>
-                                </div>
+                        <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                            <div className={cx('search-box')}>
+                                <button type="submit">
+                                    <AiOutlineSearch className={cx('search-icon')} />
+                                </button>
+                                <input
+                                    type="text"
+                                    placeholder="Gói tập"
+                                    value={searchValue}
+                                    onChange={(e) => setSearchValue(e.target.value)}
+                                />
                             </div>
-                        ))}
-                        <Pagination
-                            className={cx('pagination-bar')}
-                            currentPage={currentPage}
-                            totalCount={totalCount}
-                            pageSize={pageSize}
-                            onPageChange={(page) => setCurrentPage(page)}
-                        />
+                        </form>
                     </div>
+                    {trainingCourses && trainingCourses.length > 0 ? (
+                        <>
+                            <div className={cx('course-list')}>
+                                {trainingCourses.map((course) => (
+                                    <div className={cx('course-item')} key={course.id}>
+                                        <TrainingCourseCard course={course} />
+                                        <div className={cx('item-action')}>
+                                            <button
+                                                id={cx('edit-btn')}
+                                                onClick={() => navigate(`/coach/${id}/my-courses/edit/${course.id}`)}
+                                            >
+                                                <MdOutlineEdit />
+                                            </button>
+                                            <button id={cx('delete-btn')} onClick={() => handleOpenDeleteModal(course)}>
+                                                <BiTrash />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                                <Pagination
+                                    className={cx('pagination-bar')}
+                                    currentPage={currentPage}
+                                    totalCount={totalCount}
+                                    pageSize={pageSize}
+                                    onPageChange={(page) => setCurrentPage(page)}
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <div className={cx('course-empty')}>
+                            <h2>Không tìm thấy gói tập nào!</h2>
+                        </div>
+                    )}
                 </>
-            ) : (
-                <div className={cx('course-empty')}>
-                    <h1>Hiện chưa có gói tập nào!</h1>
-                    <button
-                        id={cx('add-btn')}
-                        onClick={() => navigate(`/coach/${id}/my-courses/add`)}
-                        style={{ margin: 'auto' }}
-                    >
-                        <AiOutlinePlus className={cx('icon')} />
-                        <span>Thêm gói tập</span>
-                    </button>
-                </div>
             )}
 
             {isDelete && (

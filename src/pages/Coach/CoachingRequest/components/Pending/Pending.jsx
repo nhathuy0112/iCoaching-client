@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { BsCheckLg, BsXLg } from 'react-icons/bs';
+import { BsCheckLg, BsXLg, BsFillEnvelopeFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import ErrorMessage from '~/components/ErrorMessage';
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
 import { getCoachingRequestsAsync, updateCoachingRequestAsync } from '~/features/coachSlice';
+import Spinner from '~/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Pending.module.scss';
 
@@ -18,7 +19,7 @@ const Pending = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { coachingRequests, status, totalCount, pageSize } = useSelector((state) => state.coach);
+    const { coachingRequests, status, totalCount, pageSize, loading } = useSelector((state) => state.coach);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isViewMessage, setIsViewMessage] = useState(false);
     const [isAccept, setIsAccept] = useState(false);
@@ -27,9 +28,13 @@ const Pending = () => {
     const [message, setMessage] = useState('');
     const [messageError, setMessageError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [requestLoading, setRequestLoading] = useState(true);
+    const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
-        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 7, coachRequestStatus: 'Pending' }));
+        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 7, coachRequestStatus: 'Pending' }))
+            .unwrap()
+            .then(() => setRequestLoading(false));
     }, [dispatch, currentPage, status]);
 
     const handleViewRequestMessage = (request) => {
@@ -92,76 +97,110 @@ const Pending = () => {
             });
     };
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 7, coachRequestStatus: 'Pending' }));
+        } else {
+            dispatch(
+                getCoachingRequestsAsync({
+                    pageIndex: currentPage,
+                    pageSize: 7,
+                    coachRequestStatus: 'Pending',
+                    search: searchValue,
+                }),
+            );
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
-            {coachingRequests && coachingRequests.length > 0 ? (
+            {requestLoading ? (
+                <Spinner />
+            ) : (
                 <>
-                    <form className={cx('search')}>
-                        <div className={cx('search-box')} type="submit">
-                            <AiOutlineSearch className={cx('search-icon')} />
-                            <input type="text" placeholder="Tìm kiếm" />
+                    <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                        <div className={cx('search-box')}>
+                            <button type="submit">
+                                <AiOutlineSearch className={cx('search-icon')} />
+                            </button>
+                            <input
+                                type="text"
+                                placeholder="Khách hàng"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
                         </div>
                     </form>
-
-                    <table id={cx('request-table')}>
-                        <thead>
-                            <tr className={cx('header-row')}>
-                                <th>Khách hàng</th>
-                                <th>Tuổi</th>
-                                <th>Giới tính</th>
-                                <th>Email</th>
-                                <th>SĐT</th>
-                                <th>Gói tập</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {coachingRequests.map((request) => (
-                                <tr className={cx('content-row')} key={request.id}>
-                                    <td className={cx('name')}>
-                                        <div className={cx('avatar')}>
-                                            <img
-                                                src={require('../../../../../assets/images/coach-avatar.png')}
-                                                alt=""
-                                            />
-                                        </div>
-                                        <span>{request.clientName}</span>
-                                    </td>
-                                    <td>{request.age}</td>
-                                    <td>{handleRenderGenders(request.gender)}</td>
-                                    <td>{request.email}</td>
-                                    <td>{request.phoneNumber}</td>
-                                    <td>{request.courseName}</td>
-                                    <td className={cx('action-btn')}>
-                                        <button
-                                            id={cx('btn-view-message')}
-                                            onClick={() => handleViewRequestMessage(request)}
-                                        >
-                                            Lời nhắn
-                                        </button>
-                                        <button id={cx('btn-accept')} onClick={() => handleOpenAcceptModal(request)}>
-                                            <BsCheckLg />
-                                        </button>
-                                        <button id={cx('btn-refuse')} onClick={() => handleOpenRejectModal(request)}>
-                                            <BsXLg />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <Pagination
-                        className={cx('pagination-bar')}
-                        currentPage={currentPage}
-                        totalCount={totalCount}
-                        pageSize={pageSize}
-                        onPageChange={(page) => setCurrentPage(page)}
-                    />
+                    {coachingRequests && coachingRequests.length > 0 ? (
+                        <>
+                            <table id={cx('request-table')}>
+                                <thead>
+                                    <tr className={cx('header-row')}>
+                                        <th>Khách hàng</th>
+                                        <th>Tuổi</th>
+                                        <th>Giới tính</th>
+                                        <th>Email</th>
+                                        <th>SĐT</th>
+                                        <th>Gói tập</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {coachingRequests.map((request) => (
+                                        <tr className={cx('content-row')} key={request.id}>
+                                            <td className={cx('name')}>
+                                                <div className={cx('avatar')}>
+                                                    <img
+                                                        src={require('../../../../../assets/images/coach-avatar.png')}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                <span>{request.clientName}</span>
+                                            </td>
+                                            <td>{request.age}</td>
+                                            <td>{handleRenderGenders(request.gender)}</td>
+                                            <td>{request.email}</td>
+                                            <td>{request.phoneNumber}</td>
+                                            <td>{request.courseName}</td>
+                                            <td className={cx('action-btn')}>
+                                                <button
+                                                    id={cx('btn-view-message')}
+                                                    onClick={() => handleViewRequestMessage(request)}
+                                                >
+                                                    <BsFillEnvelopeFill />
+                                                </button>
+                                                <button
+                                                    id={cx('btn-accept')}
+                                                    onClick={() => handleOpenAcceptModal(request)}
+                                                >
+                                                    <BsCheckLg />
+                                                </button>
+                                                <button
+                                                    id={cx('btn-refuse')}
+                                                    onClick={() => handleOpenRejectModal(request)}
+                                                >
+                                                    <BsXLg />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            <Pagination
+                                className={cx('pagination-bar')}
+                                currentPage={currentPage}
+                                totalCount={totalCount}
+                                pageSize={pageSize}
+                                onPageChange={(page) => setCurrentPage(page)}
+                            />
+                        </>
+                    ) : (
+                        <div className={cx('request-empty')}>
+                            <h2>Không tìm thấy yêu cầu nào!</h2>
+                        </div>
+                    )}
                 </>
-            ) : (
-                <div className={cx('request-empty')}>
-                    <h2>Hiện chưa có yêu cầu nào!</h2>
-                </div>
             )}
 
             {isViewMessage && (
@@ -198,14 +237,20 @@ const Pending = () => {
                             <span style={{ color: '#1A97CC' }}>{selectedRequest.clientName}</span>?
                         </h2>
                         <div className={cx('modal-action')}>
-                            <button id={cx('agree-btn')} type="submit" onClick={() => handleAcceptRequest()}>
-                                <BsCheckLg />
-                                <span>Đồng ý</span>
-                            </button>
-                            <button id={cx('cancel-btn')} onClick={() => setIsAccept(false)}>
-                                <BsXLg />
-                                <span>Hủy bỏ</span>
-                            </button>
+                            {loading ? (
+                                <Spinner />
+                            ) : (
+                                <>
+                                    <button id={cx('agree-btn')} type="submit" onClick={() => handleAcceptRequest()}>
+                                        <BsCheckLg />
+                                        <span>Đồng ý</span>
+                                    </button>
+                                    <button id={cx('cancel-btn')} onClick={() => setIsAccept(false)}>
+                                        <BsXLg />
+                                        <span>Hủy bỏ</span>
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Modal>
@@ -260,14 +305,20 @@ const Pending = () => {
                             </div>
                         )}
                         <div className={cx('modal-action')}>
-                            <button id={cx('agree-btn')} type="submit" onClick={() => handleRejectRequest()}>
-                                <BsCheckLg />
-                                <span>Gửi</span>
-                            </button>
-                            <button id={cx('cancel-btn')} onClick={() => setIsOpenRejectMessage(false)}>
-                                <BsXLg />
-                                <span>Hủy bỏ</span>
-                            </button>
+                            {loading ? (
+                                <Spinner />
+                            ) : (
+                                <>
+                                    <button id={cx('agree-btn')} type="submit" onClick={() => handleRejectRequest()}>
+                                        <BsCheckLg />
+                                        <span>Gửi</span>
+                                    </button>
+                                    <button id={cx('cancel-btn')} onClick={() => setIsOpenRejectMessage(false)}>
+                                        <BsXLg />
+                                        <span>Hủy bỏ</span>
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Modal>

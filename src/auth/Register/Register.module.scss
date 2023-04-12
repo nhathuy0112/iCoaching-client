@@ -11,6 +11,12 @@
     .content {
         display: flex;
     }
+    button {
+        cursor: pointer;
+        &:hover {
+            opacity: 0.8;
+        }
+    }
 }
 
 .img-wrapper {
@@ -97,6 +103,11 @@
             opacity: 0.8;
         }
     }
+}
+
+.policy-link {
+    text-decoration: underline;
+    color: var(--primary-color);
 }
 
 @media (max-width: 1000px) {

@@ -1,4 +1,30 @@
 .wrapper {
+    min-height: 63vh;
+    .search {
+        max-width: var(--default-layout-max-width);
+        margin: auto;
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 16px;
+
+        .search-box {
+            display: flex;
+            height: 36px;
+            border-radius: var(--default-border-radius);
+            background: var(--search-filter-background-color);
+            padding: 8px 12px;
+            color: #8f9bba;
+            font-size: 1.4rem;
+            input {
+                background: transparent;
+            }
+            .search-icon {
+                margin-right: 12px;
+                color: #2b3674;
+                font-size: 1.8rem;
+            }
+        }
+    }
     .request-list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -75,10 +101,17 @@
     }
 
     .request-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         h2 {
             text-align: center;
             color: red;
             font-size: 2rem;
+        }
+        .find-link {
+            text-decoration: underline;
+            color: var(--primary-color);
         }
     }
 }

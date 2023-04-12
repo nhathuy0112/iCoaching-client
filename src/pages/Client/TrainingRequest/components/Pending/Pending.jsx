@@ -8,21 +8,29 @@ import ErrorMessage from '~/components/ErrorMessage';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
+import Spinner from '~/components/Spinner';
+import { AiOutlineSearch } from 'react-icons/ai';
+import { Link, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 const Pending = () => {
     const dispatch = useDispatch();
-    const { coachingRequests, totalCount, pageSize } = useSelector((state) => state.client);
+    const { id } = useParams();
+    const { coachingRequests, totalCount, pageSize, loading } = useSelector((state) => state.client);
     const [selectedRequest, setSelectedRequest] = useState({});
     const [isCancel, setIsCancel] = useState(false);
     const [isOpenCancelMessage, setIsOpenCancelMessage] = useState(false);
     const [message, setMessage] = useState('');
     const [messageError, setMessageError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [requestLoading, setRequestLoading] = useState(true);
+    const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
-        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 6, clientRequestStatus: 'Pending' }));
+        dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 6, clientRequestStatus: 'Pending' }))
+            .unwrap()
+            .then(() => setRequestLoading(false));
     }, [dispatch, currentPage]);
 
     const handleOnChangeMessage = (e) => {
@@ -60,57 +68,93 @@ const Pending = () => {
         }
     };
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!searchValue) {
+            dispatch(getCoachingRequestsAsync({ pageIndex: currentPage, pageSize: 6, clientRequestStatus: 'Pending' }));
+        } else {
+            dispatch(
+                getCoachingRequestsAsync({
+                    pageIndex: currentPage,
+                    pageSize: 6,
+                    clientRequestStatus: 'Pending',
+                    search: searchValue,
+                }),
+            );
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
-            {coachingRequests && coachingRequests.length > 0 ? (
-                <div className={cx('request-list')}>
-                    {coachingRequests.map((request) => (
-                        <div className={cx('request-item')} key={request.id}>
-                            <div className={cx('card')}>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'coach')}>Huấn luyện viên</span>
-                                    <span>{request.coachName}</span>
-                                </div>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'course-name')}>Gói tập</span>
-                                    <span>{request.courseName}</span>
-                                </div>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'duration')}>Số buổi</span>
-                                    <span>{request.duration}</span>
-                                </div>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'price')}>Giá</span>
-                                    <span>{request.price}</span>
-                                </div>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'discount')}>Giảm giá</span>
-                                    <span>{request.discount ? request.discount : 0}%</span>
-                                </div>
-                                <div className={cx('card-content')}>
-                                    <span className={cx('card-title', 'pay')}>Thành tiền</span>
-                                    <span>{request.priceToPay}</span>
-                                </div>
-                            </div>
-                            <div className={cx('action')}>
-                                <button id={cx('canceled-btn')} onClick={() => handleOpenCancelModal(request)}>
-                                    Hủy
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                    <Pagination
-                        className={cx('pagination-bar')}
-                        currentPage={currentPage}
-                        totalCount={totalCount}
-                        pageSize={pageSize}
-                        onPageChange={(page) => setCurrentPage(page)}
-                    />
-                </div>
+            {requestLoading ? (
+                <Spinner />
             ) : (
-                <div className={cx('request-empty')}>
-                    <h2>Hiện chưa có yêu cầu nào!</h2>
-                </div>
+                <>
+                    <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                        <div className={cx('search-box')} type="submit">
+                            <AiOutlineSearch className={cx('search-icon')} />
+                            <input
+                                type="text"
+                                placeholder="Huấn luyện viên"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                        </div>
+                    </form>
+                    {coachingRequests && coachingRequests.length > 0 ? (
+                        <div className={cx('request-list')}>
+                            {coachingRequests.map((request) => (
+                                <div className={cx('request-item')} key={request.id}>
+                                    <div className={cx('card')}>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'coach')}>Huấn luyện viên</span>
+                                            <span>{request.coachName}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'course-name')}>Gói tập</span>
+                                            <span>{request.courseName}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'duration')}>Số buổi</span>
+                                            <span>{request.duration}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'price')}>Giá</span>
+                                            <span>{request.price}</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'discount')}>Giảm giá</span>
+                                            <span>{request.discount ? request.discount : 0}%</span>
+                                        </div>
+                                        <div className={cx('card-content')}>
+                                            <span className={cx('card-title', 'pay')}>Thành tiền</span>
+                                            <span>{request.priceToPay}</span>
+                                        </div>
+                                    </div>
+                                    <div className={cx('action')}>
+                                        <button id={cx('canceled-btn')} onClick={() => handleOpenCancelModal(request)}>
+                                            Hủy
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                            <Pagination
+                                className={cx('pagination-bar')}
+                                currentPage={currentPage}
+                                totalCount={totalCount}
+                                pageSize={pageSize}
+                                onPageChange={(page) => setCurrentPage(page)}
+                            />
+                        </div>
+                    ) : (
+                        <div className={cx('request-empty')}>
+                            <h2>Không tìm thấy yêu cầu nào!</h2>
+                            <Link className={cx('find-link')} to={`/client/${id}/all-coaches`}>
+                                Tìm HLV tại đây!
+                            </Link>
+                        </div>
+                    )}
+                </>
             )}
 
             {isCancel && (
@@ -164,14 +208,20 @@ const Pending = () => {
                             </div>
                         )}
                         <div className={cx('modal-action')}>
-                            <button id={cx('agree-btn')} type="submit" onClick={handleCancelRequest}>
-                                <BsCheckLg />
-                                <span>Gửi</span>
-                            </button>
-                            <button id={cx('cancel-btn')} onClick={() => setIsOpenCancelMessage(false)}>
-                                <BsXLg />
-                                <span>Hủy bỏ</span>
-                            </button>
+                            {loading ? (
+                                <Spinner />
+                            ) : (
+                                <>
+                                    <button id={cx('agree-btn')} type="submit" onClick={handleCancelRequest}>
+                                        <BsCheckLg />
+                                        <span>Gửi</span>
+                                    </button>
+                                    <button id={cx('cancel-btn')} onClick={() => setIsOpenCancelMessage(false)}>
+                                        <BsXLg />
+                                        <span>Hủy bỏ</span>
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Modal>
