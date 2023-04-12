@@ -1,0 +1,16 @@
+.wrapper {
+    flex: 1;
+    min-height: 65vh;
+
+    .content {
+        .empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .message {
+                color: red;
+            }
+        }
+    }
+}

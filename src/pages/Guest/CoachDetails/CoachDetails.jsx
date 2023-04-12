@@ -13,6 +13,7 @@ import { getCoachProfileAsync } from '~/features/guestSlice';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 import Spinner from '~/components/Spinner';
+import Messages from './components/Messages';
 
 const cx = classNames.bind(styles);
 const CoachDetail = () => {
@@ -28,6 +29,10 @@ const CoachDetail = () => {
         {
             label: 'Gói tập',
             content: <TrainingCourse />,
+        },
+        {
+            label: 'Trò chuyện',
+            content: <Messages />,
         },
     ];
     const { coachId } = useParams();

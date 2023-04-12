@@ -94,7 +94,7 @@ const CoachesView = () => {
                     </div>
                 )}
             </div>
-            {coachesDisplay !== totalCount && isViewMoreSearch && (
+            {coachesDisplay !== totalCount && (
                 <button id={cx('view-all-btn')} onClick={handleShowMoreCoaches}>
                     Xem thêm
                 </button>
