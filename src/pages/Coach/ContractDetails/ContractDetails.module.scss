@@ -4,6 +4,9 @@
     flex-direction: column;
 
     .title-and-back {
+        .back {
+            display: flex;
+        }
         .back-link {
             display: flex;
             align-items: center;

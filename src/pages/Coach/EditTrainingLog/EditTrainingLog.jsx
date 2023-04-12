@@ -246,16 +246,18 @@ const EditTrainingLog = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title-and-back')}>
-                <div
-                    onClick={() => {
-                        navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
-                            state: { isEditTrainingLog: true },
-                        });
-                    }}
-                    className={cx('back-link')}
-                >
-                    <IoIosArrowBack />
-                    <span>Quay lại</span>
+                <div className={cx('back')}>
+                    <span
+                        onClick={() => {
+                            navigate(`/coach/${id}/my-clients/view-details/${contractId}`, {
+                                state: { isEditTrainingLog: true },
+                            });
+                        }}
+                        className={cx('back-link')}
+                    >
+                        <IoIosArrowBack />
+                        <span>Quay lại</span>
+                    </span>
                 </div>
                 <h2 className={cx('title')}>Cập nhật tiến độ</h2>
             </div>

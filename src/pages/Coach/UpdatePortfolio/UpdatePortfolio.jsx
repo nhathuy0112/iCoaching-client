@@ -74,10 +74,12 @@ const UpdatePortfolio = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title-and-back')}>
-                <Link to={`/coach/${id}/portfolio`} className={cx('back-link')}>
-                    <IoIosArrowBack />
-                    <span>Quay lại</span>
-                </Link>
+                <div className={cx('back')}>
+                    <Link to={`/coach/${id}/portfolio`} className={cx('back-link')}>
+                        <IoIosArrowBack />
+                        <span>Quay lại</span>
+                    </Link>
+                </div>
                 <h2 className={cx('title')}>Giới thiệu bản thân</h2>
             </div>
             <div className={cx('content')}>

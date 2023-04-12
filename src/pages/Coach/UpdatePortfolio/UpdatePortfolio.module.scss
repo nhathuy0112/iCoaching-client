@@ -1,9 +1,15 @@
 .wrapper {
     .title-and-back {
+        .back {
+            display: flex;
+        }
+
         .back-link {
             display: flex;
             align-items: center;
             color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: 600;
         }
 
         .title {

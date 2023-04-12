@@ -95,6 +95,10 @@
             color: white;
             width: max-content;
 
+            svg {
+                display: block;
+            }
+
             &:hover {
                 opacity: 0.6;
             }

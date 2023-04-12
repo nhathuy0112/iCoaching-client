@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { dataURItoBlob } from '~/utils/blob';
 import ErrorMessage from '~/components/ErrorMessage';
-import SuccessMessage from '~/components/SuccessMessage';
 
 import {
     getUserAvatarAsync,
@@ -23,6 +22,8 @@ import Modal from '~/components/Modal/Modal';
 import { BsCheckLg } from 'react-icons/bs';
 import { IoIosArrowBack } from 'react-icons/io';
 import { HiOutlineXMark } from 'react-icons/hi2';
+import { convertDateFormat, convertDateFormatToInput } from '~/utils/dateFormat';
+import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 
 const schema = yup.object({
@@ -55,11 +56,9 @@ const schema = yup.object({
 
 const AccountProfile = () => {
     const dispatch = useDispatch();
-    const { avatar, profile, error, message, currentUser, loading } = useSelector((state) => state.user);
+    const { avatar, error, currentUser, loading } = useSelector((state) => state.user);
     const [currentAvatar, setCurrentAvatar] = useState(avatar);
     const [avatarLoading, setAvatarLoading] = useState(false);
-
-    const [response, setResponse] = useState(false);
     const [confirmAvatar, setConfirmAvatar] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -81,38 +80,40 @@ const AccountProfile = () => {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
     } = useForm({ resolver: yupResolver(schema) });
 
-    const convertDateFormat = (dateString) => {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        return `${day}-${month}-${year}`;
-    };
+    useEffect(() => {
+        dispatch(getUserProfileAsync())
+            .unwrap()
+            .then((response) => {
+                setValue('fullname', response.fullname);
+                setValue('dob', convertDateFormatToInput(response.dob));
+                setValue('gender', response.gender);
+                setValue('email', response.email);
+                setValue('phoneNumber', response.phoneNumber);
+            });
+    }, [dispatch, setValue]);
 
     const handleProfile = (data) => {
         try {
             dispatch(
                 updateUserProfileAsync({
                     fullname: data.fullname,
-                    email: data.email,
-                    dob: convertDateFormat(data.dob),
                     gender: data.gender,
+                    dob: convertDateFormat(data.dob),
+                    email: data.email,
                     phoneNumber: data.phoneNumber,
                 }),
             )
                 .unwrap()
                 .then(() => {
-                    setResponse(true);
                     dispatch(getUserProfileAsync());
+                    toast.success('Cập nhật thông tin thành công!');
                 });
         } catch (error) {
             console.log(error);
         }
-        setTimeout(() => {
-            setResponse(false);
-        }, 3000);
     };
 
     const handleChangeAvatar = () => {
@@ -156,7 +157,6 @@ const AccountProfile = () => {
                     <div className={cx('container')}>
                         <div className={cx('left_container')}>
                             <h3>Ảnh đại diện</h3>
-
                             {avatarLoading ? (
                                 <Spinner />
                             ) : (
@@ -172,67 +172,83 @@ const AccountProfile = () => {
                                             Chọn ảnh
                                         </label>
                                     </div>
+                                    <button type="submit" onClick={() => setConfirmAvatar(true)}>
+                                        Thay đổi
+                                    </button>
                                 </>
                             )}
-                            <button type="submit" onClick={() => setConfirmAvatar(true)} hidden={avatarLoading}>
-                                Thay đổi
-                            </button>
                         </div>
+
                         <div className={cx('right_container')}>
                             <form id={cx('update_form')} onSubmit={handleSubmit(handleProfile)}>
-                                <label>Họ và Tên</label>
-                                <input
-                                    type="text"
-                                    placeholder="Nhập Họ và Tên"
-                                    defaultValue={profile.fullname}
-                                    {...register('fullname')}
-                                />
-                                {errors.fullname && <ErrorMessage message={errors.fullname.message} />}
+                                <div className={cx('input-group')}>
+                                    <label>Họ và Tên</label>
+                                    <input type="text" placeholder="Nhập Họ và Tên" {...register('fullname')} />
+                                    {errors.fullname && (
+                                        <div className={cx('error')}>
+                                            <ErrorMessage message={errors.fullname.message} />
+                                        </div>
+                                    )}
+                                </div>
                                 <div className={cx('column')}>
                                     <div className={cx('col-2')}>
-                                        <label>Giới tính</label>
-                                        <select
-                                            defaultValue={profile.gender}
-                                            {...register('gender', { required: true })}
-                                        >
-                                            <option value="" disabled>
-                                                ----Chọn giới tính----
-                                            </option>
-                                            <option value="Male">Nam</option>
-                                            <option value="Female">Nữ</option>
-                                            <option value="Other">Khác</option>
-                                        </select>
-                                        {errors.gender && <ErrorMessage message={errors.gender.message} />}
+                                        <div className={cx('input-group', 'gender')}>
+                                            <label>Giới tính</label>
+                                            <select {...register('gender', { required: true })}>
+                                                <option value="" disabled>
+                                                    ----Chọn giới tính----
+                                                </option>
+                                                <option value="Male">Nam</option>
+                                                <option value="Female">Nữ</option>
+                                                <option value="Other">Khác</option>
+                                            </select>
+                                            {errors.gender && (
+                                                <div className={cx('error')}>
+                                                    <ErrorMessage message={errors.gender.message} />
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className={cx('col-2')}>
-                                        <label>Ngày sinh</label>
-                                        <input
-                                            type="date"
-                                            defaultValue={profile.dob?.replace(/(..).(..).(....)/, '$3-$1-$2')}
-                                            {...register('dob')}
-                                        />
-                                        {errors.dob && <ErrorMessage message={errors.dob.message} />}
+                                        <div className={cx('input-group', 'dob')}>
+                                            <label>Ngày sinh</label>
+                                            <input type="date" {...register('dob')} />
+                                            {errors.dob && (
+                                                <div className={cx('error')}>
+                                                    <ErrorMessage message={errors.dob.message} />
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                                <label>Địa chỉ email</label>
-                                <input
-                                    type="email"
-                                    placeholder="Nhập địa chỉ email"
-                                    defaultValue={profile.email}
-                                    {...register('email')}
-                                />{' '}
-                                {errors.email && <ErrorMessage message={errors.email.message} />}
-                                {error?.Email && <ErrorMessage message={error.Email?.message} />}
-                                <label>Số điện thoại</label>
-                                <input
-                                    type="tel"
-                                    placeholder="Nhập số điện thoại"
-                                    defaultValue={profile.phoneNumber}
-                                    {...register('phoneNumber')}
-                                />
-                                {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
-                                {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
-                                {response && message && <SuccessMessage message={message} />}
+                                <div className={cx('input-group')}>
+                                    <label>Địa chỉ email</label>
+                                    <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />{' '}
+                                    {errors.email && (
+                                        <div className={cx('error')}>
+                                            <ErrorMessage message={errors.email.message} />
+                                        </div>
+                                    )}
+                                    {error?.Email && (
+                                        <div className={cx('error')}>
+                                            <ErrorMessage message={error.Email?.message} />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className={cx('input-group')}>
+                                    <label>Số điện thoại</label>
+                                    <input type="text" placeholder="Nhập số điện thoại" {...register('phoneNumber')} />
+                                    {errors.phoneNumber && (
+                                        <div className={cx('error')}>
+                                            <ErrorMessage message={errors.phoneNumber.message} />
+                                        </div>
+                                    )}
+                                    {error?.Phone && (
+                                        <div className={cx('error')}>
+                                            <ErrorMessage message={error.Phone?.message} />
+                                        </div>
+                                    )}
+                                </div>
                                 <button
                                     type="submit"
                                     id={cx('submit_btn')}
@@ -243,7 +259,8 @@ const AccountProfile = () => {
                                         <Spinner />
                                     ) : (
                                         <>
-                                            <BsCheckLg className={cx('icon')} /> Cập nhật
+                                            <BsCheckLg className={cx('icon')} />
+                                            Cập nhật
                                         </>
                                     )}
                                 </button>
