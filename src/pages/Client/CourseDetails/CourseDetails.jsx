@@ -127,8 +127,19 @@ const CourseDetails = () => {
                             </div>
                         </div>
                     )}
-
-                    <button id={cx('register-btn')} onClick={handleViewDetailsModal}>
+                    {currentTrainingCourse.isClientRequested && (
+                        <div className={cx('error')}>
+                            <ErrorMessage message="Bạn đã gửi yêu cầu hoặc đang tập luyện 1 khóa của HLV này" />
+                        </div>
+                    )}
+                    <button
+                        className={
+                            !currentTrainingCourse.isClientRequested
+                                ? cx('register-btn')
+                                : cx('register-btn', 'disabled')
+                        }
+                        onClick={handleViewDetailsModal}
+                    >
                         Đăng ký
                     </button>
                 </div>

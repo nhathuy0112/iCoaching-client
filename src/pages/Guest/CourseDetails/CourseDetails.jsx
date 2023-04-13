@@ -9,6 +9,7 @@ import Login from '~/auth/Login/Login';
 import Register from '~/auth/Register/Register';
 import ForgotPassword from '~/auth/ForgotPassword/ForgotPassword';
 import Spinner from '~/components/Spinner';
+import ErrorMessage from '~/components/ErrorMessage/ErrorMessage';
 
 const cx = classNames.bind(styles);
 

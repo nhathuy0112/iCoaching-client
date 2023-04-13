@@ -129,6 +129,11 @@
                 &:hover {
                     opacity: 0.6;
                 }
+
+                &.disabled {
+                    background-color: #333;
+                    pointer-events: none;
+                }
             }
         }
     }
