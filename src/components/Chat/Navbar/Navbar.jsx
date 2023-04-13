@@ -12,7 +12,7 @@ const Navbar = () => {
         <div className={cx('navbar')}>
             <span className={cx('logo')}></span>
             <div className={cx('user')}>
-                <img src={currentUser?.Avatar ? currentUser?.Avatar : require('~/assets/images/Facebook.png')} alt="" />
+                <img src={currentUser?.Avatar} alt="" />
                 <span>{currentUser?.Fullname}</span>
             </div>
         </div>
