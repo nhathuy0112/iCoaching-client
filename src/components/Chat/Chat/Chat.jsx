@@ -111,8 +111,6 @@ const Chat = () => {
         }
     }, [user.uid]);
 
-    console.log(currentCoach);
-    console.log(coachId);
     useEffect(() => {
         if (currentCoach.uid && chatId) {
             const handleSelect = async () => {
