@@ -172,7 +172,7 @@ const Chat = () => {
                                 onClick={() => handleBack()}
                             >
                                 <IoChevronBackSharp />
-                                <span>Trở lại</span>
+                                <span>Quay lại</span>
                             </div>
 
                             <span style={{ borderLeft: '2px solid lightgray', paddingLeft: '5px', color: 'white' }}>

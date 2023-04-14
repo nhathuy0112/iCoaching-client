@@ -63,7 +63,7 @@ const Search = () => {
 
     return (
         <div className={cx('search')}>
-            <div className={cx('searchForm')}>
+            <form className={cx('searchForm')}>
                 <FaSearch />
                 <input
                     type="text"
@@ -79,8 +79,8 @@ const Search = () => {
                     }}
                     value={username}
                 />
-            </div>
-            {user &&
+            </form>
+            {/* {user &&
                 user.map((user) => (
                     <div key={user.uid} className={cx('userChat')} onClick={() => handleSelect(user)}>
                         <img src={user.avatar} alt="" />
@@ -94,7 +94,7 @@ const Search = () => {
                             <FaSearch className={cx('iconChat')} />
                         </div>
                     </div>
-                ))}
+                ))} */}
         </div>
     );
 };

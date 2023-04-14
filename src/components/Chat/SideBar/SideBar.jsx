@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from '../Chat.module.scss';
 import classNames from 'classnames/bind';
 import Search from '../Search';
@@ -10,10 +9,11 @@ const cx = classNames.bind(styles);
 
 const SideBar = () => {
     const { currentUser } = useSelector((state) => state.user);
+
     return (
         <div className={cx('sidebar', { sidebarCoach: currentUser?.role === 'COACH' })}>
-            <Navbar />
-            <Search />
+            {/* {currentUser?.role !== 'COACH' && <Navbar />} */}
+            {/* <Search /> */}
             <Chats />
         </div>
     );
