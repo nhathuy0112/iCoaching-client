@@ -11,7 +11,6 @@ const cx = classNames.bind(styles);
 const Home = () => {
     const { coachId } = useParams();
     const { currentUser } = useSelector((state) => state.user);
-    const chatId = useSelector((state) => state.chat.chatId);
 
     return (
         <div
@@ -27,24 +26,6 @@ const Home = () => {
                     <Chat />
                 ) : currentUser?.role === 'COACH' ? (
                     <SideBar />
-                ) : !chatId ? (
-                    <>
-                        <SideBar />
-                        <h3
-                            style={{
-                                width: 'auto',
-                                display: 'flex',
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                fontWeight: '500',
-                                fontSize: '24px',
-                                color: 'gray',
-                            }}
-                        >
-                            Bạn chưa có cuộc trò chuyện nào...
-                        </h3>
-                    </>
                 ) : (
                     <>
                         <SideBar />
