@@ -37,8 +37,11 @@ const CoachesView = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         if (!searchValue) {
-            dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
-            setIsViewMoreSearch(true);
+            dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }))
+                .unwrap()
+                .then(() => {
+                    setIsViewMoreSearch(true);
+                });
         } else {
             dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay, search: searchValue }))
                 .unwrap()
@@ -94,7 +97,7 @@ const CoachesView = () => {
                     </div>
                 )}
             </div>
-            {coachesDisplay !== totalCount && (
+            {coachesDisplay !== totalCount && isViewMoreSearch && (
                 <button id={cx('view-all-btn')} onClick={handleShowMoreCoaches}>
                     Xem thêm
                 </button>
