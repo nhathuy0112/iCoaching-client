@@ -68,7 +68,9 @@
                                 border: 1px solid var(--primary-color);
                             }
                             &:nth-child(2) {
-                                height: unset;
+                                min-height: 170px;
+                                padding-bottom: 32px;
+                                border: none;
                             }
                         }
                     }
