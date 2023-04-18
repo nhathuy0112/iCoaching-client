@@ -22,7 +22,11 @@ const CoachesView = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }));
+        dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: coachesDisplay }))
+            .unwrap()
+            .then(() => {
+                setIsViewMoreSearch(true);
+            });
     }, [dispatch, coachesDisplay]);
 
     const handleShowMoreCoaches = () => {
