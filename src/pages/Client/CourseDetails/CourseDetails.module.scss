@@ -118,10 +118,8 @@
 
             .register-btn {
                 width: 120px;
-                position: absolute;
-                bottom: 16px;
-                left: 50%;
-                transform: translateX(-50%);
+                display: flex;
+                margin: auto;
                 padding: 8px 16px;
                 font-size: 1.6rem;
                 font-weight: 500;
@@ -129,6 +127,10 @@
                 color: var(--white-color);
                 border-radius: var(--default-border-radius);
                 cursor: pointer;
+
+                span {
+                    margin: auto;
+                }
 
                 &:hover {
                     opacity: 0.6;
