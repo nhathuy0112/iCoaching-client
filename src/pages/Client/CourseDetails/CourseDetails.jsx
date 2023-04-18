@@ -140,7 +140,7 @@ const CourseDetails = () => {
                         }
                         onClick={handleViewDetailsModal}
                     >
-                        Đăng ký
+                        <span>Đăng ký</span>
                     </button>
                 </div>
             </div>
@@ -188,7 +188,12 @@ const CourseDetails = () => {
                                     -- Chọn mã giảm giá --{' '}
                                 </option>
                                 {vouchers.map((voucher) => {
-                                    if (!voucher.isUsed) {
+                                    const priceNeedToPay =
+                                        parseInt(currentTrainingCourse.price.replace(/[^0-9]/g, '')) -
+                                        (parseFloat(voucher.discount) / 100) *
+                                            parseInt(currentTrainingCourse.price.replace(/[^0-9]/g, ''));
+                                    const validPaymentPrice = priceNeedToPay > 10000 || priceNeedToPay === 0;
+                                    if (!voucher.isUsed && validPaymentPrice) {
                                         return (
                                             <option key={voucher.id} value={voucher.code}>
                                                 {voucher.code} - {voucher.discount}
