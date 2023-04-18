@@ -22,6 +22,33 @@
     }
     .content {
         #about-form {
+            div {
+                border-radius: var(--default-border-radius);
+                border: 1px solid var(--primary-color);
+
+                &:first-child {
+                    div {
+                        &:first-child {
+                            border-top: none;
+                            border-left: none;
+                            border-right: none;
+                        }
+                    }
+                }
+
+                &:nth-child(2) {
+                    margin-bottom: 32px;
+                    min-height: 320px;
+                    border: none;
+
+                    div {
+                        &:first-child {
+                            border: none;
+                        }
+                    }
+                }
+            }
+
             img {
                 width: 240px;
                 margin: 0 4px;
