@@ -31,6 +31,8 @@ const Chat = () => {
     const user = useSelector((state) => state.chat.user);
     const { currentUser } = useSelector((state) => state.user);
     const [currentCoach, setCurrentCoach] = useState([]);
+    const [chats, setChats] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const { coachId } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -48,6 +50,7 @@ const Chat = () => {
         const KitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(1980920521, token, null, userID, userName);
         zp = ZegoUIKitPrebuilt.create(KitToken);
         zp.addPlugins({ ZIM });
+        ZIM.getInstance().setLogConfig({ logLevel: 'disable' });
     }
     function generateToken(tokenServerUrl, userID) {
         return fetch(`${tokenServerUrl}/api/userID/${userID}`, {
@@ -147,10 +150,32 @@ const Chat = () => {
     });
 
     useEffect(() => {
+        const getChats = () => {
+            if (currentUser?.Id) {
+                const unsub = onSnapshot(doc(db, 'userChats', currentUser?.Id), (doc) => {
+                    setChats(doc.data());
+                    setIsLoading(false);
+                });
+
+                return () => {
+                    unsub();
+                };
+            } else {
+                return;
+            }
+        };
+
+        currentUser?.Id && getChats();
+    }, [currentUser?.Id]);
+
+    useEffect(() => {
         if (!chatId && currentUser?.role === 'COACH') {
             navigate(`/coach/${currentUser.Id}/messages`);
         }
     });
+    const handleChat = () => {
+        navigate(`/client/${currentUser.Id}/all-coaches`);
+    };
     const handleBack = () => {
         navigate(`/coach/${currentUser.Id}/messages`);
         dispatch(changeUser({ currentUser: '', payload: '' }));
@@ -195,6 +220,47 @@ const Chat = () => {
                     <Input />
                 </div>
             </div>
+        </div>
+    ) : !chatId ? (
+        <div className={cx('chat', { chatModal: !chatId })}>
+            {!isLoading ? (
+                Object.entries(chats).length === 0 ? (
+                    <h3
+                        style={{
+                            position: 'absolute',
+                            left: '50%',
+                            top: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            fontWeight: '500',
+                            fontSize: '24px',
+                            color: 'gray',
+                            whiteSpace: 'nowrap',
+                        }}
+                    >
+                        <span style={{ color: '#1e62af', cursor: 'pointer' }} onClick={handleChat}>
+                            Vào đây
+                        </span>
+                        &nbsp;<span>để bắt đầu trò chuyện với huấn luyện viên</span>
+                    </h3>
+                ) : (
+                    <h3
+                        style={{
+                            position: 'absolute',
+                            left: '50%',
+                            top: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            fontWeight: '500',
+                            fontSize: '24px',
+                            color: 'gray',
+                            whiteSpace: 'nowrap',
+                        }}
+                    >
+                        Chọn huấn luyện viên để trò chuyện
+                    </h3>
+                )
+            ) : (
+                <div></div>
+            )}
         </div>
     ) : (
         <div className={cx('chat', { chatClient: currentUser?.role !== 'COACH' && !coachId })}>

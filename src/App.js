@@ -29,6 +29,7 @@ function App() {
         const KitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(1980920521, token, null, userID, userName);
         zp = ZegoUIKitPrebuilt.create(KitToken);
         zp.addPlugins({ ZIM });
+        ZIM.getInstance().setLogConfig({ logLevel: 'disable' });
     }
     function generateToken(tokenServerUrl, userID) {
         return fetch(`${tokenServerUrl}/api/userID/${userID}`, {
