@@ -8,11 +8,12 @@ import UserCard from '~/components/UserCard';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 import { AiOutlineSearch } from 'react-icons/ai';
+import Spinner from '~/components/Spinner';
 const cx = classNames.bind(styles);
 
 const CoachesView = () => {
     const dispatch = useDispatch();
-    const { coaches, totalCount } = useSelector((state) => state.guest);
+    const { coaches, totalCount, loading } = useSelector((state) => state.guest);
     const [coachesDisplay, setCoachesDisplay] = useState(15);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -98,7 +99,9 @@ const CoachesView = () => {
                         />
                     </div>
                 </form>
-                {coaches && coaches.length > 0 ? (
+                {loading ? (
+                    <Spinner />
+                ) : coaches && coaches.length > 0 ? (
                     <div className={cx('coach-list')}>
                         {coaches.map((coach) => (
                             <div className={cx('coach-item')} key={coach.id}>

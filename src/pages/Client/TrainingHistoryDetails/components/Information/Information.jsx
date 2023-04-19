@@ -25,60 +25,60 @@ const Information = () => {
             ) : (
                 <div className={cx('content')}>
                     <div className={cx('contract-info')}>
-                        <div className={cx('info-container')}>
-                            <h4 className={cx('title')}>Khách hàng</h4>
-                            <div className={cx('info-frame')}>
-                                <div className={cx('row-info')}>
-                                    <div className={cx('info-group', 'first-column')}>
-                                        <label htmlFor="">Họ và tên</label>
-                                        <span>{currentContract?.client?.fullname}</span>
-                                    </div>
-                                    <div className={cx('info-group', 'second-column')}>
-                                        <label htmlFor="">Giới tính</label>
-                                        <span>{handleRenderGenders(currentContract?.client?.gender)}</span>
-                                    </div>
-                                    <div className={cx('info-group', 'third-column')}>
-                                        <label htmlFor="">Tuổi</label>
-                                        <span>{currentContract?.client?.age}</span>
-                                    </div>
-                                </div>
-                                <div className={cx('row-info')}>
-                                    <div className={cx('info-group', 'first-column')}>
-                                        <label htmlFor="">Số điện thoại</label>
-                                        <span>{currentContract?.client?.phoneNumber}</span>
-                                    </div>
-                                    <div className={cx('info-group', 'second-column')}>
-                                        <label htmlFor="">Email</label>
-                                        <span>{currentContract?.client?.email}</span>
+                        <div className={cx('info-column')}>
+                            <div className={cx('info-container')}>
+                                <h4 className={cx('title')}>Khách hàng</h4>
+                                <div className={cx('info-frame')}>
+                                    <div className={cx('row-info')}>
+                                        <div className={cx('info-group')}>
+                                            <label htmlFor="">Họ và tên</label>
+                                            <span>{currentContract?.client?.fullname}</span>
+                                        </div>
+                                        <div className={cx('info-group')}>
+                                            <label htmlFor="">Giới tính</label>
+                                            <span>{handleRenderGenders(currentContract?.client?.gender)}</span>
+                                        </div>
+                                        <div className={cx('info-group')}>
+                                            <label htmlFor="">Tuổi</label>
+                                            <span>{currentContract?.client?.age}</span>
+                                        </div>
+                                        <div className={cx('info-group', 'first-column')}>
+                                            <label htmlFor="">Số điện thoại</label>
+                                            <span>{currentContract?.client?.phoneNumber}</span>
+                                        </div>
+                                        <div className={cx('info-group', 'second-column')}>
+                                            <label htmlFor="">Email</label>
+                                            <span>{currentContract?.client?.email}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className={cx('info-container')}>
-                            <h4 className={cx('title')}>Huấn luyện viên</h4>
-                            <div className={cx('info-frame')}>
-                                <div className={cx('row-info')}>
-                                    <div className={cx('info-group', 'first-column')}>
-                                        <label htmlFor="">Họ và tên</label>
-                                        <span>{currentContract?.coach?.fullname}</span>
+                            <div className={cx('info-container')}>
+                                <h4 className={cx('title')}>Huấn luyện viên</h4>
+                                <div className={cx('info-frame')}>
+                                    <div className={cx('row-info')}>
+                                        <div className={cx('info-group', 'first-column')}>
+                                            <label htmlFor="">Họ và tên</label>
+                                            <span>{currentContract?.coach?.fullname}</span>
+                                        </div>
+                                        <div className={cx('info-group', 'second-column')}>
+                                            <label htmlFor="">Giới tính</label>
+                                            <span>{handleRenderGenders(currentContract?.coach?.gender)}</span>
+                                        </div>
+                                        <div className={cx('info-group', 'third-column')}>
+                                            <label htmlFor="">Tuổi</label>
+                                            <span>{currentContract?.coach?.age}</span>
+                                        </div>
                                     </div>
-                                    <div className={cx('info-group', 'second-column')}>
-                                        <label htmlFor="">Giới tính</label>
-                                        <span>{handleRenderGenders(currentContract?.coach?.gender)}</span>
-                                    </div>
-                                    <div className={cx('info-group', 'third-column')}>
-                                        <label htmlFor="">Tuổi</label>
-                                        <span>{currentContract?.coach?.age}</span>
-                                    </div>
-                                </div>
-                                <div className={cx('row-info')}>
-                                    <div className={cx('info-group', 'first-column')}>
-                                        <label htmlFor="">Số điện thoại</label>
-                                        <span>{currentContract?.coach?.phoneNumber}</span>
-                                    </div>
-                                    <div className={cx('info-group', 'second-column')}>
-                                        <label htmlFor="">Email</label>
-                                        <span>{currentContract?.coach?.email}</span>
+                                    <div className={cx('row-info')}>
+                                        <div className={cx('info-group', 'first-column')}>
+                                            <label htmlFor="">Số điện thoại</label>
+                                            <span>{currentContract?.coach?.phoneNumber}</span>
+                                        </div>
+                                        <div className={cx('info-group', 'second-column')}>
+                                            <label htmlFor="">Email</label>
+                                            <span>{currentContract?.coach?.email}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@ const Information = () => {
                                 <div className={cx('row-info')}>
                                     <div className={cx('info-group', 'first-column')}>
                                         <label htmlFor="">Trạng thái</label>
-                                        <span>Đã hoàn thành</span>
+                                        <span>Đang tập luyện</span>
                                     </div>
                                 </div>
                                 <div className={cx('row-info')}>
