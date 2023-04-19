@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BsCameraVideoFill } from 'react-icons/bs';
+import { BsCameraVideoFill, BsDot } from 'react-icons/bs';
 import { IoChevronBackSharp } from 'react-icons/io5';
 import styles from '../Chat.module.scss';
 import classNames from 'classnames/bind';
@@ -181,8 +181,8 @@ const Chat = () => {
         dispatch(changeUser({ currentUser: '', payload: '' }));
     };
     return currentUser?.role === 'COACH' ? (
-        <div className={cx('wrapper')}>
-            <div className={cx('container')}>
+        <div className={cx('wrapper', { wrapperCoach: currentUser?.role === 'COACH' })}>
+            <div className={cx('container', { containerCoach: currentUser?.role === 'COACH' })}>
                 <div className={cx('chat')}>
                     <div className={cx('chatInfo')}>
                         <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
@@ -206,14 +206,23 @@ const Chat = () => {
                         </span>
 
                         {status.isOnline ? (
-                            <div
-                                className={cx('chatIcons')}
-                                onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}
-                            >
-                                <BsCameraVideoFill />
+                            <div className={cx('call-and-status')}>
+                                <div
+                                    className={cx('chatIcons')}
+                                    onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}
+                                >
+                                    <BsCameraVideoFill className={cx('call-icon')} />
+                                </div>
+                                <div className={cx('status', 'online')}>
+                                    <BsDot className={cx('icon')} />
+                                    <span>Trực tuyến</span>
+                                </div>
                             </div>
                         ) : (
-                            <div>Người dùng hiện chưa online</div>
+                            <div className={cx('status', 'offline')}>
+                                <BsDot className={cx('icon')} />
+                                <span>Ngoại tuyến</span>
+                            </div>
                         )}
                     </div>
                     <Messages />
@@ -265,16 +274,25 @@ const Chat = () => {
     ) : (
         <div className={cx('chat', { chatClient: currentUser?.role !== 'COACH' && !coachId })}>
             <div className={cx('chatInfo', { chatInfoClient: coachId })}>
-                <span>{user.fullname}</span>
+                <span className={cx('fullname')}>{user.fullname}</span>
                 {status.isOnline ? (
-                    <div
-                        className={cx('chatIcons')}
-                        onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}
-                    >
-                        <BsCameraVideoFill />
+                    <div className={cx('call-and-status')}>
+                        <div
+                            className={cx('chatIcons')}
+                            onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}
+                        >
+                            <BsCameraVideoFill className={cx('call-icon')} />
+                        </div>
+                        <div className={cx('status', 'online')}>
+                            <BsDot className={cx('icon')} />
+                            <span>Trực tuyến</span>
+                        </div>
                     </div>
                 ) : (
-                    <div>Người dùng hiện chưa online</div>
+                    <div className={cx('status', 'offline')}>
+                        <BsDot className={cx('icon')} />
+                        <span>Ngoại tuyến</span>
+                    </div>
                 )}
             </div>
             <Messages />

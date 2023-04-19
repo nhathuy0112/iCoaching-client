@@ -12,6 +12,7 @@ import { getAllCoachesAsync } from '~/features/guestSlice';
 import { useEffect } from 'react';
 import UserCard from '~/components/UserCard';
 import { Link } from 'react-router-dom';
+import Spinner from '~/components/Spinner';
 const cx = classNames.bind(styles);
 
 const Home = () => {
@@ -40,7 +41,7 @@ const Home = () => {
     ];
 
     const dispatch = useDispatch();
-    const { coaches } = useSelector((state) => state.guest);
+    const { coaches, loading } = useSelector((state) => state.guest);
 
     useEffect(() => {
         dispatch(getAllCoachesAsync({ pageIndex: 1, pageSize: 10 }));
@@ -105,13 +106,17 @@ const Home = () => {
                         <h1>Huấn luyện viên</h1>
                         <span>Đội ngũ huấn luyện viên chất lượng, tận tình sẵn sàng phục vụ mọi người</span>
                     </div>
-                    <div className={cx('coach-list')}>
-                        {coaches.map((coach) => (
-                            <div className={cx('coach-item')} key={coach.id}>
-                                <UserCard user={coach} role="coach" />
-                            </div>
-                        ))}
-                    </div>
+                    {loading ? (
+                        <Spinner />
+                    ) : (
+                        <div className={cx('coach-list')}>
+                            {coaches.map((coach) => (
+                                <div className={cx('coach-item')} key={coach.id}>
+                                    <UserCard user={coach} role="coach" />
+                                </div>
+                            ))}
+                        </div>
+                    )}
                     <Link to="/all-coaches" id={cx('view-all-btn')}>
                         Xem tất cả
                     </Link>

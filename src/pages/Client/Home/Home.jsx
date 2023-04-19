@@ -12,6 +12,7 @@ import { getAllCoachesAsync } from '~/features/guestSlice';
 import { useEffect } from 'react';
 import UserCard from '~/components/UserCard';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import Spinner from '~/components/Spinner';
 
 const cx = classNames.bind(styles);
 
@@ -43,7 +44,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const navigate = useNavigate();
-    const { coaches } = useSelector((state) => state.guest);
+    const { coaches, loading } = useSelector((state) => state.guest);
     const { currentUser } = useSelector((state) => state.user);
 
     useEffect(() => {
@@ -113,13 +114,17 @@ const Home = () => {
                         <h1>Huấn luyện viên</h1>
                         <span>Đội ngũ huấn luyện viên chất lượng, tận tình sẵn sàng phục vụ mọi người</span>
                     </div>
-                    <div className={cx('coach-list')}>
-                        {coaches.map((coach) => (
-                            <div className={cx('coach-item')} key={coach.id}>
-                                <UserCard user={coach} role="coach" />
-                            </div>
-                        ))}
-                    </div>
+                    {loading ? (
+                        <Spinner />
+                    ) : (
+                        <div className={cx('coach-list')}>
+                            {coaches.map((coach) => (
+                                <div className={cx('coach-item')} key={coach.id}>
+                                    <UserCard user={coach} role="coach" />
+                                </div>
+                            ))}
+                        </div>
+                    )}
                     <Link to={`/client/${currentUser?.Id}/all-coaches`} id={cx('view-all-btn')}>
                         Xem tất cả
                     </Link>

@@ -4,7 +4,12 @@
     border-radius: 4px;
 
     &.wrapperCoach {
-        box-shadow: none;
+        // box-shadow: var(--default-box-shadow);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
     &.wrapperNavBar {
         margin: calc(var(--default-navbar-height) + 32px) auto 32px auto;
@@ -13,17 +18,19 @@
 
     &.wrapperClient {
         height: 65vh;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        box-shadow: inset 0px 0px 0px rgba(0, 0, 0, 0.25);
+        box-shadow: var(--default-box-shadow);
         border-radius: 4px;
     }
     .container {
-        // border: 1px solid white;
         border-radius: var(--default-border-radius);
         box-shadow: var(--default-box-shadow);
         width: 100%;
         height: 80vh;
         display: flex;
+
+        &.containerCoach {
+            height: 100%;
+        }
     }
     .sidebar {
         background-color: white;
@@ -148,6 +155,40 @@
             justify-content: space-between;
             padding: 10px;
             color: rgba(255, 255, 255, 0.697);
+
+            .fullname {
+                color: var(--white-color);
+            }
+
+            .call-and-status {
+                display: flex;
+                align-items: center;
+
+                .call-icon {
+                    cursor: pointer;
+                }
+            }
+
+            .status {
+                display: flex;
+                align-items: center;
+
+                .icon {
+                    font-size: 3rem;
+                }
+
+                &.online {
+                    .icon {
+                        color: #25d125;
+                        font-weight: 600;
+                    }
+
+                    span {
+                        color: var(--white-color);
+                    }
+                }
+            }
+
             .backHome {
                 &:hover {
                     color: white;
@@ -314,15 +355,19 @@
                 button {
                     border: none;
                     padding: 10px 15px;
-                    color: rgba(255, 255, 255, 0.697);
+                    color: var(--white-color);
                     background: #1e62af;
                     border-radius: 4px;
                     font-weight: bold;
                     font-size: 14px;
                     cursor: pointer;
 
+                    &[disabled] {
+                        color: rgba(255, 255, 255, 0.697);
+                    }
+
                     &:hover {
-                        color: white;
+                        opacity: 0.6;
                     }
                 }
             }
