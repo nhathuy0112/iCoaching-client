@@ -86,6 +86,7 @@ const UpdatePortfolio = () => {
                 <form onSubmit={handleSubmit(handlePostAboutMe)} id={cx('about-form')}>
                     <Controller
                         name="about"
+                        className={cx('editor')}
                         control={control}
                         defaultValue={aboutMe !== '' ? aboutMe : ''}
                         render={({ field: { onChange } }) => (
