@@ -22,7 +22,7 @@
     }
     .content {
         #about-form {
-            div {
+            .editor {
                 border-radius: var(--default-border-radius);
                 border: 1px solid var(--primary-color);
 
@@ -69,6 +69,7 @@
                 border-radius: var(--default-border-radius);
                 display: flex;
                 margin: auto;
+                font-size: 1.6rem;
                 margin-top: 16px;
                 cursor: pointer;
 
