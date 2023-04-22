@@ -71,8 +71,6 @@ const ContractDetails = () => {
                                         <label htmlFor="">Tuổi</label>
                                         <span>{currentContract?.coach?.age}</span>
                                     </div>
-                                </div>
-                                <div className={cx('row-info')}>
                                     <div className={cx('info-group', 'first-column')}>
                                         <label htmlFor="">Số điện thoại</label>
                                         <span>{currentContract?.coach?.phoneNumber}</span>
@@ -101,14 +99,11 @@ const ContractDetails = () => {
                                     <label htmlFor="">Số buổi</label>
                                     <span>{currentContract?.duration}</span>
                                 </div>
-                            </div>
-                            <div className={cx('row-info')}>
                                 <div className={cx('info-group', 'first-column')}>
                                     <label htmlFor="">Trạng thái</label>
                                     <span>Đang tập luyện</span>
                                 </div>
-                            </div>
-                            <div className={cx('row-info')}>
+
                                 <div className={cx('info-group', 'first-column', 'description')}>
                                     <label htmlFor="">Mô tả</label>
                                     <div dangerouslySetInnerHTML={{ __html: currentContract?.courseDescription }}></div>

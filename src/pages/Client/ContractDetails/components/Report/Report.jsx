@@ -95,7 +95,7 @@ const Report = () => {
                         </>
                     ) : (
                         <div className={cx('message')}>
-                            <h1>Không tìm thấy khiếu nại nào!</h1>
+                            <h3>Không tìm thấy khiếu nại nào!</h3>
                         </div>
                     )}
                 </div>

@@ -110,12 +110,17 @@ const Information = () => {
         setIsAddingImage(false);
     };
 
+    useEffect(() => {
+        if (currentContract?.status === 'Canceled')
+            navigate(`/client/${id}/training-history/view-details/${contractId}`);
+    }, [currentContract?.status, id, contractId, navigate]);
+
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('content')}>
-                {contractLoading ? (
-                    <Spinner />
-                ) : (
+            {contractLoading ? (
+                <Spinner />
+            ) : (
+                <div className={cx('content')}>
                     <div className={cx('contract-info')}>
                         <div className={cx('info-column')}>
                             <div className={cx('info-container')}>
@@ -161,8 +166,6 @@ const Information = () => {
                                             <label htmlFor="">Tuổi</label>
                                             <span>{currentContract?.coach?.age}</span>
                                         </div>
-                                    </div>
-                                    <div className={cx('row-info')}>
                                         <div className={cx('info-group', 'first-column')}>
                                             <label htmlFor="">Số điện thoại</label>
                                             <span>{currentContract?.coach?.phoneNumber}</span>
@@ -191,14 +194,11 @@ const Information = () => {
                                         <label htmlFor="">Số buổi</label>
                                         <span>{currentContract?.duration}</span>
                                     </div>
-                                </div>
-                                <div className={cx('row-info')}>
                                     <div className={cx('info-group', 'first-column')}>
                                         <label htmlFor="">Trạng thái</label>
                                         <span>Đang tập luyện</span>
                                     </div>
-                                </div>
-                                <div className={cx('row-info')}>
+
                                     <div className={cx('info-group', 'first-column', 'description')}>
                                         <label htmlFor="">Mô tả</label>
                                         <div
@@ -229,8 +229,8 @@ const Information = () => {
                             </div>
                         )}
                     </div>
-                )}
-            </div>
+                </div>
+            )}
             {reportOpen && (
                 <Modal
                     show={reportOpen}
