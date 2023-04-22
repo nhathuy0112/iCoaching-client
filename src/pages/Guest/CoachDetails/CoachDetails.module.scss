@@ -27,7 +27,7 @@
     }
 
     .content {
-        max-width: var(--default-layout-max-width);
+        width: var(--default-layout-max-width);
         display: flex;
         margin: auto;
         box-shadow: var(--default-box-shadow);
