@@ -3,6 +3,24 @@
     position: relative;
 
     .content {
+        .contract-canceled {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            h3 {
+                color: red;
+                font-size: 2rem;
+                font-weight: 600;
+            }
+
+            span {
+                font-size: 1.6rem;
+                color: var(--primary-color);
+                font-size: 600;
+            }
+        }
+
         .contract-info {
             .info-column {
                 display: flex;

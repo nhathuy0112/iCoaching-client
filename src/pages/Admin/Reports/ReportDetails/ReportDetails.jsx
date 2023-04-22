@@ -99,6 +99,7 @@ const ReportDetails = () => {
                             toast.success('Đã cập nhật trạng thái khiếu nại');
                         });
                 }
+                setCancelOpen(false);
             });
     };
     const tabs = [

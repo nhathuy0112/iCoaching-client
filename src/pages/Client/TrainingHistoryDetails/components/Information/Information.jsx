@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { getContractDetailsAsync } from '~/features/contractSlice';
 import Spinner from '~/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
@@ -12,6 +12,7 @@ const cx = classNames.bind(styles);
 const Information = () => {
     const dispatch = useDispatch();
     const { currentContract, loading } = useSelector((state) => state.contract);
+
     const { contractId } = useParams();
 
     useEffect(() => {
@@ -69,8 +70,6 @@ const Information = () => {
                                             <label htmlFor="">Tuổi</label>
                                             <span>{currentContract?.coach?.age}</span>
                                         </div>
-                                    </div>
-                                    <div className={cx('row-info')}>
                                         <div className={cx('info-group', 'first-column')}>
                                             <label htmlFor="">Số điện thoại</label>
                                             <span>{currentContract?.coach?.phoneNumber}</span>
@@ -99,16 +98,13 @@ const Information = () => {
                                         <label htmlFor="">Số buổi</label>
                                         <span>{currentContract?.duration}</span>
                                     </div>
-                                </div>
-                                <div className={cx('row-info')}>
                                     <div className={cx('info-group', 'first-column')}>
                                         <label htmlFor="">Trạng thái</label>
                                         <span>
                                             {currentContract?.status === 'Canceled' ? 'Đã hủy' : 'Đã hoàn thành'}
                                         </span>
                                     </div>
-                                </div>
-                                <div className={cx('row-info')}>
+
                                     <div className={cx('info-group', 'first-column', 'description')}>
                                         <label htmlFor="">Mô tả</label>
                                         <div

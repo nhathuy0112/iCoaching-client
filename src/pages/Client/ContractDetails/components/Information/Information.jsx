@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getContractDetailsAsync, sendReportAsync } from '~/features/contractSlice';
 import { handleRenderGenders } from '~/utils/gender';
 import styles from './Information.module.scss';
@@ -22,20 +22,23 @@ const cx = classNames.bind(styles);
 
 const Information = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { currentContract, loading } = useSelector((state) => state.contract);
-    const { contractId } = useParams();
+    const { id, contractId } = useParams();
     const [reportOpen, setReportOpen] = useState(false);
     const [images, setImages] = useState([]);
     const [isAddingImage, setIsAddingImage] = useState(false);
     const [description, setDescription] = useState('');
     const [descriptionError, setDescriptionError] = useState('');
     const [imagesError, setImagesError] = useState('');
-    const [contractLoading, setContractLoading] = useState(true);
+    const [onGoingContract, setOnGoingContract] = useState({});
 
     useEffect(() => {
         dispatch(getContractDetailsAsync(contractId))
             .unwrap()
-            .then(() => setContractLoading(false));
+            .then((response) => {
+                setOnGoingContract(response);
+            });
     }, [dispatch, contractId]);
 
     const handleReportOpen = (e) => {
@@ -105,9 +108,16 @@ const Information = () => {
         setIsAddingImage(false);
     };
 
+    console.log(onGoingContract.status);
+
+    useEffect(() => {
+        if (onGoingContract.status === 'Canceled')
+            navigate(`/client/${id}/training-history/view-details/${contractId}`);
+    }, [onGoingContract, id, contractId, navigate]);
+
     return (
         <div className={cx('wrapper')}>
-            {contractLoading ? (
+            {loading ? (
                 <Spinner />
             ) : (
                 <div className={cx('content')}>
@@ -156,8 +166,6 @@ const Information = () => {
                                             <label htmlFor="">Tuổi</label>
                                             <span>{currentContract?.coach?.age}</span>
                                         </div>
-                                    </div>
-                                    <div className={cx('row-info')}>
                                         <div className={cx('info-group', 'first-column')}>
                                             <label htmlFor="">Số điện thoại</label>
                                             <span>{currentContract?.coach?.phoneNumber}</span>
