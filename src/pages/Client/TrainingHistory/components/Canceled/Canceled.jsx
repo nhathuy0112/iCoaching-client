@@ -83,15 +83,23 @@ const Canceled = () => {
                                     <span>{course.coachPhoneNumber}</span>
                                 </div>
                             </div>
-                            <Pagination
-                                className={cx('pagination-bar')}
-                                currentPage={currentPage}
-                                totalCount={totalCount}
-                                pageSize={pageSize}
-                                onPageChange={(page) => setCurrentPage(page)}
-                            />
+                            <div className={cx('action')}>
+                                <Link
+                                    to={`/client/${id}/training-history/view-details/${course.id}`}
+                                    id={cx('view-detail-link')}
+                                >
+                                    Xem chi tiết
+                                </Link>
+                            </div>
                         </div>
                     ))}
+                    <Pagination
+                        className={cx('pagination-bar')}
+                        currentPage={currentPage}
+                        totalCount={totalCount}
+                        pageSize={pageSize}
+                        onPageChange={(page) => setCurrentPage(page)}
+                    />
                 </div>
             ) : (
                 <div className={cx('course-empty')}>

@@ -103,7 +103,9 @@ const Information = () => {
                                 <div className={cx('row-info')}>
                                     <div className={cx('info-group', 'first-column')}>
                                         <label htmlFor="">Trạng thái</label>
-                                        <span>Đang tập luyện</span>
+                                        <span>
+                                            {currentContract?.status === 'Canceled' ? 'Đã hủy' : 'Đã hoàn thành'}
+                                        </span>
                                     </div>
                                 </div>
                                 <div className={cx('row-info')}>
