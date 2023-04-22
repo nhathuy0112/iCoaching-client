@@ -37,7 +37,6 @@
                 }
             }
         }
-
         .search {
             max-width: var(--default-layout-max-width);
             margin: auto;
@@ -54,10 +53,6 @@
                 padding: 8px 12px;
                 color: #8f9bba;
                 font-size: 1.4rem;
-                button {
-                    background-color: transparent;
-                    cursor: pointer;
-                }
                 input {
                     background: transparent;
                 }
@@ -97,6 +92,7 @@
                 }
             }
         }
+
         .coach-empty {
             display: flex;
             align-items: center;

@@ -6,7 +6,9 @@
         height: 100%;
 
         .image-list {
-            display: grid;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
 
@@ -44,8 +46,7 @@
 #photo {
     border-radius: 0;
     display: block;
-    max-width: 650px;
-    width: 60%;
+    width: 50%;
     height: 100%;
     margin: 0 auto;
 }
