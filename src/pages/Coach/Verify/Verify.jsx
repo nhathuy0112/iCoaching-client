@@ -32,48 +32,40 @@ const Verify = () => {
         dispatch(getCertificationAsync());
     }, [dispatch]);
 
-    const handleRenderMessageByStatus = (isVerified, status) => {
-        if (isVerified === 'True') {
-            return (
-                <div className={cx('message')}>
-                    <SuccessMessage message={'Chứng chỉ của bạn đã được xác nhận. Bạn có thể tham gia huấn luyện'} />
-                </div>
-            );
-        } else {
-            switch (status) {
-                case 'Accepted':
-                    return (
-                        <div className={cx('message')}>
-                            <SuccessMessage
-                                message={'Chứng chỉ của bạn đã được xác nhận. Bạn có thể tham gia huấn luyện'}
-                            />
-                        </div>
-                    );
-                case 'Pending':
-                    return (
-                        <div className={cx('message')}>
-                            <SuccessMessage message={'Chứng chỉ của bạn đang chờ được Quản lý xác nhận'} />
-                        </div>
-                    );
-                case 'Denied':
-                    return (
-                        <div className={cx('message', 'denied')}>
-                            <ErrorMessage message={'Chứng chỉ của bạn không hợp lệ. Vui lòng cập nhật lại'} />
-                            <Link to="update-certification" className={cx('update-link')}>
-                                Cập nhật tại đây
-                            </Link>
-                        </div>
-                    );
-                default:
-                    return;
-            }
+    const handleRenderMessageByStatus = (status) => {
+        switch (status) {
+            case 'Accepted':
+                return (
+                    <div className={cx('message')}>
+                        <SuccessMessage
+                            message={'Chứng chỉ của bạn đã được xác nhận. Bạn có thể tham gia huấn luyện'}
+                        />
+                    </div>
+                );
+            case 'Pending':
+                return (
+                    <div className={cx('message')}>
+                        <SuccessMessage message={'Chứng chỉ của bạn đang chờ được Quản lý xác nhận'} />
+                    </div>
+                );
+            case 'Denied':
+                return (
+                    <div className={cx('message', 'denied')}>
+                        <ErrorMessage message={'Chứng chỉ của bạn không hợp lệ. Vui lòng cập nhật lại'} />
+                        <Link to="update-certification" className={cx('update-link')}>
+                            Cập nhật tại đây
+                        </Link>
+                    </div>
+                );
+            default:
+                return;
         }
     };
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                {!currentCertificationRequest && !currentUser.IsVerified ? (
+                {!currentCertificationRequest ? (
                     <div className={cx('notification')}>
                         <p>Bạn cần xác minh mình là Huấn luyện viên trước khi tham gia huấn luyện cho khách hàng !</p>
                         <p>Vui lòng cập nhật ít nhất 1 ảnh của giấy tờ tùy thân và 1 ảnh của chứng chỉ huấn luyện !</p>
@@ -84,7 +76,7 @@ const Verify = () => {
                 ) : (
                     <div className={cx('certification-list')}>
                         <div className={cx('status')}>
-                            {handleRenderMessageByStatus(currentUser?.IsVerified, currentCertificationRequest?.status)}
+                            {handleRenderMessageByStatus(currentCertificationRequest?.status)}
                         </div>
                         <div className={cx('info-group')}>
                             <h3 className={cx('title')}>Giấy tờ tùy thân</h3>
