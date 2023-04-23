@@ -63,15 +63,7 @@
         }
         .detail {
             margin-top: 8px;
-            display: flex;
-            align-items: center;
-
-            .icon {
-                margin-right: 4px;
-                svg {
-                    display: block;
-                }
-            }
+            text-align: justify;
         }
     }
 }

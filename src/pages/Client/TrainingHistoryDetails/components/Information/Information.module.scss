@@ -27,7 +27,10 @@
 
                 .info-group {
                     display: flex;
-                    align-items: center;
+
+                    &:not(.description) {
+                        align-items: center;
+                    }
 
                     label {
                         font-size: 1.6rem;
@@ -58,6 +61,18 @@
                                 font-weight: 500;
                                 margin-bottom: 0;
                                 min-width: 120px;
+                            }
+
+                            img {
+                                width: 240px;
+                                margin: 0 4px;
+                                border-radius: var(--default-border-radius);
+                            }
+
+                            video {
+                                width: 240px;
+                                margin: 0 4px;
+                                border-radius: var(--default-border-radius);
                             }
                         }
                     }

@@ -25,7 +25,7 @@ const cx = classNames.bind(styles);
 const EditTrainingLog = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { currentLog, logs, loading } = useSelector((state) => state.contract);
+    const { currentLog, logs, loading, error } = useSelector((state) => state.contract);
     const { id, contractId, logId } = useParams();
     const [trainingDateInput, setTrainingDateInput] = useState('');
     const [fileList, setFileList] = useState([]);
@@ -55,8 +55,6 @@ const EditTrainingLog = () => {
             setNoteInput(currentLog.note);
         }
     }, [currentLog]);
-
-    console.log(currentLog);
 
     const handleTrainingDateChange = (e) => {
         const newTrainingDateInput = e.target.value;
@@ -239,11 +237,18 @@ const EditTrainingLog = () => {
                                 state: { isEditTrainingLog: true },
                             });
                             toast.success('Cập nhật tiến độ thành công!');
+                        })
+                        .catch((error) => {
+                            console.log(error);
                         });
                 });
             }
         }
     };
+
+    useEffect(() => {
+        if (error) setTrainingDateError(error);
+    }, [error]);
 
     return (
         <div className={cx('wrapper')}>

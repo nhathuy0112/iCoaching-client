@@ -77,17 +77,12 @@ const Reports = () => {
                                     <label>{report.clientFullName}</label>
                                     <div className={cx('photos')}>
                                         {report.images?.map((photo) => (
-                                            <div className={cx('photo-item')}>
-                                                <img
-                                                    key={photo.id}
-                                                    src={photo}
-                                                    alt="report"
-                                                    onClick={() => handleViewDetail(photo)}
-                                                />
+                                            <div className={cx('photo-item')} key={photo}>
+                                                <img src={photo} alt="report" onClick={() => handleViewDetail(photo)} />
                                             </div>
                                         ))}
                                     </div>
-                                    <p>{report.detail}</p>
+                                    <p className={cx('detail')}>{report.detail}</p>
                                     <Link to={`${report.contractId}/view-details/${report.id}`}>
                                         <button className={cx('btn-info')}>
                                             Xem chi tiết <MdOutlineKeyboardArrowRight className={cx('icon')} />

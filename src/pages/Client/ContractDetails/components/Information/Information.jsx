@@ -108,8 +108,6 @@ const Information = () => {
         setIsAddingImage(false);
     };
 
-    console.log(onGoingContract.status);
-
     useEffect(() => {
         if (onGoingContract.status === 'Canceled')
             navigate(`/client/${id}/training-history/view-details/${contractId}`);
