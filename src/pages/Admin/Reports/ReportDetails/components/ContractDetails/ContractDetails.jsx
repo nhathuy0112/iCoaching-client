@@ -27,6 +27,14 @@ const ContractDetails = () => {
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <div className={cx('contract-info')}>
+                    <div className={cx('info-container', 'created-date')}>
+                        <div className={cx('row-info')}>
+                            <div className={cx('info-group')}>
+                                <label htmlFor="">Ngày bắt đầu</label>
+                                <span>{currentContract?.createdDate}</span>
+                            </div>
+                        </div>
+                    </div>
                     <div className={cx('info-column')}>
                         <div className={cx('info-container')}>
                             <h4 className={cx('title')}>Khách hàng</h4>
@@ -101,7 +109,7 @@ const ContractDetails = () => {
                                 </div>
                                 <div className={cx('info-group', 'first-column')}>
                                     <label htmlFor="">Trạng thái</label>
-                                    <span>Đang tập luyện</span>
+                                    <span>{handleRenderContractStatus(currentContract?.status)}</span>
                                 </div>
 
                                 <div className={cx('info-group', 'first-column', 'description')}>

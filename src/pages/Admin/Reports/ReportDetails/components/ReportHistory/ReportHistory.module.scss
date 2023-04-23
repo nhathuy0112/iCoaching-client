@@ -1,7 +1,6 @@
 .wrapper {
     height: 100%;
-    position: relative;
-    overflow-y: initial !important;
+    padding-bottom: 64px;
     .content {
         .message {
             display: flex;
@@ -63,7 +62,15 @@
         }
         .detail {
             margin-top: 8px;
-            display: block;
+            display: flex;
+            align-items: center;
+
+            .icon {
+                margin-right: 4px;
+                svg {
+                    display: block;
+                }
+            }
         }
     }
 }

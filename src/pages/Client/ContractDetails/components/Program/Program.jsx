@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineDownload } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';

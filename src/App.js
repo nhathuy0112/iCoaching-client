@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUserOnlineStatus } from './features/chatSlice';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
+import { nfd } from 'unorm';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import { ZIM } from 'zego-zim-web';
 
@@ -21,10 +22,17 @@ function App() {
             init();
         }
     });
+    function removeAccents(str) {
+        return nfd(str)
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
     async function init() {
         let zp;
         const userID = currentUser?.Username;
-        const userName = currentUser?.Fullname;
+        const userName = removeAccents(currentUser?.Fullname);
         const { token } = await generateToken('https://node-express-vercel-master-one.vercel.app', userID);
         const KitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(1980920521, token, null, userID, userName);
         zp = ZegoUIKitPrebuilt.create(KitToken);

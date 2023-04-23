@@ -5,6 +5,7 @@ import styles from '../Chat.module.scss';
 import classNames from 'classnames/bind';
 import Messages from '../Messages';
 import Input from '../Input';
+import { nfd } from 'unorm';
 import { useDispatch, useSelector } from 'react-redux';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import { ZIM } from 'zego-zim-web';
@@ -43,9 +44,16 @@ const Chat = () => {
         init();
     });
 
+    function removeAccents(str) {
+        return nfd(str)
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
     async function init() {
         const userID = currentUser?.Username;
-        const userName = currentUser?.Fullname;
+        const userName = removeAccents(currentUser?.Fullname);
         const { token } = await generateToken('https://node-express-vercel-master-one.vercel.app', userID);
         const KitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(1980920521, token, null, userID, userName);
         zp = ZegoUIKitPrebuilt.create(KitToken);
@@ -215,13 +223,11 @@ const Chat = () => {
                                 </div>
                                 <div className={cx('status', 'online')}>
                                     <BsDot className={cx('icon')} />
-                                    <span>Trực tuyến</span>
                                 </div>
                             </div>
                         ) : (
                             <div className={cx('status', 'offline')}>
                                 <BsDot className={cx('icon')} />
-                                <span>Ngoại tuyến</span>
                             </div>
                         )}
                     </div>
@@ -285,13 +291,11 @@ const Chat = () => {
                         </div>
                         <div className={cx('status', 'online')}>
                             <BsDot className={cx('icon')} />
-                            <span>Trực tuyến</span>
                         </div>
                     </div>
                 ) : (
                     <div className={cx('status', 'offline')}>
                         <BsDot className={cx('icon')} />
-                        <span>Ngoại tuyến</span>
                     </div>
                 )}
             </div>

@@ -21,7 +21,13 @@ const Home = () => {
                 { wrapperCoach: currentUser?.role === 'COACH' },
             )}
         >
-            <div className={cx('container', { containerCoach: currentUser?.role === 'COACH' })}>
+            <div
+                className={cx(
+                    'container',
+                    { containerClient: currentUser?.role === 'CLIENT' },
+                    { containerCoach: currentUser?.role === 'COACH' },
+                )}
+            >
                 {coachId ? (
                     <Chat />
                 ) : currentUser?.role === 'COACH' ? (

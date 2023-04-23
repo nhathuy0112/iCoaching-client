@@ -56,6 +56,8 @@ const EditTrainingLog = () => {
         }
     }, [currentLog]);
 
+    console.log(currentLog);
+
     const handleTrainingDateChange = (e) => {
         const newTrainingDateInput = e.target.value;
         setTrainingDateInput(newTrainingDateInput);
