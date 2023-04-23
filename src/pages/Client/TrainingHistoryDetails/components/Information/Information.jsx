@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getContractDetailsAsync } from '~/features/contractSlice';
 import Spinner from '~/components/Spinner';
 import { handleRenderGenders } from '~/utils/gender';
@@ -26,6 +26,14 @@ const Information = () => {
             ) : (
                 <div className={cx('content')}>
                     <div className={cx('contract-info')}>
+                        <div className={cx('info-container', 'created-date')}>
+                            <div className={cx('row-info')}>
+                                <div className={cx('info-group')}>
+                                    <label htmlFor="">Ngày bắt đầu</label>
+                                    <span>{currentContract?.createdDate}</span>
+                                </div>
+                            </div>
+                        </div>
                         <div className={cx('info-column')}>
                             <div className={cx('info-container')}>
                                 <h4 className={cx('title')}>Khách hàng</h4>

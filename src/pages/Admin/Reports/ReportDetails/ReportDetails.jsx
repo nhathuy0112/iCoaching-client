@@ -16,6 +16,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import Spinner from '~/components/Spinner';
 import { toast } from 'react-toastify';
+import ReportHistory from './components/ReportHistory';
 const cx = classNames.bind(styles);
 
 const ReportDetails = () => {
@@ -110,6 +111,10 @@ const ReportDetails = () => {
         {
             label: 'Tiến độ',
             content: <Progress />,
+        },
+        {
+            label: 'Lịch sử khiếu nại',
+            content: <ReportHistory />,
         },
     ];
     return (

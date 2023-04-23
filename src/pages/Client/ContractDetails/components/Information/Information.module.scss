@@ -26,14 +26,33 @@
                 display: flex;
                 border-bottom: 1px solid #ccc;
                 padding-bottom: 16px;
+                margin-top: 16px;
+
+                .info-container {
+                    flex: 0 0 50%;
+
+                    &:first-child {
+                        border-right: 1px solid #ccc;
+                    }
+                }
             }
 
             .info-container {
                 padding: 8px;
-                flex: 0 0 50%;
+                &.created-date {
+                    border-bottom: 1px solid #ccc;
+                }
 
-                &:first-child {
-                    border-right: 1px solid #ccc;
+                .info-group {
+                    display: flex;
+                    align-items: center;
+
+                    label {
+                        font-size: 1.6rem;
+                        font-weight: 600;
+                        margin-bottom: 0;
+                        min-width: 120px;
+                    }
                 }
 
                 .info-frame {
