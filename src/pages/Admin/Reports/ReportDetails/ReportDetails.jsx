@@ -52,7 +52,6 @@ const ReportDetails = () => {
         setEndOpen(false);
     };
     const handleCloseCancel = (e) => {
-        e.preventDefault();
         setCancelOpen(false);
         navigate(`/admin/${currentUser.id}/reports`);
     };
@@ -77,12 +76,12 @@ const ReportDetails = () => {
         dispatch(updateReportAsync({ reportId: reportId, option: option, message: message }))
             .unwrap()
             .then(() => {
+                toast.success('Đã cập nhật trạng thái khiếu nại');
                 handleClose();
                 if (option === 'Solve') {
                     handleOpen(setCancelOpen);
                 } else {
-                    navigate(`/admin/${currentUser.id}/reports`);
-                    toast.success('Đã cập nhật trạng thái khiếu nại');
+                    handleCloseCancel();
                 }
             });
     };
@@ -92,15 +91,16 @@ const ReportDetails = () => {
         dispatch(updateContractStatusAsync({ reportId: reportId, option: option, message: message }))
             .unwrap()
             .then(() => {
+                toast.success('Đã cập nhật trạng thái hợp đồng');
                 if (option === 'End') {
                     dispatch(updateReportAsync({ reportId: reportId, option: 'Solve', message: message }))
                         .unwrap()
                         .then(() => {
                             navigate(`/admin/${currentUser.id}/reports`);
-                            toast.success('Đã cập nhật trạng thái khiếu nại');
                         });
+                } else {
+                    handleCloseCancel();
                 }
-                setCancelOpen(false);
             });
     };
     const tabs = [
@@ -265,7 +265,7 @@ const ReportDetails = () => {
             {cancelOpen && (
                 <Modal
                     open={cancelOpen}
-                    onClose={handleClose}
+                    onClose={() => setCancelOpen(false)}
                     closeBtnStyle={{ display: 'none' }}
                     modalStyle={{ width: '60%' }}
                 >
@@ -278,6 +278,7 @@ const ReportDetails = () => {
                             cols="30"
                             rows="10"
                             onChange={(e) => setMessage(e.target.value)}
+                            required
                         ></textarea>
                         <div className={cx('button')}>
                             {loading ? (
