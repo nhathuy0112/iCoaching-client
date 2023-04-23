@@ -160,7 +160,7 @@ const CreateContract = () => {
                                 showResult && search !== '' && coaches.filter((coach) => !coach.isLocked).length > 0
                             }
                             content={
-                                <div className={cx('wrapper')}>
+                                <div className={cx('tippy-wrapper')}>
                                     {coaches
                                         .filter((coach) => !coach.isLocked)
                                         .map((coach) => (
