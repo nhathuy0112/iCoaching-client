@@ -155,7 +155,9 @@ const Progress = () => {
                                                 </tr>
                                                 <tr>
                                                     <th>Ghi chú</th>
-                                                    <td>{log.note ? log.note : 'Chưa cập nhật'}</td>
+                                                    <td className={cx('note')}>
+                                                        {log.note ? log.note : 'Chưa cập nhật'}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
