@@ -10,7 +10,7 @@ export const convertDateFormatToInput = (dateString) => {
     if (!dateString) {
         return '';
     }
-    const [day, month, year] = dateString.split('/');
+    const [month, day, year] = dateString.split('/');
     const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     return formattedDate;
 };

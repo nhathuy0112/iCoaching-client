@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from '~/components/Modal';
 import { loginAsync, resetAuth } from '~/features/userSlice';
 import ErrorMessage from '~/components/ErrorMessage';
+import Spinner from '~/components/Spinner/Spinner';
 
 const cx = classNames.bind(styles);
 const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
@@ -33,7 +34,7 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         reset,
     } = useForm();
 
-    const { error } = useSelector((state) => state.user);
+    const { error, loading } = useSelector((state) => state.user);
 
     const handleLogin = (data) => {
         dispatch(loginAsync({ username: data.username, password: data.password }));
@@ -86,8 +87,13 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
                                     </button>
                                 </div>
                                 <div>
-                                    <button type="submit" id={cx('submit-btn')} className={cx('align-center')}>
-                                        Đăng nhập
+                                    <button
+                                        type="submit"
+                                        id={cx('submit-btn')}
+                                        className={cx('align-center')}
+                                        disabled={loading}
+                                    >
+                                        {loading ? <Spinner /> : 'Đăng nhập'}
                                     </button>
                                     <p className={cx('align-center')}>
                                         Chưa có tài khoản?
