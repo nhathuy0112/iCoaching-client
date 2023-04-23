@@ -223,13 +223,11 @@ const Chat = () => {
                                 </div>
                                 <div className={cx('status', 'online')}>
                                     <BsDot className={cx('icon')} />
-                                    <span>Trực tuyến</span>
                                 </div>
                             </div>
                         ) : (
                             <div className={cx('status', 'offline')}>
                                 <BsDot className={cx('icon')} />
-                                <span>Ngoại tuyến</span>
                             </div>
                         )}
                     </div>
@@ -293,13 +291,11 @@ const Chat = () => {
                         </div>
                         <div className={cx('status', 'online')}>
                             <BsDot className={cx('icon')} />
-                            <span>Trực tuyến</span>
                         </div>
                     </div>
                 ) : (
                     <div className={cx('status', 'offline')}>
                         <BsDot className={cx('icon')} />
-                        <span>Ngoại tuyến</span>
                     </div>
                 )}
             </div>
