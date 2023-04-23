@@ -12,8 +12,8 @@
         bottom: 0;
     }
     &.wrapperNavBar {
-        margin: calc(var(--default-navbar-height) + 32px) auto 32px auto;
-        width: var(--default-layout-max-width);
+        // margin: calc(var(--default-navbar-height) + 32px) auto 32px auto;
+        // width: var(--default-layout-max-width);
     }
 
     &.wrapperClient {
@@ -27,6 +27,11 @@
         width: 100%;
         height: 80vh;
         display: flex;
+
+        &.containerClient {
+            margin: calc(var(--default-navbar-height) + 32px) auto 32px auto;
+            width: var(--default-layout-max-width);
+        }
 
         &.containerCoach {
             height: 100%;
