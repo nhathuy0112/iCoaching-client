@@ -52,12 +52,19 @@
                 th {
                     text-align: left;
                     vertical-align: top;
+                    width: 160px;
                 }
 
                 th,
                 td {
                     padding: 8px;
                     text-align: left;
+                }
+
+                td {
+                    &.note {
+                        text-align: justify;
+                    }
                 }
 
                 .file {
