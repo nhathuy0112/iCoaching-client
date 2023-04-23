@@ -75,14 +75,18 @@ export const getProgramFileDownloadAsync = createAsyncThunk('contract/getProgram
 });
 
 //update contract log
-export const updateContractLogAsync = createAsyncThunk('contract/updateContractLog', async (payload) => {
-    try {
-        const response = await updateContractLog(payload);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-});
+export const updateContractLogAsync = createAsyncThunk(
+    'contract/updateContractLog',
+    async (payload, { rejectWithValue }) => {
+        try {
+            const response = await updateContractLog(payload);
+            return response;
+        } catch (error) {
+            console.log(error);
+            return rejectWithValue(error);
+        }
+    },
+);
 
 //get contract logs
 export const getContractLogsAsync = createAsyncThunk('contract/getContractLogs', async (id) => {
@@ -243,7 +247,7 @@ export const contractSlice = createSlice({
             })
             .addCase(updateContractLogAsync.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
 
             //get contract logs

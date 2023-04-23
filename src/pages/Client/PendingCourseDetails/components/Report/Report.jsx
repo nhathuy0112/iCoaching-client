@@ -75,14 +75,14 @@ const Report = () => {
                                         <div className={cx('photos')}>
                                             {report.images?.map((photo) => (
                                                 <img
-                                                    key={photo.id}
+                                                    key={photo}
                                                     src={photo}
                                                     alt="report"
                                                     onClick={() => handleViewDetail(photo)}
                                                 />
                                             ))}
                                         </div>
-                                        <p className={cx('detail')}>&#8827; &nbsp;{report.detail}</p>
+                                        <p className={cx('detail')}>{report.detail}</p>
                                     </div>
                                 ))}
                             </div>

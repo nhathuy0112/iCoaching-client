@@ -102,12 +102,13 @@ export const updateReportAsync = createAsyncThunk('/admin/updateReport', async (
 });
 
 //create contract
-export const createContractAsync = createAsyncThunk('/admin/createContract', async (payload) => {
+export const createContractAsync = createAsyncThunk('/admin/createContract', async (payload, { rejectWithValue }) => {
     try {
         const response = await createContract({ reportId: payload.reportId, data: payload.contract });
         return response;
     } catch (error) {
         console.log(error);
+        return rejectWithValue(error);
     }
 });
 
@@ -292,7 +293,7 @@ export const adminSlice = createSlice({
             })
             .addCase(createContractAsync.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
 
             //create voucher

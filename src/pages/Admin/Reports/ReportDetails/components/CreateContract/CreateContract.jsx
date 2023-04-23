@@ -35,7 +35,7 @@ const CreateContract = () => {
 
     const { currentUser } = useSelector((state) => state.user);
     const { trainingCourses } = useSelector((state) => state.guest);
-    const { coaches } = useSelector((state) => state.admin);
+    const { coaches, error } = useSelector((state) => state.admin);
     const { currentContract, loading } = useSelector((state) => state.contract);
 
     const { id, contractId, reportId } = useParams();
@@ -43,6 +43,7 @@ const CreateContract = () => {
 
     const [search, setSearch] = useState('');
     const [initialCourse, setInitialCourse] = useState(false);
+    const [existedCoachError, setExistedCoachError] = useState(null);
     const [showResult, setShowResult] = useState(true);
     const debounced = useDebounce(search, 300);
 
@@ -90,6 +91,10 @@ const CreateContract = () => {
         }
     };
 
+    useEffect(() => {
+        if (error) setExistedCoachError(error);
+    }, [error]);
+
     const handleHideResult = () => {
         setShowResult(false);
     };
@@ -108,6 +113,7 @@ const CreateContract = () => {
             clearErrors('coachId');
         } else {
             setError('coachId', { type: 'custom', message: 'Huấn luyện viên không được để trống' });
+            setExistedCoachError('');
         }
     };
 
@@ -189,6 +195,11 @@ const CreateContract = () => {
                         {errors.coachId && (
                             <div className={cx('error')}>
                                 <ErrorMessage message={errors.coachId.message} />
+                            </div>
+                        )}
+                        {existedCoachError && (
+                            <div className={cx('error')}>
+                                <ErrorMessage message={existedCoachError} />
                             </div>
                         )}
                         <label>Khoá tập</label>
