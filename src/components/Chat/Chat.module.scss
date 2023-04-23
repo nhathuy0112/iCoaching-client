@@ -28,6 +28,11 @@
         height: 80vh;
         display: flex;
 
+        &.containerCoachDetails {
+            margin: unset;
+            width: unset;
+        }
+
         &.containerClient {
             margin: calc(var(--default-navbar-height) + 32px) auto 32px auto;
             width: var(--default-layout-max-width);

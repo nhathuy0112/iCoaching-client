@@ -24,7 +24,8 @@ const Home = () => {
             <div
                 className={cx(
                     'container',
-                    { containerClient: currentUser?.role === 'CLIENT' },
+                    { containerCoachDetails: currentUser?.role === 'CLIENT' && coachId },
+                    { containerClient: currentUser?.role === 'CLIENT' && !coachId },
                     { containerCoach: currentUser?.role === 'COACH' },
                 )}
             >
