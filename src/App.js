@@ -90,15 +90,20 @@ function App() {
     }, [currentUser?.Avatar, currentUser]);
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('unload', handleUnload);
+    window.addEventListener('beforeunload', handleUnload);
+
+    var lastVisibilityChangeTime = Date.now();
+    var isPageVisible = !document.hidden;
 
     function handleVisibilityChange() {
         isPageVisible = !document.hidden;
+        lastVisibilityChangeTime = Date.now();
     }
 
     function handleUnload() {
-        if (!isPageVisible) {
-            dispatch(updateUserOnlineStatus(currentUser?.Id));
+        var elapsedTime = Date.now() - lastVisibilityChangeTime;
+        if (!isPageVisible || elapsedTime > 1000) {
+            dispatch(updateUserOnlineStatus(currentUser.Id));
         }
     }
     return (

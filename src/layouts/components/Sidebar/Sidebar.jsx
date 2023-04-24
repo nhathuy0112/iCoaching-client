@@ -41,19 +41,14 @@ const Sidebar = ({ links }) => {
         }
     }, [currentUser, navigate, isVerified]);
 
-    const handleLogout = (e) => {
-        e.preventDefault();
+    const handleLogout = () => {
         dispatch(
             logoutAsync({
                 currentRefreshToken: getLocalStorage('auth').refreshToken,
-                successCallback: () => {
-                    console.log('navigate /');
-                    window.location.href = '/';
-                },
             }),
         );
         dispatch(changeUser({ currentUser: '', payload: '' }));
-        dispatch(updateUserOnlineStatus(currentUser?.Id));
+        dispatch(updateUserOnlineStatus(currentUser.Id));
     };
 
     return (
