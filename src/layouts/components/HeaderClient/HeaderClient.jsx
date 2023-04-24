@@ -25,12 +25,12 @@ const Header = () => {
             logoutAsync({
                 currentRefreshToken: getLocalStorage('auth').refreshToken,
                 successCallback: () => {
+                    dispatch(changeUser({ currentUser: '', payload: '' }));
+                    dispatch(updateUserOnlineStatus(currentUser.Id));
                     window.location.href = '/';
                 },
             }),
         );
-        dispatch(changeUser({ currentUser: '', payload: '' }));
-        dispatch(updateUserOnlineStatus(currentUser?.Id));
     };
 
     useEffect(() => {
