@@ -48,6 +48,13 @@
                         min-width: 160px;
                         color: var(--primary-color);
                     }
+
+                    .card-info {
+                        width: 196px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                    }
                 }
             }
 

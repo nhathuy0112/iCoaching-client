@@ -27,7 +27,6 @@ const Home = () => {
             id: 2,
             icon: <RiBaseStationLine />,
             content: 'Huấn luyện trực tuyến',
-            isMain: true,
         },
         {
             id: 3,
@@ -72,7 +71,6 @@ const Home = () => {
                             Sức khỏe không phải là thứ chúng ta có thể mua. Tuy nhiên, nó có thể là một tài khoản tiết
                             kiệm cực kỳ giá trị.
                         </h5>
-                        <button className={cx('train-btn')}>tập luyện ngay</button>
                     </div>
                     <div className={cx('services')}>
                         <div className={cx('service-list')}>
