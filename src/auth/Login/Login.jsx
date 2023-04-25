@@ -17,6 +17,7 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         e.preventDefault();
         setLoginOpen(false);
         dispatch(resetAuth());
+        clearErrors();
         setForgotOpen(true);
     };
 
@@ -24,6 +25,7 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         e.preventDefault();
         setLoginOpen(false);
         dispatch(resetAuth());
+        clearErrors();
         setRegisterOpen(true);
     };
 
@@ -32,22 +34,28 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         handleSubmit,
         formState: { errors },
         reset,
+        clearErrors,
     } = useForm();
 
     const { error, loading } = useSelector((state) => state.user);
 
     const handleLogin = (data) => {
         dispatch(loginAsync({ username: data.username, password: data.password }));
-        reset(data);
     };
 
     return (
         <div className={cx('wrapper')}>
             {open && (
-                <Modal show={open} onClose={() => setLoginOpen(false)}>
+                <Modal
+                    show={open}
+                    onClose={() => {
+                        setLoginOpen(false);
+                        reset({ username: '' }, { password: '' });
+                        clearErrors();
+                    }}
+                >
                     <div className={cx('content')}>
                         <div className={cx('img-wrapper')}>
-                            <h1>iCoaching</h1>
                             <img src={require('~/assets/images/modal-bg.png')} alt="" />
                         </div>
                         <form id={cx('login-form')} onSubmit={handleSubmit(handleLogin)}>
