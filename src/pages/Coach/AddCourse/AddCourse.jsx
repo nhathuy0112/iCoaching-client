@@ -55,20 +55,13 @@ const schema = yup.object({
         })
         .typeError('Giá gói tập phải là một số'),
     duration: yup
-        .string()
+        .number()
         .required('Số buổi tập không được để trống')
-        .test('greaterThanZero', 'Số buổi tập phải lớn hơn 0', (value) => {
-            if (value && parseInt(value) <= 0) {
-                return false;
-            }
-            return true;
+        .transform((value, originalValue) => {
+            const intValue = parseInt(originalValue.replaceAll(',', ''));
+            return isNaN(intValue) ? undefined : intValue;
         })
-        .test('durationFormat', 'Số buổi tập phải là số và không gồm kí tự đặc biệt', (value) => {
-            if (value && !/^\d+$/.test(value)) {
-                return false;
-            }
-            return true;
-        }),
+        .typeError('Giá gói tập phải là một số'),
 });
 
 const cx = classNames.bind(styles);
@@ -161,7 +154,18 @@ const AddCourse = () => {
                         <label className={cx('input-label')} htmlFor="duration">
                             Số buổi
                         </label>
-                        <input type="text" {...register('duration')} />
+                        <Controller
+                            name="duration"
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                                <NumericFormat
+                                    value={value}
+                                    onChange={onChange}
+                                    allowLeadingZeros
+                                    thousandSeparator=","
+                                />
+                            )}
+                        />
                     </div>
                     {errors.duration && (
                         <div className={cx('error')}>

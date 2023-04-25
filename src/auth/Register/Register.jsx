@@ -14,6 +14,7 @@ import { convertDateFormat } from '~/utils/dateFormat';
 import { Link } from 'react-router-dom';
 
 import Spinner from '~/components/Spinner';
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -40,17 +41,17 @@ const schema = yup.object({
         }),
     phoneNumber: yup
         .string()
-        .matches(/(0[3|5|7|8|9])+([0-9]{8})\b/g, 'Số điện thoại không hợp lệ')
-        .required('Số điện thoại không được để trống'),
+        .required('Số điện thoại không được để trống')
+        .matches(/(0[3|5|7|8|9])+([0-9]{8})\b/g, 'Số điện thoại không hợp lệ'),
     email: yup.string().required('Email không được để trống'),
     username: yup.string().required('Tài khoản không được để trống'),
     password: yup
         .string()
+        .required('Mật khẩu không được để trống')
         .matches(
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>\\|[\]\/?])([A-Za-z\d!@#$%^&*()\-_=+{};:,<.>\\|[\]\/?]{6,})$/,
             'Mật khẩu phải có ít nhất 1 chữ cái in hoa, 1 chữ cái in thường, 1 số, 1 kí tự đặc biệt và độ dài ít nhất là 6 kí tự',
-        )
-        .required('Mật khẩu không được để trống'),
+        ),
     confirmPassword: yup
         .string()
         .oneOf([yup.ref('password'), null], 'Mật khẩu xác nhận không đúng')
@@ -68,6 +69,7 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
         e.preventDefault();
         setRegisterOpen(false);
         dispatch(resetAuth());
+        clearErrors();
         setLoginOpen(true);
     };
 
@@ -78,6 +80,7 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
         handleSubmit,
         formState: { errors },
         reset,
+        clearErrors,
     } = useForm({ resolver: yupResolver(schema) });
 
     const handleRegister = (data) => {
@@ -96,7 +99,6 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                         isCoach: data.isCoach ? true : false,
                     }),
                 );
-                reset(data);
             } catch (error) {
                 console.log(error);
             }
@@ -106,10 +108,27 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
     return (
         <div className={cx('wrapper')}>
             {open && (
-                <Modal show={open} onClose={() => setRegisterOpen(false)}>
+                <Modal
+                    show={open}
+                    onClose={() => {
+                        setRegisterOpen(false);
+                        reset({
+                            fullname: '',
+                            gender: '',
+                            dob: '',
+                            email: '',
+                            phoneNumber: '',
+                            username: '',
+                            password: '',
+                            confirmPassword: '',
+                            isAgreed: false,
+                            isCoach: false,
+                        });
+                        clearErrors();
+                    }}
+                >
                     <div className={cx('content')}>
                         <div className={cx('img-wrapper')}>
-                            <h1>iCoaching</h1>
                             <img src={require('~/assets/images/modal-bg.png')} alt="" />
                         </div>
                         <form id={cx('register-form')} onSubmit={handleSubmit(handleRegister)}>
@@ -166,7 +185,7 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                         {...register('phoneNumber')}
                                     />
                                     {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
-                                    {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
+                                    {errors.Phone && <ErrorMessage message={errors.Phone?.message} />}
                                 </div>
 
                                 <div className={cx('col2')}>
@@ -179,7 +198,7 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                     <input
                                         type="password"
                                         placeholder="Xác nhận mật khẩu"
-                                        name="c"
+                                        name="confirmPassword"
                                         {...register('confirmPassword')}
                                     />
                                     {errors.confirmPassword && (

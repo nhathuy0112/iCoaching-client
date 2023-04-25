@@ -35,6 +35,7 @@ const ForgotPassword = ({ open, setForgotOpen, setLoginOpen }) => {
         handleSubmit,
         formState: { errors },
         reset,
+        clearErrors,
     } = useForm({ resolver: yupResolver(schema) });
 
     const handleForgot = (data) => {
@@ -45,10 +46,16 @@ const ForgotPassword = ({ open, setForgotOpen, setLoginOpen }) => {
     return (
         <div className={cx('wrapper')}>
             {open && (
-                <Modal show={open} onClose={() => setForgotOpen(false)}>
+                <Modal
+                    show={open}
+                    onClose={() => {
+                        setForgotOpen(false);
+                        reset({ email: '' });
+                        clearErrors();
+                    }}
+                >
                     <div className={cx('content')}>
                         <div className={cx('img-wrapper')}>
-                            <h1>iCoaching</h1>
                             <img src={require('~/assets/images/modal-bg.png')} alt="" />
                         </div>
                         <form id={cx('forgot-form')} onSubmit={handleSubmit(handleForgot)}>
