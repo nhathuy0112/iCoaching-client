@@ -77,6 +77,7 @@ const Chat = () => {
             };
             zp.setCallInvitationConfig({
                 ringtoneConfig: {
+                    incomingCallUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
                     outgoingCallUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3'
                 }
             });
