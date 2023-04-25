@@ -95,23 +95,25 @@ const OnGoingCourse = () => {
                                     <div className={cx('card')}>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'course-name')}>Gói tập</span>
-                                            <span>{course.courseName}</span>
+                                            <span className={cx('card-info')}>{course.courseName}</span>
                                         </div>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'coach')}>Huấn luyện viên</span>
-                                            <span>{course.coachName}</span>
+                                            <span className={cx('card-info')}>{course.coachName}</span>
                                         </div>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'gender')}>Giới tính</span>
-                                            <span>{handleRenderGenders(course.coachGender)}</span>
+                                            <span className={cx('card-info')}>
+                                                {handleRenderGenders(course.coachGender)}
+                                            </span>
                                         </div>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'email')}>Email</span>
-                                            <span>{course.coachEmail}</span>
+                                            <span className={cx('card-info')}>{course.coachEmail}</span>
                                         </div>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'phone')}>Số điện thoại</span>
-                                            <span>{course.coachPhoneNumber}</span>
+                                            <span className={cx('card-info')}>{course.coachPhoneNumber}</span>
                                         </div>
                                     </div>
                                     <div className={cx('action')}>

@@ -60,27 +60,29 @@ const Canceled = () => {
                                         <div className={cx('card')}>
                                             <div className={cx('card-content')}>
                                                 <span className={cx('card-title', 'course-name')}>Gói tập</span>
-                                                <span>{contract.courseName}</span>
+                                                <span className={cx('card-info')}>{contract.courseName}</span>
                                             </div>
                                             <div className={cx('card-content')}>
                                                 <span className={cx('card-title', 'client')}>Khách hàng</span>
-                                                <span>{contract.clientName}</span>
+                                                <span className={cx('card-info')}>{contract.clientName}</span>
                                             </div>
                                             <div className={cx('card-content')}>
                                                 <span className={cx('card-title', 'age')}>Tuổi</span>
-                                                <span>{contract.clientAge}</span>
+                                                <span className={cx('card-info')}>{contract.clientAge}</span>
                                             </div>
                                             <div className={cx('card-content')}>
                                                 <span className={cx('card-title', 'gender')}>Giới tính</span>
-                                                <span>{handleRenderGenders(contract.clientGender)}</span>
+                                                <span className={cx('card-info')}>
+                                                    {handleRenderGenders(contract.clientGender)}
+                                                </span>
                                             </div>
                                             <div className={cx('card-content')}>
                                                 <span className={cx('card-title', 'email')}>Email</span>
-                                                <span>{contract.clientEmail}</span>
+                                                <span className={cx('card-info')}>{contract.clientEmail}</span>
                                             </div>
                                             <div className={cx('card-content')}>
                                                 <span className={cx('card-title', 'phone')}>Số điện thoại</span>
-                                                <span>{contract.clientPhoneNumber}</span>
+                                                <span className={cx('card-info')}>{contract.clientPhoneNumber}</span>
                                             </div>
                                         </div>
                                         <div className={cx('action')}>

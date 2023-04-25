@@ -72,27 +72,29 @@ const CoachRejected = () => {
                                     <div className={cx('card')}>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'coach')}>Huấn luyện viên</span>
-                                            <span>{request.coachName}</span>
+                                            <span className={cx('card-info')}>{request.coachName}</span>
                                         </div>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'course-name')}>Gói tập</span>
-                                            <span>{request.courseName}</span>
+                                            <span className={cx('card-info')}>{request.courseName}</span>
                                         </div>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'duration')}>Số buổi</span>
-                                            <span>{request.duration}</span>
+                                            <span className={cx('card-info')}>{request.duration}</span>
                                         </div>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'price')}>Giá</span>
-                                            <span>{request.price}</span>
+                                            <span className={cx('card-info')}>{request.price}</span>
                                         </div>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'discount')}>Giảm giá</span>
-                                            <span>{request.discount ? request.discount : 0}%</span>
+                                            <span className={cx('card-info')}>
+                                                {request.discount ? request.discount : 0}%
+                                            </span>
                                         </div>
                                         <div className={cx('card-content')}>
                                             <span className={cx('card-title', 'pay')}>Thành tiền</span>
-                                            <span>{request.priceToPay}</span>
+                                            <span className={cx('card-info')}>{request.priceToPay}</span>
                                         </div>
                                     </div>
                                     <div className={cx('action')}>
