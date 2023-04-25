@@ -62,9 +62,9 @@ const ForgotPassword = ({ open, setForgotOpen, setLoginOpen }) => {
                                     },
                                 }}
                             >
-                                <button id={cx('back-btn')} onClick={switchLogin}>
+                                <div id={cx('back-btn')} onClick={switchLogin}>
                                     <BsArrowLeft />
-                                </button>
+                                </div>
                                 <h1 className={cx('align-center')}>Quên mật khẩu</h1>
                                 <label>Địa chỉ email</label>
                                 <input type="email" placeholder="Nhập địa chỉ email" {...register('email')} />

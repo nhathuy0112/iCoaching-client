@@ -82,9 +82,9 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
                                 )}
                                 {error && <ErrorMessage message={error} />}
                                 <div>
-                                    <button id={cx('forgot-btn')} onClick={switchForgot}>
+                                    <p id={cx('forgot-btn')} onClick={switchForgot}>
                                         Quên mật khẩu?
-                                    </button>
+                                    </p>
                                 </div>
                                 <div>
                                     <button
