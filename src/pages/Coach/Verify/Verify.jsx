@@ -9,6 +9,7 @@ import SuccessMessage from '~/components/SuccessMessage';
 import ErrorMessage from '~/components/ErrorMessage';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Modal from '~/components/Modal';
+import { AiOutlineClose } from 'react-icons/ai';
 
 const cx = classNames.bind(styles);
 
@@ -19,6 +20,8 @@ const Verify = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [isViewReason, setIsViewReason] = useState(false);
+    const [viewDetail, setViewDetail] = useState(false);
+    const [file, setFile] = useState('');
 
     useEffect(() => {
         if (currentUser) {
@@ -62,6 +65,11 @@ const Verify = () => {
         }
     };
 
+    const handleViewDetail = (img) => {
+        setFile(img);
+        setViewDetail(true);
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -83,7 +91,7 @@ const Verify = () => {
                             <div className={cx('image-list')}>
                                 {currentCertificationRequest?.idUrls?.map((image) => (
                                     <div key={image} className={cx('image-item')}>
-                                        <img src={image} alt="" width="100" />
+                                        <img src={image} alt="" width="100" onClick={() => handleViewDetail(image)} />
                                     </div>
                                 ))}
                             </div>
@@ -93,7 +101,7 @@ const Verify = () => {
                             <div className={cx('image-list')}>
                                 {currentCertificationRequest?.certUrls?.map((image) => (
                                     <div key={image} className={cx('image-item')}>
-                                        <img src={image} alt="" width="100" />
+                                        <img src={image} alt="" width="100" onClick={() => handleViewDetail(image)} />
                                     </div>
                                 ))}
                             </div>
@@ -113,6 +121,19 @@ const Verify = () => {
                     </div>
                 )}
             </div>
+            {viewDetail && (
+                <Modal
+                    show={viewDetail}
+                    onClose={() => setViewDetail(false)}
+                    modalStyle={{ background: 'none' }}
+                    closeBtnStyle={{ display: 'none' }}
+                >
+                    <button className={cx('closeBtn')} onClick={() => setViewDetail(false)}>
+                        <AiOutlineClose />
+                    </button>
+                    <img id={cx('photo')} src={file} alt="" />
+                </Modal>
+            )}
 
             {isViewReason && (
                 <Modal

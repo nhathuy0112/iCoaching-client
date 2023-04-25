@@ -142,15 +142,6 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                     <input type="date" id="dob" name="dob" {...register('dob')} />
                                     {errors.dob && <ErrorMessage message={errors.dob.message} />}
                                 </div>
-                                <label>Số điện thoại</label>
-                                <input
-                                    type="tel"
-                                    placeholder="Nhập số điện thoại"
-                                    name="phoneNumber"
-                                    {...register('phoneNumber')}
-                                />
-                                {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
-                                {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
                                 <label>Địa chỉ email</label>
                                 <input
                                     type="email"
@@ -160,10 +151,24 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                 />
                                 {errors.email && <ErrorMessage message={errors.email.message} />}
                                 {error?.Email && <ErrorMessage message={error.Email?.message} />}
-                                <label>Tài khoản</label>
-                                <input type="text" placeholder="Nhập tài khoản" {...register('username')} />
-                                {errors.username && <ErrorMessage message={errors.username.message} />}
-                                {error?.Username && <ErrorMessage message={error.Username?.message} />}
+                                <div className={cx('col2')}>
+                                    <label>Tài khoản</label>
+                                    <input type="text" placeholder="Nhập tài khoản" {...register('username')} />
+                                    {errors.username && <ErrorMessage message={errors.username.message} />}
+                                    {error?.Username && <ErrorMessage message={error.Username?.message} />}
+                                </div>
+                                <div className={cx('col2', 'f-right')}>
+                                    <label>Số điện thoại</label>
+                                    <input
+                                        type="tel"
+                                        placeholder="Nhập số điện thoại"
+                                        name="phoneNumber"
+                                        {...register('phoneNumber')}
+                                    />
+                                    {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
+                                    {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
+                                </div>
+
                                 <div className={cx('col2')}>
                                     <label>Mật khẩu</label>
                                     <input type="password" placeholder="Nhập mật khẩu" {...register('password')} />
