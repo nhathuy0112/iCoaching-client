@@ -75,7 +75,12 @@ const Chat = () => {
                 userID: user?.username,
                 userName: user?.fullname,
             };
-
+            zp.setCallInvitationConfig({
+                ringtoneConfig: {
+                    incomingCallUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
+                    outgoingCallUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3'
+                }
+            });
             zp.sendCallInvitation({
                 callees: [targetUser],
                 callType: callType,
