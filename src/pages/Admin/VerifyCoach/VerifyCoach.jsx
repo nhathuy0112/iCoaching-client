@@ -77,9 +77,9 @@ const VerifyCoach = () => {
                             {coaches.map((coach) => (
                                 <tr className={cx('content-row')} key={coach.id}>
                                     <td className={cx('name')}>
-                                        <div className={cx('avatar')}>
+                                        {/* <div className={cx('avatar')}>
                                             <img src={require('~/assets/images/coach-avatar.png')} alt="" />
-                                        </div>
+                                        </div> */}
                                         <span>{coach.username}</span>
                                     </td>
                                     <td>{coach.fullname}</td>
