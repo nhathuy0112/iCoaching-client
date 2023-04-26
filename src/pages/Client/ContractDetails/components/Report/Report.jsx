@@ -8,7 +8,7 @@ import Modal from '~/components/Modal';
 
 import { AiOutlineClose } from 'react-icons/ai';
 import Spinner from '~/components/Spinner';
-import { BiChevronRight } from 'react-icons/bi';
+
 const cx = classNames.bind(styles);
 
 const Report = () => {
