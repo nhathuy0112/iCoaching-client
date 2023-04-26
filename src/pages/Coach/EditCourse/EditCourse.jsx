@@ -98,9 +98,12 @@ const EditCourse = () => {
                     duration: data.duration,
                     description: data.description,
                 }),
-            );
-            toast.success('Chỉnh sửa gói tập thành công!');
-            navigate(`/coach/${id}/my-courses`);
+            )
+                .unwrap()
+                .then(() => {
+                    toast.success('Chỉnh sửa gói tập thành công!');
+                    navigate(`/coach/${id}/my-courses`);
+                });
         } catch (error) {
             console.log(error);
         }
