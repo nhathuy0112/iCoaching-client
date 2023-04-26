@@ -333,7 +333,7 @@ export const coachSlice = createSlice({
             })
             .addCase(addTrainingCourseAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                state.trainingCourses.push(action.payload);
+                // state.trainingCourses.push(action.payload);
             })
             .addCase(addTrainingCourseAsync.rejected, (state, action) => {
                 state.loading = false;
@@ -381,11 +381,6 @@ export const coachSlice = createSlice({
             })
             .addCase(editTrainingCourseAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                const index = state.trainingCourses.findIndex((course) => course.id === action.payload.id);
-                state.trainingCourses[index].name = action.payload.name;
-                state.trainingCourses[index].price = action.payload.price;
-                state.trainingCourses[index].duration = action.payload.duration;
-                state.trainingCourses[index].description = action.payload.description;
             })
             .addCase(editTrainingCourseAsync.rejected, (state, action) => {
                 state.loading = false;

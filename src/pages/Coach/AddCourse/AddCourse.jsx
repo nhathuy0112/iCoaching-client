@@ -52,16 +52,15 @@ const schema = yup.object({
         .transform((value, originalValue) => {
             const intValue = parseInt(originalValue.replaceAll(',', ''));
             return isNaN(intValue) ? undefined : intValue;
-        })
-        .typeError('Giá gói tập phải là một số'),
+        }),
     duration: yup
         .number()
         .required('Số buổi tập không được để trống')
+        .min(1, 'Số buổi tập phải lớn hơn 0')
         .transform((value, originalValue) => {
             const intValue = parseInt(originalValue.replaceAll(',', ''));
             return isNaN(intValue) ? undefined : intValue;
-        })
-        .typeError('Giá gói tập phải là một số'),
+        }),
 });
 
 const cx = classNames.bind(styles);

@@ -60,7 +60,6 @@ export const logoutAsync = createAsyncThunk('user/logout', async (payload) => {
         await logout({ currentRefreshToken: payload.currentRefreshToken });
         removeLocalStorage('auth');
         const { successCallback } = payload;
-        console.log(payload);
         successCallback && successCallback();
     } catch (error) {
         console.log(error);
