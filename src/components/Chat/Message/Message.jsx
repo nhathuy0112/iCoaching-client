@@ -63,7 +63,8 @@ const Message = ({ message }) => {
                 {message.text && <p>{message.text}</p>}
                 {message.img && <img src={message.img} alt="" />}
                 {message.video && <video src={message.video} controls />}
-                {message.time}
+                <span className={cx('moment')}>{message.time}</span>
+
                 {/* <Moment locale="vi" format="DD/MM/yyyy HH:mm" className={cx('moment')}>
                     {message.time}
                 </Moment> */}

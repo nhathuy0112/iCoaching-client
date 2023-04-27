@@ -38,12 +38,18 @@ const Messages = () => {
             acc.push({ date: formattedDate, subMessages });
         }
 
+        const formattedTime = new Intl.DateTimeFormat('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: false,
+        }).format(date);
+
         // Add the message to the subMessage array
         subMessages.push({
             id: message.id,
             senderId: message.senderId,
             text: message.text,
-            time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            time: formattedTime,
             img: message.img,
             video: message.video,
         });
@@ -51,10 +57,12 @@ const Messages = () => {
         return acc;
     }, []);
 
+    console.log(filteredMessagesByDate);
+
     return (
         <div className={cx('messages', { messagesClient: coachId })}>
             {/* {messages?.map((m) => (
-                <Message message={m} key={m.id} />
+                <Message message={m} key={m.id} />s
             ))} */}
             {filteredMessagesByDate &&
                 filteredMessagesByDate.map((filteredMessage, index) => (
