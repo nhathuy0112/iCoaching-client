@@ -140,13 +140,22 @@ export const updateContractStatusAsync = createAsyncThunk('/admin/updateContract
     }
 });
 
+function handlePageSize() {
+    if (window.innerHeight < 720) {
+        return 7;
+    } else if (window.innerHeight < 800) {
+        return 9;
+    } else return 11;
+}
+
 const initialState = {
     coaches: [],
     certRequest: {},
     certId: null,
     reports: [],
     reportId: '',
-    pageSize: 6,
+    pageSize: handlePageSize(),
+    reportPageSize: 3,
     pageIndex: 1,
     totalCount: null,
     loading: false,
@@ -257,7 +266,7 @@ export const adminSlice = createSlice({
             .addCase(getAllReportsAsync.fulfilled, (state, action) => {
                 state.loading = false;
                 state.reports = action.payload.data;
-                state.pageSize = action.payload.pageSize;
+                state.reportPageSize = action.payload.pageSize;
                 state.pageIndex = action.payload.pageIndex;
                 state.totalCount = action.payload.count;
             })

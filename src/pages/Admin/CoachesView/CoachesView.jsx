@@ -8,6 +8,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { FaLockOpen, FaLock } from 'react-icons/fa';
 import { IoMdWarning } from 'react-icons/io';
 
+import Spinner from '~/components/Spinner/Spinner';
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
 import { getAllCoachesAsync, updateStatusAsync, warnCoachAsync } from '~/features/adminSlice';
@@ -19,7 +20,7 @@ const cx = classNames.bind(styles);
 
 const CoachesView = () => {
     const dispatch = useDispatch();
-    const { coaches, totalCount, pageSize, status } = useSelector((state) => state.admin);
+    const { coaches, totalCount, pageSize, status, loading } = useSelector((state) => state.admin);
     const [currentPage, setCurrentPage] = useState(1);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -35,8 +36,8 @@ const CoachesView = () => {
     }, [id, currentUser, navigate]);
 
     useEffect(() => {
-        dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: 8 }));
-    }, [dispatch, currentPage, status]);
+        dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: pageSize }));
+    }, [dispatch, currentPage, status, pageSize]);
 
     const [lockOpen, setLockOpen] = useState(false);
     const [coachAccount, setCoachAccount] = useState();
@@ -67,9 +68,9 @@ const CoachesView = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         if (!searchValue) {
-            dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: 6 }));
+            dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: pageSize }));
         } else {
-            dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: 6, search: searchValue }));
+            dispatch(getAllCoachesAsync({ pageIndex: currentPage, pageSize: pageSize, search: searchValue }));
         }
     };
 
@@ -89,65 +90,76 @@ const CoachesView = () => {
                         />
                     </div>
                 </form>
-                {coaches && coaches.length > 0 ? (
-                    <>
-                        <table className={cx('tb-coaches')}>
-                            <thead>
-                                <tr className={cx('header-row')}>
-                                    <th>Tên đăng nhập</th>
-                                    <th>Họ và tên</th>
-                                    <th>Giới tính</th>
-                                    <th>Tuổi</th>
-                                    <th>Email</th>
-                                    <th>SĐT</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {coaches.map((coach) => (
-                                    <tr className={cx('content-row')} key={coach.id}>
-                                        <td className={cx('name')}>
-                                            <div className={cx('avatar')}>
-                                                <img src={coach.avatarUrl} alt="" />
-                                            </div>
-                                            <span>{coach.userName}</span>
-                                        </td>
-                                        <td>{coach.fullname}</td>
-                                        <td>{handleRenderGenders(coach.gender)}</td>
-                                        <td>{coach.age}</td>
-                                        <td>{coach.email}</td>
-                                        <td>{coach.phoneNumber}</td>
-                                        <td className={cx('action-btn')}>
-                                            {!coach.isLocked && (
-                                                <button id={cx('warning')} onClick={() => handleWarnOpen(coach)}>
-                                                    {coach.warningCount}
-                                                    <IoMdWarning className={cx('icon')} />
-                                                </button>
-                                            )}
-
-                                            <button
-                                                id={cx(`${coach.isLocked ? 'btn-confirm' : 'btn-warn'}`)}
-                                                onClick={() => handleLockOpen(coach)}
-                                            >
-                                                {coach.isLocked ? <FaLockOpen /> : <FaLock />}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <Pagination
-                            className={cx('pagination-bar')}
-                            currentPage={currentPage}
-                            totalCount={totalCount}
-                            pageSize={pageSize}
-                            onPageChange={(page) => setCurrentPage(page)}
-                        />
-                    </>
-                ) : (
-                    <div className={cx('coach-empty')}>
-                        <h2>Không tìm thấy Huấn luyện viên nào!</h2>
+                {loading ? (
+                    <div className={cx('spinner')}>
+                        <Spinner />
                     </div>
+                ) : (
+                    <>
+                        {coaches && coaches.length > 0 ? (
+                            <>
+                                <table className={cx('tb-coaches')}>
+                                    <thead>
+                                        <tr className={cx('header-row')}>
+                                            <th>Tên đăng nhập</th>
+                                            <th>Họ và tên</th>
+                                            <th>Giới tính</th>
+                                            <th>Tuổi</th>
+                                            <th>Email</th>
+                                            <th>SĐT</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {coaches.map((coach) => (
+                                            <tr className={cx('content-row')} key={coach.id}>
+                                                <td className={cx('name')}>
+                                                    <div className={cx('avatar')}>
+                                                        <img src={coach.avatarUrl} alt="" />
+                                                    </div>
+                                                    <span>{coach.userName}</span>
+                                                </td>
+                                                <td>{coach.fullname}</td>
+                                                <td>{handleRenderGenders(coach.gender)}</td>
+                                                <td>{coach.age}</td>
+                                                <td>{coach.email}</td>
+                                                <td>{coach.phoneNumber}</td>
+                                                <td className={cx('action-btn')}>
+                                                    {!coach.isLocked && (
+                                                        <button
+                                                            id={cx('warning')}
+                                                            onClick={() => handleWarnOpen(coach)}
+                                                        >
+                                                            {coach.warningCount}
+                                                            <IoMdWarning className={cx('icon')} />
+                                                        </button>
+                                                    )}
+
+                                                    <button
+                                                        id={cx(`${coach.isLocked ? 'btn-confirm' : 'btn-warn'}`)}
+                                                        onClick={() => handleLockOpen(coach)}
+                                                    >
+                                                        {coach.isLocked ? <FaLockOpen /> : <FaLock />}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                <Pagination
+                                    className={cx('pagination-bar')}
+                                    currentPage={currentPage}
+                                    totalCount={totalCount}
+                                    pageSize={pageSize}
+                                    onPageChange={(page) => setCurrentPage(page)}
+                                />
+                            </>
+                        ) : (
+                            <div className={cx('coach-empty')}>
+                                <h2>Không tìm thấy Huấn luyện viên nào!</h2>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
 
