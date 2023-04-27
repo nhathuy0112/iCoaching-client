@@ -26,7 +26,7 @@ const Messages = () => {
         }
     }, [chatId]);
 
-    const filteredMessagesByDate = messages.reduce((acc, message) => {
+    const filteredMessagesByDate = messages?.reduce((acc, message) => {
         // Extract the date from the message and convert it to the desired format
         const date = new Date(message.date.toDate().toLocaleString());
         const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
@@ -56,8 +56,6 @@ const Messages = () => {
 
         return acc;
     }, []);
-
-    console.log(filteredMessagesByDate);
 
     return (
         <div className={cx('messages', { messagesClient: coachId })}>
