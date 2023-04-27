@@ -1,6 +1,3 @@
-.f-right {
-    float: right;
-}
 .align-center {
     display: flex;
     justify-content: center;
@@ -26,7 +23,7 @@
     border-top-left-radius: var(--default-border-radius);
     border-bottom-left-radius: var(--default-border-radius);
     position: relative;
-    min-height: 700px;
+    min-height: 80vh;
     h1,
     img {
         color: rgba(#fff, 0.3);
@@ -72,38 +69,42 @@
     }
     .col2 {
         display: inline-block;
-        width: 47%;
+        width: 48%;
     }
     .checkbox {
         width: 16px;
         height: 16px;
         margin: 4px 4px 2px 0;
     }
-    #submit-btn {
-        cursor: pointer;
-        color: white;
-        font-size: 1.8rem;
-        width: 35%;
-        padding: 16px;
-        background-color: var(--primary-color);
-        margin: 18px auto 2px;
-        border-radius: var(--default-border-radius);
-        &:hover {
-            opacity: 0.8;
-        }
+    .col-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
-    #switch-btn {
-        margin-left: 8px;
-        background: none;
-        padding: 0;
-        width: fit-content;
-        color: var(--primary-color);
-        font-size: 1.8rem;
-        margin-bottom: 14px;
-        cursor: pointer;
-        &:hover {
-            opacity: 0.8;
-        }
+}
+#submit-btn {
+    cursor: pointer;
+    color: white;
+    font-size: 1.8rem;
+    width: 35%;
+    background-color: var(--primary-color);
+    margin: 10px auto 2px;
+    border-radius: var(--default-border-radius);
+    &:hover {
+        opacity: 0.8;
+    }
+}
+#switch-btn {
+    margin-left: 8px;
+    background: none;
+    padding: 0;
+    width: fit-content;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+    &:hover {
+        opacity: 0.8;
     }
 }
 
@@ -119,7 +120,6 @@
     #register-form {
         width: 80%;
         float: left;
-        margin-left: 10%;
-        padding-bottom: 5%;
+        margin-left: 15%;
     }
 }

@@ -176,20 +176,22 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                     value={formattedFullname}
                                 />
                                 {errors.fullname && <ErrorMessage message={errors.fullname.message} />}
-                                <div className={cx('col2')}>
-                                    <label>Giới tính</label>
-                                    <select name="gender" id="gender" {...register('gender')}>
-                                        <option value="">--Chọn giới tính--</option>
-                                        <option value="Male">Nam</option>
-                                        <option value="Female">Nữ</option>
-                                        <option value="Other">Khác</option>
-                                    </select>
-                                    {errors.gender && <ErrorMessage message={errors.gender.message} />}
-                                </div>
-                                <div className={cx('col2', 'f-right')}>
-                                    <label>Ngày sinh</label>
-                                    <input type="date" id="dob" name="dob" {...register('dob')} />
-                                    {errors.dob && <ErrorMessage message={errors.dob.message} />}
+                                <div className={cx('col-wrapper')}>
+                                    <div className={cx('col2')}>
+                                        <label>Giới tính</label>
+                                        <select name="gender" id="gender" {...register('gender')}>
+                                            <option value="">--Chọn giới tính--</option>
+                                            <option value="Male">Nam</option>
+                                            <option value="Female">Nữ</option>
+                                            <option value="Other">Khác</option>
+                                        </select>
+                                        {errors.gender && <ErrorMessage message={errors.gender.message} />}
+                                    </div>
+                                    <div className={cx('col2')}>
+                                        <label>Ngày sinh</label>
+                                        <input type="date" id="dob" name="dob" {...register('dob')} />
+                                        {errors.dob && <ErrorMessage message={errors.dob.message} />}
+                                    </div>
                                 </div>
                                 <label>Địa chỉ email</label>
                                 <input
@@ -200,40 +202,44 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                 />
                                 {errors.email && <ErrorMessage message={errors.email.message} />}
                                 {error?.Email && <ErrorMessage message={error.Email?.message} />}
-                                <div className={cx('col2')}>
-                                    <label>Tài khoản</label>
-                                    <input type="text" placeholder="Nhập tài khoản" {...register('username')} />
-                                    {errors.username && <ErrorMessage message={errors.username.message} />}
-                                    {error?.Username && <ErrorMessage message={error.Username?.message} />}
-                                </div>
-                                <div className={cx('col2', 'f-right')}>
-                                    <label>Số điện thoại</label>
-                                    <input
-                                        type="tel"
-                                        placeholder="Nhập số điện thoại"
-                                        name="phoneNumber"
-                                        {...register('phoneNumber')}
-                                    />
-                                    {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
-                                    {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
+                                <div className={cx('col-wrapper')}>
+                                    <div className={cx('col2')}>
+                                        <label>Tài khoản</label>
+                                        <input type="text" placeholder="Nhập tài khoản" {...register('username')} />
+                                        {errors.username && <ErrorMessage message={errors.username.message} />}
+                                        {error?.Username && <ErrorMessage message={error.Username?.message} />}
+                                    </div>
+                                    <div className={cx('col2')}>
+                                        <label>Số điện thoại</label>
+                                        <input
+                                            type="tel"
+                                            placeholder="Nhập số điện thoại"
+                                            name="phoneNumber"
+                                            {...register('phoneNumber')}
+                                        />
+                                        {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
+                                        {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
+                                    </div>
                                 </div>
 
-                                <div className={cx('col2')}>
-                                    <label>Mật khẩu</label>
-                                    <input type="password" placeholder="Nhập mật khẩu" {...register('password')} />
-                                    {errors.password && <ErrorMessage message={errors.password.message} />}
-                                </div>
-                                <div className={cx('col2', 'f-right')}>
-                                    <label>Xác nhận mật khẩu</label>
-                                    <input
-                                        type="password"
-                                        placeholder="Xác nhận mật khẩu"
-                                        name="confirmPassword"
-                                        {...register('confirmPassword')}
-                                    />
-                                    {errors.confirmPassword && (
-                                        <ErrorMessage message={errors.confirmPassword.message} />
-                                    )}
+                                <div className={cx('col-wrapper')}>
+                                    <div className={cx('col2')}>
+                                        <label>Mật khẩu</label>
+                                        <input type="password" placeholder="Nhập mật khẩu" {...register('password')} />
+                                        {errors.password && <ErrorMessage message={errors.password.message} />}
+                                    </div>
+                                    <div className={cx('col2')}>
+                                        <label>Xác nhận mật khẩu</label>
+                                        <input
+                                            type="password"
+                                            placeholder="Xác nhận mật khẩu"
+                                            name="confirmPassword"
+                                            {...register('confirmPassword')}
+                                        />
+                                        {errors.confirmPassword && (
+                                            <ErrorMessage message={errors.confirmPassword.message} />
+                                        )}
+                                    </div>
                                 </div>
                                 <div>
                                     <input className={cx('checkbox')} type="checkbox" {...register('isCoach')} /> Đăng
