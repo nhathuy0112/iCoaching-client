@@ -122,7 +122,15 @@ const AccountProfile = () => {
             )
                 .unwrap()
                 .then(() => {
-                    dispatch(getUserProfileAsync());
+                    dispatch(getUserProfileAsync())
+                        .unwrap()
+                        .then((response) => {
+                            setValue('fullname', response.fullname);
+                            setValue('dob', convertDateFormatToInput(response.dob));
+                            setValue('gender', response.gender);
+                            setValue('email', response.email);
+                            setValue('phoneNumber', response.phoneNumber);
+                        });
                     toast.success('Cập nhật thông tin thành công!');
                 });
         } catch (error) {

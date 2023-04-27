@@ -63,10 +63,18 @@ const schema = yup.object({
 });
 
 const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+        clearErrors,
+    } = useForm({ resolver: yupResolver(schema) });
+
     const dispatch = useDispatch();
     const [formattedFullname, setFormattedFullname] = useState('');
 
-    function handleFullnameInput(event) {
+    const handleFullnameInput = (event) => {
         const fullname = event.target.value;
         const formattedFullname = fullname
             .toLowerCase()
@@ -75,25 +83,29 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
             .join(' ');
 
         setFormattedFullname(formattedFullname);
-    }
+    };
 
     const switchLogin = (e) => {
         e.preventDefault();
         setRegisterOpen(false);
+        reset({
+            fullname: '',
+            gender: '',
+            dob: '',
+            email: '',
+            phoneNumber: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
+            isAgreed: false,
+            isCoach: false,
+        });
         dispatch(resetAuth());
         clearErrors();
         setLoginOpen(true);
     };
 
     const { error, message, loading } = useSelector((state) => state.user);
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-        clearErrors,
-    } = useForm({ resolver: yupResolver(schema) });
 
     const handleRegister = (data) => {
         if (data.isAgreed) {
@@ -203,7 +215,7 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                                         {...register('phoneNumber')}
                                     />
                                     {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
-                                    {errors.Phone && <ErrorMessage message={errors.Phone?.message} />}
+                                    {error?.Phone && <ErrorMessage message={error.Phone?.message} />}
                                 </div>
 
                                 <div className={cx('col2')}>

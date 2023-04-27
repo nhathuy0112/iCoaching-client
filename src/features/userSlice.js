@@ -230,9 +230,8 @@ export const userSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(updateUserProfileAsync.fulfilled, (state, action) => {
+            .addCase(updateUserProfileAsync.fulfilled, (state) => {
                 state.loading = false;
-                state.message = action.payload;
                 state.status = !state.status;
             })
             .addCase(updateUserProfileAsync.rejected, (state, action) => {

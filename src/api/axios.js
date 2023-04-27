@@ -47,12 +47,14 @@ instance.interceptors.response.use(
                 }
                 break;
             case 400:
-                if (error.response.data?.Account.errorCode === 'LOCKED') {
+                if (error.response.data?.Account?.errorCode === 'LOCKED') {
                     removeLocalStorage('auth');
                     window.location.href = '/';
+                } else {
+                    const message400 = error.response.data.errors || error.response.data.message;
+                    return Promise.reject(message400);
                 }
-                const message400 = error.response.data.errors || error.response.data.message;
-                return Promise.reject(message400);
+                break;
             default:
                 break;
         }

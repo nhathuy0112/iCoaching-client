@@ -20,11 +20,20 @@ const schema = yup.object({
 });
 
 const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+        clearErrors,
+    } = useForm({ resolver: yupResolver(schema) });
     const dispatch = useDispatch();
+
     const switchForgot = (e) => {
         e.preventDefault();
         setLoginOpen(false);
         dispatch(resetAuth());
+        reset({ username: '' }, { password: '' });
         clearErrors();
         setForgotOpen(true);
     };
@@ -33,17 +42,10 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
         e.preventDefault();
         setLoginOpen(false);
         dispatch(resetAuth());
+        reset({ username: '' }, { password: '' });
         clearErrors();
         setRegisterOpen(true);
     };
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-        clearErrors,
-    } = useForm({ resolver: yupResolver(schema) });
 
     const { error, loading } = useSelector((state) => state.user);
 

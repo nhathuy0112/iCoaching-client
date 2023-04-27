@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import styles from '../Chat.module.scss';
 import classNames from 'classnames/bind';
 import SideBar from '../SideBar';

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from '../Chat.module.scss';
 import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
-import Moment from 'react-moment';
+// import Moment from 'react-moment';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '~/firebase';
 import { useParams } from 'react-router-dom';
