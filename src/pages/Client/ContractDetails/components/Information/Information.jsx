@@ -109,6 +109,10 @@ const Information = () => {
     };
 
     useEffect(() => {
+        if (onGoingContract.status === 'Pending') navigate(`/client/${id}/pending-courses/view-details/${contractId}`);
+    }, [onGoingContract, id, contractId, navigate]);
+
+    useEffect(() => {
         if (onGoingContract.status === 'Canceled')
             navigate(`/client/${id}/training-history/view-details/${contractId}`);
     }, [onGoingContract, id, contractId, navigate]);
