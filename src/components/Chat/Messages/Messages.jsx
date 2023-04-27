@@ -26,10 +26,17 @@ const Messages = () => {
         }
     }, [chatId]);
 
+    // console.log(messages);
+    // messages.forEach((message) => console.log(message.date.toDate()));
+
     const filteredMessagesByDate = messages?.reduce((acc, message) => {
         // Extract the date from the message and convert it to the desired format
-        const date = new Date(message.date.toDate().toLocaleString());
-        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        const date = message?.date?.toDate();
+        const formattedDate = new Intl.DateTimeFormat(['ban', 'id'], {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        }).format(date);
 
         // Find the existing subMessage array for the current date, or create a new one if it doesn't exist
         let subMessages = acc.find((obj) => obj.date === formattedDate)?.subMessages;
@@ -57,7 +64,7 @@ const Messages = () => {
         return acc;
     }, []);
 
-    console.log(filteredMessagesByDate);
+    // console.log(filteredMessagesByDate);
 
     return (
         <div className={cx('messages', { messagesClient: coachId })}>
