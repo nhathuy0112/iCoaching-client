@@ -47,6 +47,10 @@ instance.interceptors.response.use(
                 }
                 break;
             case 400:
+                if (error.response.data?.Account.errorCode === 'LOCKED') {
+                    removeLocalStorage('auth');
+                    window.location.href = '/';
+                }
                 const message400 = error.response.data.errors || error.response.data.message;
                 return Promise.reject(message400);
             default:
