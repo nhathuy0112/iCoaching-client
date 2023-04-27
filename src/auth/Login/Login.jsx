@@ -16,13 +16,7 @@ const cx = classNames.bind(styles);
 
 const schema = yup.object({
     username: yup.string().required('Tài khoản không được để trống'),
-    password: yup
-        .string()
-        .required('Mật khẩu không được để trống')
-        .matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>\\|[\]\/?])([A-Za-z\d!@#$%^&*()\-_=+{};:,<.>\\|[\]\/?]{6,})$/,
-            'Mật khẩu phải có ít nhất 1 chữ cái in hoa, 1 chữ cái in thường, 1 số, 1 kí tự đặc biệt và độ dài ít nhất là 6 kí tự',
-        ),
+    password: yup.string().required('Mật khẩu không được để trống'),
 });
 
 const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
@@ -97,7 +91,6 @@ const Login = ({ open, setLoginOpen, setRegisterOpen, setForgotOpen }) => {
                                     placeholder="Nhập mật khẩu"
                                     {...register('password', { required: true })}
                                 />
-                                {errors.password && <ErrorMessage message={errors.password.message} />}
                                 {error && <ErrorMessage message={error} />}
                                 <div>
                                     <p id={cx('forgot-btn')} onClick={switchForgot}>
