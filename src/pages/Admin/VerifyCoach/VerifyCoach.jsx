@@ -10,12 +10,13 @@ import { handleRenderGenders } from '~/utils/gender';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import Spinner from '~/components/Spinner/Spinner';
 
 const cx = classNames.bind(styles);
 
 const VerifyCoach = () => {
     const dispatch = useDispatch();
-    const { coaches, totalCount, pageSize } = useSelector((state) => state.admin);
+    const { coaches, totalCount, pageSize, loading } = useSelector((state) => state.admin);
     const [currentPage, setCurrentPage] = useState(1);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -31,8 +32,8 @@ const VerifyCoach = () => {
     }, [id, currentUser, navigate]);
 
     useEffect(() => {
-        dispatch(getAllCertRequestsAsync({ pageIndex: currentPage, pageSize: 6 }));
-    }, [dispatch, currentPage]);
+        dispatch(getAllCertRequestsAsync({ pageIndex: currentPage, pageSize: pageSize }));
+    }, [dispatch, currentPage, pageSize]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -45,72 +46,82 @@ const VerifyCoach = () => {
 
     return (
         <div className={cx('wrapper')}>
-            {coaches && coaches.length > 0 ? (
-                <div className={cx('content')}>
-                    <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
-                        <div className={cx('search-box')}>
-                            <button type="submit">
-                                <AiOutlineSearch className={cx('search-icon')} />
-                            </button>
-                            <input
-                                type="text"
-                                placeholder="Huấn luyện viên"
-                                value={searchValue}
-                                onChange={(e) => setSearchValue(e.target.value)}
-                            />
-                        </div>
-                    </form>
-
-                    <table className={cx('tb-coaches')}>
-                        <thead>
-                            <tr className={cx('header-row')}>
-                                <th>Tên đăng nhập</th>
-                                <th>Họ và tên</th>
-                                <th>Giới tính</th>
-                                <th>Tuổi</th>
-                                <th>Email</th>
-                                <th>SĐT</th>
-                                <th> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {coaches.map((coach) => (
-                                <tr className={cx('content-row')} key={coach.id}>
-                                    <td className={cx('name')}>
-                                        {/* <div className={cx('avatar')}>
+            <div className={cx('content')}>
+                <form className={cx('search')} onSubmit={(e) => handleSearch(e)}>
+                    <div className={cx('search-box')}>
+                        <button type="submit">
+                            <AiOutlineSearch className={cx('search-icon')} />
+                        </button>
+                        <input
+                            type="text"
+                            placeholder="Huấn luyện viên"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                    </div>
+                </form>
+                {loading ? (
+                    <div className={cx('spinner')}>
+                        <Spinner />
+                    </div>
+                ) : (
+                    <>
+                        {coaches && coaches.length > 0 ? (
+                            <>
+                                <table className={cx('tb-coaches')}>
+                                    <thead>
+                                        <tr className={cx('header-row')}>
+                                            <th>Tên đăng nhập</th>
+                                            <th>Họ và tên</th>
+                                            <th>Giới tính</th>
+                                            <th>Tuổi</th>
+                                            <th>Email</th>
+                                            <th>SĐT</th>
+                                            <th> </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {coaches.map((coach) => (
+                                            <tr className={cx('content-row')} key={coach.id}>
+                                                <td className={cx('name')}>
+                                                    {/* <div className={cx('avatar')}>
                                             <img src={require('~/assets/images/coach-avatar.png')} alt="" />
                                         </div> */}
-                                        <span>{coach.username}</span>
-                                    </td>
-                                    <td>{coach.fullname}</td>
-                                    <td>{handleRenderGenders(coach.gender)}</td>
-                                    <td>{coach.age}</td>
-                                    <td>{coach.email}</td>
-                                    <td>{coach.phoneNumber}</td>
-                                    <td className={cx('action-btn')}>
-                                        <Link to={`${coach.certId}`}>
-                                            <button id={cx('btn-detail')}>
-                                                Xem chi tiết <MdOutlineKeyboardArrowRight className={cx('icon')} />
-                                            </button>
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <Pagination
-                        className={cx('pagination-bar')}
-                        currentPage={currentPage}
-                        totalCount={totalCount}
-                        pageSize={pageSize}
-                        onPageChange={(page) => setCurrentPage(page)}
-                    />
-                </div>
-            ) : (
-                <div className={cx('message')}>
-                    <h2>Không tìm thấy yêu cầu xác minh nào!</h2>
-                </div>
-            )}
+                                                    <span>{coach.username}</span>
+                                                </td>
+                                                <td>{coach.fullname}</td>
+                                                <td>{handleRenderGenders(coach.gender)}</td>
+                                                <td>{coach.age}</td>
+                                                <td>{coach.email}</td>
+                                                <td>{coach.phoneNumber}</td>
+                                                <td className={cx('action-btn')}>
+                                                    <Link to={`${coach.certId}`}>
+                                                        <button id={cx('btn-detail')}>
+                                                            Xem chi tiết{' '}
+                                                            <MdOutlineKeyboardArrowRight className={cx('icon')} />
+                                                        </button>
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                <Pagination
+                                    className={cx('pagination-bar')}
+                                    currentPage={currentPage}
+                                    totalCount={totalCount}
+                                    pageSize={pageSize}
+                                    onPageChange={(page) => setCurrentPage(page)}
+                                />
+                            </>
+                        ) : (
+                            <div className={cx('message')}>
+                                <h2>Không tìm thấy yêu cầu xác minh nào!</h2>
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
         </div>
     );
 };

@@ -8,13 +8,13 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getAllReportsAsync } from '~/features/adminSlice';
 import Modal from '~/components/Modal';
 import Pagination from '~/components/Pagination';
-
+import Spinner from '~/components/Spinner/Spinner';
 import { AiOutlineClose } from 'react-icons/ai';
 const cx = classNames.bind(styles);
 
 const Reports = () => {
     const dispatch = useDispatch();
-    const { reports, totalCount, pageSize } = useSelector((state) => state.admin);
+    const { reports, totalCount, reportPageSize, loading } = useSelector((state) => state.admin);
     const [viewDetail, setViewDetail] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [file, setFile] = useState('');
@@ -32,8 +32,8 @@ const Reports = () => {
     }, [id, currentUser, navigate]);
 
     useEffect(() => {
-        dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3 }));
-    }, [dispatch, currentPage]);
+        dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: reportPageSize }));
+    }, [dispatch, currentPage, reportPageSize]);
 
     const handleViewDetail = (img) => {
         setFile(img);
@@ -47,9 +47,9 @@ const Reports = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         if (!searchValue) {
-            dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3 }));
+            dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: reportPageSize }));
         } else {
-            dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: 3, searchValue }));
+            dispatch(getAllReportsAsync({ pageIndex: currentPage, pageSize: reportPageSize, searchValue }));
         }
     };
 
@@ -69,42 +69,56 @@ const Reports = () => {
                         />
                     </div>
                 </form>
-                {reports && reports.length > 0 ? (
-                    <>
-                        <div className={cx('list-reports')}>
-                            {reports?.map((report) => (
-                                <div className={cx('rp')} key={report.id}>
-                                    <label>{report.clientFullName}</label>
-                                    <div className={cx('photos')}>
-                                        {report.images?.map((photo) => (
-                                            <div className={cx('photo-item')} key={photo}>
-                                                <img src={photo} alt="report" onClick={() => handleViewDetail(photo)} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <p className={cx('detail')}>{report.detail}</p>
-                                    <Link to={`${report.contractId}/view-details/${report.id}`}>
-                                        <button className={cx('btn-info')}>
-                                            Xem chi tiết <MdOutlineKeyboardArrowRight className={cx('icon')} />
-                                        </button>
-                                    </Link>
-                                </div>
-                            ))}
-                        </div>
-                    </>
-                ) : (
-                    <div className={cx('message')}>
-                        <h2>Không tìm thấy khiếu nại nào!</h2>
+                {loading ? (
+                    <div className={cx('spinner')}>
+                        <Spinner />
                     </div>
+                ) : (
+                    <>
+                        {' '}
+                        {reports && reports.length > 0 ? (
+                            <>
+                                <div className={cx('list-reports')}>
+                                    {reports?.map((report) => (
+                                        <div className={cx('rp')} key={report.id}>
+                                            <label>{report.clientFullName}</label>
+                                            <div className={cx('photos')}>
+                                                {report.images?.map((photo) => (
+                                                    <div className={cx('photo-item')} key={photo}>
+                                                        <img
+                                                            src={photo}
+                                                            alt="report"
+                                                            onClick={() => handleViewDetail(photo)}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <p className={cx('detail')}>{report.detail}</p>
+                                            <Link to={`${report.contractId}/view-details/${report.id}`}>
+                                                <button className={cx('btn-info')}>
+                                                    Xem chi tiết <MdOutlineKeyboardArrowRight className={cx('icon')} />
+                                                </button>
+                                            </Link>
+                                        </div>
+                                    ))}
+                                </div>
+                                <Pagination
+                                    className={cx('pagination-bar')}
+                                    currentPage={currentPage}
+                                    totalCount={totalCount}
+                                    pageSize={reportPageSize}
+                                    onPageChange={(page) => setCurrentPage(page)}
+                                />
+                            </>
+                        ) : (
+                            <div className={cx('message')}>
+                                <h2>Không tìm thấy khiếu nại nào!</h2>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
-            <Pagination
-                className={cx('pagination-bar')}
-                currentPage={currentPage}
-                totalCount={totalCount}
-                pageSize={pageSize}
-                onPageChange={(page) => setCurrentPage(page)}
-            />
+
             {viewDetail && (
                 <Modal
                     open={viewDetail}
