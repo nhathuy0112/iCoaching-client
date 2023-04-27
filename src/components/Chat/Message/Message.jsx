@@ -63,10 +63,10 @@ const Message = ({ message }) => {
                 {message.text && <p>{message.text}</p>}
                 {message.img && <img src={message.img} alt="" />}
                 {message.video && <video src={message.video} controls />}
-
-                <Moment locale="vi" format="DD/MM/yyyy HH:mm" className={cx('moment')}>
-                    {message.date.toDate()}
-                </Moment>
+                {message.time}
+                {/* <Moment locale="vi" format="DD/MM/yyyy HH:mm" className={cx('moment')}>
+                    {message.time}
+                </Moment> */}
             </div>
         </div>
     );

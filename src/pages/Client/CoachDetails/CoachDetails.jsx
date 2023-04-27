@@ -49,6 +49,7 @@ const CoachDetail = () => {
     const handleSelect = () => {
         dispatch(changeUser({ currentUser: currentUser, payload: coachId }));
     };
+
     useEffect(() => {
         if (currentUser) {
             if (id !== currentUser.Id) {

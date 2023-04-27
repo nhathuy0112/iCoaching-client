@@ -62,6 +62,18 @@ const AccountProfile = () => {
     const [confirmAvatar, setConfirmAvatar] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
+    const [formattedFullname, setFormattedFullname] = useState('');
+
+    const handleFullnameInput = (event) => {
+        const fullname = event.target.value;
+        const formattedFullname = fullname
+            .toLowerCase()
+            .split(' ')
+            .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+            .join(' ');
+
+        setFormattedFullname(formattedFullname);
+    };
 
     useEffect(() => {
         if (currentUser) {
@@ -183,7 +195,13 @@ const AccountProfile = () => {
                             <form id={cx('update_form')} onSubmit={handleSubmit(handleProfile)}>
                                 <div className={cx('input-group')}>
                                     <label>Họ và Tên</label>
-                                    <input type="text" placeholder="Nhập Họ và Tên" {...register('fullname')} />
+                                    <input
+                                        type="text"
+                                        placeholder="Nhập Họ và Tên"
+                                        {...register('fullname')}
+                                        onInput={handleFullnameInput}
+                                        value={formattedFullname}
+                                    />
                                     {errors.fullname && (
                                         <div className={cx('error')}>
                                             <ErrorMessage message={errors.fullname.message} />

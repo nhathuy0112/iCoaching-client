@@ -231,6 +231,20 @@
             // border-left: 2.5px solid #d9d9d9;
             border-bottom: 2.5px solid #d9d9d9;
 
+            .date-messages {
+                text-align: center;
+                font-size: 1.6rem;
+                font-weight: 600;
+                border-bottom: 1px solid #ccc;
+                line-height: 0.1em;
+                margin: 10px 0 20px;
+
+                span {
+                    background: #fff;
+                    padding: 0 10px;
+                }
+            }
+
             &.messagesClient {
                 height: calc(100% - 50px);
             }

@@ -14,6 +14,7 @@ import { convertDateFormat } from '~/utils/dateFormat';
 import { Link } from 'react-router-dom';
 
 import Spinner from '~/components/Spinner';
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -63,6 +64,18 @@ const schema = yup.object({
 
 const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
     const dispatch = useDispatch();
+    const [formattedFullname, setFormattedFullname] = useState('');
+
+    function handleFullnameInput(event) {
+        const fullname = event.target.value;
+        const formattedFullname = fullname
+            .toLowerCase()
+            .split(' ')
+            .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+            .join(' ');
+
+        setFormattedFullname(formattedFullname);
+    }
 
     const switchLogin = (e) => {
         e.preventDefault();
@@ -143,7 +156,13 @@ const Register = ({ open, setLoginOpen, setRegisterOpen }) => {
                             >
                                 <h1 className={cx('align-center')}>Đăng ký tài khoản</h1>
                                 <label>Họ và Tên</label>
-                                <input type="text" placeholder="Nhập Họ và Tên" {...register('fullname')} />
+                                <input
+                                    type="text"
+                                    placeholder="Nhập Họ và Tên"
+                                    {...register('fullname')}
+                                    onInput={handleFullnameInput}
+                                    value={formattedFullname}
+                                />
                                 {errors.fullname && <ErrorMessage message={errors.fullname.message} />}
                                 <div className={cx('col2')}>
                                     <label>Giới tính</label>
