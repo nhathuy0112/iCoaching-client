@@ -41,7 +41,7 @@ const Messages = () => {
         const formattedTime = new Intl.DateTimeFormat('en-US', {
             hour: 'numeric',
             minute: 'numeric',
-            hour12: false,
+            hourCycle: 'h23',
         }).format(date);
 
         // Add the message to the subMessage array
@@ -56,6 +56,8 @@ const Messages = () => {
 
         return acc;
     }, []);
+
+    console.log(filteredMessagesByDate);
 
     return (
         <div className={cx('messages', { messagesClient: coachId })}>
