@@ -64,7 +64,7 @@ const Message = ({ message }) => {
                 {message.img && <img src={message.img} alt="" />}
                 {message.video && <video src={message.video} controls />}
 
-                <Moment locale="vi" format="[Hôm nay], [lúc] HH:mm" className={cx('moment')}>
+                <Moment locale="vi" format="DD/MM/yyyy HH:mm" className={cx('moment')}>
                     {message.date.toDate()}
                 </Moment>
             </div>
