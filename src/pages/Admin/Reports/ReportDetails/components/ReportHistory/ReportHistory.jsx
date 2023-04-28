@@ -84,9 +84,9 @@ const ReportHistory = () => {
                                             ))}
                                         </div>
                                         <p className={cx('detail')}>
-                                            <span className={cx('icon')}>
+                                            {/* <span className={cx('icon')}>
                                                 <BiChevronRight />
-                                            </span>
+                                            </span> */}
                                             {report.detail}
                                         </p>
                                     </div>

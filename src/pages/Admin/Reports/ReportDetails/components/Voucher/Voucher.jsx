@@ -30,8 +30,8 @@ const schema = yup.object({
             }
             return true;
         })
-        .test('durationFormat', 'Phần trăm giảm giá phải là số và không gồm kí tự đặc biệt', (value) => {
-            if (value && !/^\d+$/.test(value)) {
+        .test('smallerThanHundred', 'Phần trăm giảm giá phải nhỏ hơn 100%', (value) => {
+            if (value && parseInt(value) > 100) {
                 return false;
             }
             return true;
@@ -76,8 +76,6 @@ const Voucher = () => {
                         message: 'Đã tặng voucher cho khách hàng',
                     }),
                 );
-
-                toast.success('Đã cập nhật trạng thái khiếu nại');
             });
         setCancelOpen(true);
     };
@@ -101,6 +99,7 @@ const Voucher = () => {
     const handleCloseCancel = (e) => {
         e.preventDefault();
         setCancelOpen(false);
+        toast.success('Đã cập nhật trạng thái hợp đồng');
         navigate(`/admin/${currentUser.id}/reports`);
     };
 
@@ -124,7 +123,7 @@ const Voucher = () => {
                     </div>
                     <div className={cx('row')}>
                         <label>{`Giảm giá (%)`}</label>
-                        <input type="text" id="" {...register('voucher')} />
+                        <input type="number" {...register('voucher')} />
                     </div>
                     {errors.voucher && (
                         <div className={cx('error')}>
