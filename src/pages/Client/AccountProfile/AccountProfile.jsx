@@ -62,18 +62,25 @@ const AccountProfile = () => {
     const [confirmAvatar, setConfirmAvatar] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
-    const [formattedFullname, setFormattedFullname] = useState('');
+    // const [formattedFullname, setFormattedFullname] = useState('');
 
-    const handleFullnameInput = (event) => {
-        const fullname = event.target.value;
-        const formattedFullname = fullname
-            .toLowerCase()
-            .split(' ')
-            .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
-            .join(' ');
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+    } = useForm({ resolver: yupResolver(schema) });
 
-        setFormattedFullname(formattedFullname);
-    };
+    // const handleFullnameInput = (event) => {
+    //     const fullname = event.target.value;
+    //     const formattedFullname = fullname
+    //         .toLowerCase()
+    //         .split(' ')
+    //         .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+    //         .join(' ');
+
+    //     setFormattedFullname(formattedFullname);
+    // };
 
     useEffect(() => {
         if (currentUser) {
@@ -84,16 +91,12 @@ const AccountProfile = () => {
     }, [id, currentUser, navigate]);
 
     useEffect(() => {
-        dispatch(getUserAvatarAsync());
-        setCurrentAvatar(avatar);
-    }, [dispatch, avatar]);
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        setValue,
-    } = useForm({ resolver: yupResolver(schema) });
+        dispatch(getUserAvatarAsync())
+            .unwrap()
+            .then(() => {
+                setCurrentAvatar(avatar);
+            });
+    }, [dispatch, avatar, setValue]);
 
     useEffect(() => {
         dispatch(getUserProfileAsync())
@@ -193,7 +196,7 @@ const AccountProfile = () => {
                                         </label>
                                     </div>
                                     <button type="submit" onClick={() => setConfirmAvatar(true)}>
-                                        Thay đổi
+                                        Lưu
                                     </button>
                                 </>
                             )}
@@ -207,8 +210,8 @@ const AccountProfile = () => {
                                         type="text"
                                         placeholder="Nhập Họ và Tên"
                                         {...register('fullname')}
-                                        onInput={handleFullnameInput}
-                                        value={formattedFullname}
+                                        // onInput={handleFullnameInput}
+                                        // value={formattedFullname}
                                     />
                                     {errors.fullname && (
                                         <div className={cx('error')}>

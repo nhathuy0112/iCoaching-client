@@ -63,18 +63,18 @@ const AccountProfile = () => {
     const { currentUser } = useSelector((state) => state.user);
     const { id } = useParams();
     const navigate = useNavigate();
-    const [formattedFullname, setFormattedFullname] = useState('');
+    // const [formattedFullname, setFormattedFullname] = useState('');
 
-    const handleFullnameInput = (event) => {
-        const fullname = event.target.value;
-        const formattedFullname = fullname
-            .toLowerCase()
-            .split(' ')
-            .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
-            .join(' ');
+    // const handleFullnameInput = (event) => {
+    //     const fullname = event.target.value;
+    //     const formattedFullname = fullname
+    //         .toLowerCase()
+    //         .split(' ')
+    //         .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+    //         .join(' ');
 
-        setFormattedFullname(formattedFullname);
-    };
+    //     setFormattedFullname(formattedFullname);
+    // };
 
     useEffect(() => {
         if (currentUser) {
@@ -180,7 +180,7 @@ const AccountProfile = () => {
                                 </label>
                             </div>
                             <button type="submit" onClick={() => setConfirmAvatar(true)}>
-                                Thay đổi
+                                Lưu
                             </button>
                         </>
                     )}
@@ -194,8 +194,8 @@ const AccountProfile = () => {
                                 type="text"
                                 placeholder="Nhập Họ và Tên"
                                 {...register('fullname')}
-                                onInput={handleFullnameInput}
-                                value={formattedFullname}
+                                // onInput={handleFullnameInput}
+                                // value={formattedFullname}
                             />
                             {errors.fullname && (
                                 <div className={cx('error')}>
