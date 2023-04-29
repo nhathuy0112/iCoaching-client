@@ -51,7 +51,7 @@ const Chat = () => {
             .trim();
     }
 
-    async function init() {
+    const init = async () => {
         const userID = currentUser?.Username;
         const userName = removeAccents(currentUser?.Fullname);
         const { token } = await generateToken('https://node-express-vercel-master-one.vercel.app', userID);
@@ -59,7 +59,11 @@ const Chat = () => {
         zp = ZegoUIKitPrebuilt.create(KitToken);
         zp.addPlugins({ ZIM });
         ZIM.getInstance().setLogConfig({ logLevel: 'disable' });
-    }
+        if (currentUser === null) {
+            zp.destroy();
+        }
+    };
+
     function generateToken(tokenServerUrl, userID) {
         return fetch(`${tokenServerUrl}/api/userID/${userID}`, {
             method: 'GET',
@@ -78,8 +82,16 @@ const Chat = () => {
             zp.setCallInvitationConfig({
                 ringtoneConfig: {
                     incomingCallUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
-                    outgoingCallUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3'
-                }
+                    outgoingCallUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
+                },
+                // onIncomingCallTimeout: (callID, caller) => {
+                //     console.log('Call Id: ', callID);
+                //     console.log('Caller: ', caller);
+                // },
+                // onOutgoingCallTimeout: (callID, callees) => {
+                //     console.log('Call Id: ', callID);
+                //     console.log('Caller: ', callees);
+                // },
             });
             zp.sendCallInvitation({
                 callees: [targetUser],

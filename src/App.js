@@ -22,14 +22,15 @@ function App() {
             init();
         }
     });
-    function removeAccents(str) {
+
+    const removeAccents = (str) => {
         return nfd(str)
             .replace(/[\u0300-\u036f]/g, '')
             .replace(/\s+/g, ' ')
             .trim();
-    }
+    };
 
-    async function init() {
+    const init = async () => {
         let zp;
         const userID = currentUser?.Username;
         const userName = removeAccents(currentUser?.Fullname);
@@ -38,12 +39,17 @@ function App() {
         zp = ZegoUIKitPrebuilt.create(KitToken);
         zp.addPlugins({ ZIM });
         ZIM.getInstance().setLogConfig({ logLevel: 'disable' });
-    }
-    function generateToken(tokenServerUrl, userID) {
+        if (currentUser === null) {
+            zp.destroy();
+        }
+    };
+
+    const generateToken = async (tokenServerUrl, userID) => {
         return fetch(`${tokenServerUrl}/api/userID/${userID}`, {
             method: 'GET',
         }).then((res) => res.json());
-    }
+    };
+
     useEffect(() => {
         if (currentUser) {
             registerUser(currentUser);
