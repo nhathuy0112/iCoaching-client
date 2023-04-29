@@ -24,14 +24,16 @@ const Header = () => {
         dispatch(
             logoutAsync({
                 currentRefreshToken: getLocalStorage('auth').refreshToken,
-                // successCallback: () => {
-
-                //     window.location.href = '/';
-                // },
+                successCallback: () => {
+                    window.location.href = '/';
+                },
             }),
-        );
-        dispatch(changeUser({ currentUser: '', payload: '' }));
-        dispatch(updateUserOnlineStatus(currentUser.Id));
+        )
+            .unwrap()
+            .then(() => {
+                dispatch(changeUser({ currentUser: '', payload: '' }));
+                dispatch(updateUserOnlineStatus(currentUser.Id));
+            });
     };
 
     useEffect(() => {
