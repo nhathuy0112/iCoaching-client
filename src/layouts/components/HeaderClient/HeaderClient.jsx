@@ -10,7 +10,7 @@ import { IoMdGift, IoMdSettings } from 'react-icons/io';
 import { logoutAsync, getUserAvatarAsync, getUserProfileAsync } from '~/features/userSlice';
 import { getLocalStorage } from '~/utils/localStorage';
 import { BiLogOut } from 'react-icons/bi';
-import { changeUser, updateUserOnlineStatus } from '~/features/chatSlice';
+import { changeUser } from '~/features/chatSlice';
 
 const cx = classNames.bind(styles);
 
@@ -19,21 +19,16 @@ const Header = () => {
     const dispatch = useDispatch();
     const { currentUser, avatar, profile } = useSelector((state) => state.user);
 
-    const handleLogout = (e) => {
-        e.preventDefault();
+    const handleLogout = () => {
         dispatch(
             logoutAsync({
                 currentRefreshToken: getLocalStorage('auth').refreshToken,
+                userId: currentUser.Id,
                 successCallback: () => {
                     window.location.href = '/';
                 },
             }),
-        )
-            .unwrap()
-            .then(() => {
-                dispatch(changeUser({ currentUser: '', payload: '' }));
-                dispatch(updateUserOnlineStatus(currentUser.Id));
-            });
+        );
     };
 
     useEffect(() => {

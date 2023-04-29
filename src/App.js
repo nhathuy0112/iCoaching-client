@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserOnlineStatus } from './features/chatSlice';
+// import { updateUserOnlineStatus } from './features/chatSlice';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import { nfd } from 'unorm';
@@ -14,8 +14,8 @@ import { ZIM } from 'zego-zim-web';
 
 function App() {
     const { currentUser } = useSelector((state) => state.user);
-    const dispatch = useDispatch();
-    var isPageVisible = true;
+    // const dispatch = useDispatch();
+    // var isPageVisible = true;
 
     useEffect(() => {
         if (currentUser) {
@@ -40,7 +40,7 @@ function App() {
         zp.addPlugins({ ZIM });
         ZIM.getInstance().setLogConfig({ logLevel: 'disable' });
         if (currentUser === null) {
-            zp.destroy();
+            zp?.destroy();
         }
     };
 
@@ -95,23 +95,28 @@ function App() {
         }
     }, [currentUser?.Avatar, currentUser]);
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('beforeunload', handleUnload);
+    // document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', async () => {
+        const userDocRef = doc(db, 'users', currentUser.Id);
+        await updateDoc(userDocRef, {
+            isOnline: false,
+        });
+    });
 
-    var lastVisibilityChangeTime = Date.now();
-    var isPageVisible = !document.hidden;
+    // var lastVisibilityChangeTime = Date.now();
+    // var isPageVisible = !document.hidden;
 
-    function handleVisibilityChange() {
-        isPageVisible = !document.hidden;
-        lastVisibilityChangeTime = Date.now();
-    }
+    // function handleVisibilityChange() {
+    //     isPageVisible = !document.hidden;
+    //     lastVisibilityChangeTime = Date.now();
+    // }
 
-    function handleUnload() {
-        var elapsedTime = Date.now() - lastVisibilityChangeTime;
-        if (!isPageVisible || elapsedTime > 1000) {
-            dispatch(updateUserOnlineStatus(currentUser.Id));
-        }
-    }
+    // function handleUnload() {
+    //     var elapsedTime = Date.now() - lastVisibilityChangeTime;
+    //     if (!isPageVisible || elapsedTime > 1000) {
+    //         dispatch(updateUserOnlineStatus(currentUser.Id));
+    //     }
+    // }
     return (
         <Router>
             <div className="App">

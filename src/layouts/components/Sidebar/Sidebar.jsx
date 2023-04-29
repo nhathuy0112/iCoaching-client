@@ -45,16 +45,12 @@ const Sidebar = ({ links }) => {
         dispatch(
             logoutAsync({
                 currentRefreshToken: getLocalStorage('auth').refreshToken,
+                userId: currentUser.Id,
                 successCallback: () => {
                     window.location.href = '/';
                 },
             }),
-        )
-            .unwrap()
-            .then(() => {
-                dispatch(changeUser({ currentUser: '', payload: '' }));
-                dispatch(updateUserOnlineStatus(currentUser.Id));
-            });
+        );
     };
 
     return (

@@ -2,11 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '~/firebase';
 
-export const updateUserOnlineStatus = createAsyncThunk('chat/updateOnlineStatus', async (userId) => {
-    const userDocRef = doc(db, 'users', userId);
-    await updateDoc(userDocRef, { isOnline: false });
-    return userId;
-});
+// export const updateUserOnlineStatus = createAsyncThunk('chat/updateOnlineStatus', async (userId) => {
+//     const userDocRef = doc(db, 'users', userId);
+//     await updateDoc(userDocRef, { isOnline: false });
+//     return userId;
+// });
 
 const chatSlice = createSlice({
     name: 'chat',
