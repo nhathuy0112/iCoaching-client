@@ -24,6 +24,7 @@ import {
 import { db } from '~/firebase';
 import { useNavigate, useParams } from 'react-router-dom';
 import { changeUser } from '~/features/chatSlice';
+import Spinner from '~/components/Spinner/Spinner';
 
 const cx = classNames.bind(styles);
 
@@ -38,18 +39,19 @@ const Chat = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const chatId = useSelector((state) => state.chat.chatId);
+    const [initDone, setInitDone] = useState(false);
     let zp;
 
     useEffect(() => {
-        init();
+        init().then(() => setInitDone(true));
     });
 
-    function removeAccents(str) {
+    const removeAccents = (str) => {
         return nfd(str)
             .replace(/[\u0300-\u036f]/g, '')
             .replace(/\s+/g, ' ')
             .trim();
-    }
+    };
 
     const init = async () => {
         const userID = currentUser?.Username;
@@ -60,20 +62,20 @@ const Chat = () => {
         zp.addPlugins({ ZIM });
         ZIM.getInstance().setLogConfig({ logLevel: 'disable' });
         if (currentUser === null) {
-            zp.destroy();
+            zp?.destroy();
         }
     };
 
-    function generateToken(tokenServerUrl, userID) {
+    const generateToken = async (tokenServerUrl, userID) => {
         return fetch(`${tokenServerUrl}/api/userID/${userID}`, {
             method: 'GET',
         }).then((res) => res.json());
         // return fetch(`${tokenServerUrl}/api/get_access_token?userID=${userID}&expired_ts=7200`, {
         //     method: 'GET',
         // }).then((res) => res.json());
-    }
+    };
 
-    function handleSend(callType) {
+    const handleSend = (callType) => {
         if (zp) {
             const targetUser = {
                 userID: user?.username,
@@ -84,19 +86,19 @@ const Chat = () => {
                     incomingCallUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
                     outgoingCallUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
                 },
-                // onIncomingCallTimeout: (callID, caller) => {
-                //     console.log('Call Id: ', callID);
-                //     console.log('Caller: ', caller);
-                // },
-                // onOutgoingCallTimeout: (callID, callees) => {
-                //     console.log('Call Id: ', callID);
-                //     console.log('Caller: ', callees);
-                // },
+                onIncomingCallTimeout: (callID, caller) => {
+                    console.log('Call Id: ', callID);
+                    console.log('Caller: ', caller);
+                },
+                onOutgoingCallTimeout: (callID, callees) => {
+                    console.log('Call Id: ', callID);
+                    console.log('Caller: ', callees);
+                },
             });
             zp.sendCallInvitation({
                 callees: [targetUser],
                 callType: callType,
-                timeout: 60,
+                timeout: 15,
             })
                 .then((res) => {
                     console.warn(res);
@@ -105,7 +107,7 @@ const Chat = () => {
                     console.warn(err);
                 });
         }
-    }
+    };
 
     useEffect(() => {
         if (coachId) {
@@ -232,12 +234,17 @@ const Chat = () => {
 
                         {status.isOnline ? (
                             <div className={cx('call-and-status')}>
-                                <div
-                                    className={cx('chatIcons')}
-                                    onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}
-                                >
-                                    <BsCameraVideoFill className={cx('call-icon')} />
-                                </div>
+                                {initDone ? (
+                                    <div
+                                        className={cx('chatIcons')}
+                                        onClick={() => handleSend(ZegoUIKitPrebuilt.InvitationTypeVideoCall)}
+                                    >
+                                        <BsCameraVideoFill className={cx('call-icon')} />
+                                    </div>
+                                ) : (
+                                    <Spinner />
+                                )}
+
                                 <div className={cx('status', 'online')}>
                                     <BsDot className={cx('icon')} />
                                 </div>

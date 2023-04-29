@@ -12,6 +12,8 @@ import {
 } from '~/services/userService';
 import { parseJwt } from '~/utils/jwt';
 import { setLocalStorage, getLocalStorage, removeLocalStorage } from '~/utils/localStorage';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '~/firebase';
 
 export const registerAsync = createAsyncThunk('user/register', async (payload, { rejectWithValue }) => {
     try {
@@ -58,6 +60,8 @@ export const refreshAsync = createAsyncThunk('user/refresh', async (payload) => 
 export const logoutAsync = createAsyncThunk('user/logout', async (payload) => {
     try {
         await logout({ currentRefreshToken: payload.currentRefreshToken });
+        const userDocRef = doc(db, 'users', payload.userId);
+        await updateDoc(userDocRef, { isOnline: false });
         removeLocalStorage('auth');
         const { successCallback } = payload;
         successCallback && successCallback();
