@@ -44,6 +44,10 @@ const CoachDetail = () => {
     const { currentCoach, error } = useSelector((state) => state.guest);
     const { currentUser } = useSelector((state) => state.user);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const [loading, setLoading] = useState(true);
 
     const handleSelect = () => {
