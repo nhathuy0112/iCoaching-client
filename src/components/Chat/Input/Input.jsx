@@ -248,7 +248,13 @@ const Input = () => {
                 value={text}
             />
             <div className={cx('send')}>
-                <input type="file" style={{ display: 'none' }} id="file" onChange={handleSelectImg} />
+                <input
+                    type="file"
+                    accept="image/*,video/*"
+                    style={{ display: 'none' }}
+                    id="file"
+                    onChange={handleSelectImg}
+                />
                 <label htmlFor="file">
                     <BsCardImage className={cx('icon')} />
                 </label>

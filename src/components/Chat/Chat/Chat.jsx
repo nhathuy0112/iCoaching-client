@@ -174,7 +174,19 @@ const Chat = () => {
             };
             handleSelect();
         }
-    });
+    }, [
+        chatId,
+        currentUser?.Id,
+        currentUser?.Username,
+        currentUser?.email,
+        currentUser?.Avatar,
+        currentUser?.Fullname,
+        currentCoach?.uid,
+        currentCoach?.username,
+        currentCoach?.email,
+        currentCoach?.fullname,
+        currentCoach?.avatar,
+    ]);
 
     useEffect(() => {
         const getChats = () => {

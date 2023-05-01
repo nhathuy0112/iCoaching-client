@@ -64,8 +64,6 @@ const Messages = () => {
         return acc;
     }, []);
 
-    // console.log(filteredMessagesByDate);
-
     return (
         <div className={cx('messages', { messagesClient: coachId })}>
             {/* {messages?.map((m) => (
